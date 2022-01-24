@@ -2,6 +2,12 @@
 !data
 data/*
 !data/DESCRIPTION.md
+!docs
+docs/*
+!docs/conf.py
+!docs/index.rst
+!docs/make.bat
+!docs/Makefile
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
