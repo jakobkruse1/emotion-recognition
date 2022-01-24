@@ -1,0 +1,7 @@
+thesis-emotion-detection
+========================
+
+.. toctree::
+   :maxdepth: 4
+
+   src
