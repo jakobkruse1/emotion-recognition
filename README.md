@@ -3,6 +3,9 @@
 
 [![Python 3.8](https://img.shields.io/badge/Python-3.8-blue)](https://www.python.org/downloads/release/python-380/)
 [![codecov](https://codecov.io/gh/jakob1111996/thesis-emotion-detection/branch/main/graph/badge.svg?token=2PUCAJG0XA)](https://codecov.io/gh/jakob1111996/thesis-emotion-detection)
+[![GitHub license](https://badgen.net/github/license/jakob1111996/thesis-emotion-detection)](https://github.com/jakob1111996/thesis-emotion-detection/blob/main/LICENSE)
+[![Docs](https://img.shields.io/badge/-Docs-green)](https://jakob1111996.github.io/thesis-emotion-detection)
+[![Linkedin](https://img.shields.io/badge/-LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/jakob-kruse-b7293a197/)
 
 This is the repository for my master's thesis on emotion detection
 
