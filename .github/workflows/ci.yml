@@ -65,7 +65,7 @@ jobs:
         run: cd docs
       - name: Generate docs
         run: |
-          sphinx-apidoc -o . ..
+          sphinx-apidoc -f -o . ..
           make html
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.2

@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Documentation of the multimodal emotion measurement system
-===============================================
+==========================================================
 
 .. toctree::
    :maxdepth: 2
