@@ -32,6 +32,7 @@ To run all linters manually, use:
 ```python
 pre-commit
 ```
+Note: only changes added to git are included in linting when using the pre-commit command.
 
 You can also run the single linters one at a time:
 ```bash
