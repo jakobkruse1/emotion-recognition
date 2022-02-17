@@ -9,6 +9,17 @@ Subpackages
 
    src.data
 
+Submodules
+----------
+
+src.emotion\_set module
+-----------------------
+
+.. automodule:: src.emotion_set
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

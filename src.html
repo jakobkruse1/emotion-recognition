@@ -46,6 +46,87 @@
 </ul>
 </div>
 </section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-src.emotion_set">
+<span id="src-emotion-set-module"></span><h2>src.emotion_set module<a class="headerlink" href="#module-src.emotion_set" title="Permalink to this headline">¶</a></h2>
+<p>This file defines the emotion sets that are available in this work.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.emotion_set.AbstractEmotionSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">AbstractEmotionSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.emotion_set.AbstractEmotionSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class implements the abstract interface for all emotion sets.</p>
+<p>One problem in emotion detection is that a lot of different emotion sets
+are used throughout the past research. While one paper predicts only
+positive, neutral and negative emotions, another one might differentiate
+between 6 or more distinct emotions (joy, anger, fear, …).
+This class models this behaviour by defining different emotion sets.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.emotion_set.AbstractEmotionSet.get_emotions">
+<span class="sig-name descname"><span class="pre">get_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.emotion_set.AbstractEmotionSet.get_emotions" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the emotion strings for given indices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>indices</strong> – The index or indices of the emotions</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of emotion strings or single emotion string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.emotion_set.EkmanEmotions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">EkmanEmotions</span></span><a class="headerlink" href="#src.emotion_set.EkmanEmotions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.emotion_set.AbstractEmotionSet</span></code></a></p>
+<p>Emotion set defined by Paul Ekman that is commonly used in research.
+It contains 6 basic emotions:
+anger, surprise, disgust, enjoyment, fear, and sadness</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.emotion_set.EkmanNeutralEmotions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">EkmanNeutralEmotions</span></span><a class="headerlink" href="#src.emotion_set.EkmanNeutralEmotions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.emotion_set.AbstractEmotionSet</span></code></a></p>
+<p>Ekman Emotion set extended by a neutral state.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.emotion_set.EmotionSetFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">EmotionSetFactory</span></span><a class="headerlink" href="#src.emotion_set.EmotionSetFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Factory class that generates emotion set instances</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.emotion_set.EmotionSetFactory.generate">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><span class="pre">src.emotion_set.AbstractEmotionSet</span></a></span></span><a class="headerlink" href="#src.emotion_set.EmotionSetFactory.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that creates and returns an instance of the emotion set
+specified by the name parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – The name of the desired emotion set</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Raised if the name does not represent an emotion set</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The created emotion set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.emotion_set.ThreeEmotions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">ThreeEmotions</span></span><a class="headerlink" href="#src.emotion_set.ThreeEmotions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.emotion_set.AbstractEmotionSet</span></code></a></p>
+<p>Simple emotion set with only three categories: positive, neutral, negative</p>
+</dd></dl>
+
+</section>
 <section id="module-src">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src" title="Permalink to this headline">¶</a></h2>
 <p>Package containing the entire source code</p>
