@@ -8,6 +8,7 @@ docs/*
 !docs/index.rst
 !docs/make.bat
 !docs/Makefile
+.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
