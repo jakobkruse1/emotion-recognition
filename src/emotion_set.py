@@ -5,6 +5,62 @@ from typing import Iterable, Union
 import numpy as np
 
 
+class EmotionMapper:
+    def __init__(self):
+        """
+        Class that maps more complex emotions down to the NeutralEkman emotions
+        """
+        self.emotion_map = {}
+        self.setup_map()
+
+    def map_emotion(self, emotion: str) -> str:
+        """
+        Maps an emotion to its equivalent in the NeutralEkman emotion set.
+
+        :param emotion: The name of the emotion to map to Ekman
+        :return: The name of the corresponding Ekman emotion
+        """
+        return self.emotion_map[emotion]
+
+    def setup_map(self) -> None:
+        """
+        One time setup for the emotion map in the class.
+        """
+        for emotion in ["anger", "annoyance", "disapproval"]:
+            self.emotion_map[emotion] = "anger"
+        for emotion in ["disgust"]:
+            self.emotion_map[emotion] = "disgust"
+        for emotion in ["fear", "nervousness"]:
+            self.emotion_map[emotion] = "fear"
+        for emotion in [
+            "joy",
+            "amusement",
+            "approval",
+            "excitement",
+            "gratitude",
+            "love",
+            "optimism",
+            "relief",
+            "pride",
+            "admiration",
+            "desire",
+            "caring",
+        ]:
+            self.emotion_map[emotion] = "joy"
+        for emotion in [
+            "sadness",
+            "disappointment",
+            "embarrassment",
+            "grief",
+            "remorse",
+        ]:
+            self.emotion_map[emotion] = "sadness"
+        for emotion in ["surprise", "realization", "confusion", "curiosity"]:
+            self.emotion_map[emotion] = "surprise"
+        for emotion in ["neutral"]:
+            self.emotion_map[emotion] = "neutral"
+
+
 class AbstractEmotionSet:
     """
     This class implements the abstract interface for all emotion sets.
@@ -16,7 +72,7 @@ class AbstractEmotionSet:
     This class models this behaviour by defining different emotion sets.
     """
 
-    def __init__(self, name: str, count: int, classes: Iterable[str]) -> None:
+    def __init__(self, name: str, count: int, classes: Iterable[str]):
         """
         Initialize an emotion set with the required information
 
@@ -67,7 +123,7 @@ class EkmanEmotions(AbstractEmotionSet):
         super().__init__(
             "ekman",
             6,
-            ["anger", "surprise", "disgust", "enjoyment", "fear", "sadness"],
+            ["anger", "surprise", "disgust", "joy", "fear", "sadness"],
         )
 
 
@@ -87,7 +143,7 @@ class EkmanNeutralEmotions(AbstractEmotionSet):
                 "anger",
                 "surprise",
                 "disgust",
-                "enjoyment",
+                "joy",
                 "fear",
                 "sadness",
                 "neutral",

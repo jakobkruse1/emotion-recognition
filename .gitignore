@@ -1,7 +1,6 @@
 # Project
-!data
-data/*
-!data/DESCRIPTION.md
+data/train/text
+
 !docs
 docs/*
 !docs/conf.py

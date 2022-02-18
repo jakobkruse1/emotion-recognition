@@ -27,7 +27,7 @@ def test_emotion_factory():
         (
             "ekman",
             6,
-            ["anger", "surprise", "disgust", "enjoyment", "fear", "sadness"],
+            ["anger", "surprise", "disgust", "joy", "fear", "sadness"],
         ),
         (
             "neutral_ekman",
@@ -36,7 +36,7 @@ def test_emotion_factory():
                 "anger",
                 "surprise",
                 "disgust",
-                "enjoyment",
+                "joy",
                 "fear",
                 "sadness",
                 "neutral",
