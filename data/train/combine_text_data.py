@@ -67,6 +67,24 @@ def read_tsv_file(file_path: str) -> Tuple[np.ndarray, np.ndarray]:
     return np.asarray(texts), np.asarray(labels)
 
 
+def write_combined_csv(
+    texts: np.ndarray, labels: np.ndarray, file_name: str
+) -> None:
+    """
+    Store the combined texts and labels in a csv file
+
+    :param texts: All the text fragments in an array
+    :param labels: The integer labels corresponding to the text fragments
+    :param file_name: The name of the csv file to write into
+    """
+    base_path = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(base_path, file_name), "w", newline="") as file:
+        writer = csv.writer(file, delimiter="\t")
+        for text, label in zip(texts, labels):
+            assert "\t" not in text  # Otherwise, problems with delimiter
+            writer.writerow([text, label])
+
+
 if __name__ == "__main__":
     # First, read the huggingface emotions dataset
     train_texts, train_labels = read_txt_file("text/train.txt")
@@ -99,4 +117,6 @@ if __name__ == "__main__":
     print_label_distribution(test_labels, "Test")
 
     # Store in combined csv files
-    # TODO
+    write_combined_csv(train_texts, train_labels, "text/final_train.csv")
+    write_combined_csv(val_texts, val_labels, "text/final_val.csv")
+    write_combined_csv(test_texts, test_labels, "text/final_test.csv")

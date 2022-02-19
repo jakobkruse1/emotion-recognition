@@ -49,3 +49,6 @@ wget -nc -O emotions.csv https://query.data.world/s/5tkwav7lbu3v3l2rgwpuu3sfjror
 # Combine them into one csv
 cd ../../..
 venv/bin/python data/train/combine_text_data.py
+
+# Delete files
+# TODO Maybe do this later
