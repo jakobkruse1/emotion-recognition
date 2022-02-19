@@ -11,7 +11,7 @@ This is the repository for my master's thesis on emotion detection
 
 
 ### Setup
-I recommend setting up a new virtual environment.
+I recommend setting up a new virtual environment in the venv folder.
 Then, install the required packages:
 ```python
 pip install -r requirements.txt

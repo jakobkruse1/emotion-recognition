@@ -43,12 +43,14 @@ wget -nc -O dev.tsv https://raw.githubusercontent.com/google-research/google-res
 wget -nc -O train.tsv https://raw.githubusercontent.com/google-research/google-research/master/goemotions/data/train.tsv
 wget -nc -O test.tsv https://raw.githubusercontent.com/google-research/google-research/master/goemotions/data/test.tsv
 
-# Download crowdflower dataset - unsure if it will be used because not cleaned
-wget -nc -O emotions.csv https://query.data.world/s/5tkwav7lbu3v3l2rgwpuu3sfjrorti
-
 # Combine them into one csv
 cd ../../..
-venv/bin/python data/train/combine_text_data.py
+if [ -f "data/train/text/final_train.csv" ] && [ "${FORCE}" -eq 0 ]; then
+    echo "CSV files exists. Skipping"
+else
+    venv/bin/python data/train/combine_text_data.py
+fi
+
 
 # Delete files
 # TODO Maybe do this later
