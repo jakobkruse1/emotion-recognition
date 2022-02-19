@@ -35,7 +35,7 @@ jobs:
       - name: Install pip packages
         run: pip install -r requirements.txt
       - name: Run tests
-        run: python -m pytest --cov --cov-report xml tests/
+        run: python -m pytest --cov=src/ --cov-report xml tests/
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
