@@ -58,6 +58,7 @@ else
         venv/bin/python data/train/combine_text_data.py
     else
         # In CI or docker there is no venv
+        export PYTHONPATH=.
         python data/train/combine_text_data.py
     fi
 fi
