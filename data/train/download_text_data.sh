@@ -54,5 +54,10 @@ cd ../../..
 if [ -f "data/train/text/final_train.csv" ] && [ "${FORCE}" -eq 0 ]; then
     echo "CSV files exists. Skipping"
 else
-    venv/bin/python data/train/combine_text_data.py
+    if [ -f "venv/bin/python" ]; then
+        venv/bin/python data/train/combine_text_data.py
+    else
+        # In CI or docker there is no venv
+        python data/train/combine_text_data.py
+    fi
 fi
