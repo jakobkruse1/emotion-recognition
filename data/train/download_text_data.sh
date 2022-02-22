@@ -14,6 +14,7 @@ while getopts ":df" opt; do
       ;;
     f)
       # Force flag that overwrites data also if it is already there
+      echo "Forcing download of the required files!"
       FORCE=1
       ;;
     \?)
@@ -22,12 +23,17 @@ while getopts ":df" opt; do
   esac
 done
 
+if [ $FORCE -eq 1 ]; then
+  rm -rf text
+fi
+
 if [ ! -d "text" ]; then
   mkdir text
 fi
 
 # Download three datasets
 cd text
+
 
 ## Download emotions dataset
 _TRAIN_DOWNLOAD_URL="https://www.dropbox.com/s/1pzkadrvffbqw6o/train.txt?dl=1"
@@ -50,7 +56,3 @@ if [ -f "data/train/text/final_train.csv" ] && [ "${FORCE}" -eq 0 ]; then
 else
     venv/bin/python data/train/combine_text_data.py
 fi
-
-
-# Delete files
-# TODO Maybe do this later

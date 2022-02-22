@@ -39,7 +39,7 @@ class DataReader(ABC):
         :param which_set: Which set to use, can be either train, val or test
         :return: The Dataset instance to use in the emotion classifiers
         """
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     @abstractmethod
     def get_three_emotion_data(self, which_set: Set) -> tf.data.Dataset:
@@ -49,7 +49,7 @@ class DataReader(ABC):
         :param which_set: train, val or test set distinguisher
         :return: The Dataset that contains data and labels
         """
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     @staticmethod
     def convert_to_three_emotions(labels: np.ndarray) -> np.ndarray:
