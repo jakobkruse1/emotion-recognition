@@ -51,12 +51,17 @@ class DataReader(ABC):
         """
         raise NotImplementedError()
 
-    def convert_to_three_emotions(self, labels: np.ndarray) -> np.ndarray:
+    @staticmethod
+    def convert_to_three_emotions(labels: np.ndarray) -> np.ndarray:
         """
         Convert the NeutralEkmanEmotion labels to the ThreeEmotionSet
 
         :param labels: The integer labels from 0-6 in NeutralEkman format
         :return: The integer labels from 0-2 in ThreeEmotion format
         """
-        # TODO Implement this when knowing more about the data formats
-        pass
+        new_labels = labels.copy()
+        conversion_dict = {0: 2, 1: 0, 2: 2, 3: 0, 4: 2, 5: 2, 6: 1}
+        for old_val, new_val in conversion_dict.items():
+            new_labels[labels == old_val] = new_val
+
+        return new_labels
