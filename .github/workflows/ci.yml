@@ -34,8 +34,6 @@ jobs:
         run: ls
       - name: Install pip packages
         run: pip install -r requirements.txt
-      - name: Download required data test
-        run: bash data/prepare_all.sh
       - name: Run tests
         run: python -m pytest --cov=src/ --cov-report xml tests/
       - name: Upload coverage to Codecov

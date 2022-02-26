@@ -13,11 +13,11 @@ class TextDataReader(DataReader):
     Class that reads the CSV datasets from the data/train/text folder
     """
 
-    def __init__(self):
+    def __init__(self, folder: str = "data/train/text"):
         """
         Initialization for the class
         """
-        super().__init__("text", "data/train/text")
+        super().__init__("text", folder)
         self.file_map = {
             Set.TRAIN: "final_train.csv",
             Set.VAL: "final_val.csv",
