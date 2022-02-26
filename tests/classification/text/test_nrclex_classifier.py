@@ -28,3 +28,5 @@ def test_classification():
 
     results = classifier.classify({"batch_size": 5, "set": Set.TRAIN})
     assert results.shape == (30,)
+
+    # TODO: Might add sanity checks for results here not only check shape
