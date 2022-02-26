@@ -4,7 +4,7 @@ from typing import Dict
 
 import numpy as np
 
-from src.classification.emotion_classifier import EmotionClassifier
+from src.classification import EmotionClassifier
 
 
 class TextEmotionClassifier(EmotionClassifier):

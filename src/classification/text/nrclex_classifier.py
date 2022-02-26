@@ -3,7 +3,9 @@ from typing import Dict
 
 import numpy as np
 
-from src.classification.text import TextEmotionClassifier
+from src.classification.text.text_emotion_classifier import (
+    TextEmotionClassifier,
+)
 
 
 class NRCLexTextClassifier(TextEmotionClassifier):
