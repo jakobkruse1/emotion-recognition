@@ -116,7 +116,7 @@ class NRCLexTextClassifier(TextEmotionClassifier):
         return np.random.choice(max_keys)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     classifier = NRCLexTextClassifier()
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
