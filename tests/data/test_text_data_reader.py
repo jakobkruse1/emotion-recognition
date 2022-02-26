@@ -1,5 +1,4 @@
 """Test the text data reader"""
-import os.path
 
 import numpy as np
 import tensorflow as tf
@@ -12,8 +11,7 @@ def test_initialization():
     assert dr.name == "text"
     assert dr.folder == "data/train/text"
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
-        file = os.path.join(dr.folder, dr.file_map[set_type])
-        assert os.path.exists(file)
+        assert dr.file_map[set_type]
 
 
 def test_reading():
