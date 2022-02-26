@@ -45,6 +45,7 @@ class EmotionMapper:
             "admiration",
             "desire",
             "caring",
+            "anticipation",
         ]:
             self.emotion_map[emotion] = "joy"
         for emotion in [

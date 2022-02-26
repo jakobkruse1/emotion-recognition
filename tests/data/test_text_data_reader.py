@@ -66,3 +66,33 @@ def test_reading_three():
                 assert label.shape == (3,)
                 assert np.sum(label) == 1
     assert batch == 8
+
+
+def test_labels():
+    dr = TextDataReader(folder="tests/test_data")
+    dr.file_map[Set.TRAIN] = "text_test.csv"
+    dataset = dr.get_emotion_data(
+        "neutral_ekman", Set.TRAIN, batch_size=5, shuffle=False
+    )
+    dataset_labels = np.empty((0,))
+    for _, labels in dataset:
+        labels = labels.numpy()
+        labels = np.argmax(labels, axis=1)
+        assert labels.shape == (5,)
+        dataset_labels = np.concatenate([dataset_labels, labels], axis=0)
+    true_labels = dr.get_labels(Set.TRAIN)
+    assert true_labels.shape == (30,)
+    assert dataset_labels.shape == (30,)
+    assert np.array_equal(true_labels, dataset_labels)
+
+    # Now with shuffle
+    dataset = dr.get_emotion_data(
+        "neutral_ekman", Set.TRAIN, batch_size=5, shuffle=True
+    )
+    dataset_labels = np.empty((0,))
+    for _, labels in dataset:
+        labels = labels.numpy()
+        labels = np.argmax(labels, axis=1)
+        assert labels.shape == (5,)
+        dataset_labels = np.concatenate([dataset_labels, labels], axis=0)
+    assert not np.array_equal(true_labels, dataset_labels)
