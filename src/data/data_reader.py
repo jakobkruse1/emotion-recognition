@@ -32,21 +32,27 @@ class DataReader(ABC):
         self.folder = folder
 
     @abstractmethod
-    def get_data(self, which_set: Set) -> tf.data.Dataset:
+    def get_data(
+        self, which_set: Set, batch_size: int = 64
+    ) -> tf.data.Dataset:
         """
         Main method which loads the data from disk into a Dataset instance
 
         :param which_set: Which set to use, can be either train, val or test
+        :param batch_size: The batch size for the requested dataset
         :return: The Dataset instance to use in the emotion classifiers
         """
         raise NotImplementedError()  # pragma: no cover
 
     @abstractmethod
-    def get_three_emotion_data(self, which_set: Set) -> tf.data.Dataset:
+    def get_three_emotion_data(
+        self, which_set: Set, batch_size: int = 64
+    ) -> tf.data.Dataset:
         """
         Method that loads the dataset from disk and stores the labels
         in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet
         :param which_set: train, val or test set distinguisher
+        :param batch_size: the batch size for the dataset
         :return: The Dataset that contains data and labels
         """
         raise NotImplementedError()  # pragma: no cover
