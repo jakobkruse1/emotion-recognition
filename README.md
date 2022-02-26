@@ -13,8 +13,16 @@ This is the repository for my master's thesis on emotion detection
 ### Setup
 I recommend setting up a new virtual environment in the venv folder.
 Then, install the required packages:
-```python
+```bash
 pip install -r requirements.txt
+```
+Download all the datasets:
+```bash
+bash data/prepare_all.sh
+```
+Install all the classification models:
+```bash
+bash models/install_all.sh
 ```
 
 ### Tests

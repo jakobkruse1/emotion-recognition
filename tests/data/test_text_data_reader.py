@@ -1,6 +1,7 @@
 """Test the text data reader"""
 
 import numpy as np
+import pytest
 import tensorflow as tf
 
 from src.data.text_data_reader import Set, TextDataReader
@@ -18,7 +19,7 @@ def test_reading():
     dr = TextDataReader(folder="tests/test_data")
     assert dr.folder == "tests/test_data"
     dr.file_map[Set.TRAIN] = "text_test.csv"
-    dataset = dr.get_data(Set.TRAIN, batch_size=5)
+    dataset = dr.get_emotion_data("neutral_ekman", Set.TRAIN, batch_size=5)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
     for texts, labels in dataset:
@@ -33,12 +34,15 @@ def test_reading():
             assert np.sum(label) == 1
     assert batch == 6
 
+    with pytest.raises(ValueError):
+        _ = dr.get_emotion_data("wrong")
+
 
 def test_reading_three():
     dr = TextDataReader(folder="tests/test_data")
     assert dr.folder == "tests/test_data"
     dr.file_map[Set.TRAIN] = "text_test.csv"
-    dataset = dr.get_three_emotion_data(Set.TRAIN, batch_size=4)
+    dataset = dr.get_emotion_data("three", Set.TRAIN, batch_size=4)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
     for texts, labels in dataset:

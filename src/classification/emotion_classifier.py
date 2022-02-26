@@ -26,10 +26,12 @@ class EmotionClassifier(ABC):
         :param data_type: The data type (text, image, audio, ...)
         :param parameters: Parameter dictionary containing all parameters
         """
+        parameters = parameters or {}
         self.name = name
         self.data_type = data_type
         self.parameters = parameters
         self.data_reader = DataFactory.get_data_reader(data_type)
+        self.emotions = parameters.get("emotions", "neutral_ekman")
         self.ready = False
 
     @abstractmethod

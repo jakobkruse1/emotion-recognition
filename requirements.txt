@@ -5,3 +5,4 @@ sphinx
 numpy
 datasets
 tensorflow==2.8.0
+nrclex

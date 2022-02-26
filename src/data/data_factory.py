@@ -46,7 +46,7 @@ class DataFactory:
         """
         data_reader = DataFactory.get_data_reader(data_type)
         if emotions == "neutral_ekman":
-            return data_reader.get_data(which_set, batch_size)
+            return data_reader.get_seven_emotion_data(which_set, batch_size)
         elif emotions == "three":
             return data_reader.get_three_emotion_data(which_set, batch_size)
         else:
