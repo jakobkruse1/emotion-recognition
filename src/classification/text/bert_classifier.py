@@ -4,6 +4,7 @@ from typing import Dict
 import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
+import tensorflow_text as text  # noqa: F401
 from official.nlp import optimization
 
 from src.classification.text.text_emotion_classifier import (
@@ -25,7 +26,10 @@ class BertClassifier(TextEmotionClassifier):
         """
         super().__init__("bert", parameters)
         tf.get_logger().setLevel("ERROR")
-        self.model_name = "bert_en_uncased_L-4_H-256_A-4"
+        parameters = parameters or {}
+        self.model_name = parameters.get(
+            "model_name", "bert_en_uncased_L-4_H-256_A-4"
+        )
         self.model_path = (
             f"https://tfhub.dev/tensorflow/small_bert/" f"{self.model_name}/1"
         )
@@ -140,7 +144,7 @@ class BertClassifier(TextEmotionClassifier):
         )
         if not self.classifier:
             raise RuntimeError(
-                "Please load or train the model before " "inference!"
+                "Please load or train the model before inference!"
             )
         results = self.classifier.predict(dataset)
         return np.argmax(results, axis=1)
