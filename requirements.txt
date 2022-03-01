@@ -5,4 +5,6 @@ sphinx
 numpy
 datasets
 tensorflow==2.8.0
+tensorflow-text==2.8.*
+tf-models-official==2.7.0
 nrclex

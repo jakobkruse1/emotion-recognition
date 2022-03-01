@@ -32,7 +32,7 @@ class EmotionClassifier(ABC):
         self.parameters = parameters
         self.data_reader = DataFactory.get_data_reader(data_type)
         self.emotions = parameters.get("emotions", "neutral_ekman")
-        self.ready = False
+        self.is_trained = False
 
     @abstractmethod
     def train(self, parameters: Dict, **kwargs) -> None:

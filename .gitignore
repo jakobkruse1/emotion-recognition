@@ -1,6 +1,10 @@
 # Project
 data/train/text
 
+# Models
+models/text/bert
+
+# Documentation
 !docs
 docs/*
 !docs/conf.py

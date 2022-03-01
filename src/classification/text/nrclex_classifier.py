@@ -33,6 +33,7 @@ class NRCLexTextClassifier(TextEmotionClassifier):
             "disgust": 2,
             "joy": 3,
         }
+        self.is_trained = True
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
