@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -106,3 +107,24 @@ class DataReader(ABC):
         :return: An array of labels in shape (num_samples,)
         """
         raise NotImplementedError("Abstract method")  # pragma: no cover
+
+    @staticmethod
+    def convert_to_numpy(
+        dataset: tf.data.Dataset,
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Converts a given tensorflow dataset into a single numpy array
+
+        :param dataset: The dataset to convert to numpy
+        :return: Tuple containing two array:
+            - numpy array containing data from all batches
+            - numpy array containing labels from all batches
+        """
+        np_data = []
+        np_labels = []
+        for data, labels in dataset:
+            np_data.append(data.numpy())
+            np_labels.append(labels.numpy())
+        return np.concatenate(np_data, axis=0), np.concatenate(
+            np_labels, axis=0
+        )

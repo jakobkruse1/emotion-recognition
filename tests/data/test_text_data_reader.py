@@ -75,8 +75,14 @@ def test_labels():
         "neutral_ekman", Set.TRAIN, batch_size=5, shuffle=False
     )
     dataset_labels = np.empty((0,))
-    for _, labels in dataset:
+    dataset_data = np.empty((0, 1))
+    dataset_raw_labels = np.empty((0, 7))
+    for data, labels in dataset:
+        dataset_data = np.concatenate([dataset_data, data.numpy()], axis=0)
         labels = labels.numpy()
+        dataset_raw_labels = np.concatenate(
+            [dataset_raw_labels, labels], axis=0
+        )
         labels = np.argmax(labels, axis=1)
         assert labels.shape == (5,)
         dataset_labels = np.concatenate([dataset_labels, labels], axis=0)
@@ -84,6 +90,9 @@ def test_labels():
     assert true_labels.shape == (30,)
     assert dataset_labels.shape == (30,)
     assert np.array_equal(true_labels, dataset_labels)
+    d_data, d_labels = TextDataReader.convert_to_numpy(dataset)
+    assert np.array_equal(d_data, dataset_data)
+    assert np.array_equal(d_labels, dataset_raw_labels)
 
     # Now with shuffle
     dataset = dr.get_emotion_data(

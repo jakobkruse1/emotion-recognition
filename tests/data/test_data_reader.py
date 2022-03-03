@@ -2,6 +2,7 @@
 
 import numpy as np
 import pytest
+import tensorflow as tf
 
 from src.data.data_reader import DataReader, Set
 
@@ -22,3 +23,13 @@ def test_data_reader():
     assert np.array_equal(
         converted, np.array([2, 0, 2, 0, 2, 2, 1, 1, 2, 2, 0, 2, 0, 2])
     )
+
+
+def test_numpy_conversion():
+    data = np.random.randn(80, 15, 3)
+    labels = np.random.randn(80, 4)
+    dataset = tf.data.Dataset.from_tensor_slices((data, labels))
+    dataset = dataset.batch(9)
+    b_data, b_labels = DataReader.convert_to_numpy(dataset)
+    assert np.array_equal(b_data, data)
+    assert np.array_equal(b_labels, labels)

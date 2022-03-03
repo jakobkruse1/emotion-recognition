@@ -3,6 +3,7 @@ data/train/text
 
 # Models
 models/text/bert
+models/text/distilbert
 
 # Documentation
 !docs

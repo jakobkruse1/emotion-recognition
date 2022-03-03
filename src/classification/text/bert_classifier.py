@@ -18,13 +18,14 @@ class BertClassifier(TextEmotionClassifier):
     Emotion classifier based on the BERT model
     """
 
-    def __init__(self, parameters: Dict = None):
+    def __init__(self, name: str = "bert", parameters: Dict = None):
         """
         Initialize the emotion classifier.
 
+        :param name: The classifier name
         :param parameters: Configuration parameters
         """
-        super().__init__("bert", parameters)
+        super().__init__(name, parameters)
         tf.get_logger().setLevel("ERROR")
         parameters = parameters or {}
         self.model_name = parameters.get(
@@ -38,12 +39,13 @@ class BertClassifier(TextEmotionClassifier):
         )
         self.classifier = None
 
-    def _build_classifier_model(self) -> tf.keras.Model:
+    def _build_classifier_model(self, parameters: Dict) -> tf.keras.Model:
         """
         Define the tensorflow model that uses BERT for classification
 
         :return: The keras model that classifies the text
         """
+        dropout_rate = parameters.get("dropout_rate", 0.1)
         input = tf.keras.layers.Input(shape=(), dtype=tf.string, name="text")
         preprocessor = hub.KerasLayer(
             self.preprocess_path, name="preprocessing"
@@ -54,7 +56,7 @@ class BertClassifier(TextEmotionClassifier):
         )
         outputs = encoder(encoder_inputs)
         net = outputs["pooled_output"]
-        net = tf.keras.layers.Dropout(0.1)(net)
+        net = tf.keras.layers.Dropout(dropout_rate)(net)
         net = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(net)
@@ -75,7 +77,7 @@ class BertClassifier(TextEmotionClassifier):
 
         num_samples = self.data_reader.get_labels(which_set).shape[0]
         num_train_steps = int(num_samples * epochs / batch_size)
-        self.classifier = self._build_classifier_model()
+        self.classifier = self._build_classifier_model(parameters)
         loss = tf.keras.losses.CategoricalCrossentropy()
         metrics = [tf.metrics.CategoricalAccuracy()]
         optimizer = optimization.create_optimizer(
@@ -84,7 +86,9 @@ class BertClassifier(TextEmotionClassifier):
             num_warmup_steps=0.1 * num_train_steps,
             optimizer_type="adamw",
         )
-
+        callback = tf.keras.callbacks.EarlyStopping(
+            monitor="val_loss", patience=3
+        )
         self.classifier.compile(
             optimizer=optimizer, loss=loss, metrics=metrics
         )
@@ -97,7 +101,10 @@ class BertClassifier(TextEmotionClassifier):
         )
 
         _ = self.classifier.fit(
-            x=train_data, validation_data=val_data, epochs=epochs
+            x=train_data,
+            validation_data=val_data,
+            epochs=epochs,
+            callbacks=[callback],
         )
         self.is_trained = True
 
