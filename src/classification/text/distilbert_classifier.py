@@ -20,7 +20,8 @@ class DistilBertClassifier(BertClassifier):
 
         :param parameters: Configuration parameters
         """
-        super().__init__("distilbert", parameters)
+        super().__init__(parameters)
+        self.name = "distilbert"
         self.model_name = "distilbert_en_uncased_L-6_H-768_A-12"
         self.model_path = f"https://tfhub.dev/jeongukjae/{self.model_name}/1"
         self.preprocess_path = (

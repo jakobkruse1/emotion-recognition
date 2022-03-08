@@ -18,14 +18,14 @@ class BertClassifier(TextEmotionClassifier):
     Emotion classifier based on the BERT model
     """
 
-    def __init__(self, name: str = "bert", parameters: Dict = None):
+    def __init__(self, parameters: Dict = None):
         """
         Initialize the emotion classifier.
 
         :param name: The classifier name
         :param parameters: Configuration parameters
         """
-        super().__init__(name, parameters)
+        super().__init__("bert", parameters)
         tf.get_logger().setLevel("ERROR")
         parameters = parameters or {}
         self.model_name = parameters.get(
