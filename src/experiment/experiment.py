@@ -201,6 +201,16 @@ class ExperimentRunner:
         classifier = ClassifierFactory.get(
             experiment.modality, experiment.model, experiment.init_parameters
         )
+        labels = classifier.data_reader.get_labels(Set.TEST)
+        file_path = f"{index:03d}_results.json"
+        if os.path.exists(os.path.join(self.folder, file_path)):
+            print("Skipping experiment as results already exist!")
+            with open(os.path.join(self.folder, file_path), "r") as json_file:
+                data = json.load(json_file)
+                return (
+                    np.sum(data["test_predictions"] == labels)
+                    / labels.shape[0]
+                )
 
         classifier.train(experiment.train_parameters)
         parameters = experiment.get_parameter_dict()
@@ -214,11 +224,9 @@ class ExperimentRunner:
             {"which_set": Set.TEST}
         )
 
-        file_path = f"{index:03d}_results.json"
         with open(os.path.join(self.folder, file_path), "w") as json_file:
             json.dump(parameters, json_file)
 
-        labels = classifier.data_reader.get_labels(Set.TEST)
         return (
             np.sum(parameters["test_predictions"] == labels) / labels.shape[0]
         )

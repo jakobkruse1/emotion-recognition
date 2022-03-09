@@ -13,8 +13,10 @@ if __name__ == "__main__":
         model="bert",
         model_name=[
             "bert_en_uncased_L-2_H-128_A-2",
-            "bert_en_uncased_L-4_H-128_A-2" "bert_en_uncased_L-4_H-256_A-4",
-            "bert_en_uncased_L-2_H-256_A-4" "bert_en_uncased_L-6_H-256_A-4",
+            "bert_en_uncased_L-4_H-128_A-2",
+            "bert_en_uncased_L-4_H-256_A-4",
+            "bert_en_uncased_L-2_H-256_A-4",
+            "bert_en_uncased_L-6_H-256_A-4",
             "bert_en_uncased_L-4_H-512_A-8",
         ],
         train_parameters=train_parameters,
