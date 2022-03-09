@@ -32,7 +32,7 @@ class BertClassifier(TextEmotionClassifier):
             "model_name", "bert_en_uncased_L-4_H-256_A-4"
         )
         self.model_path = (
-            f"https://tfhub.dev/tensorflow/small_bert/" f"{self.model_name}/1"
+            f"https://tfhub.dev/tensorflow/small_bert/" f"{self.model_name}/2"
         )
         self.preprocess_path = (
             "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3"
@@ -46,6 +46,7 @@ class BertClassifier(TextEmotionClassifier):
         :return: The keras model that classifies the text
         """
         dropout_rate = parameters.get("dropout_rate", 0.1)
+        dense_layer = parameters.get("dense_layer", 0)
         input = tf.keras.layers.Input(shape=(), dtype=tf.string, name="text")
         preprocessor = hub.KerasLayer(
             self.preprocess_path, name="preprocessing"
@@ -57,6 +58,8 @@ class BertClassifier(TextEmotionClassifier):
         outputs = encoder(encoder_inputs)
         net = outputs["pooled_output"]
         net = tf.keras.layers.Dropout(dropout_rate)(net)
+        if dense_layer:
+            net = tf.keras.layers.Dense(dense_layer, activation="relu")(net)
         net = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(net)
