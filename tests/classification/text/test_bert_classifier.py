@@ -27,7 +27,8 @@ def test_bert_workflow():
     assert not classifier.classifier
     train_parameters = {
         "epochs": 5,
-        "set": Set.TEST,  # Speedup training by using test set which is smaller
+        "dense_layer": 3,
+        "set": Set.TEST,
     }
     classifier.data_reader = TextDataReader(folder="tests/test_data")
     classifier.data_reader.file_map[Set.TEST] = "text_test.csv"
@@ -55,4 +56,4 @@ def test_bert_workflow():
     with pytest.raises(RuntimeError):
         new_classifier.save({"save_path": "tests/temp/bert"})
 
-    shutil.rmtree("tests/temp/bert", ignore_errors=True)
+    shutil.rmtree("tests/temp", ignore_errors=True)

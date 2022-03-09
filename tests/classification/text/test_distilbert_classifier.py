@@ -51,4 +51,4 @@ def test_distilbert_workflow():
     with pytest.raises(RuntimeError):
         new_classifier.save({"save_path": "tests/temp/bert"})
 
-    shutil.rmtree("tests/temp/bert", ignore_errors=True)
+    shutil.rmtree("tests/temp", ignore_errors=True)

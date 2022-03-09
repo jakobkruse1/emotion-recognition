@@ -17,14 +17,12 @@ class Experiment:
     Experiment class containing the parameters for one run
     """
 
-    def __init__(self, prefix="", **kwargs):
+    def __init__(self, **kwargs):
         """
         This constructor is called to create an experiment instance.
         parses all kwargs to create a fully defined experiment. All parameters
-        whihc are not in the kwargs are set to default values here.
-        Args:
-            prefix: Prefix the save and log files
-            **kwargs: Arguments the define the experiments
+        which are not in the kwargs are set to default values here.
+        :param kwargs: Arguments the define the experiments
         """
         # First, set all parameters to default values
         self.possible_keys = [
@@ -34,7 +32,6 @@ class Experiment:
             "init_parameters",
             "train_parameters",
         ]
-        self.prefix = prefix
         self.modality = None
         self.model = None
         self.model_name = None
@@ -58,7 +55,7 @@ class Experiment:
         """
         parameters = {}
         for key in self.possible_keys:
-            parameters[key] = getattr(self, key, "")
+            parameters[key] = getattr(self, key, None)
         return parameters
 
     def check_parameters(self):
@@ -91,13 +88,14 @@ class ExperimentRunner:
     def __init__(self, experiment_name: str, **kwargs):
         """
         Constructor for the ExperimentRunner class
-        Args:
-            experiment_name: Name of the experiment, for log files and result
-            **kwargs: Additional keyword arguments
+        :param experiment_name: Name of the experiment for log files and result
+        :param kwargs: Additional keyword arguments
         """
         self.experiments = []
         self.experiment_index = 0
         self.base_experiment_name = experiment_name
+        self.best_index = None
+        self.accuracy = None
         base_folder = os.path.dirname(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         )
@@ -127,13 +125,11 @@ class ExperimentRunner:
         else:
             exit(0)
 
-    def add_grid_experiments(self, prefix="", **kwargs):
+    def add_grid_experiments(self, **kwargs):
         """
         Create the cross product of all the arguments lists and create
         experiments from that like in a grid search
-        Args:
-            prefix: Prefix for the output files
-            kwargs: Keyword arguments which shall be grid searched
+        :param kwargs: Keyword arguments which shall be grid searched
         """
         for key, _ in kwargs.items():
             # Check the kwargs for wrong keys
@@ -160,14 +156,12 @@ class ExperimentRunner:
             experiment_dict = base_dict.copy()
             for index, element in enumerate(grid_search_keys):
                 experiment_dict[element] = experiment[index]
-            self.add_single_experiment(**experiment_dict)
+            self.experiments.append(Experiment(**experiment_dict))
 
     def add_single_experiment(self, **kwargs):
         """
         Add an experiment to the experiments list
-        Args:
-            prefix: Prefix for save and log files
-            kwargs: Arguments for the experiment
+        :param kwargs: Arguments for the experiment
         """
         self.experiments.append(Experiment(**kwargs))
 
@@ -175,20 +169,22 @@ class ExperimentRunner:
         """
         Main run function that runs all experiment in the self.experiments list
         """
-        results = []
+        self.accuracy = []
         for experiment in self.experiments:
             accuracy = self.run_experiment(experiment, self.experiment_index)
-            results.append(accuracy)
+            self.accuracy.append(accuracy)
             self.experiment_index += 1
             print(
                 f"{self.experiment_index}/{len(self.experiments)} : "
                 f"Accuracy {accuracy}"
             )
         print("*****\nFinished all runs successfully\n*****")
-        best_index = np.argmax(np.array(results))
+        self.best_index = np.argmax(np.array(self.accuracy))
         print(
-            f"Best: Index {best_index}, Acc {results[best_index]}, "
-            f"Parameters {self.experiments[best_index].get_parameter_dict()}"
+            f"Best: Index {self.best_index}, "
+            f"Acc {self.accuracy[self.best_index]}, "
+            f"Parameters "
+            f"{self.experiments[self.best_index].get_parameter_dict()}"
         )
 
     def run_experiment(self, experiment: Experiment, index: int) -> float:
@@ -215,15 +211,15 @@ class ExperimentRunner:
         classifier.train(experiment.train_parameters)
         parameters = experiment.get_parameter_dict()
         parameters["train_predictions"] = classifier.classify(
-            {"which_set": Set.TRAIN}
-        )
+            {"set": Set.TRAIN}
+        ).tolist()
         parameters["val_predictions"] = classifier.classify(
-            {"which_set": Set.VAL}
-        )
+            {"set": Set.VAL}
+        ).tolist()
         parameters["test_predictions"] = classifier.classify(
-            {"which_set": Set.TEST}
-        )
-
+            {"set": Set.TEST}
+        ).tolist()
+        print(parameters)
         with open(os.path.join(self.folder, file_path), "w") as json_file:
             json.dump(parameters, json_file)
 
