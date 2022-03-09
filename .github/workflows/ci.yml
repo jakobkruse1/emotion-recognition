@@ -20,7 +20,7 @@ jobs:
       - name: Check imports using isort
         run: isort -v --check-only .
       - name: Flake8 linting
-        run: flake8 -v --ignore=E203 .
+        run: flake8 -v --extend-ignore=E203 .
 
   unit-tests:
     runs-on: ubuntu-latest
