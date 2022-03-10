@@ -219,7 +219,6 @@ class ExperimentRunner:
         parameters["test_predictions"] = classifier.classify(
             {"set": Set.TEST}
         ).tolist()
-        print(parameters)
         with open(os.path.join(self.folder, file_path), "w") as json_file:
             json.dump(parameters, json_file)
 
