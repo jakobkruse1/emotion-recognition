@@ -40,6 +40,7 @@ def test_experiment():
         _ = Experiment(init_parameters=3)
 
 
+@pytest.mark.filterwarnings("ignore:The experiment")
 def test_experiment_runner_configs(monkeypatch):
     shutil.rmtree("experiments/results/test_name", ignore_errors=True)
 
@@ -155,7 +156,6 @@ def test_skipping_if_exists(monkeypatch):
     )
     assert len(runner.experiments) == 1
 
-    # TODO: Reduce runtime by not using full dataset, only use test data
     runner.run_all()
     assert runner.best_index == 0
     assert isinstance(runner.accuracy, list)
@@ -163,7 +163,8 @@ def test_skipping_if_exists(monkeypatch):
     old_accuracy = runner.accuracy[0]
 
     monkeypatch.setattr("builtins.input", lambda _: "y")
-    runner = ExperimentRunner("test_name")
+    with pytest.warns(UserWarning):
+        runner = ExperimentRunner("test_name")
     runner.add_grid_experiments(
         modality="text", model="nrclex", train_parameters=[{"a": 1}]
     )
