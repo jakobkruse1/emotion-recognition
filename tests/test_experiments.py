@@ -2,6 +2,7 @@
 import json
 import os
 import shutil
+import time
 
 import pytest
 
@@ -143,3 +144,34 @@ def test_make_dictionaries():
         assert config["base2"] == 42
         assert config["first"] == first_list[index // 3]
         assert config["second"] == second_list[index % 3]
+
+
+def test_skipping_if_exists(monkeypatch):
+    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+
+    runner = ExperimentRunner("test_name")
+    runner.add_grid_experiments(
+        modality="text", model="nrclex", train_parameters=[{"a": 1}]
+    )
+    assert len(runner.experiments) == 1
+
+    # TODO: Reduce runtime by not using full dataset, only use test data
+    runner.run_all()
+    assert runner.best_index == 0
+    assert isinstance(runner.accuracy, list)
+    assert len(runner.accuracy) == 1
+    old_accuracy = runner.accuracy[0]
+
+    monkeypatch.setattr("builtins.input", lambda _: "y")
+    runner = ExperimentRunner("test_name")
+    runner.add_grid_experiments(
+        modality="text", model="nrclex", train_parameters=[{"a": 1}]
+    )
+    assert len(runner.experiments) == 1
+    start = time.time()
+    runner.run_all()
+    duration = time.time() - start
+    assert duration < 0.1
+    assert runner.accuracy[0] == old_accuracy
+
+    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
