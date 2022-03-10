@@ -1,5 +1,6 @@
 # Project
 data/train/text
+experiments/results
 
 # Models
 models/text/bert
