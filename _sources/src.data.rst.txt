@@ -1,6 +1,33 @@
 src.data package
 ================
 
+Submodules
+----------
+
+src.data.data\_factory module
+-----------------------------
+
+.. automodule:: src.data.data_factory
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.data.data\_reader module
+----------------------------
+
+.. automodule:: src.data.data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.data.text\_data\_reader module
+----------------------------------
+
+.. automodule:: src.data.text_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

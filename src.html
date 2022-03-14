@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="src.data package" href="src.data.html" />
+    <link rel="next" title="src.classification package" href="src.classification.html" />
     <link rel="prev" title="thesis-emotion-detection" href="modules.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -39,8 +39,37 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="src.classification.html">src.classification package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.text.html">src.classification.text package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.bert_classifier">src.classification.text.bert_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.distilbert_classifier">src.classification.text.distilbert_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.nrclex_classifier">src.classification.text.nrclex_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.text_emotion_classifier">src.classification.text.text_emotion_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#module-src.classification.text">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.html#module-src.classification.classifier_factory">src.classification.classifier_factory module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.html#module-src.classification.emotion_classifier">src.classification.emotion_classifier module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.html#module-src.classification">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="src.data.html">src.data package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.data.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.data_factory">src.data.data_factory module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.data_reader">src.data.data_reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.text_data_reader">src.data.text_data_reader module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.experiment.html">src.experiment package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.experiment.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.experiment.html#module-src.experiment.experiment">src.experiment.experiment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.experiment.html#module-src.experiment">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -92,6 +121,32 @@ anger, surprise, disgust, enjoyment, fear, and sadness</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">EkmanNeutralEmotions</span></span><a class="headerlink" href="#src.emotion_set.EkmanNeutralEmotions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.emotion_set.AbstractEmotionSet</span></code></a></p>
 <p>Ekman Emotion set extended by a neutral state.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.emotion_set.EmotionMapper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">EmotionMapper</span></span><a class="headerlink" href="#src.emotion_set.EmotionMapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.emotion_set.EmotionMapper.map_emotion">
+<span class="sig-name descname"><span class="pre">map_emotion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emotion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#src.emotion_set.EmotionMapper.map_emotion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps an emotion to its equivalent in the NeutralEkman emotion set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>emotion</strong> – The name of the emotion to map to Ekman</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the corresponding Ekman emotion</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.emotion_set.EmotionMapper.setup_map">
+<span class="sig-name descname"><span class="pre">setup_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.emotion_set.EmotionMapper.setup_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>One time setup for the emotion map in the class.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -164,7 +219,7 @@ specified by the name parameter</p>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="modules.html">thesis-emotion-detection</a><ul>
       <li>Previous: <a href="modules.html" title="previous chapter">thesis-emotion-detection</a></li>
-      <li>Next: <a href="src.data.html" title="next chapter">src.data package</a></li>
+      <li>Next: <a href="src.classification.html" title="next chapter">src.classification package</a></li>
   </ul></li>
   </ul></li>
 </ul>

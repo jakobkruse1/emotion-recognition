@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>src.experiment package &#8212; Emotion Measurement 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="src.data package" href="src.data.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="src-experiment-package">
+<h1>src.experiment package<a class="headerlink" href="#src-experiment-package" title="Permalink to this headline">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-src.experiment.experiment">
+<span id="src-experiment-experiment-module"></span><h2>src.experiment.experiment module<a class="headerlink" href="#module-src.experiment.experiment" title="Permalink to this headline">¶</a></h2>
+<p>Experiment running functionality for grid searching parameters</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.experiment.experiment.Experiment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.experiment.experiment.</span></span><span class="sig-name descname"><span class="pre">Experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.experiment.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Experiment class containing the parameters for one run</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.experiment.experiment.Experiment.check_parameters">
+<span class="sig-name descname"><span class="pre">check_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.experiment.experiment.Experiment.check_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks the parameters for the experiment.
+This is useful, because if the parameters are not correct, the code
+will crash at some point unexpectedly. Checking the parameters before
+running multiple experiments makes sure that all experiments finish
+successfully.
+This function either throws an Assertion Error or Value Error in case
+of wrong parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.experiment.experiment.Experiment.get_parameter_dict">
+<span class="sig-name descname"><span class="pre">get_parameter_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#src.experiment.experiment.Experiment.get_parameter_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary with all the parameters for this experiment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.experiment.experiment.ExperimentRunner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.experiment.experiment.</span></span><span class="sig-name descname"><span class="pre">ExperimentRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.experiment.experiment.ExperimentRunner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Experiment runner class to run multiple experiments easily</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.experiment.experiment.ExperimentRunner.add_grid_experiments">
+<span class="sig-name descname"><span class="pre">add_grid_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.experiment.experiment.ExperimentRunner.add_grid_experiments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the cross product of all the arguments lists and create
+experiments from that like in a grid search
+:param kwargs: Keyword arguments which shall be grid searched</p>
+<blockquote>
+<div><p>All possible keys can be seen below</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.experiment.experiment.ExperimentRunner.add_single_experiment">
+<span class="sig-name descname"><span class="pre">add_single_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.experiment.experiment.ExperimentRunner.add_single_experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an experiment to the experiments list
+:param kwargs: Arguments for the experiment</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.experiment.experiment.ExperimentRunner.run_all">
+<span class="sig-name descname"><span class="pre">run_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.experiment.experiment.ExperimentRunner.run_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main run function that runs all experiment in the self.experiments list
+:param kwargs: Additional keyword arguments</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.experiment.experiment.ExperimentRunner.run_experiment">
+<span class="sig-name descname"><span class="pre">run_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.experiment.experiment.Experiment" title="src.experiment.experiment.Experiment"><span class="pre">src.experiment.experiment.Experiment</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#src.experiment.experiment.ExperimentRunner.run_experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run an experiment and save the results in a json file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>experiment</strong> – The experiment configuration to use</p></li>
+<li><p><strong>index</strong> – The index of the experiment for saving the results</p></li>
+<li><p><strong>kwargs</strong> – Additional kwargs
+data_reader: Overwrite data reader for testing purposes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.experiment.experiment.make_dictionaries">
+<span class="sig-prename descclassname"><span class="pre">src.experiment.experiment.</span></span><span class="sig-name descname"><span class="pre">make_dictionaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.experiment.experiment.make_dictionaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a list of dictionaries from a dictionary of lists inside kwargs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – All parameters that shall be put in the dictionaries</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of configuration dictionaries</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-src.experiment">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.experiment" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Emotion Measurement</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">thesis-emotion-detection</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html">src package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">thesis-emotion-detection</a><ul>
+  <li><a href="src.html">src package</a><ul>
+      <li>Previous: <a href="src.data.html" title="previous chapter">src.data package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Jakob Kruse.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/src.experiment.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

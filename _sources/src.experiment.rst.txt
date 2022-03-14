@@ -1,0 +1,21 @@
+src.experiment package
+======================
+
+Submodules
+----------
+
+src.experiment.experiment module
+--------------------------------
+
+.. automodule:: src.experiment.experiment
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.experiment
+   :members:
+   :undoc-members:
+   :show-inheritance:

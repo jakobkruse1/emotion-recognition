@@ -1,0 +1,45 @@
+src.classification.text package
+===============================
+
+Submodules
+----------
+
+src.classification.text.bert\_classifier module
+-----------------------------------------------
+
+.. automodule:: src.classification.text.bert_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.text.distilbert\_classifier module
+-----------------------------------------------------
+
+.. automodule:: src.classification.text.distilbert_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.text.nrclex\_classifier module
+-------------------------------------------------
+
+.. automodule:: src.classification.text.nrclex_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.text.text\_emotion\_classifier module
+--------------------------------------------------------
+
+.. automodule:: src.classification.text.text_emotion_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.classification.text
+   :members:
+   :undoc-members:
+   :show-inheritance:

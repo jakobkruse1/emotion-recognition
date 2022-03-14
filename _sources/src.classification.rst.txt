@@ -1,0 +1,37 @@
+src.classification package
+==========================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   src.classification.text
+
+Submodules
+----------
+
+src.classification.classifier\_factory module
+---------------------------------------------
+
+.. automodule:: src.classification.classifier_factory
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.emotion\_classifier module
+---------------------------------------------
+
+.. automodule:: src.classification.emotion_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.classification
+   :members:
+   :undoc-members:
+   :show-inheritance:
