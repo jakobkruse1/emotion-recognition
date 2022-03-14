@@ -4,6 +4,7 @@ import pytest
 from src.emotion_set import (
     EkmanEmotions,
     EkmanNeutralEmotions,
+    EmotionMapper,
     EmotionSetFactory,
     ThreeEmotions,
 )
@@ -27,7 +28,7 @@ def test_emotion_factory():
         (
             "ekman",
             6,
-            ["anger", "surprise", "disgust", "enjoyment", "fear", "sadness"],
+            ["anger", "surprise", "disgust", "joy", "fear", "sadness"],
         ),
         (
             "neutral_ekman",
@@ -36,7 +37,7 @@ def test_emotion_factory():
                 "anger",
                 "surprise",
                 "disgust",
-                "enjoyment",
+                "joy",
                 "fear",
                 "sadness",
                 "neutral",
@@ -64,3 +65,43 @@ def test_emotion_sets(set_name, count, emotions):
         for y, emotion_val in enumerate(val):
             assert emotion_val == emotions[test_emotions[x, y]]
             assert emotion_val == emotion_set.get_emotions(test_emotions[x, y])
+
+
+def test_emotion_mapper():
+    mapper = EmotionMapper()
+    for emotion in ["anger", "annoyance", "disapproval"]:
+        assert mapper.map_emotion(emotion) == "anger"
+    for emotion in ["disgust"]:
+        assert mapper.map_emotion(emotion) == "disgust"
+    for emotion in ["fear", "nervousness"]:
+        assert mapper.map_emotion(emotion) == "fear"
+    for emotion in [
+        "joy",
+        "amusement",
+        "approval",
+        "excitement",
+        "gratitude",
+        "love",
+        "optimism",
+        "relief",
+        "pride",
+        "admiration",
+        "desire",
+        "caring",
+    ]:
+        assert mapper.map_emotion(emotion) == "joy"
+    for emotion in [
+        "sadness",
+        "disappointment",
+        "embarrassment",
+        "grief",
+        "remorse",
+    ]:
+        assert mapper.map_emotion(emotion) == "sadness"
+    for emotion in ["surprise", "realization", "confusion", "curiosity"]:
+        assert mapper.map_emotion(emotion) == "surprise"
+    for emotion in ["neutral"]:
+        assert mapper.map_emotion(emotion) == "neutral"
+
+    with pytest.raises(KeyError):
+        _ = mapper.map_emotion("not_an_emotion")

@@ -1,7 +1,12 @@
 # Project
-!data
-data/*
-!data/DESCRIPTION.md
+data/train/text
+experiments/results
+
+# Models
+models/text/bert
+models/text/distilbert
+
+# Documentation
 !docs
 docs/*
 !docs/conf.py
