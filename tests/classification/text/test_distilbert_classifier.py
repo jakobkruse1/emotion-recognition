@@ -25,7 +25,7 @@ def test_distilbert_workflow():
     assert not classifier.classifier
     train_parameters = {
         "epochs": 1,
-        "set": Set.TEST,  # Speedup training by using test set which is smaller
+        "which_set": Set.TEST,
     }
     classifier.data_reader = TextDataReader(folder="tests/test_data")
     classifier.data_reader.file_map[Set.TEST] = "text_test.csv"

@@ -23,7 +23,8 @@ class BertClassifier(TextEmotionClassifier):
         Initialize the emotion classifier.
 
         :param name: The classifier name
-        :param parameters: Configuration parameters
+        :param parameters: Configuration parameters dictionary
+            model_name: tf hub model name
         """
         super().__init__("bert", parameters)
         tf.get_logger().setLevel("ERROR")
@@ -43,6 +44,10 @@ class BertClassifier(TextEmotionClassifier):
         """
         Define the tensorflow model that uses BERT for classification
 
+        :param parameters: Parameters dictionary
+            dropout_rate: Dropout rate
+            dense_layer: 0 means no additional layer, otherwise this is the
+                number of neurons in an additional dense layer
         :return: The keras model that classifies the text
         """
         dropout_rate = parameters.get("dropout_rate", 0.1)
@@ -70,12 +75,17 @@ class BertClassifier(TextEmotionClassifier):
         Training method for the BERT classifier
 
         :param parameters: Training parameters
+            init_lr: initial learning rate
+            epochs: Number of epochs to train for
+            which_set: Which dataset to use for training
+            batch_size: The batch size for training
         :param kwargs: Additional parameters
+            Not used currently
         """
         parameters = parameters or {}
         init_lr = parameters.get("init_lr", 3e-5)
         epochs = parameters.get("epochs", 20)
-        which_set = parameters.get("set", Set.TRAIN)
+        which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
 
         num_samples = self.data_reader.get_labels(which_set).shape[0]
@@ -117,7 +127,9 @@ class BertClassifier(TextEmotionClassifier):
         disk.
 
         :param parameters: Loading parameters
+            save_path: The folder to load the model from
         :param kwargs: Additional parameters
+            Not used currently
         """
         parameters = parameters or {}
         save_path = parameters.get("save_path", "models/text/bert")
@@ -129,7 +141,9 @@ class BertClassifier(TextEmotionClassifier):
         disk.
 
         :param parameters: Saving parameters
+            save_path: The folder where the model is saved
         :param kwargs: Additional parameters
+            Not used currently
         """
         if not self.is_trained:
             raise RuntimeError(
@@ -144,10 +158,13 @@ class BertClassifier(TextEmotionClassifier):
         Classify method for the BERT classifier
 
         :param parameters: Loading parameters
+            which_set: Dataset to use for classification
+            batch_size: Batch size
         :param kwargs: Additional parameters
+            Not used currently
         """
         parameters = parameters or {}
-        which_set = parameters.get("set", Set.TEST)
+        which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
         dataset = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, shuffle=False

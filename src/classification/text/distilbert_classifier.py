@@ -19,6 +19,7 @@ class DistilBertClassifier(BertClassifier):
         Initialize the emotion classifier.
 
         :param parameters: Configuration parameters
+            Not currently used
         """
         super().__init__(parameters)
         self.name = "distilbert"
@@ -34,7 +35,9 @@ class DistilBertClassifier(BertClassifier):
         disk.
 
         :param parameters: Loading parameters
+            save_path: Folder where model is loaded from
         :param kwargs: Additional parameters
+            Not used currently
         """
         parameters = parameters or {}
         save_path = parameters.get("save_path", "models/text/distilbert")
@@ -46,7 +49,9 @@ class DistilBertClassifier(BertClassifier):
         disk.
 
         :param parameters: Saving parameters
+            save_path: Folder where model is saved at
         :param kwargs: Additional parameters
+            Not used currently
         """
         if not self.is_trained:
             raise RuntimeError(

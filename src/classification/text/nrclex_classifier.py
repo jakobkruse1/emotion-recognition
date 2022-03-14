@@ -22,6 +22,7 @@ class NRCLexTextClassifier(TextEmotionClassifier):
         Initialize the NRCLex classifier
 
         :param parameters: Parameters used to configure the classifier
+            Not used currently
         """
         super().__init__(name="nrclex", parameters=parameters)
         self.emotion_map = {
@@ -68,11 +69,14 @@ class NRCLexTextClassifier(TextEmotionClassifier):
         Classify the emotions based on the NRCLex library.
 
         :param parameters: Classification parameters
+            which_set: Dataset to use for classification
+            batch_size: Batch size for data loader
         :param kwargs: Additional parameters
+            Not currently used
         :return: An array of the classification results, shape (num_samples,)
         """
         parameters = parameters or {}
-        which_set = parameters.get("set", Set.TEST)
+        which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
         dataset = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, shuffle=False

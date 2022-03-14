@@ -28,7 +28,7 @@ def test_bert_workflow():
     train_parameters = {
         "epochs": 5,
         "dense_layer": 3,
-        "set": Set.TEST,
+        "which_set": Set.TEST,
     }
     classifier.data_reader = TextDataReader(folder="tests/test_data")
     classifier.data_reader.file_map[Set.TEST] = "text_test.csv"

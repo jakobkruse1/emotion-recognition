@@ -22,7 +22,8 @@ class Experiment:
         This constructor is called to create an experiment instance.
         parses all kwargs to create a fully defined experiment. All parameters
         which are not in the kwargs are set to default values here.
-        :param kwargs: Arguments the define the experiments
+        :param kwargs: Arguments that define the experiments
+            See all possible keys below in the list
         """
         # First, set all parameters to default values
         self.possible_keys = [
@@ -58,7 +59,7 @@ class Experiment:
             parameters[key] = getattr(self, key, None)
         return parameters
 
-    def check_parameters(self):
+    def check_parameters(self) -> None:
         """
         This function checks the parameters for the experiment.
         This is useful, because if the parameters are not correct, the code
@@ -90,6 +91,7 @@ class ExperimentRunner:
         Constructor for the ExperimentRunner class
         :param experiment_name: Name of the experiment for log files and result
         :param kwargs: Additional keyword arguments
+            Not currently used
         """
         self.experiments = []
         self.experiment_index = 0
@@ -130,6 +132,7 @@ class ExperimentRunner:
         Create the cross product of all the arguments lists and create
         experiments from that like in a grid search
         :param kwargs: Keyword arguments which shall be grid searched
+            All possible keys can be seen below
         """
         for key, _ in kwargs.items():
             # Check the kwargs for wrong keys
@@ -221,13 +224,13 @@ class ExperimentRunner:
         classifier.train(experiment.train_parameters)
         parameters = experiment.get_parameter_dict()
         parameters["train_predictions"] = classifier.classify(
-            {"set": Set.TRAIN}
+            {"which_set": Set.TRAIN}
         ).tolist()
         parameters["val_predictions"] = classifier.classify(
-            {"set": Set.VAL}
+            {"which_set": Set.VAL}
         ).tolist()
         parameters["test_predictions"] = classifier.classify(
-            {"set": Set.TEST}
+            {"which_set": Set.TEST}
         ).tolist()
         with open(os.path.join(self.folder, file_path), "w") as json_file:
             json.dump(parameters, json_file)

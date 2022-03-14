@@ -26,7 +26,7 @@ def test_classification():
     classifier.data_reader = TextDataReader(folder="tests/test_data")
     classifier.data_reader.file_map[Set.TRAIN] = "text_test.csv"
 
-    results = classifier.classify({"batch_size": 5, "set": Set.TRAIN})
+    results = classifier.classify({"batch_size": 5, "which_set": Set.TRAIN})
     assert results.shape == (30,)
 
     # TODO: Might add sanity checks for results here not only check shape
