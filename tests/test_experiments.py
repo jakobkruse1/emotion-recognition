@@ -2,10 +2,10 @@
 import json
 import os
 import shutil
-import time
 
 import pytest
 
+from src.classification.text import NRCLexTextClassifier
 from src.data.data_reader import Set
 from src.data.text_data_reader import TextDataReader
 from src.experiment.experiment import (
@@ -106,13 +106,14 @@ def test_experiment_runner_run_all():
     )
     assert len(runner.experiments) == 2
 
-    # TODO: Reduce runtime by not using full dataset, only use test data
-    runner.run_all()
+    data_reader = TextDataReader(folder="tests/test_data")
+    for which_set in [Set.TRAIN, Set.VAL, Set.TEST]:
+        data_reader.file_map[which_set] = "text_test.csv"
+
+    runner.run_all(data_reader=data_reader)
     assert runner.best_index is not None
     assert isinstance(runner.accuracy, list)
     assert len(runner.accuracy) == 2
-
-    data_reader = TextDataReader()
 
     for index in range(2):
         save_file = os.path.join(runner.folder, f"{index:03d}_results.json")
@@ -155,8 +156,11 @@ def test_skipping_if_exists(monkeypatch):
         modality="text", model="nrclex", train_parameters=[{"a": 1}]
     )
     assert len(runner.experiments) == 1
+    data_reader = TextDataReader(folder="tests/test_data")
+    for which_set in [Set.TRAIN, Set.VAL, Set.TEST]:
+        data_reader.file_map[which_set] = "text_test.csv"
 
-    runner.run_all()
+    runner.run_all(data_reader=data_reader)
     assert runner.best_index == 0
     assert isinstance(runner.accuracy, list)
     assert len(runner.accuracy) == 1
@@ -169,10 +173,21 @@ def test_skipping_if_exists(monkeypatch):
         modality="text", model="nrclex", train_parameters=[{"a": 1}]
     )
     assert len(runner.experiments) == 1
-    start = time.time()
-    runner.run_all()
-    duration = time.time() - start
-    assert duration < 0.1
+
+    # Patch the nrclex classify method to make sure it is not called
+    def classify_nrclex_classifier(self=None, parameters=None, **kwargs):
+        raise RuntimeError("Should not be called!")
+
+    monkeypatch.setattr(
+        NRCLexTextClassifier, "classify", classify_nrclex_classifier
+    )
+    with pytest.raises(RuntimeError):
+        # Verify monkeypatching works
+        cl = NRCLexTextClassifier()
+        _ = cl.classify()
+
+    runner.run_all(data_reader=data_reader)
+
     assert runner.accuracy[0] == old_accuracy
 
     shutil.rmtree("experiments/results/test_name", ignore_errors=True)

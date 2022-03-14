@@ -165,13 +165,16 @@ class ExperimentRunner:
         """
         self.experiments.append(Experiment(**kwargs))
 
-    def run_all(self):
+    def run_all(self, **kwargs):
         """
         Main run function that runs all experiment in the self.experiments list
+        :param kwargs: Additional keyword arguments
         """
         self.accuracy = []
         for experiment in self.experiments:
-            accuracy = self.run_experiment(experiment, self.experiment_index)
+            accuracy = self.run_experiment(
+                experiment, self.experiment_index, **kwargs
+            )
             self.accuracy.append(accuracy)
             self.experiment_index += 1
             print(
@@ -187,15 +190,22 @@ class ExperimentRunner:
             f"{self.experiments[self.best_index].get_parameter_dict()}"
         )
 
-    def run_experiment(self, experiment: Experiment, index: int) -> float:
+    def run_experiment(
+        self, experiment: Experiment, index: int, **kwargs
+    ) -> float:
         """
         Run an experiment and save the results in a json file
 
         :param experiment: The experiment configuration to use
         :param index: The index of the experiment for saving the results
+        :param kwargs: Additional kwargs
+            data_reader: Overwrite data reader for testing purposes
         """
         classifier = ClassifierFactory.get(
             experiment.modality, experiment.model, experiment.init_parameters
+        )
+        classifier.data_reader = kwargs.get(
+            "data_reader", classifier.data_reader
         )
         labels = classifier.data_reader.get_labels(Set.TEST)
         file_path = f"{index:03d}_results.json"
