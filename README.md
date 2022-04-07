@@ -1,4 +1,4 @@
-# Developing a multimodal emotion measurement system for instantaneous emotion tracking
+# Comparing unimodal and multimodal emotion classification systems on cohesive data
 *Master's Thesis by Jakob Kruse*
 
 [![Python 3.8](https://img.shields.io/badge/Python-3.8-blue)](https://www.python.org/downloads/release/python-380/)
@@ -7,7 +7,8 @@
 [![Docs](https://img.shields.io/badge/-Docs-green)](https://jakobkruse1.github.io/thesis-emotion-detection)
 [![Linkedin](https://img.shields.io/badge/-LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/jakob-kruse-b7293a197/)
 
-This is the repository for my master's thesis on emotion detection
+This is the repository for my master's thesis on emotion detection.
+This is still a WIP.
 
 
 ### Setup
