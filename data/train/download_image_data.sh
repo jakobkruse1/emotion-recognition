@@ -3,18 +3,19 @@
 cd $(dirname "$BASH_SOURCE")
 
 # Setup
-DOCKER_FLAG=""
-FORCE_FLAG=""
+DOCKER_CONFIG=0
+FORCE=0
 while getopts ":df" opt; do
   case $opt in
     d)
       # If -d flag is specified, run installation without sudo
       echo "Using docker configuration without sudo!"
-      DOCKER_FLAG="-d"
+      DOCKER_CONFIG=1
       ;;
     f)
       # Force flag that overwrites data also if it is already there
-      FORCE_FLAG="-f"
+      echo "Forcing download of the required files!"
+      FORCE=1
       ;;
     \?)
       echo "Unexpected option -$OPTARG"
@@ -22,5 +23,13 @@ while getopts ":df" opt; do
   esac
 done
 
-bash train/download_text_data.sh $DOCKER_FLAG $FORCE_FLAG
-bash train/download_image_data.sh $DOCKER_FLAG $FORCE_FLAG
+if [ $FORCE -eq 1 ]; then
+  rm -rf image
+fi
+
+if [ ! -d "image" ]; then
+  mkdir image
+fi
+
+# Download three datasets
+cd image
