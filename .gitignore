@@ -1,5 +1,6 @@
 # Project
 data/train/text
+data/train/image
 experiments/results
 
 # Models
