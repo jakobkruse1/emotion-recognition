@@ -22,22 +22,20 @@ After downloading, the datasets will be combined and stored in the text subfolde
 ### Facial Data
 To download the text datasets, please use the `download_image_data.sh` script in the train folder.
 This will download two datasets:
-1. [Google Facial Expression Comparison](https://research.google/tools/datasets/google-facial-expression/)
-   1. You can only use the dataset after reading and confirming the conditions [here](https://research.google/tools/datasets/google-facial-expression/)
-2. [FER2013+ Dataset](https://github.com/microsoft/FERPlus)
+1. [FER2013+ Dataset](https://github.com/microsoft/FERPlus)
    1. This dataset requires a manual download step. The FER2013 dataset needs to be downloaded manually.
    2. Go to [this website](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data) and download the fer2013.tar.gz file.
    3. Create the folder data/train/image/fer2013
    4. Copy the file fer2013.csv from fer2013.tar.gz to the created folder
    5. After that, run the `download_image_data.sh` script.
-3. [Kaggle Dataset](https://www.kaggle.com/datasets/jonathanoheix/face-expression-recognition-dataset)
+2. [Kaggle Dataset](https://www.kaggle.com/datasets/jonathanoheix/face-expression-recognition-dataset)
    1. This requires you to [setup the kaggle API](https://www.kaggle.com/docs/api) first and create a kaggle account.
    2. After that, run the `download_image_data.sh` script.
-4. [Jaffe Dataset](https://zenodo.org/record/3451524#.YlRNsTzb1H4)
+3. [Jaffe Dataset](https://zenodo.org/record/3451524#.YlRNsTzb1H4)
    1. You need to download this dataset manually. Go to the link above and request access to the data.
    2. Download the data and put the zip file in the `data/train/images` folder.
    3. After that, run the `download_image_data.sh` script.
-5. [CK+ Dataset](https://paperswithcode.com/dataset/ck)
+4. [CK+ Dataset](https://paperswithcode.com/dataset/ck)
    1. This data needs to be downloaded manually. Go to the link above and request the data.
 
 ## Eval data

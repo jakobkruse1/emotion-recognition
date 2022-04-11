@@ -7,6 +7,7 @@ import shutil
 import warnings
 
 import numpy as np
+import pandas as pd
 from PIL import Image
 
 
@@ -104,7 +105,7 @@ def copy_jaffe_dataset():
         for im in image_list[: int(0.6 * len(image_list))]:
             # Copy training
             img = Image.open(im)
-            img.convert("RGB")
+            img = img.convert("RGB")
             img.save(
                 os.path.join(
                     "data/train/image/train",
@@ -117,7 +118,7 @@ def copy_jaffe_dataset():
         ]:
             # Copy val
             img = Image.open(im)
-            img.convert("RGB")
+            img = img.convert("RGB")
             img.save(
                 os.path.join(
                     "data/train/image/val",
@@ -128,7 +129,7 @@ def copy_jaffe_dataset():
         for im in image_list[int(0.8 * len(image_list)) :]:
             # Copy test
             img = Image.open(im)
-            img.convert("RGB")
+            img = img.convert("RGB")
             img.save(
                 os.path.join(
                     "data/train/image/test",
@@ -139,8 +140,63 @@ def copy_jaffe_dataset():
     print("JAFFE copying successful.")
 
 
+def copy_fer_dataset(logging=False):
+    """
+    Function that prepares the FER2013 dataset for training classifiers
+    :param logging: Activate loggin for correctness check of the data
+    """
+    if not os.path.exists("data/train/image/fer2013"):
+        warnings.warn("FER2013 Dataset not downloaded. Skipping!")
+        return
+    print("Copying FER2013 dataset.")
+    image_data = pd.read_csv(
+        "data/train/image/fer2013/fer2013.csv",
+        delimiter=",",
+        header=0,
+        usecols=[1],
+    )
+    label_data = pd.read_csv(
+        "data/train/image/fer2013/fer_labels.csv", delimiter=",", header=0
+    )
+    folders = {"Training": "train", "PublicTest": "val", "PrivateTest": "test"}
+    emotions = [
+        "neutral",
+        "happy",
+        "surprise",
+        "sad",
+        "angry",
+        "disgust",
+        "fear",
+    ]
+    all_labels = label_data.to_numpy()[:, 2:12]
+    print(all_labels.shape)
+    for index in range(image_data.shape[0]):
+        emotion_index = np.argmax(all_labels[index, :])
+        intermed = all_labels[index, :].copy()
+        intermed[emotion_index] = 0
+        if emotion_index < 7 and all_labels[index, emotion_index] > np.max(
+            intermed
+        ):
+            emotion = emotions[emotion_index]
+            image = np.reshape(
+                np.fromstring(image_data.iloc[index][0], sep=" "), (48, 48)
+            )
+            im = Image.fromarray(image)
+            im = im.convert("RGB")
+            save_path = os.path.join(
+                "data/train/image",
+                folders[label_data.iloc[index, 0]],
+                emotion,
+                f"fer_{index}.jpeg",
+            )
+            im.save(save_path)
+        elif logging:
+            print(f"Skipping index {index}, reason: {all_labels[index, :]}")
+
+
 if __name__ == "__main__":
     prepare_folders()
 
     copy_kaggle_dataset()
     copy_jaffe_dataset()
+    copy_fer_dataset()

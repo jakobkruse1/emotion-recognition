@@ -34,13 +34,6 @@ fi
 # Download three datasets
 cd image
 
-# Download Google dataset
-if [ ! -d "FEC_dataset" ]; then
-    wget -nc -O FEC_dataset.zip https://storage.googleapis.com/public_release/FEC_dataset.zip
-    unzip FEC_dataset.zip
-    rm FEC_dataset.zip
-fi;
-
 # Download FER2013 dataset
 # This dataset needs to be downloaded manually. The data can be found at:
 # https://www.kaggle.com/competitions/challenges-in-representation-learning-facial-expression-recognition-challenge/data
