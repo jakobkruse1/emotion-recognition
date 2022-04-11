@@ -54,9 +54,34 @@ else
 fi;
 
 # Download kaggle dataset
-if [ ! -d "images"]; then
+if [ ! -d "images" ]; then
     kaggle datasets download -d jonathanoheix/face-expression-recognition-dataset
     unzip face-expression-recognition-dataset.zip
     rm -rf images/images
     rm face-expression-recognition-dataset.zip
 fi;
+
+# Extract JAFFE dataset if it exists
+if [ -f "jaffedbase.zip" ]; then
+    unzip jaffedbase.zip
+    rm -rf __MACOSX
+    rm jaffedbase.zip
+fi;
+
+
+# Prepare all the data
+cd ../../..
+if [ -f "data/train/image/done" ] && [ "${FORCE}" -eq 0 ]; then
+    echo "CSV files exists. Skipping"
+else
+    rm -rf data/train/image/train
+    rm -rf data/train/image/val
+    rm -rf data/train/image/test
+    if [ -f "venv/bin/python" ]; then
+        venv/bin/python data/train/prepare_image_data.py
+    else
+        # In CI or docker there is no venv
+        export PYTHONPATH=.
+        python data/train/prepare_image_data.py
+    fi
+fi

@@ -55,10 +55,10 @@ if [ -f "data/train/text/final_train.csv" ] && [ "${FORCE}" -eq 0 ]; then
     echo "CSV files exists. Skipping"
 else
     if [ -f "venv/bin/python" ]; then
-        venv/bin/python data/train/combine_text_data.py
+        venv/bin/python data/train/prepare_text_data.py
     else
         # In CI or docker there is no venv
         export PYTHONPATH=.
-        python data/train/combine_text_data.py
+        python data/train/prepare_text_data.py
     fi
 fi
