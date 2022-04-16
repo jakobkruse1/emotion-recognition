@@ -94,7 +94,6 @@ class ExperimentRunner:
             Not currently used
         """
         self.experiments = []
-        self.experiment_index = 0
         self.base_experiment_name = experiment_name
         self.best_index = None
         self.accuracy = None
@@ -174,24 +173,14 @@ class ExperimentRunner:
         :param kwargs: Additional keyword arguments
         """
         self.accuracy = []
-        for experiment in self.experiments:
-            accuracy = self.run_experiment(
-                experiment, self.experiment_index, **kwargs
-            )
+        indices = kwargs.get("indices", list(range(len(self.experiments))))
+        for index in indices:
+            experiment = self.experiments[index]
+            accuracy = self.run_experiment(experiment, index, **kwargs)
             self.accuracy.append(accuracy)
-            self.experiment_index += 1
-            print(
-                f"{self.experiment_index}/{len(self.experiments)} : "
-                f"Accuracy {accuracy}"
-            )
+            print(f"Experiment {index}, Accuracy {accuracy}")
         print("*****\nFinished all runs successfully\n*****")
         self.best_index = np.argmax(np.array(self.accuracy))
-        print(
-            f"Best: Index {self.best_index}, "
-            f"Acc {self.accuracy[self.best_index]}, "
-            f"Parameters "
-            f"{self.experiments[self.best_index].get_parameter_dict()}"
-        )
 
     def run_experiment(
         self, experiment: Experiment, index: int, **kwargs
@@ -204,6 +193,8 @@ class ExperimentRunner:
         :param kwargs: Additional kwargs
             data_reader: Overwrite data reader for testing purposes
         """
+        print(f"Running experiment {index}")
+        print(experiment.get_parameter_dict())
         classifier = ClassifierFactory.get(
             experiment.modality, experiment.model, experiment.init_parameters
         )

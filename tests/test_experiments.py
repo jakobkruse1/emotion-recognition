@@ -56,7 +56,6 @@ def test_experiment_runner_configs(monkeypatch):
     runner = ExperimentRunner("test_name")
 
     assert len(runner.experiments) == 0
-    assert runner.experiment_index == 0
     assert runner.base_experiment_name == "test_name"
     assert "experiments/results/test_name" in runner.folder
 
@@ -97,7 +96,6 @@ def test_experiment_runner_run_all():
     runner = ExperimentRunner("test_name")
 
     assert len(runner.experiments) == 0
-    assert runner.experiment_index == 0
     assert runner.base_experiment_name == "test_name"
     assert "experiments/results/test_name" in runner.folder
 
@@ -130,6 +128,41 @@ def test_experiment_runner_run_all():
             assert len(data["test_predictions"]) == len(
                 data_reader.get_labels(Set.TEST)
             )
+
+    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+
+
+def test_experiment_runner_run_all_with_indices():
+    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+
+    runner = ExperimentRunner("test_name")
+
+    assert len(runner.experiments) == 0
+    assert runner.base_experiment_name == "test_name"
+    assert "experiments/results/test_name" in runner.folder
+
+    runner.add_grid_experiments(
+        modality="text",
+        model="nrclex",
+        train_parameters=[{"a": 0}, {"a": 1}, {"a": 2}, {"a": 3}],
+    )
+    assert len(runner.experiments) == 4
+
+    data_reader = TextDataReader(folder="tests/test_data")
+    for which_set in [Set.TRAIN, Set.VAL, Set.TEST]:
+        data_reader.file_map[which_set] = "text_test.csv"
+
+    runner.run_all(data_reader=data_reader, indices=[0, 3])
+    assert runner.best_index is not None
+    assert isinstance(runner.accuracy, list)
+    assert len(runner.accuracy) == 2
+
+    for index, value in enumerate([0, 3]):
+        save_file = os.path.join(runner.folder, f"{value:03d}_results.json")
+        assert os.path.exists(save_file)
+        with open(save_file, "r") as file:
+            data = json.load(file)
+            assert data["train_parameters"]["a"] == [0, 3][index]
 
     shutil.rmtree("experiments/results/test_name", ignore_errors=True)
 
