@@ -42,23 +42,66 @@ cd image
 # Please create the folder "fer2013" under data/train/image/fer2013 and save the fer2013.csv file in this folder.
 if [ ! -f "fer2013/fer2013.csv" ]; then
     echo "The FER2013 dataset needs to be downloaded manually. See the DESCRIPTION.md for more details."
+    exit 1
 else
     wget -nc -O fer2013/fer_labels.csv https://raw.githubusercontent.com/microsoft/FERPlus/master/fer2013new.csv
+    echo "FER2013 dataset ready."
 fi;
+
+set -e
 
 # Download kaggle dataset
 if [ ! -d "images" ]; then
     kaggle datasets download -d jonathanoheix/face-expression-recognition-dataset
-    unzip face-expression-recognition-dataset.zip
+    unzip -q face-expression-recognition-dataset.zip
     rm -rf images/images
     rm face-expression-recognition-dataset.zip
+fi;
+if [ -d "images" ]; then
+    echo "Kaggle dataset ready."
 fi;
 
 # Extract JAFFE dataset if it exists
 if [ -f "jaffedbase.zip" ]; then
-    unzip jaffedbase.zip
+    unzip -q jaffedbase.zip
     rm -rf __MACOSX
     rm jaffedbase.zip
+fi;
+if [ -d "jaffedbase" ]; then
+    echo "JAFFE dataset ready."
+fi;
+
+# Check if AffectNet exists
+# We used our own manually labeled data from AffectNet.
+# The data might look differently for other AffectNet data.
+if [ -d "AffectNet" ]; then
+    if [ -f "AffectNet/AffectNet_images_all.csv" ]; then
+        echo "AffectNet dataset ready."
+    else
+        echo "AffectNet dataset not complete. Please verify files."
+    fi;
+fi;
+
+# Prepare CK+ dataset
+if [ -d "CK+" ]; then
+    cd CK+
+    if [ ! -d "Emotion" ]; then unzip -q Emotion_labels.zip ; fi;
+    if [ ! -d "cohn-kanade-images" ]; then unzip -q extended-cohn-kanade-images.zip ; fi;
+    if [ ! -d "FACS" ]; then unzip -q FACS_labels.zip ; fi;
+    if [ ! -d "Landmarks" ]; then unzip -q Landmarks.zip ; fi;
+    rm -rf __MACOSX
+    cd ..
+    echo "CK+ dataset ready."
+fi;
+
+if [ -d "FFHQ" ]; then
+    if [ ! -f "FFHQ/FFHQ_6033.csv" ]; then exit 1; fi;
+    if [ ! -d "FFHQ/images" ]; then exit 1; fi;
+    echo "FFHQ dataset ready."
+fi;
+
+if [ -d "bu3dfe" ]; then
+    echo "BU-3DFE dataset ready."
 fi;
 
 

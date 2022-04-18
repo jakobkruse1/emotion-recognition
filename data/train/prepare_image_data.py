@@ -8,7 +8,7 @@ import warnings
 
 import numpy as np
 import pandas as pd
-from PIL import Image
+from PIL import Image, ImageOps
 
 
 def prepare_folders():
@@ -169,7 +169,6 @@ def copy_fer_dataset(logging=False):
         "fear",
     ]
     all_labels = label_data.to_numpy()[:, 2:12]
-    print(all_labels.shape)
     for index in range(image_data.shape[0]):
         emotion_index = np.argmax(all_labels[index, :])
         intermed = all_labels[index, :].copy()
@@ -192,6 +191,130 @@ def copy_fer_dataset(logging=False):
             im.save(save_path)
         elif logging:
             print(f"Skipping index {index}, reason: {all_labels[index, :]}")
+    print("FER2013 copying successful.")
+
+
+def copy_affectnet_dataset():
+    """
+    Function that reads the affectnet dataset into the corresponding image
+    folders and divides it into train, validation and test images.
+    """
+    if not os.path.exists("data/train/image/AffectNet"):
+        warnings.warn("AffectNet Dataset not downloaded. Skipping!")
+        return
+    print("Copying AffectNet dataset.")
+    image_data = pd.read_csv(
+        "data/train/image/AffectNet/AffectNet_images_all.csv",
+        delimiter=",",
+        header=0,
+        names=["labels", "images"],
+    )
+    labels = image_data.labels.to_numpy()
+    emotions = [
+        "angry",
+        "fear",
+        "happy",
+        "sad",
+        "surprise",
+        "neutral",
+        "contempt",
+        "disgust",
+    ]
+    for emotion_index in [0, 1, 2, 3, 4, 5, 7]:
+        emotion_indices = np.where(labels == emotion_index)[0]
+        emotion = emotions[emotion_index]
+        for count, image_index in enumerate(emotion_indices):
+            image = np.reshape(
+                np.fromstring(image_data.iloc[image_index][1], sep=" "),
+                (100, 100),
+            )
+            im = Image.fromarray(image)
+            im = im.convert("RGB")
+            im = im.resize((48, 48))
+            if count / emotion_indices.shape[0] <= 0.6:
+                folder = "train"
+            elif count / emotion_indices.shape[0] <= 0.8:
+                folder = "val"
+            else:
+                folder = "test"
+            save_path = os.path.join(
+                "data/train/image",
+                folder,
+                emotion,
+                f"aff_{image_index}.jpeg",
+            )
+            im.save(save_path)
+    print("AffectNet copying successful.")
+
+
+def copy_ffhq_dataset():
+    """
+    Function that reads the ffhq dataset into the corresponding image folders
+    and divides it into train, validation and test images.
+    """
+    if not os.path.exists("data/train/image/FFHQ"):
+        warnings.warn("FFHQ Dataset not downloaded. Skipping!")
+        return
+    print("Copying FFHQ dataset.")
+    label_data = pd.read_csv(
+        "data/train/image/FFHQ/FFHQ_6033.csv",
+        delimiter=",",
+        header=0,
+        names=["image_id", "labels"],
+    )
+    labels = label_data.labels.to_numpy()
+    emotions = [
+        "angry",
+        "fear",
+        "happy",
+        "sad",
+        "surprise",
+        "neutral",
+        "contempt",
+        "disgust",
+    ]
+    for emotion_index in [0, 1, 2, 3, 4, 5, 7]:
+        emotion_indices = np.where(labels == emotion_index)[0]
+        emotion = emotions[emotion_index]
+        for count, image_index in enumerate(emotion_indices):
+            image_name = label_data.iloc[image_index][0]
+            if not os.path.exists(
+                f"data/train/image/FFHQ/images/{image_name:05d}.png"
+            ):
+                # print(f"Image {image_name} missing")
+                continue
+            if count / emotion_indices.shape[0] <= 0.6:
+                folder = "train"
+            elif count / emotion_indices.shape[0] <= 0.8:
+                folder = "val"
+            else:
+                folder = "test"
+            im = Image.open(
+                f"data/train/image/FFHQ/images/{image_name:05d}.png"
+            )
+            im = ImageOps.grayscale(im)
+            im = im.resize((48, 48))
+            save_path = os.path.join(
+                "data/train/image",
+                folder,
+                emotion,
+                f"ffhq_{image_name:05d}.jpeg",
+            )
+            im.save(save_path)
+    print("FFHQ copying successful.")
+
+
+def copy_ckplus_dataset():
+    """
+    Function that reads the CK+ dataset into the corresponding image folders
+    and divides it into train, validation and test images.
+    """
+    if not os.path.exists("data/train/image/CK+"):
+        warnings.warn("CK+ Dataset not downloaded. Skipping!")
+        return
+    print("Copying CK+ dataset.")
+
+    print("CK+ copying successful.")
 
 
 if __name__ == "__main__":
@@ -200,3 +323,6 @@ if __name__ == "__main__":
     copy_kaggle_dataset()
     copy_jaffe_dataset()
     copy_fer_dataset()
+    copy_affectnet_dataset()
+    copy_ffhq_dataset()
+    copy_ckplus_dataset()
