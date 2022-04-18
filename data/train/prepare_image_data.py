@@ -106,6 +106,7 @@ def copy_jaffe_dataset():
             # Copy training
             img = Image.open(im)
             img = img.convert("RGB")
+            img = img.resize((48, 48))
             img.save(
                 os.path.join(
                     "data/train/image/train",
@@ -119,6 +120,7 @@ def copy_jaffe_dataset():
             # Copy val
             img = Image.open(im)
             img = img.convert("RGB")
+            img = img.resize((48, 48))
             img.save(
                 os.path.join(
                     "data/train/image/val",
@@ -130,6 +132,7 @@ def copy_jaffe_dataset():
             # Copy test
             img = Image.open(im)
             img = img.convert("RGB")
+            img = img.resize((48, 48))
             img.save(
                 os.path.join(
                     "data/train/image/test",
@@ -313,6 +316,55 @@ def copy_ckplus_dataset():
         warnings.warn("CK+ Dataset not downloaded. Skipping!")
         return
     print("Copying CK+ dataset.")
+    emotions = [
+        "neutral",
+        "angry",
+        "contempt",
+        "disgust",
+        "fear",
+        "happy",
+        "sad",
+        "surprise",
+    ]
+    emotion_images = {emotion: [] for emotion in emotions}
+    emotion_files = glob.glob(
+        "data/train/image/CK+/Emotion/**/**/*_emotion.txt"
+    )
+    for emotion_file in emotion_files:
+        with open(emotion_file, "r") as file:
+            emotion = int(float(file.readline().strip()))
+        if emotion == 2:
+            continue
+        image_path = emotion_file.replace("Emotion", "cohn-kanade-images")
+        image_path = image_path.replace("_emotion.txt", ".png")
+
+        im = Image.open(image_path)
+        width, height = im.size
+        new_size = min(width, height)
+        left = (width - new_size) / 2
+        top = (height - new_size) / 2
+        right = (width + new_size) / 2
+        bottom = (height + new_size) / 2
+        im = im.crop((left, top, right, bottom))
+        im = im.resize((48, 48))
+        im.convert("RGB")
+        emotion_images[emotions[emotion]].append(im)
+
+    for emotion in emotions:
+        for count, im in enumerate(emotion_images[emotion]):
+            if count / len(emotion_images[emotion]) <= 0.6:
+                folder = "train"
+            elif count / len(emotion_images[emotion]) <= 0.8:
+                folder = "val"
+            else:
+                folder = "test"
+            save_path = os.path.join(
+                "data/train/image",
+                folder,
+                emotion,
+                f"ckplus_{count:05d}.jpeg",
+            )
+            im.save(save_path)
 
     print("CK+ copying successful.")
 
