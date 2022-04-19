@@ -105,8 +105,6 @@ def test_experiment_runner_run_all():
     assert len(runner.experiments) == 2
 
     data_reader = TextDataReader(folder="tests/test_data")
-    for which_set in [Set.TRAIN, Set.VAL, Set.TEST]:
-        data_reader.file_map[which_set] = "text_test.csv"
 
     runner.run_all(data_reader=data_reader)
     assert runner.best_index is not None
@@ -149,8 +147,6 @@ def test_experiment_runner_run_all_with_indices():
     assert len(runner.experiments) == 4
 
     data_reader = TextDataReader(folder="tests/test_data")
-    for which_set in [Set.TRAIN, Set.VAL, Set.TEST]:
-        data_reader.file_map[which_set] = "text_test.csv"
 
     runner.run_all(data_reader=data_reader, indices=[0, 3])
     assert runner.best_index is not None
@@ -190,8 +186,6 @@ def test_skipping_if_exists(monkeypatch):
     )
     assert len(runner.experiments) == 1
     data_reader = TextDataReader(folder="tests/test_data")
-    for which_set in [Set.TRAIN, Set.VAL, Set.TEST]:
-        data_reader.file_map[which_set] = "text_test.csv"
 
     runner.run_all(data_reader=data_reader)
     assert runner.best_index == 0

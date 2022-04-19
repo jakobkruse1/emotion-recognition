@@ -42,7 +42,6 @@ cd image
 # Please create the folder "fer2013" under data/train/image/fer2013 and save the fer2013.csv file in this folder.
 if [ ! -f "fer2013/fer2013.csv" ]; then
     echo "The FER2013 dataset needs to be downloaded manually. See the DESCRIPTION.md for more details."
-    exit 1
 else
     wget -nc -O fer2013/fer_labels.csv https://raw.githubusercontent.com/microsoft/FERPlus/master/fer2013new.csv
     echo "FER2013 dataset ready."
@@ -52,10 +51,17 @@ set -e
 
 # Download kaggle dataset
 if [ ! -d "images" ]; then
-    kaggle datasets download -d jonathanoheix/face-expression-recognition-dataset
-    unzip -q face-expression-recognition-dataset.zip
-    rm -rf images/images
-    rm face-expression-recognition-dataset.zip
+    set +e
+    kaggle config view
+    if [ $? -eq 0 ]; then
+      kaggle datasets download -d jonathanoheix/face-expression-recognition-dataset
+      unzip -q face-expression-recognition-dataset.zip
+      rm -rf images/images
+      rm face-expression-recognition-dataset.zip
+    else
+      echo "Kaggle API not ready. Please set it up."
+    fi;
+    set -e
 fi;
 if [ -d "images" ]; then
     echo "Kaggle dataset ready."

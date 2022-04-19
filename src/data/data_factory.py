@@ -12,16 +12,17 @@ class DataFactory:
     """
 
     @staticmethod
-    def get_data_reader(data_type: str) -> DataReader:
+    def get_data_reader(data_type: str, data_folder=None) -> DataReader:
         """
         This factory method returns a data reader instance
 
         :param data_type: The type of data to return the reader for
+        :param data_folder: Override data folder for the data reader
         :raise ValueError: If the data_type does not exist
         :return: A DataReader for the specified data type
         """
         if data_type == "text":
-            return TextDataReader()
+            return TextDataReader(folder=data_folder)
         else:
             raise ValueError(
                 f'The Data Reader for type "{data_type}" ' f"does not exist!"
@@ -33,6 +34,7 @@ class DataFactory:
         which_set: Set,
         emotions: str = "neutral_ekman",
         batch_size: int = 64,
+        data_folder: str = None,
     ) -> tf.data.Dataset:
         """
         Get a specific dataset from a data reader
@@ -41,10 +43,11 @@ class DataFactory:
         :param which_set: Which dataset to return: train, val or test
         :param emotions: Which emotion set to use: neutral_ekman or three
         :param batch_size: The batch size for the returned dataset
+        :param data_folder: The folder where data is stored
         :raise ValueError: If the emotion type is not available
         :return: Dataset instance that was requested
         """
-        data_reader = DataFactory.get_data_reader(data_type)
+        data_reader = DataFactory.get_data_reader(data_type, data_folder)
         if emotions == "neutral_ekman":
             return data_reader.get_seven_emotion_data(which_set, batch_size)
         elif emotions == "three":
