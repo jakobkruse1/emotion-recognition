@@ -36,7 +36,9 @@ class TextDataReader(DataReader):
         :param kwargs: Additional parameters
         :return: The tensorflow Dataset instance
         """
-        shuffle = kwargs.get("shuffle", True)
+        shuffle = kwargs.get(
+            "shuffle", True if which_set == Set.TRAIN else False
+        )
         csv_file_path = os.path.join(self.folder, self.file_map[which_set])
         data = pd.read_csv(
             csv_file_path, sep="\t", header=None, names=["text", "label"]
@@ -60,7 +62,9 @@ class TextDataReader(DataReader):
         :param kwargs: Additional arguments
         :return: The tensorflow Dataset instance
         """
-        shuffle = kwargs.get("shuffle", True)
+        shuffle = kwargs.get(
+            "shuffle", True if which_set == Set.TRAIN else False
+        )
         csv_file_path = os.path.join(self.folder, self.file_map[which_set])
         data = pd.read_csv(
             csv_file_path, sep="\t", header=None, names=["text", "label"]
