@@ -104,7 +104,7 @@ def test_experiment_runner_run_all():
     )
     assert len(runner.experiments) == 2
 
-    data_reader = TextDataReader(folder="tests/test_data")
+    data_reader = TextDataReader(folder="tests/test_data/text")
 
     runner.run_all(data_reader=data_reader)
     assert runner.best_index is not None
@@ -146,7 +146,7 @@ def test_experiment_runner_run_all_with_indices():
     )
     assert len(runner.experiments) == 4
 
-    data_reader = TextDataReader(folder="tests/test_data")
+    data_reader = TextDataReader(folder="tests/test_data/text")
 
     runner.run_all(data_reader=data_reader, indices=[0, 3])
     assert runner.best_index is not None
@@ -185,7 +185,7 @@ def test_skipping_if_exists(monkeypatch):
         modality="text", model="nrclex", train_parameters=[{"a": 1}]
     )
     assert len(runner.experiments) == 1
-    data_reader = TextDataReader(folder="tests/test_data")
+    data_reader = TextDataReader(folder="tests/test_data/text")
 
     runner.run_all(data_reader=data_reader)
     assert runner.best_index == 0

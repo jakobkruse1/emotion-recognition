@@ -16,8 +16,8 @@ def test_initialization():
 
 
 def test_reading():
-    dr = TextDataReader(folder="tests/test_data")
-    assert dr.folder == "tests/test_data"
+    dr = TextDataReader(folder="tests/test_data/text")
+    assert dr.folder == "tests/test_data/text"
     dataset = dr.get_emotion_data("neutral_ekman", Set.TRAIN, batch_size=5)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -38,8 +38,8 @@ def test_reading():
 
 
 def test_reading_three():
-    dr = TextDataReader(folder="tests/test_data")
-    assert dr.folder == "tests/test_data"
+    dr = TextDataReader(folder="tests/test_data/text")
+    assert dr.folder == "tests/test_data/text"
     dataset = dr.get_emotion_data("three", Set.TRAIN, batch_size=4)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -67,7 +67,7 @@ def test_reading_three():
 
 
 def test_labels():
-    dr = TextDataReader(folder="tests/test_data")
+    dr = TextDataReader(folder="tests/test_data/text")
     dataset = dr.get_emotion_data(
         "neutral_ekman", Set.TRAIN, batch_size=5, shuffle=False
     )

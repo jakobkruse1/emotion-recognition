@@ -19,13 +19,16 @@ def test_data_reader_factory():
 def test_dataset_factory():
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
         text_data = DataFactory.get_dataset(
-            "text", set_type, data_folder="tests/test_data"
+            "text", set_type, data_folder="tests/test_data/text"
         )
         assert isinstance(text_data, tf.data.Dataset)
 
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
         text_data = DataFactory.get_dataset(
-            "text", set_type, emotions="three", data_folder="tests/test_data"
+            "text",
+            set_type,
+            emotions="three",
+            data_folder="tests/test_data/text",
         )
         assert isinstance(text_data, tf.data.Dataset)
 
@@ -34,5 +37,8 @@ def test_dataset_factory():
 
     with pytest.raises(ValueError):
         _ = DataFactory.get_dataset(
-            "text", Set.TEST, emotions="wrong", data_folder="tests/test_data"
+            "text",
+            Set.TEST,
+            emotions="wrong",
+            data_folder="tests/test_data/text",
         )
