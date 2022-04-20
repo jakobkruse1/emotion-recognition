@@ -6,6 +6,7 @@ experiments/results
 # Models
 models/text/bert
 models/text/distilbert
+models/image/efficientnet
 
 # Documentation
 !docs

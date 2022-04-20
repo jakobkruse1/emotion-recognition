@@ -3,7 +3,7 @@
 import pytest
 import tensorflow as tf
 
-from src.data.data_factory import DataFactory, TextDataReader
+from src.data.data_factory import DataFactory, ImageDataReader, TextDataReader
 from src.data.data_reader import Set
 
 
@@ -11,6 +11,10 @@ def test_data_reader_factory():
     text_reader = DataFactory.get_data_reader("text")
     assert isinstance(text_reader, TextDataReader)
     assert text_reader.name == "text"
+
+    image_reader = DataFactory.get_data_reader("image")
+    assert isinstance(image_reader, ImageDataReader)
+    assert image_reader.name == "image"
 
     with pytest.raises(ValueError):
         _ = DataFactory.get_data_reader("wrong")

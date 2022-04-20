@@ -3,6 +3,7 @@
 import tensorflow as tf
 
 from src.data.data_reader import DataReader, Set
+from src.data.image_data_reader import ImageDataReader
 from src.data.text_data_reader import TextDataReader
 
 
@@ -23,6 +24,8 @@ class DataFactory:
         """
         if data_type == "text":
             return TextDataReader(folder=data_folder)
+        elif data_type == "image":
+            return ImageDataReader(folder=data_folder)
         else:
             raise ValueError(
                 f'The Data Reader for type "{data_type}" ' f"does not exist!"
