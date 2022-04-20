@@ -1,3 +1,5 @@
+"""This file implements that basic functions for data reading"""
+
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Tuple
@@ -95,6 +97,24 @@ class DataReader(ABC):
         conversion_dict = {0: 2, 1: 0, 2: 2, 3: 0, 4: 2, 5: 2, 6: 1}
         for old_val, new_val in conversion_dict.items():
             new_labels[labels == old_val] = new_val
+
+        return new_labels
+
+    @staticmethod
+    def convert_to_three_emotions_onehot(labels: np.ndarray) -> np.ndarray:
+        """
+        Convert the NeutralEkmanEmotion labels to the ThreeEmotionSet
+
+        :param labels: The integer labels from 0-6 in a one-hot encoding
+            -> shape (n, 7)
+        :return: The integer labels from 0-2 in ThreeEmotion format in
+            one-hot encoding: shape (n,3)
+        """
+        assert labels.shape[1] == 7
+        new_labels = np.zeros((labels.shape[0], 3))
+        conversion_dict = {0: 2, 1: 0, 2: 2, 3: 0, 4: 2, 5: 2, 6: 1}
+        for old_val, new_val in conversion_dict.items():
+            new_labels[:, new_val] += labels[:, old_val]
 
         return new_labels
 
