@@ -33,3 +33,15 @@ def test_numpy_conversion():
     b_data, b_labels = DataReader.convert_to_numpy(dataset)
     assert np.array_equal(b_data, data)
     assert np.array_equal(b_labels, labels)
+
+
+def test_onehot_conversion():
+    labels = [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0]
+    one_hot_labels = np.eye(7)[labels]
+    assert one_hot_labels.shape == (13, 7)
+    converted = DataReader.convert_to_three_emotions_onehot(one_hot_labels)
+    converted_labels = [2, 0, 2, 0, 2, 2, 1, 2, 2, 0, 2, 0, 2]
+    assert np.array_equal(np.eye(3)[converted_labels], converted)
+
+    with pytest.raises(AssertionError):
+        _ = DataReader.convert_to_three_emotions_onehot(np.zeros((6, 6)))

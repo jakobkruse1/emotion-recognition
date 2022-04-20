@@ -118,3 +118,13 @@ def test_labels():
         trials += 1
         equal = np.array_equal(true_labels, dataset_labels)
     assert not equal
+
+
+def test_conversion_function():
+    labels = [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0]
+    one_hot_labels = np.eye(7)[labels]
+    assert one_hot_labels.shape == (13, 7)
+    data, converted = ImageDataReader.map_emotions("testing", one_hot_labels)
+    converted_labels = [2, 0, 2, 0, 2, 2, 1, 2, 2, 0, 2, 0, 2]
+    assert np.array_equal(np.eye(3)[converted_labels], converted)
+    assert data == "testing"
