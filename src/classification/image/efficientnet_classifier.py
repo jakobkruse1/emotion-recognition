@@ -25,7 +25,7 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__(name, parameters)
-        tf.get_logger().setLevel("DEBUG")
+        tf.get_logger().setLevel("ERROR")
         self.model = None
 
     def initialize_model(self):
