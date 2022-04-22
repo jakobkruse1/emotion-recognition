@@ -25,6 +25,9 @@ if __name__ == "__main__":
     model_names.append(
         "https://tfhub.dev/jeongukjae/distilbert_en_uncased_L-6_H-768_A-12/1"
     )
+    model_names.append(
+        "https://tfhub.dev/jeongukjae/distilbert_en_uncased_preprocess/2"
+    )
 
     for model in model_names:
         _ = hub.KerasLayer(model)
