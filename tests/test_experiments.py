@@ -47,6 +47,7 @@ def test_experiment_runner_configs(monkeypatch):
     _ = ExperimentRunner("test_name")
     # Same runner again - should ask user for input
     monkeypatch.setattr("builtins.input", lambda _: "n")
+    monkeypatch.setattr("sys.__stdin__.isatty", lambda: True)
     with pytest.raises(SystemExit) as error:
         _ = ExperimentRunner("test_name")
     assert error.type == SystemExit
