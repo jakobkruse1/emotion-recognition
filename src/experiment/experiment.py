@@ -120,12 +120,14 @@ class ExperimentRunner:
         is terminated.
         """
         yes = ["yes", "y"]
-
-        choice = input("Do you want to continue? [Y/N] : ").lower()
-        if choice in yes or not sys.__stdin__.isatty():
+        try:
+            choice = input("Do you want to continue? [Y/N] : ").lower()
+            if choice in yes or not sys.__stdin__.isatty():
+                return
+            else:
+                exit(0)
+        except EOFError:
             return
-        else:
-            exit(0)
 
     def add_grid_experiments(self, **kwargs):
         """

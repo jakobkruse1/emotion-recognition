@@ -2,6 +2,8 @@
 
 import sys
 
+import tensorflow as tf
+
 from src.experiment.experiment import ExperimentRunner, make_dictionaries
 
 # HPC task distribution
@@ -13,7 +15,24 @@ except IndexError:
     num_tasks = 1
 
 
+def setup_gpu():
+    physical_devices = tf.config.list_physical_devices("GPU")
+    if len(physical_devices) == 2:
+        if my_task_id % 2 == 0:
+            tf.config.set_visible_devices(physical_devices[1:], "GPU")
+            tf.config.experimental.set_memory_growth(
+                physical_devices[1], False
+            )
+
+        else:
+            tf.config.set_visible_devices(physical_devices[:1], "GPU")
+            tf.config.experimental.set_memory_growth(
+                physical_devices[0], False
+            )
+
+
 if __name__ == "__main__":
+    setup_gpu()
     # Bert grid search here
     runner = ExperimentRunner("bert_models")
     train_parameters = make_dictionaries(
