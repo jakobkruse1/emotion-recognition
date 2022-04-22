@@ -15,6 +15,8 @@ module load cuda/11.6
 echo "My task ID: " $LLSUB_RANK
 echo "Number of Tasks: " $LLSUB_SIZE
 
-TFHUB_CACHE_DIR="$(pwd)/models/cache" python experiments/scripts/parameter_text_models.py $LLSUB_RANK $LLSUB_SIZE
+export PYTHONPATH=.
+export TFHUB_CACHE_DIR="$(pwd)/models/cache"
+python experiments/scripts/parameter_text_models.py $LLSUB_RANK $LLSUB_SIZE
 
 # Might need to run chmod u+x job_array.sh

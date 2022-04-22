@@ -18,7 +18,7 @@ class TextDataReader(DataReader):
         """
         Initialization for the class
         """
-        super().__init__("text", folder)
+        super().__init__("text", folder or "data/train/text")
         self.file_map = {
             Set.TRAIN: "final_train.csv",
             Set.VAL: "final_val.csv",
