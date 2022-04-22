@@ -3,6 +3,7 @@
 import itertools
 import json
 import os
+import sys
 import warnings
 from typing import Dict, List
 
@@ -121,7 +122,7 @@ class ExperimentRunner:
         yes = ["yes", "y"]
 
         choice = input("Do you want to continue? [Y/N] : ").lower()
-        if choice in yes:
+        if choice in yes or not sys.__stdin__.isatty():
             return
         else:
             exit(0)
