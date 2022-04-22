@@ -13,7 +13,8 @@ from src.data.data_reader import Set
 
 class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
     """
-    Class that implements an efficient net emotion classifier.
+    Base class for all image emotion classifiers. Contains common functionality
+    that concerns all image classifiers.
     """
 
     def __init__(self, name: str = "efficientnet", parameters: Dict = None):
@@ -51,7 +52,7 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
-        Training method for EfficientNet model
+        Virtual training method for interfacing
 
         :param parameters: Parameter dictionary used for training
         :param kwargs: Additional kwargs parameters
@@ -112,7 +113,7 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
-        Classification method used to classify emotions from images
+        The virtual classification method for interfacing
 
         :param parameters: Parameter dictionary used for classification
         :param kwargs: Additional kwargs parameters

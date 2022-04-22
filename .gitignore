@@ -7,6 +7,7 @@ experiments/results
 models/text/bert
 models/text/distilbert
 models/image/efficientnet
+models/cache
 
 # Documentation
 !docs
