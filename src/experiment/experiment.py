@@ -178,6 +178,7 @@ class ExperimentRunner:
             experiment = self.experiments[index]
             accuracy = self.run_experiment(experiment, index, **kwargs)
             self.accuracy.append(accuracy)
+            print(experiment.get_parameter_dict())
             print(f"Experiment {index}, Accuracy {accuracy}")
         print("*****\nFinished all runs successfully\n*****")
         self.best_index = np.argmax(np.array(self.accuracy))
