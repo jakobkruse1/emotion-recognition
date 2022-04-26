@@ -30,10 +30,10 @@ class BertClassifier(TextEmotionClassifier):
         tf.get_logger().setLevel("ERROR")
         parameters = parameters or {}
         self.model_name = parameters.get(
-            "model_name", "bert_en_uncased_L-4_H-256_A-4"
+            "model_name", "bert_en_uncased_L-6_H-256_A-4"
         )
         self.model_path = (
-            f"https://tfhub.dev/tensorflow/small_bert/" f"{self.model_name}/2"
+            f"https://tfhub.dev/tensorflow/small_bert/{self.model_name}/2"
         )
         self.preprocess_path = (
             "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3"
@@ -83,8 +83,8 @@ class BertClassifier(TextEmotionClassifier):
             Not used currently
         """
         parameters = parameters or {}
-        init_lr = parameters.get("init_lr", 3e-5)
-        epochs = parameters.get("epochs", 20)
+        init_lr = parameters.get("init_lr", 1e-5)
+        epochs = parameters.get("epochs", 100)
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
 
@@ -100,7 +100,7 @@ class BertClassifier(TextEmotionClassifier):
             optimizer_type="adamw",
         )
         callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=3
+            monitor="val_loss", patience=10
         )
         self.classifier.compile(
             optimizer=optimizer, loss=loss, metrics=metrics

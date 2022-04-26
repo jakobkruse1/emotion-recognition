@@ -64,7 +64,7 @@ class DistilBertClassifier(BertClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = DistilBertClassifier()
-    classifier.train({"epochs": 10, "dropout_rate": 0.2})
+    classifier.train({"dropout_rate": 0.2, "dense_layer": 1024})
     classifier.save()
     classifier.load()
     emotions = classifier.classify()
