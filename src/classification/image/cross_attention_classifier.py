@@ -130,6 +130,8 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         input = tf.keras.layers.Input(
             shape=(48, 48, 3), dtype=tf.float32, name="image"
         )
+        input = tf.keras.applications.resnet50.preprocess_input(input)
+
         model = tf.keras.applications.resnet50.ResNet50(
             include_top=False,
             weights="imagenet",
@@ -164,6 +166,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         epochs = parameters.get("epochs", 20)
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
+        learning_rate = parameters.get("learning_rate", 0.001)
         loss = tf.keras.losses.CategoricalCrossentropy()
         metrics = [tf.metrics.CategoricalAccuracy()]
 
@@ -172,7 +175,8 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         callback = tf.keras.callbacks.EarlyStopping(
             monitor="val_loss", patience=3
         )
-        self.model.compile(optimizer="adam", loss=loss, metrics=metrics)
+        optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+        self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
         train_data = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size
         ).map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
