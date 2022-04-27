@@ -2,6 +2,7 @@
 
 import os
 
+import tensorflow as tf
 import tensorflow_hub as hub
 import tensorflow_text as text  # noqa: F401
 
@@ -27,6 +28,21 @@ if __name__ == "__main__":
     )
     model_names.append(
         "https://tfhub.dev/jeongukjae/distilbert_en_uncased_preprocess/2"
+    )
+    input = tf.keras.layers.Input(
+        shape=(48, 48, 3), dtype=tf.float32, name="image"
+    )
+    model = tf.keras.applications.resnet50.ResNet50(
+        include_top=False,
+        weights="imagenet",
+        input_tensor=input,
+        input_shape=(48, 48, 3),
+    )
+    model2 = tf.keras.applications.EfficientNetB2(
+        include_top=False,
+        weights="imagenet",
+        input_tensor=input,
+        input_shape=(48, 48, 3),
     )
 
     for model in model_names:
