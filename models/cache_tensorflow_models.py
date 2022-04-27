@@ -44,6 +44,12 @@ if __name__ == "__main__":
         input_tensor=input,
         input_shape=(48, 48, 3),
     )
+    model3 = tf.keras.applications.VGG16(
+        include_top=False,
+        weights="imagenet",
+        input_tensor=input,
+        input_shape=(48, 48, 3),
+    )
 
     for model in model_names:
         _ = hub.KerasLayer(model)
