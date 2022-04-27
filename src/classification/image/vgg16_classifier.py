@@ -47,7 +47,7 @@ class VGG16Classifier(ImageEmotionClassifier):
         out = tf.keras.layers.Flatten()(out)
         out = tf.keras.layers.Dense(4096, activation="relu")(out)
         out = tf.keras.layers.Dense(4096, activation="relu")(out)
-
+        out = tf.keras.layers.Dense(1000, activation="relu")(out)
         top = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(out)
@@ -139,7 +139,7 @@ class VGG16Classifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = VGG16Classifier()
-    classifier.train({"epochs": 1})
+    classifier.train()
     classifier.save()
     classifier.load()
     emotions = classifier.classify()
