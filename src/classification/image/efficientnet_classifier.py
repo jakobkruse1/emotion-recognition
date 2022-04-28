@@ -16,14 +16,14 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
     Class that implements an efficient net emotion classifier.
     """
 
-    def __init__(self, name: str = "efficientnet", parameters: Dict = None):
+    def __init__(self, parameters: Dict = None):
         """
         Initialize the EfficientNet emotion classifier
 
         :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
-        super().__init__(name, parameters)
+        super().__init__("efficientnet", parameters)
         tf.get_logger().setLevel("ERROR")
         self.model = None
 
@@ -43,7 +43,6 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
             input_tensor=input,
             input_shape=(48, 48, 3),
         )
-        print(len(model.layers))
         for layer in model.layers[: parameters.get("frozen_layers", -10)]:
             layer.trainable = False
         output = model(input)

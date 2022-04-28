@@ -28,6 +28,7 @@ def test_efficientnet_workflow():
     }
     classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
     classifier.train(train_parameters)
+    assert len(classifier.model.layers) == 4
 
     shutil.rmtree("tests/temp/efficient", ignore_errors=True)
     save_parameters = {"save_path": "tests/temp/efficient"}
@@ -50,3 +51,16 @@ def test_efficientnet_workflow():
         new_classifier.save({"save_path": "tests/temp/efficient"})
 
     shutil.rmtree("tests/temp", ignore_errors=True)
+
+
+def test_extra_layer():
+    classifier = MultiTaskEfficientNetB2Classifier()
+    assert not classifier.model
+    train_parameters = {
+        "epochs": 0,
+        "which_set": Set.TRAIN,
+        "extra_layer": 1024,
+    }
+    classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
+    classifier.train(train_parameters)
+    assert len(classifier.model.layers) == 5

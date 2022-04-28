@@ -112,14 +112,14 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
     https://paperswithcode.com/paper/distract-your-attention-multi-head-cross
     """
 
-    def __init__(self, name: str = "crossattention", parameters: Dict = None):
+    def __init__(self, parameters: Dict = None):
         """
         Initialize the CrossAttention emotion classifier
 
         :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
-        super().__init__(name, parameters)
+        super().__init__("cross_attention", parameters)
         tf.get_logger().setLevel("ERROR")
         self.model = None
 

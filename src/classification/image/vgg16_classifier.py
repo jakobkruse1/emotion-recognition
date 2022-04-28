@@ -16,14 +16,14 @@ class VGG16Classifier(ImageEmotionClassifier):
     Class that implements an emotion classifier using VGG16
     """
 
-    def __init__(self, name: str = "vgg16", parameters: Dict = None) -> None:
+    def __init__(self, parameters: Dict = None) -> None:
         """
         Initialize the VGG16 emotion classifier
 
         :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
-        super().__init__(name, parameters)
+        super().__init__("vgg16", parameters)
         tf.get_logger().setLevel("ERROR")
         self.model = None
 

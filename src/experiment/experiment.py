@@ -70,7 +70,7 @@ class Experiment:
         This function either throws an Assertion Error or Value Error in case
         of wrong parameters.
         """
-        assert self.modality in ["text"]
+        assert self.modality in ["text", "image"]
         _ = ClassifierFactory.get(self.modality, self.model, {})
         assert (
             isinstance(self.train_parameters, dict)
@@ -127,7 +127,7 @@ class ExperimentRunner:
             else:
                 exit(0)
         except EOFError:
-            return
+            return  # pragma: no cover
 
     def add_grid_experiments(self, **kwargs):
         """
