@@ -27,10 +27,12 @@ class VGG16Classifier(ImageEmotionClassifier):
         tf.get_logger().setLevel("ERROR")
         self.model = None
 
-    def initialize_model(self) -> None:
+    def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the VGG16Classifier model
         """
+        l1 = parameters.get("l1", 0.0)
+        l2 = parameters.get("l2", 0.0)
         input = tf.keras.layers.Input(
             shape=(48, 48, 3), dtype=tf.float32, name="image"
         )
@@ -42,14 +44,26 @@ class VGG16Classifier(ImageEmotionClassifier):
             input_tensor=input,
             input_shape=(48, 48, 3),
         )
-        for layer in model.layers[:-4]:
+        for layer in model.layers[: parameters.get("frozen_layers", -10)]:
             layer.trainable = False
         out = model(input)
 
         out = tf.keras.layers.Flatten()(out)
-        out = tf.keras.layers.Dense(4096, activation="relu")(out)
-        out = tf.keras.layers.Dense(4096, activation="relu")(out)
-        out = tf.keras.layers.Dense(1000, activation="relu")(out)
+        out = tf.keras.layers.Dense(
+            4096,
+            activation="relu",
+            kernel_regularizer=tf.keras.regularizers.L1L2(l1=l1, l2=l2),
+        )(out)
+        out = tf.keras.layers.Dense(
+            4096,
+            activation="relu",
+            kernel_regularizer=tf.keras.regularizers.L1L2(l1=l1, l2=l2),
+        )(out)
+        out = tf.keras.layers.Dense(
+            1000,
+            activation="relu",
+            kernel_regularizer=tf.keras.regularizers.L1L2(l1=l1, l2=l2),
+        )(out)
         top = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(out)
@@ -72,9 +86,9 @@ class VGG16Classifier(ImageEmotionClassifier):
         metrics = [tf.metrics.CategoricalAccuracy()]
 
         if not self.model:
-            self.initialize_model()
+            self.initialize_model(parameters)
         callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=patience
+            monitor="val_loss", patience=patience, restore_best_weights=True
         )
         optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)

@@ -123,7 +123,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         tf.get_logger().setLevel("ERROR")
         self.model = None
 
-    def initialize_model(self):
+    def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the CrossAttention model
         """
@@ -138,7 +138,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             input_tensor=input,
             input_shape=(48, 48, 3),
         )
-        for layer in model.layers[:-4]:
+        for layer in model.layers[: parameters.get("frozen_layers", -10)]:
             layer.trainable = False
         output = model(input)
         output = tf.keras.layers.Conv2D(512, kernel_size=1)(output)
@@ -172,9 +172,9 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         metrics = [tf.metrics.CategoricalAccuracy()]
 
         if not self.model:
-            self.initialize_model()
+            self.initialize_model(parameters)
         callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=patience
+            monitor="val_loss", patience=patience, restore_best_weights=True
         )
         optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)

@@ -27,10 +27,11 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         tf.get_logger().setLevel("ERROR")
         self.model = None
 
-    def initialize_model(self):
+    def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the EfficientNetB2 model
         """
+        extra_layer = parameters.get("extra_layer", None)
         input = tf.keras.layers.Input(
             shape=(48, 48, 3), dtype=tf.float32, name="image"
         )
@@ -42,10 +43,19 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
             input_tensor=input,
             input_shape=(48, 48, 3),
         )
-        for layer in model.layers[:-4]:
+        print(len(model.layers))
+        for layer in model.layers[: parameters.get("frozen_layers", -10)]:
             layer.trainable = False
         output = model(input)
         flat = tf.keras.layers.Flatten()(output)
+        if extra_layer:
+            flat = tf.keras.layers.Dense(
+                extra_layer,
+                activation="relu",
+                kernel_regularizer=tf.keras.regularizers.L1L2(
+                    l1=0.001, l2=0.001
+                ),
+            )(flat)
         top = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(flat)
@@ -68,9 +78,9 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         metrics = [tf.metrics.CategoricalAccuracy()]
 
         if not self.model:
-            self.initialize_model()
+            self.initialize_model(parameters)
         callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=patience
+            monitor="val_loss", patience=patience, restore_best_weights=True
         )
         optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
