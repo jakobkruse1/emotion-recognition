@@ -87,6 +87,7 @@ class BertClassifier(TextEmotionClassifier):
         epochs = parameters.get("epochs", 100)
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
+        patience = parameters.get("patience", 5)
 
         num_samples = self.data_reader.get_labels(which_set).shape[0]
         num_train_steps = int(num_samples * epochs / batch_size)
@@ -100,7 +101,7 @@ class BertClassifier(TextEmotionClassifier):
             optimizer_type="adamw",
         )
         callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=10, restore_best_weights=True
+            monitor="val_loss", patience=patience, restore_best_weights=True
         )
         self.classifier.compile(
             optimizer=optimizer, loss=loss, metrics=metrics

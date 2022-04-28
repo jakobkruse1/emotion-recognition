@@ -63,13 +63,14 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
         learning_rate = parameters.get("learning_rate", 0.001)
+        patience = parameters.get("patience", 5)
         loss = tf.keras.losses.CategoricalCrossentropy()
         metrics = [tf.metrics.CategoricalAccuracy()]
 
         if not self.model:
             self.initialize_model()
         callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=3
+            monitor="val_loss", patience=patience
         )
         optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
