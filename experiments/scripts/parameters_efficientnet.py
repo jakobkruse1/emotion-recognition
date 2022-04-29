@@ -1,4 +1,4 @@
-"""Experiment that runs grid search over BERT parameters"""
+"""Experiment that runs grid search over EfficientNet parameters"""
 
 import sys
 

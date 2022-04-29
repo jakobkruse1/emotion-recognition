@@ -33,6 +33,7 @@ class VGG16Classifier(ImageEmotionClassifier):
         """
         l1 = parameters.get("l1", 0.0)
         l2 = parameters.get("l2", 0.0)
+        dropout = parameters.get("dropout", 0.0)
         input = tf.keras.layers.Input(
             shape=(48, 48, 3), dtype=tf.float32, name="image"
         )
@@ -44,26 +45,33 @@ class VGG16Classifier(ImageEmotionClassifier):
             input_tensor=input,
             input_shape=(48, 48, 3),
         )
-        for layer in model.layers[: parameters.get("frozen_layers", -10)]:
+        for layer in model.layers[: parameters.get("frozen_layers", -4)]:
             layer.trainable = False
         out = model(input)
 
         out = tf.keras.layers.Flatten()(out)
-        out = tf.keras.layers.Dense(
-            4096,
-            activation="relu",
-            kernel_regularizer=tf.keras.regularizers.L1L2(l1=l1, l2=l2),
-        )(out)
-        out = tf.keras.layers.Dense(
-            4096,
-            activation="relu",
-            kernel_regularizer=tf.keras.regularizers.L1L2(l1=l1, l2=l2),
-        )(out)
+        if parameters.get("deep", True):
+            out = tf.keras.layers.Dense(
+                4096,
+                activation="relu",
+                kernel_regularizer=tf.keras.regularizers.L1L2(l1=l1, l2=l2),
+            )(out)
+            if dropout:
+                out = tf.keras.layers.Dropout(dropout)(out)
+            out = tf.keras.layers.Dense(
+                4096,
+                activation="relu",
+                kernel_regularizer=tf.keras.regularizers.L1L2(l1=l1, l2=l2),
+            )(out)
+            if dropout:
+                out = tf.keras.layers.Dropout(dropout)(out)
         out = tf.keras.layers.Dense(
             1000,
             activation="relu",
             kernel_regularizer=tf.keras.regularizers.L1L2(l1=l1, l2=l2),
         )(out)
+        if dropout:
+            out = tf.keras.layers.Dropout(dropout)(out)
         top = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(out)
@@ -115,7 +123,7 @@ class VGG16Classifier(ImageEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = parameters or {}
-        save_path = parameters.get("save_path", "models/image/cross_attention")
+        save_path = parameters.get("save_path", "models/image/vgg16")
         self.model = tf.keras.models.load_model(save_path)
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
@@ -130,7 +138,7 @@ class VGG16Classifier(ImageEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = parameters or {}
-        save_path = parameters.get("save_path", "models/image/cross_attention")
+        save_path = parameters.get("save_path", "models/image/vgg16")
         self.model.save(save_path, include_optimizer=False)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
@@ -158,11 +166,30 @@ class VGG16Classifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = VGG16Classifier()
-    classifier.train()
-    classifier.save()
-    classifier.load()
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    classifier.initialize_model({})
+    model = classifier.model
+    from src.data.image_data_reader import ImageDataReader
+
+    dataset = (
+        ImageDataReader()
+        .get_seven_emotion_data(Set.TEST, batch_size=1)
+        .map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
+    )
+    loss = tf.keras.losses.CategoricalCrossentropy()
+    for image, label in dataset:
+
+        result = model(image).numpy()
+        print(result)
+        print(
+            f"T/P: {np.argmax(result, axis=1)[0]}/{np.argmax(label.numpy())}"
+        )
+        print(loss(result, label))
+
+    # classifier.train({"frozen_layers": 0})
+    # classifier.save()
+    # classifier.load()
+    # emotions = classifier.classify()
+    # labels = classifier.data_reader.get_labels(Set.TEST)
+    # print(f"Labels Shape: {labels.shape}")
+    # print(f"Emotions Shape: {emotions.shape}")
+    # print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
