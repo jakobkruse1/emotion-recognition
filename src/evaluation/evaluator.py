@@ -75,6 +75,7 @@ class Evaluator:
         """
         scores = []
         data_readers = {}
+        labels = {}
         for experiment in self.result_data:
             if experiment["modality"] not in data_readers.keys():
                 data_readers[
@@ -82,12 +83,13 @@ class Evaluator:
                 ] = DataFactory.get_data_reader(
                     experiment["modality"], **kwargs
                 )
+                labels[experiment["modality"]] = data_readers[
+                    experiment["modality"]
+                ].get_labels(Set.TEST)
             if score == "accuracy":
                 scores.append(
                     self._accuracy(
-                        data_readers[experiment["modality"]].get_labels(
-                            Set.TEST
-                        ),
+                        labels[experiment["modality"]],
                         np.asarray(experiment["test_predictions"]),
                     )
                 )

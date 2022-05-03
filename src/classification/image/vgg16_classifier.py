@@ -1,4 +1,4 @@
-""" This file contains the EfficientNet facial emotion classifier """
+""" This file contains the VGG16 facial emotion classifier """
 
 from typing import Dict
 
@@ -166,30 +166,11 @@ class VGG16Classifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = VGG16Classifier()
-    classifier.initialize_model({})
-    model = classifier.model
-    from src.data.image_data_reader import ImageDataReader
-
-    dataset = (
-        ImageDataReader()
-        .get_seven_emotion_data(Set.TEST, batch_size=1)
-        .map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
-    )
-    loss = tf.keras.losses.CategoricalCrossentropy()
-    for image, label in dataset:
-
-        result = model(image).numpy()
-        print(result)
-        print(
-            f"T/P: {np.argmax(result, axis=1)[0]}/{np.argmax(label.numpy())}"
-        )
-        print(loss(result, label))
-
-    # classifier.train({"frozen_layers": 0})
-    # classifier.save()
-    # classifier.load()
-    # emotions = classifier.classify()
-    # labels = classifier.data_reader.get_labels(Set.TEST)
-    # print(f"Labels Shape: {labels.shape}")
-    # print(f"Emotions Shape: {emotions.shape}")
-    # print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    classifier.train()
+    classifier.save()
+    classifier.load()
+    emotions = classifier.classify()
+    labels = classifier.data_reader.get_labels(Set.TEST)
+    print(f"Labels Shape: {labels.shape}")
+    print(f"Emotions Shape: {emotions.shape}")
+    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
