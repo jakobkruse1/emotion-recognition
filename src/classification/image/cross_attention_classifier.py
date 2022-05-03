@@ -444,7 +444,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             for data_batch, labels in dataset:
                 data_batch, labels = self.transform_data(data_batch, labels)
                 out, feat, heads = self.model(data_batch)
-                results = np.concatenate([results, out], axis=0)
+                results = np.concatenate([results, out.cpu()], axis=0)
 
         return np.argmax(results, axis=1)
 
