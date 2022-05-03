@@ -433,6 +433,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             raise RuntimeError(
                 "Please load or train the model before inference!"
             )
+        self.model.to(self.device)
         self.model.eval()
 
         dataset = self.data_reader.get_seven_emotion_data(
