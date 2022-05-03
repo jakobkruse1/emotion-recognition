@@ -248,6 +248,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
+        self.load({"save_path": "models/cache/cross_attention.pth"})
 
     def initialize_model(self, parameters: Dict) -> None:
         """
@@ -365,7 +366,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                     running_loss += loss
                     iter_cnt += 1
                     _, predicts = torch.max(out, 1)
-                    correct_num = torch.eq(predicts, targets)
+                    correct_num = torch.eq(predicts, torch.max(targets, 1)[1])
                     bingo_cnt += correct_num.sum().cpu()
 
                 running_loss = running_loss / iter_cnt
