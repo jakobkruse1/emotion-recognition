@@ -5,7 +5,7 @@ from typing import Dict
 
 import numpy as np
 
-from src.data.data_factory import DataFactory
+from src.data.data_factory import DataFactory, Set
 
 
 class EmotionClassifier(ABC):
@@ -74,3 +74,15 @@ class EmotionClassifier(ABC):
         :return: An array with predicted emotion indices
         """
         raise NotImplementedError("Abstract class")  # pragma: no cover
+
+    def get_class_weights(self, which_set: Set) -> Dict[int, int]:
+        """
+        Function that returns a class weights dictionary for a given dataset.
+        The dictionary's keys are the labels and the values are the counts.
+
+        :param which_set: Which set to use for calculating the class weights.
+        :return: Dictionary with the class weights
+        """
+        labels = self.data_reader.get_labels(which_set)
+        count_arr = np.bincount(labels.astype(int))
+        return {index: count for index, count in enumerate(count_arr)}

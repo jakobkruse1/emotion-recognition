@@ -248,7 +248,6 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
-        self.load({"save_path": "models/cache/cross_attention.pth"})
 
     def initialize_model(self, parameters: Dict) -> None:
         """
@@ -270,20 +269,13 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
 
         parameters = parameters or {}
         epochs = parameters.get("epochs", 20)
-        which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
         learning_rate = parameters.get("learning_rate", 0.001)
-        # patience = parameters.get("patience", 5)
         total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[0]
         batches = int(np.ceil(total_train_images / batch_size))
         total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
 
-        train_dataset = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size
-        )
-        val_dataset = self.data_reader.get_emotion_data(
-            self.emotions, Set.VAL, batch_size
-        )
+        self.prepare_data(parameters, **kwargs)
 
         if not self.model:
             self.initialize_model(parameters)
@@ -313,7 +305,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             with alive_bar(
                 batches, title=f"Epoch {epoch}", force_tty=True
             ) as bar:
-                for batch, (imgs, targets) in enumerate(train_dataset):
+                for batch, (imgs, targets) in enumerate(self.train_data):
                     imgs, targets = self.transform_data(imgs, targets)
                     iter_cnt += 1
                     self.optimizer.zero_grad()
@@ -353,7 +345,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                 bingo_cnt = 0
                 self.model.eval()
 
-                for data_batch, labels in val_dataset:
+                for data_batch, labels in self.val_data:
                     imgs, targets = self.transform_data(data_batch, labels)
                     out, feat, heads = self.model(imgs)
 

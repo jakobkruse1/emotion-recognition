@@ -69,32 +69,21 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         """
         parameters = parameters or {}
         epochs = parameters.get("epochs", 20)
-        which_set = parameters.get("which_set", Set.TRAIN)
-        batch_size = parameters.get("batch_size", 64)
-        learning_rate = parameters.get("learning_rate", 0.001)
-        patience = parameters.get("patience", 5)
-        loss = tf.keras.losses.CategoricalCrossentropy()
-        metrics = [tf.metrics.CategoricalAccuracy()]
 
         if not self.model:
             self.initialize_model(parameters)
-        callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=patience, restore_best_weights=True
+        self.prepare_training(parameters, **kwargs)
+        self.model.compile(
+            optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
         )
-        optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
-        self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
-        train_data = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size
-        ).map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
-        val_data = self.data_reader.get_emotion_data(
-            self.emotions, Set.VAL, batch_size
-        ).map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
+        self.prepare_data(parameters, **kwargs)
 
         _ = self.model.fit(
-            x=train_data,
-            validation_data=val_data,
+            x=self.train_data,
+            validation_data=self.val_data,
             epochs=epochs,
-            callbacks=[callback],
+            callbacks=[self.callback],
+            class_weight=self.class_weights,
         )
         self.is_trained = True
 

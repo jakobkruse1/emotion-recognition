@@ -5,6 +5,7 @@ import os
 import tensorflow as tf
 import tensorflow_hub as hub
 import tensorflow_text as text  # noqa: F401
+from torchvision import models
 
 if __name__ == "__main__":
     assert os.environ["TFHUB_CACHE_DIR"].endswith("models/cache")
@@ -53,3 +54,5 @@ if __name__ == "__main__":
 
     for model in model_names:
         _ = hub.KerasLayer(model)
+
+    resnet = models.resnet18(pretrained=True)

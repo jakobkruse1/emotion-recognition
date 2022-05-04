@@ -105,3 +105,37 @@ class Evaluator:
         :return: The accuracy
         """
         return np.sum(true == pred) / true.shape[0]
+
+    @staticmethod
+    def _avg_recall(true: np.ndarray, pred: np.ndarray) -> float:
+        """
+        Score function that computes average recall over all classes
+
+        :param true: The true labels
+        :param pred: The predicted labels
+        :return: The average class recall
+        """
+        recall = 0.0
+        for class_id in range(7):
+            recall += (
+                np.sum(true[true == class_id] == pred[true == class_id])
+                / true[true == class_id].shape[0]
+            )
+        return recall / 7.0
+
+    @staticmethod
+    def _avg_precision(true: np.ndarray, pred: np.ndarray) -> float:
+        """
+        Score function that computes average precision over all classes
+
+        :param true: The true labels
+        :param pred: The predicted labels
+        :return: The average class precision
+        """
+        prec = 0.0
+        for class_id in range(7):
+            prec += (
+                np.sum(true[pred == class_id] == pred[pred == class_id])
+                / true[pred == class_id].shape[0]
+            )
+        return prec / 7.0

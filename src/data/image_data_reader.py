@@ -4,6 +4,7 @@ import os
 
 import numpy as np
 import tensorflow as tf
+import tensorflow_addons as tfa
 
 from src.data.data_reader import DataReader, Set
 
@@ -38,6 +39,9 @@ class ImageDataReader(DataReader):
         shuffle = kwargs.get(
             "shuffle", True if which_set == Set.TRAIN else False
         )
+        augment = kwargs.get(
+            "augment", True if which_set == Set.TRAIN else False
+        )
         dataset = tf.keras.utils.image_dataset_from_directory(
             os.path.join(self.folder, self.folder_map[which_set]),
             shuffle=shuffle,
@@ -55,6 +59,7 @@ class ImageDataReader(DataReader):
                 "neutral",
             ],
         )
+        dataset = self.add_augmentations(dataset, augment)
         return dataset
 
     def get_three_emotion_data(
@@ -71,6 +76,9 @@ class ImageDataReader(DataReader):
         """
         shuffle = kwargs.get(
             "shuffle", True if which_set == Set.TRAIN else False
+        )
+        augment = kwargs.get(
+            "augment", True if which_set == Set.TRAIN else False
         )
         dataset = tf.keras.utils.image_dataset_from_directory(
             os.path.join(self.folder, self.folder_map[which_set]),
@@ -96,7 +104,7 @@ class ImageDataReader(DataReader):
                 Tout=(tf.float32, tf.float32),
             )
         )
-
+        dataset = self.add_augmentations(dataset, augment)
         return dataset
 
     @staticmethod
@@ -125,3 +133,48 @@ class ImageDataReader(DataReader):
             )
 
         return all_labels
+
+    @staticmethod
+    @tf.function
+    def _augment(data, seed):
+        """
+        Augmentation function that rotates, brightens, and flips images.
+
+        :param data: The data to perform augmentation on.
+            Contains tuples of images and labels.
+        :param seed: Random seed to use for augmentation
+        :return: images and labels that are augmented
+        """
+        image, label = data
+        new_seed = tf.random.experimental.stateless_split(seed, num=1)[0, :]
+        image = tf.image.stateless_random_brightness(
+            image, max_delta=0.3, seed=new_seed
+        )
+        image = tf.clip_by_value(image, 0.0, 255.0)
+        image = tf.image.stateless_random_flip_left_right(image, seed=new_seed)
+        num_samples = int(tf.shape(image)[0])
+        degrees = tf.random.stateless_uniform(
+            shape=(num_samples,), seed=seed, minval=-45, maxval=45
+        )
+        degrees = degrees * 0.017453292519943295
+        image = tfa.image.rotate(image, degrees)
+        return image, label
+
+    def add_augmentations(
+        self, dataset: tf.data.Dataset, use_augmentations: bool = True
+    ):
+        """
+        Function that adds augmentation to the dataset.
+        This helps reduce overfitting of the model.
+        :param dataset: The dataset containing images
+        :param use_augmentations: Boolean flag to enable augmentation
+        :return: The dataset with augmented images
+        """
+        if not use_augmentations:
+            return dataset
+
+        counter = tf.data.experimental.Counter()
+        dataset = tf.data.Dataset.zip((dataset, (counter, counter)))
+        augmented_dataset = dataset.map(self._augment)
+
+        return augmented_dataset
