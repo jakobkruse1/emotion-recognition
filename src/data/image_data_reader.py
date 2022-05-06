@@ -1,6 +1,7 @@
 """This file implements the data reading functionality for image data."""
 
 import os
+from typing import Dict, Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -26,20 +27,21 @@ class ImageDataReader(DataReader):
         }
 
     def get_seven_emotion_data(
-        self, which_set: Set, batch_size: int = 64, **kwargs
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
         Main data reading function which reads the images into a dataset
 
         :param which_set: Which dataset to use - train, val or test
         :param batch_size: The batch size for the resulting dataset
-        :param kwargs: Additional parameters
+        :param parameters: Additional parameters
         :return: The tensorflow Dataset instance
         """
-        shuffle = kwargs.get(
+        parameters = parameters or {}
+        shuffle = parameters.get(
             "shuffle", True if which_set == Set.TRAIN else False
         )
-        augment = kwargs.get(
+        augment = parameters.get(
             "augment", True if which_set == Set.TRAIN else False
         )
         dataset = tf.keras.utils.image_dataset_from_directory(
@@ -63,7 +65,7 @@ class ImageDataReader(DataReader):
         return dataset
 
     def get_three_emotion_data(
-        self, which_set: Set, batch_size: int = 64, **kwargs
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
         Main data reading function which reads the CSV file into a dataset
@@ -71,13 +73,14 @@ class ImageDataReader(DataReader):
 
         :param which_set: Which dataset to use - train, val or test
         :param batch_size: The batch size for the resulting dataset
-        :param kwargs: Additional arguments
+        :param parameters: Additional arguments
         :return: The tensorflow Dataset instance
         """
-        shuffle = kwargs.get(
+        parameters = parameters or {}
+        shuffle = parameters.get(
             "shuffle", True if which_set == Set.TRAIN else False
         )
-        augment = kwargs.get(
+        augment = parameters.get(
             "augment", True if which_set == Set.TRAIN else False
         )
         dataset = tf.keras.utils.image_dataset_from_directory(
@@ -125,7 +128,9 @@ class ImageDataReader(DataReader):
         :param which_set: Train, val or test set
         :return: The labels in an array of shape (num_samples,)
         """
-        dataset = self.get_seven_emotion_data(which_set, shuffle=False)
+        dataset = self.get_seven_emotion_data(
+            which_set, parameters={"shuffle": False}
+        )
         all_labels = np.empty((0,))
         for images, labels in dataset:
             all_labels = np.concatenate(
@@ -134,9 +139,30 @@ class ImageDataReader(DataReader):
 
         return all_labels
 
+    def add_augmentations(
+        self, dataset: tf.data.Dataset, use_augmentations: bool = True
+    ):
+        """
+        Function that adds augmentation to the dataset.
+        This helps reduce overfitting of the model.
+        :param dataset: The dataset containing images
+        :param use_augmentations: Boolean flag to enable augmentation
+        :return: The dataset with augmented images
+        """
+        if not use_augmentations:
+            return dataset
+
+        counter = tf.data.experimental.Counter()
+        dataset = tf.data.Dataset.zip((dataset, (counter, counter)))
+        augmented_dataset = dataset.map(self._augment)
+
+        return augmented_dataset
+
     @staticmethod
     @tf.function
-    def _augment(data, seed):
+    def _augment(
+        data, seed
+    ) -> Tuple[tf.Tensor, tf.Tensor]:  # pragma: no cover
         """
         Augmentation function that rotates, brightens, and flips images.
 
@@ -159,22 +185,3 @@ class ImageDataReader(DataReader):
         degrees = degrees * 0.017453292519943295
         image = tfa.image.rotate(image, degrees)
         return image, label
-
-    def add_augmentations(
-        self, dataset: tf.data.Dataset, use_augmentations: bool = True
-    ):
-        """
-        Function that adds augmentation to the dataset.
-        This helps reduce overfitting of the model.
-        :param dataset: The dataset containing images
-        :param use_augmentations: Boolean flag to enable augmentation
-        :return: The dataset with augmented images
-        """
-        if not use_augmentations:
-            return dataset
-
-        counter = tf.data.experimental.Counter()
-        dataset = tf.data.Dataset.zip((dataset, (counter, counter)))
-        augmented_dataset = dataset.map(self._augment)
-
-        return augmented_dataset

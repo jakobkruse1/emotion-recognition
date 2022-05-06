@@ -19,7 +19,10 @@ def test_reading():
     dr = ImageDataReader(folder="tests/test_data/image")
     assert dr.folder == "tests/test_data/image"
     dataset = dr.get_emotion_data(
-        "neutral_ekman", Set.TRAIN, batch_size=10, shuffle=False
+        "neutral_ekman",
+        Set.TRAIN,
+        batch_size=10,
+        parameters={"shuffle": False},
     )
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -40,10 +43,10 @@ def test_reading_three():
     dr = ImageDataReader(folder="tests/test_data/image")
     assert dr.folder == "tests/test_data/image"
     dataset = dr.get_emotion_data(
-        "three", Set.TRAIN, batch_size=2, shuffle=False
+        "three", Set.TRAIN, batch_size=2, parameters={"shuffle": False}
     )
     seven_dataset = dr.get_emotion_data(
-        "neutral_ekman", Set.TRAIN, batch_size=2, shuffle=False
+        "neutral_ekman", Set.TRAIN, batch_size=2, parameters={"shuffle": False}
     ).as_numpy_iterator()
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -78,7 +81,7 @@ def test_reading_three():
 def test_labels():
     dr = ImageDataReader(folder="tests/test_data/image")
     dataset = dr.get_emotion_data(
-        "neutral_ekman", Set.TRAIN, batch_size=5, shuffle=False
+        "neutral_ekman", Set.TRAIN, batch_size=5, parameters={"shuffle": False}
     )
     dataset_labels = np.empty((0,))
     dataset_data = np.empty((0, 48, 48, 1))
@@ -107,7 +110,10 @@ def test_labels():
         if trials > 3:
             raise RuntimeError("Shuffle not working.")
         dataset = dr.get_emotion_data(
-            "neutral_ekman", Set.TRAIN, batch_size=7, shuffle=True
+            "neutral_ekman",
+            Set.TRAIN,
+            batch_size=7,
+            parameters={"shuffle": True},
         )
         dataset_labels = np.empty((0,))
         for _, labels in dataset:
@@ -128,3 +134,37 @@ def test_conversion_function():
     converted_labels = [2, 0, 2, 0, 2, 2, 1, 2, 2, 0, 2, 0, 2]
     assert np.array_equal(np.eye(3)[converted_labels], converted)
     assert data == "testing"
+
+
+def test_augmentation():
+    tf.random.set_seed(42)
+
+    dr = ImageDataReader(folder="tests/test_data/image")
+    dataset = dr.get_emotion_data(
+        "neutral_ekman",
+        Set.TRAIN,
+        batch_size=5,
+        parameters={"shuffle": False, "augment": False},
+    )
+    augmented_dataset = dr.get_emotion_data(
+        "neutral_ekman",
+        Set.TRAIN,
+        batch_size=5,
+        parameters={"shuffle": False, "augment": True},
+    )
+    for batch, aug_batch in zip(dataset, augmented_dataset):
+        images, labels = batch
+        aug_images, aug_labels = aug_batch
+        assert np.array_equal(labels.numpy(), aug_labels.numpy())
+        assert not np.array_equal(images.numpy(), aug_images.numpy())
+
+    counter = 0
+    for batch, manual_batch in zip(augmented_dataset, dataset):
+        images, labels = batch
+        manual_images, manual_labels = dr._augment(
+            manual_batch, (counter, counter + 1)
+        )
+        assert np.array_equal(labels.numpy(), manual_labels.numpy())
+        counter += 2
+        assert images.shape == manual_images.shape
+    assert counter == 4

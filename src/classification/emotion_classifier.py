@@ -84,5 +84,22 @@ class EmotionClassifier(ABC):
         :return: Dictionary with the class weights
         """
         labels = self.data_reader.get_labels(which_set)
+        total = labels.shape[0]
         count_arr = np.bincount(labels.astype(int))
-        return {index: count for index, count in enumerate(count_arr)}
+        return {
+            index: (total / 7.0 / count)
+            for index, count in enumerate(count_arr)
+        }
+
+    @staticmethod
+    def init_parameters(parameters: Dict = None, **kwargs) -> Dict:
+        """
+        Function that merges the parameters and kwargs
+
+        :param parameters: Parameter dictionary
+        :param kwargs: Additional parameters in kwargs
+        :return: Combined dictionary with parameters
+        """
+        parameters = parameters or {}
+        parameters.update(kwargs)
+        return parameters

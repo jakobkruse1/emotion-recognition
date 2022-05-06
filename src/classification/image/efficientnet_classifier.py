@@ -67,16 +67,16 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         :param parameters: Parameter dictionary used for training
         :param kwargs: Additional kwargs parameters
         """
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         epochs = parameters.get("epochs", 20)
 
         if not self.model:
             self.initialize_model(parameters)
-        self.prepare_training(parameters, **kwargs)
+        self.prepare_training(parameters)
         self.model.compile(
             optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
         )
-        self.prepare_data(parameters, **kwargs)
+        self.prepare_data(parameters)
 
         _ = self.model.fit(
             x=self.train_data,
@@ -94,7 +94,7 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         :param parameters: Parameters required for loading the model
         :param kwargs: Additional kwargs parameters
         """
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/image/efficientnet")
         self.model = tf.keras.models.load_model(save_path)
 
@@ -109,7 +109,7 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
             raise RuntimeError(
                 "Model needs to be trained in order to save it!"
             )
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/image/efficientnet")
         self.model.save(save_path, include_optimizer=False)
 
@@ -121,11 +121,11 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         :return: An array with predicted emotion indices
         """
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
         dataset = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size, shuffle=False
+            self.emotions, which_set, batch_size
         ).map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
 
         if not self.model:

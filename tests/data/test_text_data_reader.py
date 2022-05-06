@@ -69,7 +69,7 @@ def test_reading_three():
 def test_labels():
     dr = TextDataReader(folder="tests/test_data/text")
     dataset = dr.get_emotion_data(
-        "neutral_ekman", Set.TRAIN, batch_size=5, shuffle=False
+        "neutral_ekman", Set.TRAIN, batch_size=5, parameters={"shuffle": False}
     )
     dataset_labels = np.empty((0,))
     dataset_data = np.empty((0, 1))
@@ -93,7 +93,7 @@ def test_labels():
 
     # Now with shuffle
     dataset = dr.get_emotion_data(
-        "neutral_ekman", Set.TRAIN, batch_size=5, shuffle=True
+        "neutral_ekman", Set.TRAIN, batch_size=5, parameters={"shuffle": True}
     )
     dataset_labels = np.empty((0,))
     for _, labels in dataset:

@@ -267,7 +267,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             torch.backends.cudnn.deterministic = True
             torch.backends.cudnn.enabled = True
 
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         epochs = parameters.get("epochs", 20)
         batch_size = parameters.get("batch_size", 64)
         learning_rate = parameters.get("learning_rate", 0.001)
@@ -275,7 +275,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         batches = int(np.ceil(total_train_images / batch_size))
         total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
 
-        self.prepare_data(parameters, **kwargs)
+        self.prepare_data(parameters)
 
         if not self.model:
             self.initialize_model(parameters)
@@ -382,7 +382,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         :param parameters: Parameters required for loading the model
         :param kwargs: Additional kwargs parameters
         """
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get(
             "save_path", "models/image/cross_attention/cross_attention.pth"
         )
@@ -403,7 +403,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             raise RuntimeError(
                 "Model needs to be trained in order to save it!"
             )
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get(
             "save_path", "models/image/cross_attention/cross_attention.pth"
         )
@@ -417,7 +417,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         :return: An array with predicted emotion indices
         """
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
 
@@ -429,7 +429,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         self.model.eval()
 
         dataset = self.data_reader.get_seven_emotion_data(
-            which_set, batch_size, shuffle=False
+            which_set, batch_size
         )
         results = np.empty((0, 7))
         with torch.no_grad():

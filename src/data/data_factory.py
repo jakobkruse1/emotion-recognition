@@ -1,5 +1,7 @@
 """This class implements a factory for easy access to data readers and data"""
 
+from typing import Dict
+
 import tensorflow as tf
 
 from src.data.data_reader import DataReader, Set
@@ -38,6 +40,7 @@ class DataFactory:
         emotions: str = "neutral_ekman",
         batch_size: int = 64,
         data_folder: str = None,
+        parameters: Dict = None,
     ) -> tf.data.Dataset:
         """
         Get a specific dataset from a data reader
@@ -47,13 +50,18 @@ class DataFactory:
         :param emotions: Which emotion set to use: neutral_ekman or three
         :param batch_size: The batch size for the returned dataset
         :param data_folder: The folder where data is stored
+        :param parameters: Additional parameters for creating data
         :raise ValueError: If the emotion type is not available
         :return: Dataset instance that was requested
         """
         data_reader = DataFactory.get_data_reader(data_type, data_folder)
         if emotions == "neutral_ekman":
-            return data_reader.get_seven_emotion_data(which_set, batch_size)
+            return data_reader.get_seven_emotion_data(
+                which_set, batch_size, parameters
+            )
         elif emotions == "three":
-            return data_reader.get_three_emotion_data(which_set, batch_size)
+            return data_reader.get_three_emotion_data(
+                which_set, batch_size, parameters
+            )
         else:
             raise ValueError(f'Emotion type "{emotions}" does not have data!')

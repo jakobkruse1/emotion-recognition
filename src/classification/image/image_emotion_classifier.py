@@ -73,13 +73,12 @@ class ImageEmotionClassifier(EmotionClassifier):
         """
         raise NotImplementedError("Abstract class")  # pragma: no cover
 
-    def prepare_training(self, parameters: Dict, **kwargs) -> None:
+    def prepare_training(self, parameters: Dict) -> None:
         """
         Function that prepares the training by initializing optimizer,
         loss, metrics and callbacks for training.
 
         :param parameters: Training parameters
-        :param kwargs: Keyword arguments
         """
         learning_rate = parameters.get("learning_rate", 0.001)
         patience = parameters.get("patience", 5)
@@ -91,21 +90,20 @@ class ImageEmotionClassifier(EmotionClassifier):
         self.metrics = [tf.metrics.CategoricalAccuracy()]
         self.loss = tf.keras.losses.CategoricalCrossentropy()
 
-    def prepare_data(self, parameters: Dict, **kwargs) -> None:
+    def prepare_data(self, parameters: Dict) -> None:
         """
         Function that prepares image datasets for training and stores them
         inside the class.
 
         :param parameters: Parameter dictionary that contains important params.
             including: which_set, batch_size, weighted
-        :param kwargs: Additional keyword arguments
         """
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
         weighted = parameters.get("weighted", True)
 
         self.train_data = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size
+            self.emotions, which_set, batch_size, parameters
         ).map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
         self.val_data = self.data_reader.get_emotion_data(
             self.emotions, Set.VAL, batch_size

@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Tuple
+from typing import Dict, Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -36,28 +36,28 @@ class DataReader(ABC):
 
     @abstractmethod
     def get_seven_emotion_data(
-        self, which_set: Set, batch_size: int = 64, **kwargs
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
         Main method which loads the data from disk into a Dataset instance
 
         :param which_set: Which set to use, can be either train, val or test
         :param batch_size: The batch size for the requested dataset
-        :param kwargs: Additional parameters
+        :param parameters: Additional parameters
         :return: The Dataset instance to use in the emotion classifiers
         """
         raise NotImplementedError()  # pragma: no cover
 
     @abstractmethod
     def get_three_emotion_data(
-        self, which_set: Set, batch_size: int = 64, **kwargs
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
         Method that loads the dataset from disk and stores the labels
         in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet
         :param which_set: train, val or test set distinguisher
         :param batch_size: the batch size for the dataset
-        :param kwargs: Additional arguments
+        :param parameters: Additional arguments
         :return: The Dataset that contains data and labels
         """
         raise NotImplementedError()  # pragma: no cover
@@ -67,7 +67,7 @@ class DataReader(ABC):
         emotions: str = "neutral_ekman",
         which_set: Set = Set.TRAIN,
         batch_size: int = 64,
-        **kwargs,
+        parameters: Dict = None,
     ) -> tf.data.Dataset:
         """
         Method that returns a dataset depending on the emotion set.
@@ -75,13 +75,17 @@ class DataReader(ABC):
         :param emotions: The emotion set to use: neutral_ekman or three
         :param which_set: train, test or val set
         :param batch_size: The batch size for the dataset
-        :param kwargs: Additional arguments
+        :param parameters: Additional arguments
         :return: The obtained dataset
         """
         if emotions == "neutral_ekman":
-            return self.get_seven_emotion_data(which_set, batch_size, **kwargs)
+            return self.get_seven_emotion_data(
+                which_set, batch_size, parameters
+            )
         elif emotions == "three":
-            return self.get_three_emotion_data(which_set, batch_size, **kwargs)
+            return self.get_three_emotion_data(
+                which_set, batch_size, parameters
+            )
         else:
             raise ValueError(f'The emotion set "{emotions}" does not exist!')
 

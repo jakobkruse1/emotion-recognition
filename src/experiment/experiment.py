@@ -235,15 +235,17 @@ class ExperimentRunner:
         )
 
 
-def make_dictionaries(**kwargs) -> List[Dict]:
+def make_dictionaries(base_dict: Dict = None, **kwargs) -> List[Dict]:
     """
     Create a list of dictionaries from a dictionary of lists inside kwargs
 
+    :param base_dict: The base parameter dictionary to start from
     :param kwargs: All parameters that shall be put in the dictionaries
     :return: List of configuration dictionaries
     """
     all_configs = []
-    base_dict = {}
+    base_dict = base_dict or {}
+    base_dictionary = base_dict.copy()
     grid_search_keys = []
     grid_search_values = []
     for key, value in kwargs.items():
@@ -251,11 +253,11 @@ def make_dictionaries(**kwargs) -> List[Dict]:
             grid_search_keys.append(key)
             grid_search_values.append(value)
         else:
-            base_dict[key] = value
+            base_dictionary[key] = value
     configurations = list(itertools.product(*grid_search_values))
 
     for config in configurations:
-        config_dict = base_dict.copy()
+        config_dict = base_dictionary.copy()
         for index, element in enumerate(grid_search_keys):
             config_dict[element] = config[index]
         all_configs.append(config_dict)
