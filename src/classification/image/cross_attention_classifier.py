@@ -310,6 +310,15 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
+        tf.config.set_visible_devices([], "GPU")
+
+    def __del__(self) -> None:
+        """
+        Destructor for the cross attention classifier.
+        Needed to allow tensorflow to use gpus again.
+        """
+        gpus = tf.config.list_physical_devices("GPU")
+        tf.config.set_visible_devices(gpus, "GPU")
 
     def initialize_model(self, parameters: Dict) -> None:
         """
@@ -401,7 +410,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             running_loss = running_loss / iter_cnt
             tqdm.write(
                 f"[Epoch {epoch}] Training accuracy: {acc:.4f}. "
-                f"Loss: {running_loss:.3f}]"
+                f"Loss: {running_loss:.3f}"
             )
 
             with torch.no_grad():
