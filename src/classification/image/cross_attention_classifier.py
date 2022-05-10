@@ -1,17 +1,16 @@
-""" This file contains the EfficientNet facial emotion classifier """
+""" This file contains the CrossAttention facial emotion classifier """
 
 import sys
-from typing import Dict
+from typing import Dict, Tuple
 
 import numpy as np
-import pandas as pd
+import tensorflow as tf
 import torch
 import torch.nn.init as init
-import torch.utils.data as data
 from alive_progress import alive_bar
 from torch import nn
 from torch.nn import functional as F
-from torchvision import datasets, models
+from torchvision import models
 from tqdm import tqdm
 
 from src.classification.image.image_emotion_classifier import (
@@ -21,7 +20,21 @@ from src.data.data_reader import Set
 
 
 class DAN(nn.Module):
-    def __init__(self, num_class=7, num_head=4, pretrained=True):
+    """
+    This class implements the "Distract Your Attention" (DAN) network,
+    which was introduced in https://github.com/yaoing/DAN
+    """
+
+    def __init__(
+        self, num_class: int = 7, num_head: int = 4, pretrained: bool = True
+    ) -> None:
+        """
+        Initialize a new DAN network
+
+        :param num_class: Number of classes to classify
+        :param num_head: Number of heads for the network - paper suggests 4
+        :param pretrained: Flag to decide using pretrained resnet or not
+        """
         super(DAN, self).__init__()
 
         resnet = models.resnet18(pretrained=pretrained)
@@ -34,7 +47,18 @@ class DAN(nn.Module):
         self.fc = nn.Linear(512, num_class)
         self.bn = nn.BatchNorm1d(num_class)
 
-    def forward(self, x):
+    def forward(
+        self, x: torch.Tensor
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """
+        Forward pass through the DAN network.
+
+        :param x: The tensor x to pass through the network;
+        :return: Tuple containing three elements:
+            0: Output of the classifier
+            1: Resnet output features
+            2: Output after the attention heads before the classifier
+        """
         x = self.features(x)
         heads = []
         for i in range(self.num_head):
@@ -51,13 +75,25 @@ class DAN(nn.Module):
 
 
 class CrossAttentionHead(nn.Module):
-    def __init__(self):
+    """
+    Implementation of a CrossAttention Head in pytorch.
+    Taken from the original paper without changes.
+    """
+
+    def __init__(self) -> None:
+        """
+        Initialization function for the CrossAttention head that creates
+        the SpatialAttention and ChannelAttention layers.
+        """
         super().__init__()
         self.sa = SpatialAttention()
         self.ca = ChannelAttention()
         self.init_weights()
 
-    def init_weights(self):
+    def init_weights(self) -> None:
+        """
+        Function that initializes the weights of all layers.
+        """
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 init.kaiming_normal_(m.weight, mode="fan_out")
@@ -71,7 +107,13 @@ class CrossAttentionHead(nn.Module):
                 if m.bias is not None:
                     init.constant_(m.bias, 0)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass through the AttentionHead layer.
+
+        :param x: tensor to pass through the layer
+        :return: Output of the layer
+        """
         sa = self.sa(x)
         ca = self.ca(sa)
 
@@ -79,7 +121,14 @@ class CrossAttentionHead(nn.Module):
 
 
 class SpatialAttention(nn.Module):
-    def __init__(self):
+    """
+    SpatialAttention layer that is a part of the CrossAttentionHead.
+    """
+
+    def __init__(self) -> None:
+        """
+        Initializer function that creates the SpatialAttention layer
+        """
         super().__init__()
         self.conv1x1 = nn.Sequential(
             nn.Conv2d(512, 256, kernel_size=1),
@@ -99,7 +148,13 @@ class SpatialAttention(nn.Module):
         )
         self.relu = nn.ReLU()
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass through the SpatialAttention layer
+
+        :param x: The tensor to pass through the layer
+        :return: The output tensor
+        """
         y = self.conv1x1(x)
         y = self.relu(self.conv_3x3(y) + self.conv_1x3(y) + self.conv_3x1(y))
         y = y.sum(dim=1, keepdim=True)
@@ -109,7 +164,15 @@ class SpatialAttention(nn.Module):
 
 
 class ChannelAttention(nn.Module):
-    def __init__(self):
+    """
+    The ChannelAttention layer, which is the second part of the
+    CrossAttentionHead.
+    """
+
+    def __init__(self) -> None:
+        """
+        Initialization function
+        """
         super().__init__()
         self.gap = nn.AdaptiveAvgPool2d(1)
         self.attention = nn.Sequential(
@@ -120,7 +183,14 @@ class ChannelAttention(nn.Module):
             nn.Sigmoid(),
         )
 
-    def forward(self, sa):
+    def forward(self, sa: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass through the ChannelAttention layer
+
+        :param sa: Input into the layer
+            (should be the output of SpatialAttention)
+        :return: Output of the ChannelAttention layer
+        """
         sa = self.gap(sa)
         sa = sa.view(sa.size(0), -1)
         y = self.attention(sa)
@@ -130,7 +200,22 @@ class ChannelAttention(nn.Module):
 
 
 class AffinityLoss(nn.Module):
-    def __init__(self, device, num_class=8, feat_dim=512):
+    """
+    Affinity Loss function that is supposed to increase
+    the inter-class distances while decreasing the intra-class distances.
+    For more details about the computation go to chapter 3.1.1 of the paper.
+    """
+
+    def __init__(
+        self, device: torch.device, num_class: int = 7, feat_dim: int = 512
+    ) -> None:
+        """
+        Initializer for the Affinity Loss function
+
+        :param device: Torch device to use for the computation
+        :param num_class: Number of classes to predict
+        :param feat_dim: Dimensionality of the features output
+        """
         super(AffinityLoss, self).__init__()
         self.num_class = num_class
         self.feat_dim = feat_dim
@@ -141,7 +226,14 @@ class AffinityLoss(nn.Module):
             torch.randn(self.num_class, self.feat_dim).to(device)
         )
 
-    def forward(self, x, labels):
+    def forward(self, x: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass through the loss function.
+
+        :param x: features of the DAN model. Output after resnet.
+        :param labels: Labels for the inputs to classify.
+        :return: Loss function value
+        """
         x = self.gap(x).view(x.size(0), -1)
 
         batch_size = x.size(0)
@@ -168,12 +260,25 @@ class AffinityLoss(nn.Module):
 
 
 class PartitionLoss(nn.Module):
-    def __init__(
-        self,
-    ):
+    """
+    Partition loss function that maximizes the variance among attention maps.
+    Refer to chapter 3.3.1 for more details.
+    """
+
+    def __init__(self) -> None:
+        """
+        Initializer function
+        """
         super(PartitionLoss, self).__init__()
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass through the loss function that computes the loss value
+
+        :param x: The input tensor to compute the loss for. Should contain the
+            values of the tensors after the DAN heads.
+        :return: Loss value in a tensor.
+        """
         num_head = x.size(1)
 
         if num_head > 1:
@@ -183,49 +288,6 @@ class PartitionLoss(nn.Module):
             loss = 0
 
         return loss
-
-
-class ImbalancedDatasetSampler(data.sampler.Sampler):
-    def __init__(self, dataset, indices: list = None, num_samples: int = None):
-        super().__init__(dataset)
-        self.indices = (
-            list(range(len(dataset))) if indices is None else indices
-        )
-        self.num_samples = (
-            len(self.indices) if num_samples is None else num_samples
-        )
-
-        df = pd.DataFrame()
-        df["label"] = self._get_labels(dataset)
-        df.index = self.indices
-        df = df.sort_index()
-
-        label_to_count = df["label"].value_counts()
-
-        weights = 1.0 / label_to_count[df["label"]]
-
-        self.weights = torch.DoubleTensor(weights.to_list())
-
-        # self.weights = self.weights.clamp(min=1e-5)
-
-    def _get_labels(self, dataset):
-        if isinstance(dataset, datasets.ImageFolder):
-            return [x[1] for x in dataset.imgs]
-        elif isinstance(dataset, torch.utils.data.Subset):
-            return [dataset.dataset.imgs[i][1] for i in dataset.indices]
-        else:
-            raise NotImplementedError
-
-    def __iter__(self):
-        return (
-            self.indices[i]
-            for i in torch.multinomial(
-                self.weights, self.num_samples, replacement=True
-            )
-        )
-
-    def __len__(self):
-        return self.num_samples
 
 
 class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
@@ -257,7 +319,8 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
-        Training method for EfficientNet model
+        Training method for CrossAttention model.
+        Taken from https://github.com/yaoing/DAN and adapted slightly
 
         :param parameters: Parameter dictionary used for training
         :param kwargs: Additional kwargs parameters
@@ -271,6 +334,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         epochs = parameters.get("epochs", 50)
         batch_size = parameters.get("batch_size", 64)
         learning_rate = parameters.get("learning_rate", 0.001)
+        patience = parameters.get("patience", 10)
         total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[0]
         batches = int(np.ceil(total_train_images / batch_size))
         total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
@@ -296,6 +360,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         )
 
         best_acc = 0
+        waiting_for_improve = 0
         for epoch in tqdm(range(epochs)):
             running_loss = 0.0
             correct_sum = 0
@@ -366,12 +431,18 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
 
                 acc = bingo_cnt / total_val_images
                 acc = np.around(acc.numpy(), 4)
+                if acc < best_acc:
+                    waiting_for_improve += 1
+                else:
+                    waiting_for_improve = 0
                 best_acc = max(acc, best_acc)
                 tqdm.write(
                     f"[Epoch {epoch}] Validation accuracy:{acc:.4f}. "
                     f"Loss:{running_loss:.3f}"
                 )
                 tqdm.write("best_acc:" + str(best_acc))
+                if waiting_for_improve > patience:
+                    break
 
         self.is_trained = True
 
@@ -440,7 +511,17 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
 
         return np.argmax(results, axis=1)
 
-    def transform_data(self, data, labels):
+    def transform_data(
+        self, data: tf.Tensor, labels: tf.Tensor
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Transforming method that transforms the data to torch tensors
+        in the correct format.
+
+        :param data: Tensor containing a batch of images
+        :param labels: Tensor containing a batch of labels
+        :return: torch tensors with images and labels
+        """
         data = data.numpy() / 255.0
         data = data - np.array([0.485, 0.456, 0.406]) / np.array(
             [0.229, 0.224, 0.225]
