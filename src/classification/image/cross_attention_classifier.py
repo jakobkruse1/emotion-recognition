@@ -317,8 +317,11 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         Destructor for the cross attention classifier.
         Needed to allow tensorflow to use gpus again.
         """
-        gpus = tf.config.list_physical_devices("GPU")
-        tf.config.set_visible_devices(gpus, "GPU")
+        try:
+            gpus = tf.config.list_physical_devices("GPU")
+            tf.config.set_visible_devices(gpus, "GPU")
+        except AttributeError:
+            pass  # This means that tensorflow is unloaded already.
 
     def initialize_model(self, parameters: Dict) -> None:
         """
