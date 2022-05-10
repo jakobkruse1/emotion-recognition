@@ -1,5 +1,5 @@
 """ This file contains the CrossAttention facial emotion classifier """
-
+import os
 import sys
 from typing import Dict, Tuple
 
@@ -487,6 +487,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         save_path = parameters.get(
             "save_path", "models/image/cross_attention/cross_attention.pth"
         )
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
         torch.save({"model_state_dict": self.model.state_dict()}, save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
