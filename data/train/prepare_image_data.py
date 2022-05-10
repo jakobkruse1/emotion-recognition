@@ -30,9 +30,10 @@ def prepare_folders():
         "surprise",
     ]
     for folder in folders:
-        os.makedirs(folder)
-        for subfolder in subfolders:
-            os.makedirs(os.path.join(folder, subfolder))
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+            for subfolder in subfolders:
+                os.makedirs(os.path.join(folder, subfolder))
 
 
 def copy_kaggle_dataset(train_split=0.8):
@@ -369,6 +370,127 @@ def copy_ckplus_dataset():
     print("CK+ copying successful.")
 
 
+def copy_bu3dfe_data():
+    if not os.path.exists("data/train/image/BU_3DFE"):
+        warnings.warn("BU3DFE Dataset not downloaded. Skipping!")
+        return
+    print("Copying BU3DFE dataset.")
+    emotions = {
+        "AN": "angry",
+        "DI": "disgust",
+        "FE": "fear",
+        "HA": "happy",
+        "NE": "neutral",
+        "SA": "sad",
+        "SU": "surprise",
+    }
+    frontal_files = glob.glob("data/train/image/BU_3DFE/**/*_F2D.bmp")
+    emotion_images = {emotion: [] for emotion in emotions.values()}
+    for image_file in frontal_files:
+        emotion = image_file.split("/")[-1][6:8]
+        im = Image.open(image_file)
+        im = im.resize((48, 48))
+        im = ImageOps.grayscale(im)
+        im.convert("RGB")
+        emotion_images[emotions[emotion]].append(im)
+
+    for emotion in emotions.values():
+        for count, im in enumerate(emotion_images[emotion]):
+            if count / len(emotion_images[emotion]) <= 0.6:
+                folder = "train"
+            elif count / len(emotion_images[emotion]) <= 0.8:
+                folder = "val"
+            else:
+                folder = "test"
+            save_path = os.path.join(
+                "data/train/image",
+                folder,
+                emotion,
+                f"bu3dfe_f_{count:05d}.jpeg",
+            )
+            im.save(save_path)
+
+    side_files = glob.glob("data/train/image/BU_3DFE/**/*_F3D.bmp")
+    emotion_images = {emotion: [] for emotion in emotions.values()}
+    for image_file in side_files:
+        emotion = image_file.split("/")[-1][6:8]
+        im = Image.open(image_file)
+        im = ImageOps.grayscale(im)
+        im.convert("RGB")
+        image_arr = np.asarray(im)
+        im1, im2 = separate_image(image_arr)
+        emotion_images[emotions[emotion]].append(im1)
+        emotion_images[emotions[emotion]].append(im2)
+
+    for emotion in emotions.values():
+        for count, im in enumerate(emotion_images[emotion]):
+            if count / len(emotion_images[emotion]) <= 0.6:
+                folder = "train"
+            elif count / len(emotion_images[emotion]) <= 0.8:
+                folder = "val"
+            else:
+                folder = "test"
+            save_path = os.path.join(
+                "data/train/image",
+                folder,
+                emotion,
+                f"bu3dfe_s_{count:05d}.jpeg",
+            )
+            im.save(save_path)
+
+    print("BU3DFE copying successful.")
+
+
+def separate_image(image):
+    """
+    Highly inefficient function for splitting the weirdly stored images from
+    BU3DFE dataset into two separate images.
+    :param image: The image array to split
+    :return: Tuple of two image arrays
+    """
+    val0 = image[0, 0]
+    row_index = 1
+    while image[row_index, 0] == val0:
+        row_index += 1
+    val1 = image[row_index, 0]
+    height = 1
+    width = 1
+    max_width = False
+    max_height = False
+    while not (max_width and max_height):
+        if np.all(image[row_index : row_index + height + 1, 0:width] == val1):
+            height += 1
+        else:
+            max_height = True
+        if np.all(
+            image[row_index : row_index + height, 0 : width + 1] == val1
+        ):
+            width += 1
+        else:
+            max_width = True
+
+    im1 = image[row_index + height :, 0:width]
+    im2 = image[row_index:, width:]
+
+    return padding(im1[::-1, ::-1]), padding(im2)
+
+
+def padding(image):
+    desired_size = max(image.shape)
+    delta_w = desired_size - image.shape[1]
+    delta_h = desired_size - image.shape[0]
+    padding = (
+        delta_w // 2,
+        delta_h // 2,
+        delta_w - (delta_w // 2),
+        delta_h - (delta_h // 2),
+    )
+    image = Image.fromarray(image)
+    image = ImageOps.expand(image, padding)
+    image = image.resize((48, 48))
+    return image
+
+
 if __name__ == "__main__":
     prepare_folders()
 
@@ -378,3 +500,4 @@ if __name__ == "__main__":
     copy_affectnet_dataset()
     copy_ffhq_dataset()
     copy_ckplus_dataset()
+    copy_bu3dfe_data()

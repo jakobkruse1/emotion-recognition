@@ -106,7 +106,7 @@ if [ -d "FFHQ" ]; then
     echo "FFHQ dataset ready."
 fi;
 
-if [ -d "bu3dfe" ]; then
+if [ -d "BU_3DFE" ]; then
     echo "BU-3DFE dataset ready."
 fi;
 

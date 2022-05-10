@@ -268,7 +268,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             torch.backends.cudnn.enabled = True
 
         parameters = self.init_parameters(parameters, **kwargs)
-        epochs = parameters.get("epochs", 20)
+        epochs = parameters.get("epochs", 50)
         batch_size = parameters.get("batch_size", 64)
         learning_rate = parameters.get("learning_rate", 0.001)
         total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[0]

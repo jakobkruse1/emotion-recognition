@@ -93,6 +93,13 @@ class Evaluator:
                         np.asarray(experiment["test_predictions"]),
                     )
                 )
+            elif score == "avg_recall":
+                scores.append(
+                    self._avg_recall(
+                        labels[experiment["modality"]],
+                        np.asarray(experiment["test_predictions"]),
+                    )
+                )
         return scores
 
     @staticmethod
