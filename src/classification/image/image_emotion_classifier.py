@@ -1,5 +1,5 @@
 """ Base class for all image emotion classifiers """
-
+import warnings
 from abc import abstractmethod
 from typing import Dict
 
@@ -33,11 +33,6 @@ class ImageEmotionClassifier(EmotionClassifier):
         self.train_data = None
         self.val_data = None
         self.class_weights = None
-        self.balanced = parameters.get("balanced", False)
-        if self.balanced:
-            self.data_reader = DataFactory.get_data_reader(
-                "balanced_image", self.data_reader.folder
-            )
 
     @abstractmethod
     def train(self, parameters: Dict = None, **kwargs) -> None:
@@ -108,6 +103,15 @@ class ImageEmotionClassifier(EmotionClassifier):
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
         weighted = parameters.get("weighted", True)
+        balanced = parameters.get("balanced", False)
+        if balanced:
+            self.data_reader = DataFactory.get_data_reader(
+                "balanced_image", self.data_reader.folder
+            )
+        if weighted and balanced:
+            warnings.warn(
+                "Both weigthed and balanced parameters are set to True!"
+            )
 
         self.train_data = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, parameters

@@ -129,6 +129,8 @@ class BalancedImageDataReader(ImageDataReader):
         resampled_ds = tf.data.Dataset.sample_from_datasets(
             class_datasets, weights=[1 / 7.0] * 7
         )
+        if shuffle:
+            resampled_ds = resampled_ds.shuffle(1000)
         resampled_ds = resampled_ds.take(total_count).batch(
             batch_size=batch_size
         )
@@ -221,17 +223,6 @@ class BalancedImageDataReader(ImageDataReader):
         )
         dataset = self.add_augmentations(dataset, augment)
         return dataset
-
-    @staticmethod
-    def map_emotions(data, labels):
-        """
-        Conversion function that is applied when three emotion labels are
-        required.
-        """
-        new_labels = ImageDataReader.convert_to_three_emotions_onehot(
-            labels
-        ).astype(np.float32)
-        return data, new_labels
 
     def get_labels(self, which_set: Set = Set.TRAIN) -> np.ndarray:
         """

@@ -230,15 +230,17 @@ if __name__ == "__main__":
     ]
     all_efficientnet = []
     for config in best_efficientnet:
-        configs = make_dictionaries(config, augment=[True, False])
+        configs = make_dictionaries(
+            config, augment=[True, False], balanced=[True, False]
+        )
         all_efficientnet.extend(configs)
 
     all_vgg16 = []
     for config in best_vgg16:
-        configs = make_dictionaries(config, augment=[True, False])
+        configs = make_dictionaries(
+            config, augment=[True, False], balanced=[True, False]
+        )
         all_vgg16.extend(configs)
-
-    init_parameters = [{"balanced": True}, {"balanced": False}]
 
     which_gpu = setup_gpu()
     # Start grid search with balanced data here
@@ -248,13 +250,11 @@ if __name__ == "__main__":
         modality="image",
         model="efficientnet",
         train_parameters=all_efficientnet,
-        init_parameters=init_parameters,
     )
     runner.add_grid_experiments(
         modality="image",
         model="vgg16",
         train_parameters=all_vgg16,
-        init_parameters=init_parameters,
     )
 
     ca_train = make_dictionaries(
@@ -262,13 +262,13 @@ if __name__ == "__main__":
         multi_run=[1, 2, 3, 4],
         augment=[True, False],
         gpu=[which_gpu],
+        balanced=[True, False],
     )
 
     runner.add_grid_experiments(
         modality="image",
         model="cross_attention",
         train_parameters=ca_train,
-        init_parameters=init_parameters,
     )
 
     my_experiments = list(range(len(runner.experiments)))[

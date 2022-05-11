@@ -2,10 +2,12 @@ import os
 from typing import Dict
 
 import numpy as np
+import pytest
 import tensorflow as tf
 
 from src.classification import EmotionClassifier
 from src.classification.image import ImageEmotionClassifier
+from src.data.balanced_image_data_reader import BalancedImageDataReader
 from src.data.image_data_reader import ImageDataReader, Set
 
 
@@ -80,6 +82,26 @@ def test_data_preparation():
     assert classifier.class_weights[0] == 8.0 / 14.0
     for i in range(1, 7):
         assert classifier.class_weights[i] == 8.0 / 7.0
+
+
+@pytest.mark.filterwarnings("ignore::UserWarning")
+def test_balanced_switch():
+    classifier = DummyImageClassifier()
+    assert classifier.train_data is None
+    assert classifier.val_data is None
+    assert classifier.class_weights is None
+    classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
+    parameters = {"which_set": Set.TRAIN, "batch_size": 5, "balanced": False}
+    classifier.train(parameters)
+    assert isinstance(classifier.data_reader, ImageDataReader)
+
+    parameters = {"which_set": Set.TRAIN, "batch_size": 5, "balanced": True}
+    classifier.train(parameters)
+    assert isinstance(classifier.data_reader, BalancedImageDataReader)
+
+    with pytest.warns(UserWarning):
+        parameters = {"balanced": True, "weighted": True}
+        classifier.train(parameters)
 
 
 def test_init_parameters():

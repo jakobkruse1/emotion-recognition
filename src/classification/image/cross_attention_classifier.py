@@ -285,7 +285,7 @@ class PartitionLoss(nn.Module):
             var = x.var(dim=1).mean()
             loss = torch.log(1 + num_head / (var + sys.float_info.epsilon))
         else:
-            loss = 0
+            loss = 0  # pragma: no cover
 
         return loss
 
@@ -320,7 +320,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         try:
             gpus = tf.config.list_physical_devices("GPU")
             tf.config.set_visible_devices(gpus, "GPU")
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             pass  # This means that tensorflow is unloaded already.
 
     def initialize_model(self, parameters: Dict) -> None:
@@ -337,7 +337,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         :param parameters: Parameter dictionary used for training
         :param kwargs: Additional kwargs parameters
         """
-        if torch.cuda.is_available():
+        if torch.cuda.is_available():  # pragma: no cover
             torch.backends.cudnn.benchmark = True
             torch.backends.cudnn.deterministic = True
             torch.backends.cudnn.enabled = True
@@ -460,7 +460,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                 )
                 tqdm.write("best_acc:" + str(best_acc))
                 if waiting_for_improve > patience:
-                    break
+                    break  # pragma: no cover
 
         self.is_trained = True
 
