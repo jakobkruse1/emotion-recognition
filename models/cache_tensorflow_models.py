@@ -33,12 +33,6 @@ if __name__ == "__main__":
     input = tf.keras.layers.Input(
         shape=(48, 48, 3), dtype=tf.float32, name="image"
     )
-    model = tf.keras.applications.resnet50.ResNet50(
-        include_top=False,
-        weights="imagenet",
-        input_tensor=input,
-        input_shape=(48, 48, 3),
-    )
     model2 = tf.keras.applications.EfficientNetB2(
         include_top=False,
         weights="imagenet",

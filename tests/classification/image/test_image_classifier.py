@@ -28,6 +28,7 @@ class DummyImageClassifier(ImageEmotionClassifier):
 
 def test_training_preparation():
     classifier = DummyImageClassifier()
+    classifier.data_reader.folder = "tests/test_data/image"
     assert classifier.callback is None
     assert classifier.optimizer is None
     assert classifier.loss is None

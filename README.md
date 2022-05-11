@@ -17,19 +17,24 @@ Then, install the required packages:
 ```bash
 pip install -r requirements.txt
 ```
-Download all the datasets:
+To download the datasets, please refer to [data/DESCRIPTION.md](data/DESCRIPTION.md).
+Some of the datasets are publicly available, to download them use:
 ```bash
 bash data/prepare_all.sh
 ```
-Install all the classification models:
+Prepare all the classification models:
 ```bash
 bash models/install_all.sh
 ```
 
 ### Tests
 Run the tests using:
-```python
+```bash
 python -m pytest tests
+```
+Run the tests with coverage:
+```bash
+python -m pytest --cov=src/ tests/
 ```
 
 ### Extras
