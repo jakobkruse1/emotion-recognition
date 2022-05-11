@@ -450,9 +450,9 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                 acc = bingo_cnt / total_val_images
                 acc = np.around(acc.numpy(), 4)
                 if acc < best_acc:
-                    waiting_for_improve += 1
+                    waiting_for_improve += 1  # pragma: no cover
                 else:
-                    waiting_for_improve = 0
+                    waiting_for_improve = 0  # pragma: no cover
                 best_acc = max(acc, best_acc)
                 tqdm.write(
                     f"[Epoch {epoch}] Validation accuracy:{acc:.4f}. "
