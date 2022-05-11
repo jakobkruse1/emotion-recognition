@@ -7,6 +7,7 @@ import numpy as np
 import tensorflow as tf
 
 from src.classification import EmotionClassifier
+from src.data.data_factory import DataFactory
 from src.data.data_reader import Set
 
 
@@ -24,6 +25,7 @@ class ImageEmotionClassifier(EmotionClassifier):
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__(name, "image", parameters)
+        parameters = parameters or {}
         self.callback = None
         self.optimizer = None
         self.loss = None
@@ -31,6 +33,11 @@ class ImageEmotionClassifier(EmotionClassifier):
         self.train_data = None
         self.val_data = None
         self.class_weights = None
+        self.balanced = parameters.get("balanced", False)
+        if self.balanced:
+            self.data_reader = DataFactory.get_data_reader(
+                "balanced_image", self.data_reader.folder
+            )
 
     @abstractmethod
     def train(self, parameters: Dict = None, **kwargs) -> None:

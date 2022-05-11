@@ -100,6 +100,13 @@ class Evaluator:
                         np.asarray(experiment["test_predictions"]),
                     )
                 )
+            elif score == "avg_precision":
+                scores.append(
+                    self._avg_precision(
+                        labels[experiment["modality"]],
+                        np.asarray(experiment["test_predictions"]),
+                    )
+                )
         return scores
 
     @staticmethod
@@ -141,8 +148,9 @@ class Evaluator:
         """
         prec = 0.0
         for class_id in range(7):
-            prec += (
-                np.sum(true[pred == class_id] == pred[pred == class_id])
-                / true[pred == class_id].shape[0]
-            )
+            if true[pred == class_id].shape[0]:
+                prec += (
+                    np.sum(true[pred == class_id] == pred[pred == class_id])
+                    / true[pred == class_id].shape[0]
+                )
         return prec / 7.0

@@ -4,6 +4,7 @@ from typing import Dict
 
 import tensorflow as tf
 
+from src.data.balanced_image_data_reader import BalancedImageDataReader
 from src.data.data_reader import DataReader, Set
 from src.data.image_data_reader import ImageDataReader
 from src.data.text_data_reader import TextDataReader
@@ -28,6 +29,8 @@ class DataFactory:
             return TextDataReader(folder=data_folder)
         elif data_type == "image":
             return ImageDataReader(folder=data_folder)
+        elif data_type == "balanced_image":
+            return BalancedImageDataReader(folder=data_folder)
         else:
             raise ValueError(
                 f'The Data Reader for type "{data_type}" ' f"does not exist!"

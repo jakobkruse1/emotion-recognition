@@ -347,6 +347,8 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         batch_size = parameters.get("batch_size", 64)
         learning_rate = parameters.get("learning_rate", 0.001)
         patience = parameters.get("patience", 10)
+        if "gpu" in parameters:
+            self.device = torch.device(f"cuda:{parameters['gpu']}")
         total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[0]
         batches = int(np.ceil(total_train_images / batch_size))
         total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]

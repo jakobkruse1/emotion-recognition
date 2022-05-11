@@ -15,11 +15,11 @@ class ImageDataReader(DataReader):
     Class that reads the CSV datasets from the data/train/text folder
     """
 
-    def __init__(self, folder: str = None):
+    def __init__(self, name: str = "image", folder: str = None):
         """
         Initialization for the class
         """
-        super().__init__("image", folder or "data/train/image")
+        super().__init__(name, folder or "data/train/image")
         self.folder_map = {
             Set.TRAIN: "train",
             Set.VAL: "val",
