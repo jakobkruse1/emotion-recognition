@@ -63,6 +63,7 @@ def copy_kaggle_dataset(train_split=0.8):
     for subfolder in subfolders:
         workdir = os.path.join("data/train/image/images/train", subfolder)
         file_list = np.array(os.listdir(workdir))
+        np.random.seed(42)
         np.random.shuffle(file_list)
         for file in file_list[: int(train_split * file_list.shape[0])]:
             shutil.copyfile(
@@ -102,7 +103,7 @@ def copy_jaffe_dataset():
     for image_path in glob.glob("data/train/image/jaffedbase/*.tiff"):
         images[emotions[os.path.basename(image_path)[3:5]]].append(image_path)
     for emotion, image_list in images.items():
-        random.shuffle(image_list)
+        random.Random(42).shuffle(image_list)
         for im in image_list[: int(0.6 * len(image_list))]:
             # Copy training
             img = Image.open(im)
