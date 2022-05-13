@@ -9,6 +9,7 @@ Subpackages
 
    src.classification
    src.data
+   src.evaluation
    src.experiment
 
 Submodules

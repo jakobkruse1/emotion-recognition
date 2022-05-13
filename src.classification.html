@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="src.classification.text package" href="src.classification.text.html" />
+    <link rel="next" title="src.classification.image package" href="src.classification.image.html" />
     <link rel="prev" title="src package" href="src.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -39,6 +39,15 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="src.classification.image.html">src.classification.image package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.cross_attention_classifier">src.classification.image.cross_attention_classifier module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.efficientnet_classifier">src.classification.image.efficientnet_classifier module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.image_emotion_classifier">src.classification.image.image_emotion_classifier module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.vgg16_classifier">src.classification.image.vgg16_classifier module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="src.classification.text.html">src.classification.text package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.bert_classifier">src.classification.text.bert_classifier module</a></li>
@@ -76,6 +85,30 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The constructed emotion classifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.classification.classifier_factory.ImageClassifierFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.classifier_factory.</span></span><span class="sig-name descname"><span class="pre">ImageClassifierFactory</span></span><a class="headerlink" href="#src.classification.classifier_factory.ImageClassifierFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Factory class that generates image emotion classifiers</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.classification.classifier_factory.ImageClassifierFactory.get">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.classification.emotion_classifier.EmotionClassifier" title="src.classification.emotion_classifier.EmotionClassifier"><span class="pre">src.classification.emotion_classifier.EmotionClassifier</span></a></span></span><a class="headerlink" href="#src.classification.classifier_factory.ImageClassifierFactory.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that returns an instance of an image emotion classifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The name of the image model</p></li>
+<li><p><strong>parameters</strong> – The parameters for the image model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The constructed image classifier</p>
 </dd>
 </dl>
 </dd></dl>
@@ -128,6 +161,38 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>An array with predicted emotion indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.classification.emotion_classifier.EmotionClassifier.get_class_weights">
+<span class="sig-name descname"><span class="pre">get_class_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="src.data.html#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.classification.emotion_classifier.EmotionClassifier.get_class_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a class weights dictionary for a given dataset.
+The dictionary’s keys are the labels and the values are the counts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>which_set</strong> – Which set to use for calculating the class weights.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary with the class weights</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.classification.emotion_classifier.EmotionClassifier.init_parameters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#src.classification.emotion_classifier.EmotionClassifier.init_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that merges the parameters and kwargs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> – Parameter dictionary</p></li>
+<li><p><strong>kwargs</strong> – Additional parameters in kwargs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Combined dictionary with parameters</p>
 </dd>
 </dl>
 </dd></dl>
@@ -215,7 +280,7 @@
   <li><a href="modules.html">thesis-emotion-detection</a><ul>
   <li><a href="src.html">src package</a><ul>
       <li>Previous: <a href="src.html" title="previous chapter">src package</a></li>
-      <li>Next: <a href="src.classification.text.html" title="next chapter">src.classification.text package</a></li>
+      <li>Next: <a href="src.classification.image.html" title="next chapter">src.classification.image package</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

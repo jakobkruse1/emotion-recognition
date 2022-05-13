@@ -4,6 +4,14 @@ src.data package
 Submodules
 ----------
 
+src.data.balanced\_image\_data\_reader module
+---------------------------------------------
+
+.. automodule:: src.data.balanced_image_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.data.data\_factory module
 -----------------------------
 
@@ -16,6 +24,14 @@ src.data.data\_reader module
 ----------------------------
 
 .. automodule:: src.data.data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.data.image\_data\_reader module
+-----------------------------------
+
+.. automodule:: src.data.image_data_reader
    :members:
    :undoc-members:
    :show-inheritance:

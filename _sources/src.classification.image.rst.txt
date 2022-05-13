@@ -1,0 +1,45 @@
+src.classification.image package
+================================
+
+Submodules
+----------
+
+src.classification.image.cross\_attention\_classifier module
+------------------------------------------------------------
+
+.. automodule:: src.classification.image.cross_attention_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.image.efficientnet\_classifier module
+--------------------------------------------------------
+
+.. automodule:: src.classification.image.efficientnet_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.image.image\_emotion\_classifier module
+----------------------------------------------------------
+
+.. automodule:: src.classification.image.image_emotion_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.image.vgg16\_classifier module
+-------------------------------------------------
+
+.. automodule:: src.classification.image.vgg16_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.classification.image
+   :members:
+   :undoc-members:
+   :show-inheritance:

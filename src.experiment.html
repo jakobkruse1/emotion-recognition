@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="src.data package" href="src.data.html" />
+    <link rel="prev" title="src.evaluation package" href="src.evaluation.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -120,11 +120,14 @@ data_reader: Overwrite data reader for testing purposes</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.experiment.experiment.make_dictionaries">
-<span class="sig-prename descclassname"><span class="pre">src.experiment.experiment.</span></span><span class="sig-name descname"><span class="pre">make_dictionaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.experiment.experiment.make_dictionaries" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">src.experiment.experiment.</span></span><span class="sig-name descname"><span class="pre">make_dictionaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.experiment.experiment.make_dictionaries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a list of dictionaries from a dictionary of lists inside kwargs</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>kwargs</strong> – All parameters that shall be put in the dictionaries</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dict</strong> – The base parameter dictionary to start from</p></li>
+<li><p><strong>kwargs</strong> – All parameters that shall be put in the dictionaries</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>List of configuration dictionaries</p>
@@ -169,7 +172,7 @@ data_reader: Overwrite data reader for testing purposes</p></li>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="modules.html">thesis-emotion-detection</a><ul>
   <li><a href="src.html">src package</a><ul>
-      <li>Previous: <a href="src.data.html" title="previous chapter">src.data package</a></li>
+      <li>Previous: <a href="src.evaluation.html" title="previous chapter">src.evaluation package</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
