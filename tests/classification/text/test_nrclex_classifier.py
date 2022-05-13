@@ -23,8 +23,7 @@ def test_initialization():
 
 def test_classification():
     classifier = NRCLexTextClassifier()
-    classifier.data_reader = TextDataReader(folder="tests/test_data")
-    classifier.data_reader.file_map[Set.TRAIN] = "text_test.csv"
+    classifier.data_reader = TextDataReader(folder="tests/test_data/text")
 
     results = classifier.classify({"batch_size": 5, "which_set": Set.TRAIN})
     assert results.shape == (30,)

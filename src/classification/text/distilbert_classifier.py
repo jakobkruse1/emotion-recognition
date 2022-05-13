@@ -39,7 +39,7 @@ class DistilBertClassifier(BertClassifier):
         :param kwargs: Additional parameters
             Not used currently
         """
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/text/distilbert")
         self.classifier = tf.keras.models.load_model(save_path)
 
@@ -57,14 +57,14 @@ class DistilBertClassifier(BertClassifier):
             raise RuntimeError(
                 "Model needs to be trained in order to save it!"
             )
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/text/distilbert")
         self.classifier.save(save_path, include_optimizer=False)
 
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = DistilBertClassifier()
-    classifier.train({"epochs": 10, "dropout_rate": 0.2})
+    classifier.train({"dropout_rate": 0.2, "dense_layer": 1024})
     classifier.save()
     classifier.load()
     emotions = classifier.classify()

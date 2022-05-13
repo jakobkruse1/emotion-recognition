@@ -3,6 +3,7 @@
 import itertools
 import json
 import os
+import sys
 import warnings
 from typing import Dict, List
 
@@ -69,7 +70,7 @@ class Experiment:
         This function either throws an Assertion Error or Value Error in case
         of wrong parameters.
         """
-        assert self.modality in ["text"]
+        assert self.modality in ["text", "image"]
         _ = ClassifierFactory.get(self.modality, self.model, {})
         assert (
             isinstance(self.train_parameters, dict)
@@ -94,7 +95,6 @@ class ExperimentRunner:
             Not currently used
         """
         self.experiments = []
-        self.experiment_index = 0
         self.base_experiment_name = experiment_name
         self.best_index = None
         self.accuracy = None
@@ -120,12 +120,14 @@ class ExperimentRunner:
         is terminated.
         """
         yes = ["yes", "y"]
-
-        choice = input("Do you want to continue? [Y/N] : ").lower()
-        if choice in yes:
-            return
-        else:
-            exit(0)
+        try:
+            choice = input("Do you want to continue? [Y/N] : ").lower()
+            if choice in yes or not sys.__stdin__.isatty():
+                return
+            else:
+                exit(0)
+        except EOFError:
+            return  # pragma: no cover
 
     def add_grid_experiments(self, **kwargs):
         """
@@ -174,24 +176,15 @@ class ExperimentRunner:
         :param kwargs: Additional keyword arguments
         """
         self.accuracy = []
-        for experiment in self.experiments:
-            accuracy = self.run_experiment(
-                experiment, self.experiment_index, **kwargs
-            )
+        indices = kwargs.get("indices", list(range(len(self.experiments))))
+        for index in indices:
+            experiment = self.experiments[index]
+            accuracy = self.run_experiment(experiment, index, **kwargs)
             self.accuracy.append(accuracy)
-            self.experiment_index += 1
-            print(
-                f"{self.experiment_index}/{len(self.experiments)} : "
-                f"Accuracy {accuracy}"
-            )
+            print(experiment.get_parameter_dict())
+            print(f"Experiment {index}, Accuracy {accuracy}")
         print("*****\nFinished all runs successfully\n*****")
         self.best_index = np.argmax(np.array(self.accuracy))
-        print(
-            f"Best: Index {self.best_index}, "
-            f"Acc {self.accuracy[self.best_index]}, "
-            f"Parameters "
-            f"{self.experiments[self.best_index].get_parameter_dict()}"
-        )
 
     def run_experiment(
         self, experiment: Experiment, index: int, **kwargs
@@ -204,6 +197,8 @@ class ExperimentRunner:
         :param kwargs: Additional kwargs
             data_reader: Overwrite data reader for testing purposes
         """
+        print(f"Running experiment {index}")
+        print(experiment.get_parameter_dict())
         classifier = ClassifierFactory.get(
             experiment.modality, experiment.model, experiment.init_parameters
         )
@@ -240,15 +235,17 @@ class ExperimentRunner:
         )
 
 
-def make_dictionaries(**kwargs) -> List[Dict]:
+def make_dictionaries(base_dict: Dict = None, **kwargs) -> List[Dict]:
     """
     Create a list of dictionaries from a dictionary of lists inside kwargs
 
+    :param base_dict: The base parameter dictionary to start from
     :param kwargs: All parameters that shall be put in the dictionaries
     :return: List of configuration dictionaries
     """
     all_configs = []
-    base_dict = {}
+    base_dict = base_dict or {}
+    base_dictionary = base_dict.copy()
     grid_search_keys = []
     grid_search_values = []
     for key, value in kwargs.items():
@@ -256,11 +253,11 @@ def make_dictionaries(**kwargs) -> List[Dict]:
             grid_search_keys.append(key)
             grid_search_values.append(value)
         else:
-            base_dict[key] = value
+            base_dictionary[key] = value
     configurations = list(itertools.product(*grid_search_values))
 
     for config in configurations:
-        config_dict = base_dict.copy()
+        config_dict = base_dictionary.copy()
         for index, element in enumerate(grid_search_keys):
             config_dict[element] = config[index]
         all_configs.append(config_dict)

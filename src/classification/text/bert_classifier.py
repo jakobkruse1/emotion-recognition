@@ -30,10 +30,10 @@ class BertClassifier(TextEmotionClassifier):
         tf.get_logger().setLevel("ERROR")
         parameters = parameters or {}
         self.model_name = parameters.get(
-            "model_name", "bert_en_uncased_L-4_H-256_A-4"
+            "model_name", "bert_en_uncased_L-6_H-256_A-4"
         )
         self.model_path = (
-            f"https://tfhub.dev/tensorflow/small_bert/" f"{self.model_name}/2"
+            f"https://tfhub.dev/tensorflow/small_bert/{self.model_name}/2"
         )
         self.preprocess_path = (
             "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3"
@@ -82,11 +82,12 @@ class BertClassifier(TextEmotionClassifier):
         :param kwargs: Additional parameters
             Not used currently
         """
-        parameters = parameters or {}
-        init_lr = parameters.get("init_lr", 3e-5)
-        epochs = parameters.get("epochs", 20)
+        parameters = self.init_parameters(parameters, **kwargs)
+        init_lr = parameters.get("init_lr", 1e-5)
+        epochs = parameters.get("epochs", 100)
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
+        patience = parameters.get("patience", 5)
 
         num_samples = self.data_reader.get_labels(which_set).shape[0]
         num_train_steps = int(num_samples * epochs / batch_size)
@@ -100,14 +101,14 @@ class BertClassifier(TextEmotionClassifier):
             optimizer_type="adamw",
         )
         callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=3
+            monitor="val_loss", patience=patience, restore_best_weights=True
         )
         self.classifier.compile(
             optimizer=optimizer, loss=loss, metrics=metrics
         )
 
         train_data = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size
+            self.emotions, which_set, batch_size, parameters
         )
         val_data = self.data_reader.get_emotion_data(
             self.emotions, Set.VAL, batch_size
@@ -131,7 +132,7 @@ class BertClassifier(TextEmotionClassifier):
         :param kwargs: Additional parameters
             Not used currently
         """
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/text/bert")
         self.classifier = tf.keras.models.load_model(save_path)
 
@@ -149,7 +150,7 @@ class BertClassifier(TextEmotionClassifier):
             raise RuntimeError(
                 "Model needs to be trained in order to save it!"
             )
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/text/bert")
         self.classifier.save(save_path, include_optimizer=False)
 
@@ -163,11 +164,11 @@ class BertClassifier(TextEmotionClassifier):
         :param kwargs: Additional parameters
             Not used currently
         """
-        parameters = parameters or {}
+        parameters = self.init_parameters(parameters, **kwargs)
         which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
         dataset = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size, shuffle=False
+            self.emotions, which_set, batch_size
         )
         if not self.classifier:
             raise RuntimeError(

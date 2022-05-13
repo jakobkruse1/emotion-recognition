@@ -23,3 +23,4 @@ while getopts ":df" opt; do
 done
 
 bash train/download_text_data.sh $DOCKER_FLAG $FORCE_FLAG
+bash train/download_image_data.sh $DOCKER_FLAG $FORCE_FLAG

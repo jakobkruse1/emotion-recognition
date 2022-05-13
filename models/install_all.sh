@@ -23,3 +23,6 @@ while getopts ":df" opt; do
 done
 
 bash text/install_nrclex.sh $DOCKER_FLAG $FORCE_FLAG
+
+cd ..
+TFHUB_CACHE_DIR="$(pwd)/models/cache" python models/cache_tensorflow_models.py

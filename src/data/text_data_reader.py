@@ -1,6 +1,7 @@
 """This file implements the data reading functionality for text data."""
 
 import os
+from typing import Dict
 
 import numpy as np
 import pandas as pd
@@ -18,7 +19,7 @@ class TextDataReader(DataReader):
         """
         Initialization for the class
         """
-        super().__init__("text", folder)
+        super().__init__("text", folder or "data/train/text")
         self.file_map = {
             Set.TRAIN: "final_train.csv",
             Set.VAL: "final_val.csv",
@@ -26,17 +27,20 @@ class TextDataReader(DataReader):
         }
 
     def get_seven_emotion_data(
-        self, which_set: Set, batch_size: int = 64, **kwargs
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
         Main data reading function which reads the CSV file into a dataset
 
         :param which_set: Which dataset to use - train, val or test
         :param batch_size: The batch size for the resulting dataset
-        :param kwargs: Additional parameters
+        :param parameters: Additional parameters
         :return: The tensorflow Dataset instance
         """
-        shuffle = kwargs.get("shuffle", True)
+        parameters = parameters or {}
+        shuffle = parameters.get(
+            "shuffle", True if which_set == Set.TRAIN else False
+        )
         csv_file_path = os.path.join(self.folder, self.file_map[which_set])
         data = pd.read_csv(
             csv_file_path, sep="\t", header=None, names=["text", "label"]
@@ -49,7 +53,7 @@ class TextDataReader(DataReader):
         return dataset
 
     def get_three_emotion_data(
-        self, which_set: Set, batch_size: int = 64, **kwargs
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
         Main data reading function which reads the CSV file into a dataset
@@ -57,10 +61,13 @@ class TextDataReader(DataReader):
 
         :param which_set: Which dataset to use - train, val or test
         :param batch_size: The batch size for the resulting dataset
-        :param kwargs: Additional arguments
+        :param parameters: Additional arguments
         :return: The tensorflow Dataset instance
         """
-        shuffle = kwargs.get("shuffle", True)
+        parameters = parameters or {}
+        shuffle = parameters.get(
+            "shuffle", True if which_set == Set.TRAIN else False
+        )
         csv_file_path = os.path.join(self.folder, self.file_map[which_set])
         data = pd.read_csv(
             csv_file_path, sep="\t", header=None, names=["text", "label"]

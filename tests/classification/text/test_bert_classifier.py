@@ -16,6 +16,7 @@ def test_bert_initialization():
     classifier = BertClassifier({"model_name": "bert_123_test"})
     assert classifier.model_name == "bert_123_test"
 
+    classifier.data_reader = TextDataReader(folder="tests/test_data/text")
     with pytest.raises(RuntimeError):
         classifier.classify()
 
@@ -30,9 +31,7 @@ def test_bert_workflow():
         "dense_layer": 3,
         "which_set": Set.TEST,
     }
-    classifier.data_reader = TextDataReader(folder="tests/test_data")
-    classifier.data_reader.file_map[Set.TEST] = "text_test.csv"
-    classifier.data_reader.file_map[Set.VAL] = "text_test.csv"
+    classifier.data_reader = TextDataReader(folder="tests/test_data/text")
     classifier.train(train_parameters)
 
     shutil.rmtree("tests/temp/bert", ignore_errors=True)
@@ -48,8 +47,7 @@ def test_bert_workflow():
         {"model_name": "bert_en_uncased_L-2_H-128_A-2"}
     )
     new_classifier.load(save_parameters)
-    new_classifier.data_reader = TextDataReader(folder="tests/test_data")
-    new_classifier.data_reader.file_map[Set.TEST] = "text_test.csv"
+    new_classifier.data_reader = TextDataReader(folder="tests/test_data/text")
     new_results = new_classifier.classify()
     assert np.array_equal(new_results, results)
 

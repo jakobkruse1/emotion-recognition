@@ -1,10 +1,13 @@
 # Project
 data/train/text
+data/train/image
 experiments/results
 
 # Models
 models/text/bert
 models/text/distilbert
+models/image/efficientnet
+models/cache
 
 # Documentation
 !docs

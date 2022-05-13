@@ -34,8 +34,6 @@ jobs:
         run: ls
       - name: Install pip packages
         run: pip install -r requirements.txt
-      - name: Download required data for tests
-        run: bash data/prepare_all.sh
       - name: Install all models for tests
         run: bash models/install_all.sh
       - name: Run tests
