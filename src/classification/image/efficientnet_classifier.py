@@ -138,7 +138,18 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = MultiTaskEfficientNetB2Classifier()
-    classifier.train()
+    classifier.train(
+        {
+            "epochs": 50,
+            "batch_size": 256,
+            "patience": 15,
+            "learning_rate": 0.003,
+            "frozen_layers": 0,
+            "extra_layer": 2048,
+            "augment": True,
+            "weighted": True,
+        }
+    )
     classifier.save()
     classifier.load()
     emotions = classifier.classify()

@@ -556,7 +556,14 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = CrossAttentionNetworkClassifier()
-    classifier.train()
+    classifier.train(
+        {
+            "learning_rate": 0.0003,
+            "augment": False,
+            "weighted": False,
+            "balanced": False,
+        }
+    )
     classifier.save()
     classifier.load()
     emotions = classifier.classify()
