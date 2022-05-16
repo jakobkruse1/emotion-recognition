@@ -310,18 +310,6 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
-        tf.config.set_visible_devices([], "GPU")
-
-    def __del__(self) -> None:
-        """
-        Destructor for the cross attention classifier.
-        Needed to allow tensorflow to use gpus again.
-        """
-        try:
-            gpus = tf.config.list_physical_devices("GPU")
-            tf.config.set_visible_devices(gpus, "GPU")
-        except AttributeError:  # pragma: no cover
-            pass  # This means that tensorflow is unloaded already.
 
     def initialize_model(self, parameters: Dict) -> None:
         """
@@ -357,7 +345,8 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         batches = int(np.ceil(total_train_images / batch_size))
         total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
 
-        self.prepare_data(parameters)
+        with tf.device("/cpu:0"):
+            self.prepare_data(parameters)
 
         if not self.model:
             self.initialize_model(parameters)
