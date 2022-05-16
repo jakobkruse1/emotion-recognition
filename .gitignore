@@ -7,6 +7,8 @@ experiments/results
 models/text/bert
 models/text/distilbert
 models/image/efficientnet
+models/image/vgg16
+models/image/cross_attention
 models/cache
 
 # Documentation
