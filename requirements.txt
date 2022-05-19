@@ -5,6 +5,8 @@ sphinx
 numpy
 datasets
 tensorflow==2.8.0
+pydub
+tensorflow-datasets
 torch
 torchvision
 tensorflow-text==2.8.*

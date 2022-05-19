@@ -6,6 +6,10 @@ import random
 import shutil
 import warnings
 
+import numpy as np
+import pandas as pd
+import tensorflow_datasets as tfds
+
 
 def prepare_folders():
     folders = [
@@ -86,7 +90,80 @@ def copy_ravdess_dataset():
             )
 
 
+def copy_meld_dataset():
+    if not os.path.exists("data/train/speech/meld"):
+        warnings.warn("MELD Dataset not downloaded. Skipping!")
+        return
+    print("Copying MELD dataset.")
+    for file, which_set in [
+        ("train", "train"),
+        ("dev", "val"),
+        ("test", "test"),
+    ]:
+        csv_file = f"data/train/speech/meld/{file}_sent_emo.csv"
+        metadata = pd.read_csv(csv_file, delimiter=",")
+        emotions = [
+            "anger",
+            "disgust",
+            "fear",
+            "joy",
+            "neutral",
+            "sadness",
+            "surprise",
+        ]
+        folders = [
+            "angry",
+            "disgust",
+            "fear",
+            "happy",
+            "neutral",
+            "sad",
+            "surprise",
+        ]
+        files = glob.glob(f"data/train/speech/meld/{which_set}/*.wav")
+        dialogues = np.array(
+            [int(file.split("dia")[-1].split("_")[0]) for file in files]
+        )
+        utterances = np.array(
+            [int(file.split("utt")[-1].split(".")[0]) for file in files]
+        )
+        for index, row in metadata.iterrows():
+            emotion = row["Emotion"]
+            folder = folders[emotions.index(emotion)]
+            file_index = np.where(
+                np.logical_and(
+                    dialogues == row["Dialogue_ID"],
+                    utterances == row["Utterance_ID"],
+                )
+            )[0]
+            if len(file_index) == 0:
+                continue
+            elif len(file_index) == 2:
+                to_use = 0 if "final" in files[file_index[0]] else 1
+                file_index = file_index[to_use]
+            else:
+                file_index = file_index[0]
+            shutil.copyfile(
+                files[file_index],
+                os.path.join(
+                    "data/train/speech",
+                    which_set,
+                    folder,
+                    os.path.basename(files[file_index]),
+                ),
+            )
+
+
+def download_crema_d_dataset():
+    train, dev, test = tfds.load(
+        "crema_d", split=["train", "validation", "test"], shuffle_files=False
+    )
+
+
 if __name__ == "__main__":
     prepare_folders()
 
     copy_ravdess_dataset()
+    copy_meld_dataset()
+
+    download_crema_d_dataset()

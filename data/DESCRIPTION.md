@@ -56,6 +56,9 @@ Please take a look at the script to see how data should be formatted.
 To download the speech datasets, please use the `download_speech_data.sh` script in the train folder.
 This will download these datasets:
 1. [RAVDESS database](https://smartlaboratory.org/ravdess/)
+2. [MELD dataset](https://affective-meld.github.io/)
+3. [Crema D Dataset](https://www.tensorflow.org/datasets/catalog/crema_d):
+   1. This dataset is stored in your tfds download folder (usually `/home/$USER/tensorflow-datasets`)
 
 ## Eval data
 TODO
