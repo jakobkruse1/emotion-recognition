@@ -41,6 +41,11 @@ if [ ! -d "ravdess" ] || [ $FORCE -eq 1 ]; then
   wget -nc https://zenodo.org/record/1188976/files/Audio_Speech_Actors_01-24.zip
   unzip Audio_Speech_Actors_01-24.zip -d ravdess
   rm Audio_Speech_Actors_01-24.zip
+  for f in ravdess/*/*.wav; do
+    ffmpeg -hide_banner -loglevel error -i ${f} -ac 1 -c:a pcm_s16le -ar 16000 ${f}.wav
+    rm ${f}
+    mv ${f}.wav ${f}
+  done
 fi
 
 function ProgressBar {
@@ -92,7 +97,7 @@ if [ ! -f "meld/done" ]; then
   printf "\nConverting train mp4 files to audio files. This may take a while!\n"
   rm -f train_splits/dia125_utt3.mp4  # Broken file
   for f in train_splits/*.mp4; do
-    ffmpeg -hide_banner -loglevel error -i ${f} train/${f:13}.wav
+    ffmpeg -hide_banner -loglevel error -i ${f} -ac 1 -c:a pcm_s16le -ar 16000 train/${f:13}.wav
     index=$(($index+1))
     ProgressBar ${index} ${num_files}
   done
@@ -100,7 +105,7 @@ if [ ! -f "meld/done" ]; then
   index=0
   printf "\nConverting validation mp4 files to audio files. This may take a while!\n"
   for f in dev_splits_complete/*.mp4; do
-    ffmpeg -hide_banner -loglevel error -i ${f} val/${f:20}.wav
+    ffmpeg -hide_banner -loglevel error -i ${f} -ac 1 -c:a pcm_s16le -ar 16000 val/${f:20}.wav
     index=$(($index+1))
     ProgressBar ${index} ${num_files}
   done
@@ -108,7 +113,7 @@ if [ ! -f "meld/done" ]; then
   index=0
   printf "\nConverting test mp4 files to audio files. This may take a while!\n"
   for f in output_repeated_splits_test/*.mp4; do
-    ffmpeg -hide_banner -loglevel error -i ${f} test/${f:28}.wav
+    ffmpeg -hide_banner -loglevel error -i ${f} -ac 1 -c:a pcm_s16le -ar 16000 test/${f:28}.wav
     index=$(($index+1))
     ProgressBar ${index} ${num_files}
   done
