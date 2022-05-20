@@ -70,13 +70,11 @@ class SpeechDataReader(DataReader):
         num_crema = cd_info.splits[
             "validation" if folder == "val" else folder
         ].num_examples
-        print(f"Num CREMA: {num_crema}")
         if shuffle:
-            crema_d.shuffle()
+            crema_d.shuffle(1000)
         data_dir = os.path.join(self.folder, folder)
         filenames = tf.io.gfile.glob(str(data_dir) + "/*/*.wav")
         num_train = len(filenames)
-        print(f"NUM TRAIN: {num_train}")
         if shuffle:
             filenames = tf.random.shuffle(filenames)
         files_ds = tf.data.Dataset.from_tensor_slices(filenames)
@@ -184,9 +182,7 @@ class SpeechDataReader(DataReader):
         return audio, y
 
     @staticmethod
-    def process_crema(
-        x: tf.Tensor, y: tf.Tensor
-    ) -> Tuple[tf.Tensor, tf.Tensor]:
+    def process_crema(x: np.ndarray, y: int) -> Tuple[tf.Tensor, tf.Tensor]:
         """
         Preprocessing function for the crema dataset read from
         tensorflow_datasets package.
@@ -211,7 +207,7 @@ class SpeechDataReader(DataReader):
 
 if __name__ == "__main__":  # pragma: no cover
     dr = SpeechDataReader()
-    ds = dr.get_seven_emotion_data(Set.TEST, batch_size=64)
+    ds = dr.get_seven_emotion_data(Set.TRAIN, batch_size=64)
 
     for data, labels in ds:
         print(f"{data.shape} | {labels.shape}")
