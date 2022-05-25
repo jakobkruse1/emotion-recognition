@@ -10,6 +10,9 @@ models/text/distilbert
 models/image/efficientnet
 models/image/cross_attention
 models/image/vgg16
+models/speech/mfcc_lstm
+models/speech/hubert
+models/speech/wav2vec2
 models/cache
 
 # Documentation

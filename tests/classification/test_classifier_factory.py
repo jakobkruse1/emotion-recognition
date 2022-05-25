@@ -7,6 +7,11 @@ from src.classification.image import (
     MultiTaskEfficientNetB2Classifier,
     VGG16Classifier,
 )
+from src.classification.speech import (
+    HuBERTClassifier,
+    MFCCLSTMClassifier,
+    Wav2Vec2Classifier,
+)
 from src.classification.text import (
     BertClassifier,
     DistilBertClassifier,
@@ -50,3 +55,23 @@ def test_image_factory():
 
     with pytest.raises(ValueError):
         _ = ClassifierFactory.get("image", "wrong", {})
+
+
+def test_speech_factory():
+    classifier = ClassifierFactory.get("speech", "mfcc_lstm", {})
+    assert isinstance(classifier, MFCCLSTMClassifier)
+
+    classifier = ClassifierFactory.get(
+        "speech", "hubert", {"model_name": "123"}
+    )
+    assert isinstance(classifier, HuBERTClassifier)
+    assert classifier.parameters["model_name"] == "123"
+
+    classifier = ClassifierFactory.get("speech", "wav2vec2", {})
+    assert isinstance(classifier, Wav2Vec2Classifier)
+
+    with pytest.raises(ValueError):
+        _ = ClassifierFactory.get("wrong", "efficientnet", {})
+
+    with pytest.raises(ValueError):
+        _ = ClassifierFactory.get("speech", "wrong", {})
