@@ -37,12 +37,14 @@ if __name__ == "__main__":
     input = tf.keras.layers.Input(
         shape=(48, 48, 3), dtype=tf.float32, name="image"
     )
+    print("Loading EfficientNet")
     model2 = tf.keras.applications.EfficientNetB2(
         include_top=False,
         weights="imagenet",
         input_tensor=input,
         input_shape=(48, 48, 3),
     )
+    print("Loading VGG16")
     model3 = tf.keras.applications.VGG16(
         include_top=False,
         weights="imagenet",
@@ -51,15 +53,19 @@ if __name__ == "__main__":
     )
 
     for model in model_names:
+        print(f"Loading {model}")
         _ = hub.KerasLayer(model)
 
+    print("Loading ResNet18")
     resnet = models.resnet18(pretrained=True)
 
+    print("Loading HuBERT")
     processor = Wav2Vec2Processor.from_pretrained(
         "facebook/hubert-large-ls960-ft"
     )
     model = HubertModel.from_pretrained("facebook/hubert-base-ls960")
 
+    print("Loading Wav2Vec2")
     processor2 = Wav2Vec2Processor.from_pretrained(
         "facebook/wav2vec2-base-960h"
     )
