@@ -100,7 +100,7 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
-        Classification method used to classify emotions from images
+        Classification method used to classify emotions from speech
 
         :param parameters: Parameter dictionary used for classification
         :param kwargs: Additional kwargs parameters

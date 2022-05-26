@@ -21,3 +21,4 @@ scikit-image
 colorcet
 alive-progress
 seaborn
+transformers
