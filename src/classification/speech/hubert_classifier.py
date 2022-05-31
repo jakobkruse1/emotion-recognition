@@ -25,10 +25,13 @@ class FinetuningHuBERTModel(nn.Module):
         Constructor for the model class that initializes the layers.
         """
         super().__init__()
+        cache_dir = "models/cache"
         self.processor = Wav2Vec2Processor.from_pretrained(
-            "facebook/hubert-large-ls960-ft"
+            "facebook/hubert-large-ls960-ft", cache_dir=cache_dir
         )
-        self.model = HubertModel.from_pretrained("facebook/hubert-base-ls960")
+        self.model = HubertModel.from_pretrained(
+            "facebook/hubert-base-ls960", cache_dir=cache_dir
+        )
         self.classifier = nn.Linear(114432, 7)
         self.softmax = nn.Softmax(dim=0)
 
