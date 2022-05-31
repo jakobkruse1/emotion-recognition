@@ -13,6 +13,7 @@ if __name__ == "__main__":
     # Running this is not required in general, only when using PCs without
     # internet access.
     assert os.environ["TFHUB_CACHE_DIR"].endswith("models/cache")
+    cache_dir = os.environ["TFHUB_CACHE_DIR"]
     bert_names = [
         "bert_en_uncased_L-2_H-128_A-2",
         "bert_en_uncased_L-4_H-128_A-2",
@@ -61,12 +62,16 @@ if __name__ == "__main__":
 
     print("Loading HuBERT")
     processor = Wav2Vec2Processor.from_pretrained(
-        "facebook/hubert-large-ls960-ft"
+        "facebook/hubert-large-ls960-ft", cache_dir=cache_dir
     )
-    model = HubertModel.from_pretrained("facebook/hubert-base-ls960")
+    model = HubertModel.from_pretrained(
+        "facebook/hubert-base-ls960", cache_dir=cache_dir
+    )
 
     print("Loading Wav2Vec2")
     processor2 = Wav2Vec2Processor.from_pretrained(
-        "facebook/wav2vec2-base-960h"
+        "facebook/wav2vec2-base-960h", cache_dir=cache_dir
     )
-    model2 = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-base-960h")
+    model2 = Wav2Vec2Model.from_pretrained(
+        "facebook/wav2vec2-base-960h", cache_dir=cache_dir
+    )
