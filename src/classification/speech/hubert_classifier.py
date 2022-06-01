@@ -26,6 +26,9 @@ class FinetuningHuBERTModel(nn.Module):
         """
         super().__init__()
         cache_dir = "models/cache"
+        self.device = torch.device(
+            "cuda:0" if torch.cuda.is_available() else "cpu"
+        )
         self.processor = Wav2Vec2Processor.from_pretrained(
             "facebook/hubert-large-ls960-ft", cache_dir=cache_dir
         )
@@ -45,6 +48,7 @@ class FinetuningHuBERTModel(nn.Module):
         input_values = self.processor(
             x, return_tensors="pt", sampling_rate=16000
         ).input_values[0]
+        input_values = input_values.to(self.device)
         logits = self.model(input_values).last_hidden_state
         flat = torch.flatten(logits, start_dim=1)
         out = self.classifier(flat)
@@ -67,6 +71,7 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         """
         super().__init__("hubert", parameters)
         tf.get_logger().setLevel("ERROR")
+        tf.config.set_visible_devices([], "GPU")
         self.model = None
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
