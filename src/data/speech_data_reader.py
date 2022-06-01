@@ -52,6 +52,7 @@ class SpeechDataReader(DataReader):
         shuffle = parameters.get(
             "shuffle", True if which_set == Set.TRAIN else False
         )
+        max_elements = parameters.get("max_elements", None)
         folder = self.folder_map[which_set]
         crema_d, cd_info = tfds.load(
             "crema_d",
@@ -74,6 +75,7 @@ class SpeechDataReader(DataReader):
             crema_d.shuffle(1000)
         data_dir = os.path.join(self.folder, folder)
         filenames = tf.io.gfile.glob(str(data_dir) + "/*/*.wav")
+        filenames.sort()
         num_train = len(filenames)
         if shuffle:
             filenames = tf.random.shuffle(filenames)
@@ -95,6 +97,8 @@ class SpeechDataReader(DataReader):
                     num_train / (num_train + num_crema),
                 ],
             )
+        if max_elements:
+            dataset = dataset.take(max_elements)
         dataset = dataset.batch(batch_size)
         return dataset
 

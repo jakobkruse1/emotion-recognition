@@ -168,7 +168,7 @@ class BertClassifier(TextEmotionClassifier):
         which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
         dataset = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size
+            self.emotions, which_set, batch_size, parameters
         )
         if not self.classifier:
             raise RuntimeError(

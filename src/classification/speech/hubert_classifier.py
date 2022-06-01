@@ -235,7 +235,7 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         batch_size = parameters.get("batch_size", 64)
         with tf.device("/cpu:0"):
             dataset = self.data_reader.get_emotion_data(
-                self.emotions, which_set, batch_size
+                self.emotions, which_set, batch_size, parameters
             )
 
         if not self.model:
@@ -258,7 +258,7 @@ class HuBERTClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = HuBERTClassifier()
-    classifier.train({"epochs": 1, "batch_size": 8, "shuffle": False})
+    classifier.train({"epochs": 10, "batch_size": 64, "shuffle": True})
     classifier.save()
     classifier.load()
     emotions = classifier.classify()

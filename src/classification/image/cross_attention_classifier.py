@@ -508,7 +508,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         self.model.eval()
         with tf.device("/cpu:0"):
             dataset = self.data_reader.get_seven_emotion_data(
-                which_set, batch_size
+                which_set, batch_size, parameters
             )
         results = np.empty((0, 7))
         with torch.no_grad():
