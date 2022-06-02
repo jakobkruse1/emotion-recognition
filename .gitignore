@@ -13,6 +13,7 @@ models/image/vgg16
 models/speech/mfcc_lstm
 models/speech/hubert
 models/speech/wav2vec2
+models/speech/hmm
 models/cache
 
 # Documentation

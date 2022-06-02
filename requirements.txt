@@ -22,3 +22,4 @@ colorcet
 alive-progress
 seaborn
 transformers
+hmmlearn
