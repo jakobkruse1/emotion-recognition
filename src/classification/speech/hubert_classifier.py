@@ -7,7 +7,7 @@ import tensorflow as tf
 import torch
 from alive_progress import alive_bar
 from torch import nn
-from transformers import HubertModel, Wav2Vec2Processor
+from transformers import HubertConfig, HubertModel, Wav2Vec2Processor
 
 from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
@@ -20,11 +20,20 @@ class FinetuningHuBERTModel(nn.Module):
     Pytorch model for the HuBERT classifier model
     """
 
-    def __init__(self) -> None:
+    def __init__(self, parameters: Dict = None) -> None:
         """
         Constructor for the model class that initializes the layers.
+
+        :param parameters: Dictionary with config parameters
         """
         super().__init__()
+        parameters = parameters or {}
+        dropout = parameters.get("dropout", 0.1)
+        model_config = HubertConfig(
+            hidden_dropout=dropout,
+            attention_dropout=dropout,
+            num_hidden_layers=parameters.get("num_hidden_layers", 12),
+        )
         cache_dir = "models/cache"
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -33,7 +42,9 @@ class FinetuningHuBERTModel(nn.Module):
             "facebook/hubert-large-ls960-ft", cache_dir=cache_dir
         )
         self.model = HubertModel.from_pretrained(
-            "facebook/hubert-base-ls960", cache_dir=cache_dir
+            "facebook/hubert-base-ls960",
+            config=model_config,
+            cache_dir=cache_dir,
         )
         self.classifier = nn.Linear(114432, 7)
         self.softmax = nn.Softmax(dim=0)
@@ -81,7 +92,7 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         """
         Initializes a new and pretrained version of the HuBERT model
         """
-        self.model = FinetuningHuBERTModel()
+        self.model = FinetuningHuBERTModel(parameters)
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -258,7 +269,14 @@ class HuBERTClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = HuBERTClassifier()
-    classifier.train({"epochs": 10, "batch_size": 64, "shuffle": True})
+    classifier.train(
+        {
+            "epochs": 10,
+            "batch_size": 64,
+            "shuffle": True,
+            "num_hidden_layers": 8,
+        }
+    )
     classifier.save()
     classifier.load()
     emotions = classifier.classify()

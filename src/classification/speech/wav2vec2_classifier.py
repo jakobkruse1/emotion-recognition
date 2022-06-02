@@ -7,7 +7,7 @@ import tensorflow as tf
 import torch
 from alive_progress import alive_bar
 from torch import nn
-from transformers import Wav2Vec2Model, Wav2Vec2Processor
+from transformers import Wav2Vec2Config, Wav2Vec2Model, Wav2Vec2Processor
 
 from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
@@ -20,12 +20,19 @@ class FinetuningWav2Vec2Model(nn.Module):
     Pytorch model for the Wav2Vec2 classifier model
     """
 
-    def __init__(self) -> None:
+    def __init__(self, parameters: Dict = None) -> None:
         """
         Constructor for the model class that initializes the layers.
         """
         super().__init__()
         cache_dir = "models/cache"
+        parameters = parameters or {}
+        dropout = parameters.get("dropout", 0.1)
+        model_config = Wav2Vec2Config(
+            hidden_dropout=dropout,
+            attention_dropout=dropout,
+            num_hidden_layers=parameters.get("num_hidden_layers", 12),
+        )
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
@@ -33,7 +40,9 @@ class FinetuningWav2Vec2Model(nn.Module):
             "facebook/wav2vec2-base-960h", cache_dir=cache_dir
         )
         self.model = Wav2Vec2Model.from_pretrained(
-            "facebook/wav2vec2-base-960h", cache_dir=cache_dir
+            "facebook/wav2vec2-base-960h",
+            cache_dir=cache_dir,
+            config=model_config,
         )
         self.classifier = nn.Linear(114432, 7)
         self.softmax = nn.Softmax(dim=0)
