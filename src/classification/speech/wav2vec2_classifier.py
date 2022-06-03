@@ -20,7 +20,7 @@ class FinetuningWav2Vec2Model(nn.Module):
     Pytorch model for the Wav2Vec2 classifier model
     """
 
-    def __init__(self, parameters: Dict = None) -> None:
+    def __init__(self, device: torch.device, parameters: Dict = None) -> None:
         """
         Constructor for the model class that initializes the layers.
         """
@@ -33,9 +33,7 @@ class FinetuningWav2Vec2Model(nn.Module):
             attention_dropout=dropout,
             num_hidden_layers=parameters.get("num_hidden_layers", 12),
         )
-        self.device = torch.device(
-            "cuda:0" if torch.cuda.is_available() else "cpu"
-        )
+        self.device = device
         self.processor = Wav2Vec2Processor.from_pretrained(
             "facebook/wav2vec2-base-960h", cache_dir=cache_dir
         )
@@ -90,7 +88,7 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         """
         Initializes a new and pretrained version of the Wav2Vec2 model
         """
-        self.model = FinetuningWav2Vec2Model()
+        self.model = FinetuningWav2Vec2Model(self.device, parameters)
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """

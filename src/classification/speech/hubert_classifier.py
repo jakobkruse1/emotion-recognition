@@ -20,7 +20,7 @@ class FinetuningHuBERTModel(nn.Module):
     Pytorch model for the HuBERT classifier model
     """
 
-    def __init__(self, parameters: Dict = None) -> None:
+    def __init__(self, device: torch.device, parameters: Dict = None) -> None:
         """
         Constructor for the model class that initializes the layers.
 
@@ -35,9 +35,7 @@ class FinetuningHuBERTModel(nn.Module):
             num_hidden_layers=parameters.get("num_hidden_layers", 12),
         )
         cache_dir = "models/cache"
-        self.device = torch.device(
-            "cuda:0" if torch.cuda.is_available() else "cpu"
-        )
+        self.device = device
         self.processor = Wav2Vec2Processor.from_pretrained(
             "facebook/hubert-large-ls960-ft", cache_dir=cache_dir
         )
@@ -92,7 +90,7 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         """
         Initializes a new and pretrained version of the HuBERT model
         """
-        self.model = FinetuningHuBERTModel(parameters)
+        self.model = FinetuningHuBERTModel(self.device, parameters)
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """

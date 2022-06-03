@@ -9,30 +9,20 @@ from src.data.image_data_reader import ImageDataReader, Set
 
 
 def embedding_model() -> tf.keras.Model:
-    input = tf.keras.layers.Input(
-        shape=(48, 48, 3), dtype=tf.float32, name="image"
-    )
-    input = tf.keras.applications.efficientnet.preprocess_input(input)
+    save_path = "models/image/vgg16"
+    model = tf.keras.models.load_model(save_path)
+    new_model = tf.keras.Model(model.input, model.layers[-3].output)
 
-    model = tf.keras.applications.EfficientNetB2(
-        include_top=False,
-        weights="imagenet",
-        input_tensor=input,
-        input_shape=(48, 48, 3),
-    )
-    output = model(input)
-    output = tf.keras.layers.Flatten()(output)
-
-    return tf.keras.Model(input, output)
+    return new_model
 
 
 if __name__ == "__main__":  # pragma: no cover
     dr = ImageDataReader()
     dataset = dr.get_seven_emotion_data(
-        Set.TEST, batch_size=1000, shuffle=False
+        Set.TEST, batch_size=1000, parameters={"shuffle": False}
     ).map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
     model = embedding_model()
-    data = np.empty((0, 5632))
+    data = np.empty((0, 1000))
     for images, labels in dataset:
         embeddings = model(images).numpy()
         data = np.concatenate([data, embeddings], axis=0)
