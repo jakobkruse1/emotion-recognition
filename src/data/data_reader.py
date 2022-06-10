@@ -123,11 +123,14 @@ class DataReader(ABC):
         return new_labels
 
     @abstractmethod
-    def get_labels(self, which_set: Set = Set.TRAIN) -> np.ndarray:
+    def get_labels(
+        self, which_set: Set = Set.TRAIN, parameters: Dict = None
+    ) -> np.ndarray:
         """
         Method that gets only the labels for the dataset that is specified
 
         :param which_set: Which set to use, train, val or test
+        :param parameters: Parameter dictionary
         :return: An array of labels in shape (num_samples,)
         """
         raise NotImplementedError("Abstract method")  # pragma: no cover

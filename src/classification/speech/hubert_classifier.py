@@ -45,7 +45,7 @@ class FinetuningHuBERTModel(nn.Module):
             cache_dir=cache_dir,
         )
         self.classifier = nn.Linear(114432, 7)
-        self.softmax = nn.Softmax(dim=0)
+        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -115,7 +115,6 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         if not self.model:
             self.initialize_model(parameters)
         self.model.to(self.device)
-
         self.optimizer = torch.optim.AdamW(
             self.model.parameters(), lr=learning_rate
         )
@@ -209,7 +208,7 @@ class HuBERTClassifier(SpeechEmotionClassifier):
             "save_path", "models/speech/hubert/hubert.pth"
         )
         saved_data = torch.load(save_path, map_location=self.device)
-        self.model = FinetuningHuBERTModel()
+        self.model = FinetuningHuBERTModel(self.device)
         self.model.load_state_dict(saved_data["model_state_dict"])
         self.model.eval()
 
@@ -272,7 +271,7 @@ if __name__ == "__main__":  # pragma: no cover
             "epochs": 10,
             "batch_size": 64,
             "shuffle": True,
-            "num_hidden_layers": 8,
+            "num_hidden_layers": 12,
         }
     )
     classifier.save()

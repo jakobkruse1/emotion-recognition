@@ -107,7 +107,7 @@ class SpeechEmotionClassifier(EmotionClassifier):
             self.emotions, which_set, batch_size, parameters
         )
         self.val_data = self.data_reader.get_emotion_data(
-            self.emotions, Set.VAL, batch_size
+            self.emotions, Set.VAL, batch_size, parameters
         )
         if weighted:
             self.class_weights = self.get_class_weights(which_set)

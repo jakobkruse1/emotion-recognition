@@ -37,23 +37,16 @@ class SpeechDataReader(DataReader):
             Set.TEST: "test",
         }
 
-    def get_seven_emotion_data(
-        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
-    ) -> tf.data.Dataset:
+    def _get_crema_dataset(
+        self, folder: str, shuffle: bool
+    ) -> Tuple[tf.data.Dataset, int]:
         """
-        Main data reading function which reads the audio files into a dataset
+        Function that loads the crema d dataset from tensorflow datasets.
 
-        :param which_set: Which dataset to use - train, val or test
-        :param batch_size: The batch size for the resulting dataset
-        :param parameters: Additional parameters
-        :return: The tensorflow Dataset instance
+        :param folder: The subset to look at (train, test or val)
+        :param shuffle: Whether to shuffle the data or not.
+        :return: Tuple containing Dataset instance and size of dataset
         """
-        parameters = parameters or {}
-        shuffle = parameters.get(
-            "shuffle", True if which_set == Set.TRAIN else False
-        )
-        max_elements = parameters.get("max_elements", None)
-        folder = self.folder_map[which_set]
         crema_d, cd_info = tfds.load(
             "crema_d",
             split="validation" if folder == "val" else folder,
@@ -73,10 +66,22 @@ class SpeechDataReader(DataReader):
         ].num_examples
         if shuffle:
             crema_d.shuffle(1000)
+        return crema_d, num_crema
+
+    def _get_meld_dataset(
+        self, folder: str, shuffle: bool
+    ) -> Tuple[tf.data.Dataset, int]:
+        """
+        Function that produces the meld dataset from files on disk.
+
+        :param folder: The subfolder to look at (train, test or val)
+        :param shuffle: Whether to shuffle the data or not.
+        :return: Tuple containing Dataset instance and size of dataset
+        """
         data_dir = os.path.join(self.folder, folder)
         filenames = tf.io.gfile.glob(str(data_dir) + "/*/*.wav")
         filenames.sort()
-        num_train = len(filenames)
+        num_files = len(filenames)
         if shuffle:
             filenames = tf.random.shuffle(filenames)
         files_ds = tf.data.Dataset.from_tensor_slices(filenames)
@@ -87,16 +92,50 @@ class SpeechDataReader(DataReader):
                 Tout=[tf.float32, tf.float32],
             )
         )
-        if not shuffle:
-            dataset = wave_ds.concatenate(crema_d)
+        return wave_ds, num_files
+
+    def get_seven_emotion_data(
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
+    ) -> tf.data.Dataset:
+        """
+        Main data reading function which reads the audio files into a dataset
+
+        :param which_set: Which dataset to use - train, val or test
+        :param batch_size: The batch size for the resulting dataset
+        :param parameters: Additional parameters
+        :return: The tensorflow Dataset instance
+        """
+        parameters = parameters or {}
+        shuffle = parameters.get(
+            "shuffle", True if which_set == Set.TRAIN else False
+        )
+        dataset = parameters.get("dataset", "all")
+        use_meld = dataset == "all" or dataset == "meld"
+        use_crema = dataset == "all" or dataset == "crema"
+        assert use_crema or use_meld
+        max_elements = parameters.get("max_elements", None)
+        folder = self.folder_map[which_set]
+        if use_crema:
+            crema_ds, num_crema = self._get_crema_dataset(folder, shuffle)
+        if use_meld:
+            meld_ds, num_meld = self._get_meld_dataset(folder, shuffle)
+
+        # Combine the datasets if necessary
+        if not use_meld:
+            dataset = crema_ds
+        elif not use_crema:
+            dataset = meld_ds
         else:
-            dataset = tf.data.Dataset.sample_from_datasets(
-                [crema_d, wave_ds],
-                weights=[
-                    num_crema / (num_train + num_crema),
-                    num_train / (num_train + num_crema),
-                ],
-            )
+            if not shuffle:
+                dataset = meld_ds.concatenate(crema_ds)
+            else:
+                dataset = tf.data.Dataset.sample_from_datasets(
+                    [crema_ds, meld_ds],
+                    weights=[
+                        num_crema / (num_meld + num_crema),
+                        num_crema / (num_meld + num_crema),
+                    ],
+                )
         if max_elements:
             dataset = dataset.take(max_elements)
         dataset = dataset.batch(batch_size)
@@ -138,16 +177,19 @@ class SpeechDataReader(DataReader):
         ).astype(np.float32)
         return data, new_labels
 
-    def get_labels(self, which_set: Set = Set.TRAIN) -> np.ndarray:
+    def get_labels(
+        self, which_set: Set = Set.TRAIN, parameters: Dict = None
+    ) -> np.ndarray:
         """
         Get the labels for the text dataset that is specified in an array
 
         :param which_set: Train, val or test set
+        :param parameters: Parameter dictionary
         :return: The labels in an array of shape (num_samples,)
         """
-        dataset = self.get_seven_emotion_data(
-            which_set, parameters={"shuffle": False}
-        )
+        parameters = parameters or {}
+        parameters.update({"shuffle": False})
+        dataset = self.get_seven_emotion_data(which_set, parameters=parameters)
         all_labels = np.empty((0,))
         for images, labels in dataset:
             all_labels = np.concatenate(
