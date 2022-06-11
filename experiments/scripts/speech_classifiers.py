@@ -42,6 +42,7 @@ if __name__ == "__main__":
         learning_rate=[0.0003, 0.001, 0.003],
         lstm_units=[128, 256, 512],
         dropout=[0.2, 0.3],
+        weighted=[True, False],
     )
     runner.add_grid_experiments(
         modality="speech",

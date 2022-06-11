@@ -110,7 +110,7 @@ class SpeechEmotionClassifier(EmotionClassifier):
             self.emotions, Set.VAL, batch_size, parameters
         )
         if weighted:
-            self.class_weights = self.get_class_weights(which_set)
+            self.class_weights = self.get_class_weights(which_set, parameters)
         else:
             self.class_weights = None
 
