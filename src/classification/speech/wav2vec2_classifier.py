@@ -135,11 +135,13 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
 
         with tf.device("/cpu:0"):
             self.prepare_data(parameters)
-            total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[
-                0
-            ]
+            total_train_images = self.data_reader.get_labels(
+                Set.TRAIN, parameters
+            ).shape[0]
             batches = int(np.ceil(total_train_images / batch_size))
-            total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
+            total_val_images = self.data_reader.get_labels(
+                Set.VAL, parameters
+            ).shape[0]
             val_batches = int(np.ceil(total_val_images / batch_size))
         best_acc = 0
         waiting_for_improve = 0

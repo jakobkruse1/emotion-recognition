@@ -61,6 +61,7 @@ class ImageDataReader(DataReader):
                 "neutral",
             ],
         )
+        self.num_batch[which_set] = int(dataset.cardinality().numpy())
         dataset = self.add_augmentations(dataset, augment)
         return dataset
 

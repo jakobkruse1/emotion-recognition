@@ -119,6 +119,8 @@ class SpeechDataReader(DataReader):
             crema_ds, num_crema = self._get_crema_dataset(folder, shuffle)
         if use_meld:
             meld_ds, num_meld = self._get_meld_dataset(folder, shuffle)
+        total = (num_crema if use_crema else 0) + (num_meld if use_meld else 0)
+        self.num_batch[which_set] = int(np.ceil(total / batch_size))
 
         # Combine the datasets if necessary
         if not use_meld:

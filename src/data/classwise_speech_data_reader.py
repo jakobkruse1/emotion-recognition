@@ -168,10 +168,11 @@ class ClasswiseSpeechDataReader(DataReader):
         parameters.update({"shuffle": False})
         dataset = self.get_seven_emotion_data(which_set, parameters=parameters)
         all_labels = np.empty((0,))
-        for images, labels in dataset:
-            all_labels = np.concatenate(
-                [all_labels, np.argmax(labels.numpy(), axis=1)], axis=0
+        for images, class_name in dataset:
+            labels = np.ones((images.shape[0],)) * CLASS_NAMES.index(
+                class_name
             )
+            all_labels = np.concatenate([all_labels, labels], axis=0)
 
         return all_labels
 

@@ -293,7 +293,7 @@ if __name__ == "__main__":  # pragma: no cover
     classifier.save()
     classifier.load()
     emotions = classifier.classify({"dataset": "all"})
-    labels = classifier.data_reader.get_labels(Set.TEST)
+    labels = classifier.data_reader.get_labels(Set.TEST, {"dataset": "all"})
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
     print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")

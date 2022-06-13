@@ -33,6 +33,7 @@ class DataReader(ABC):
         """
         self.name = name
         self.folder = folder
+        self.num_batch = {Set.TRAIN: -1, Set.VAL: -1, Set.TEST: -1}
 
     @abstractmethod
     def get_seven_emotion_data(

@@ -3,8 +3,8 @@ import os
 import pickle
 from typing import Dict
 
-import librosa
 import numpy as np
+from alive_progress import alive_bar
 from sklearn import preprocessing, svm
 from sklearn.multiclass import OneVsOneClassifier
 
@@ -41,63 +41,6 @@ class SVMClassifier(SpeechEmotionClassifier):
         self.model = None
         self.scaler = None
 
-    def get_features(self, data: np.ndarray):
-        sr = 16000
-        frame_t = 0.025  # 25ms
-        frame_n = round(sr * frame_t)
-        hop_n = round(0.01 * sr)  # 10ms
-        mfcc_num = 13
-        Ethresh = 0.01
-
-        # RMSE per frame
-        S, phase = librosa.magphase(
-            librosa.stft(y=data, win_length=frame_n, hop_length=hop_n)
-        )
-        rmst = librosa.feature.rms(S=S, hop_length=hop_n)
-
-        Elocs = np.where(rmst > Ethresh)[1]
-        if Elocs.size == 0:
-            Elocs = [60, 249]
-        Eloc = np.arange(Elocs[0], Elocs[-1] + 1)
-        rms = rmst[:, Eloc]
-
-        # MFCC per frame
-        MFCCt = librosa.feature.mfcc(
-            y=data, sr=sr, n_fft=frame_n, hop_length=hop_n, n_mfcc=mfcc_num
-        )
-        MFCC = MFCCt[:, Eloc]
-        #         print('Shape of MFCC', MFCC.shape)
-
-        _cent = librosa.feature.spectral_centroid(
-            y=data, sr=sr, n_fft=frame_n, hop_length=hop_n
-        )
-        cent = _cent[:, Eloc]
-
-        _rolloff = librosa.feature.spectral_rolloff(
-            y=data, sr=sr, n_fft=frame_n, hop_length=hop_n
-        )
-        rolloff = _rolloff[:, Eloc]
-
-        # Zero Crossing Rate per frame
-        zcrt = librosa.feature.zero_crossing_rate(
-            y=data, frame_length=frame_n, hop_length=hop_n
-        )
-        zcr = zcrt[:, Eloc]
-
-        MFCC = np.mean(MFCC, axis=1)
-        zcr = np.mean(zcr, axis=1)
-        rms = np.mean(rms, axis=1)
-        cent = np.mean(cent, axis=1)
-        rolloff = np.mean(rolloff, axis=1)
-        MFCC = np.reshape(MFCC, (len(MFCC), 1))
-        zcr = np.reshape(zcr, (len(zcr), 1))
-        rms = np.reshape(rms, (len(rms), 1))
-        cent = np.reshape(cent, (len(cent), 1))
-        rolloff = np.reshape(rolloff, (len(rolloff), 1))
-
-        features = np.vstack((MFCC, zcr, rms, cent, rolloff))
-        return features
-
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
         Training method for SVM model
@@ -111,20 +54,28 @@ class SVMClassifier(SpeechEmotionClassifier):
         self.train_data = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, parameters
         )
-        features = np.empty((0, 17))
+        features = np.empty((0, parameters.get("mfcc_num", 40) + 4))
         labels = np.empty((0, 1))
-        for data, batch_labels in self.train_data:
-            for index, sample in enumerate(data.numpy()):
-                sample_features = np.reshape(
-                    self.get_features(sample), (1, -1)
+        batches = self.data_reader.num_batch[which_set]
+        with alive_bar(
+            batches, title="Processing batches", force_tty=True
+        ) as bar:
+            for data, batch_labels in self.train_data:
+                for index, sample in enumerate(data.numpy()):
+                    sample_features = np.reshape(
+                        self.get_mixed_features(sample, parameters), (1, -1)
+                    )
+                    features = np.concatenate(
+                        [features, sample_features], axis=0
+                    )
+                labels = np.concatenate(
+                    [
+                        labels,
+                        np.expand_dims(np.argmax(batch_labels, axis=1), 1),
+                    ],
+                    axis=0,
                 )
-                features = np.concatenate([features, sample_features], axis=0)
-            labels = np.concatenate(
-                [labels, np.expand_dims(np.argmax(batch_labels, axis=1), 1)],
-                axis=0,
-            )
-            print(features.shape)
-            print(labels.shape)
+                bar()
         self.scaler = preprocessing.StandardScaler().fit(features)
         tr_fea = self.scaler.transform(features)
 
@@ -137,7 +88,7 @@ class SVMClassifier(SpeechEmotionClassifier):
                     class_weight="balanced",
                     tol=1e-15,
                     verbose=True,
-                    max_iter=1000,
+                    max_iter=100000,
                 )
             )
         ).fit(tr_fea, labels)
@@ -197,18 +148,28 @@ class SVMClassifier(SpeechEmotionClassifier):
         dataset = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, parameters
         )
-        features = np.empty((0, 17))
+        features = np.empty((0, parameters.get("mfcc_num", 40) + 4))
         labels = np.empty((0, 1))
-        for data, batch_labels in dataset:
-            for index, sample in enumerate(data.numpy()):
-                sample_features = np.reshape(
-                    self.get_features(sample), (1, -1)
+        batches = self.data_reader.num_batch[which_set]
+        with alive_bar(
+            batches, title="Processing batches", force_tty=True
+        ) as bar:
+            for data, batch_labels in dataset:
+                for index, sample in enumerate(data.numpy()):
+                    sample_features = np.reshape(
+                        self.get_mixed_features(sample, parameters), (1, -1)
+                    )
+                    features = np.concatenate(
+                        [features, sample_features], axis=0
+                    )
+                labels = np.concatenate(
+                    [
+                        labels,
+                        np.expand_dims(np.argmax(batch_labels, axis=1), 1),
+                    ],
+                    axis=0,
                 )
-                features = np.concatenate([features, sample_features], axis=0)
-            labels = np.concatenate(
-                [labels, np.expand_dims(np.argmax(batch_labels, axis=1), 1)],
-                axis=0,
-            )
+                bar()
         tr_features = self.scaler.transform(features)
         predictions = self.model.predict(tr_features)
         return predictions

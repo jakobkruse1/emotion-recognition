@@ -4,7 +4,7 @@ import pickle
 from typing import Dict
 
 import numpy as np
-import tensorflow as tf
+from sklearn import preprocessing
 from sklearn.mixture import GaussianMixture
 
 from src.classification.speech.speech_emotion_classifier import (
@@ -39,14 +39,10 @@ class GMMClassifier(SpeechEmotionClassifier):
         """
         super().__init__("gmm", parameters)
         self.models = {}
-        self.train_data_reader = ClasswiseSpeechDataReader(
+        self.data_reader = ClasswiseSpeechDataReader(
             folder=self.data_reader.folder
         )
-        input = tf.keras.layers.Input(
-            shape=(48000), dtype=tf.float32, name="raw"
-        )
-        mfcc = self.compute_mfccs(input)
-        self.mfcc_model = tf.keras.Model(input, mfcc)
+        self.scaler = {}
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -57,20 +53,24 @@ class GMMClassifier(SpeechEmotionClassifier):
         """
         parameters = self.init_parameters(parameters, **kwargs)
         which_set = parameters.get("which_set", Set.TRAIN)
-        self.train_data = self.train_data_reader.get_emotion_data(
+        self.train_data = self.data_reader.get_emotion_data(
             self.emotions, which_set, -1, parameters
         )
         n_components = parameters.get("n_components", 4)
 
         for data, class_name in self.train_data:
-            data = self.mfcc_model(data).numpy()
-            model = GaussianMixture(n_components)
-            print(data.shape)
-            model.fit(
-                np.reshape(
-                    data, (data.shape[0] * data.shape[1], data.shape[2])
+            features = np.empty((0, parameters.get("mfcc_num", 40) + 4))
+            for index, sample in enumerate(data):
+                sample_features = np.reshape(
+                    self.get_mixed_features(sample, parameters), (1, -1)
                 )
+                features = np.concatenate([features, sample_features], axis=0)
+            self.scaler[class_name] = preprocessing.StandardScaler().fit(
+                features
             )
+            tr_fea = self.scaler[class_name].transform(features)
+            model = GaussianMixture(n_components)
+            model.fit(tr_fea)
             self.models[class_name] = model
 
         self.is_trained = True
@@ -89,6 +89,10 @@ class GMMClassifier(SpeechEmotionClassifier):
             with open(model_path, "rb") as file:
                 model = pickle.load(file)
             self.models[class_name] = model
+            scaler_path = os.path.join(save_path, f"{class_name}_scaler.pkl")
+            with open(scaler_path, "rb") as file:
+                scaler = pickle.load(file)
+            self.scaler[class_name] = scaler
         self.is_trained = True
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
@@ -110,6 +114,10 @@ class GMMClassifier(SpeechEmotionClassifier):
             model_path = os.path.join(save_path, f"{name}.pkl")
             with open(model_path, "wb") as file:
                 pickle.dump(model, file)
+        for name, scaler in self.scaler.items():
+            scaler_path = os.path.join(save_path, f"{name}_scaler.pkl")
+            with open(scaler_path, "wb") as file:
+                pickle.dump(scaler, file)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
@@ -121,21 +129,26 @@ class GMMClassifier(SpeechEmotionClassifier):
         """
         parameters = self.init_parameters(parameters, **kwargs)
         which_set = parameters.get("which_set", Set.TEST)
-        batch_size = parameters.get("batch_size", 64)
         dataset = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size, parameters
+            self.emotions, which_set, -1, parameters
         )
-        predictions = []
-        for data, labels in dataset:
-            data = self.mfcc_model(data).numpy()
-            for sample in data:
-                class_prediction = []
-                for class_name in CLASS_NAMES:
-                    sample_prediction = self.models[class_name].score(sample)
-                    class_prediction.append(sample_prediction)
-                predictions.append(np.argmax(class_prediction))
-        predictions = np.asarray(predictions)
-        return predictions
+        features = np.empty((0, parameters.get("mfcc_num", 40) + 4))
+        for data, class_name in dataset:
+            for index, sample in enumerate(data):
+                sample_features = np.reshape(
+                    self.get_mixed_features(sample, parameters), (1, -1)
+                )
+                sample_features = self.scaler[class_name].transform(
+                    sample_features
+                )
+                features = np.concatenate([features, sample_features], axis=0)
+
+        predictions = np.zeros((features.shape[0], 7))
+        for index, class_name in enumerate(CLASS_NAMES):
+            predictions[:, index] = self.models[class_name].score_samples(
+                features
+            )
+        return np.argmax(predictions, axis=1)
 
 
 if __name__ == "__main__":  # pragma: no cover

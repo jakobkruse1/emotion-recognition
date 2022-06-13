@@ -3,6 +3,7 @@
 from abc import abstractmethod
 from typing import Dict
 
+import librosa
 import numpy as np
 import tensorflow as tf
 
@@ -166,6 +167,73 @@ class SpeechEmotionClassifier(EmotionClassifier):
         )
         spectrograms = tf.abs(stfts)
         return spectrograms
+
+    @staticmethod
+    def get_mixed_features(
+        data: np.ndarray, parameters: Dict = None
+    ) -> np.ndarray:
+        """
+        Feature construction method for the GMM classifier
+
+        :param data: The raw audio array of one sentence.
+        :param parameters: Parameter dictionary
+        :return: The features for the audio sentence.
+        """
+        sr = 16000
+        frame_t = 0.025
+        frame_n = round(sr * frame_t)
+        hop_n = round(0.01 * sr)
+        mfcc_num = parameters.get("mfcc_num", 40)
+        Ethresh = 0.01
+
+        # RMSE per frame
+        S, phase = librosa.magphase(
+            librosa.stft(y=data, win_length=frame_n, hop_length=hop_n)
+        )
+        rmst = librosa.feature.rms(S=S, hop_length=hop_n)
+
+        Elocs = np.where(rmst > Ethresh)[1]
+        if Elocs.size == 0:
+            Elocs = [60, 249]
+        Eloc = np.arange(Elocs[0], Elocs[-1] + 1)
+        rms = rmst[:, Eloc]
+
+        # MFCC per frame
+        MFCCt = librosa.feature.mfcc(
+            y=data, sr=sr, n_fft=frame_n, hop_length=hop_n, n_mfcc=mfcc_num
+        )
+        MFCC = MFCCt[:, Eloc]
+        #         print('Shape of MFCC', MFCC.shape)
+
+        _cent = librosa.feature.spectral_centroid(
+            y=data, sr=sr, n_fft=frame_n, hop_length=hop_n
+        )
+        cent = _cent[:, Eloc]
+
+        _rolloff = librosa.feature.spectral_rolloff(
+            y=data, sr=sr, n_fft=frame_n, hop_length=hop_n
+        )
+        rolloff = _rolloff[:, Eloc]
+
+        # Zero Crossing Rate per frame
+        zcrt = librosa.feature.zero_crossing_rate(
+            y=data, frame_length=frame_n, hop_length=hop_n
+        )
+        zcr = zcrt[:, Eloc]
+
+        MFCC = np.mean(MFCC, axis=1)
+        zcr = np.mean(zcr, axis=1)
+        rms = np.mean(rms, axis=1)
+        cent = np.mean(cent, axis=1)
+        rolloff = np.mean(rolloff, axis=1)
+        MFCC = np.reshape(MFCC, (len(MFCC), 1))
+        zcr = np.reshape(zcr, (len(zcr), 1))
+        rms = np.reshape(rms, (len(rms), 1))
+        cent = np.reshape(cent, (len(cent), 1))
+        rolloff = np.reshape(rolloff, (len(rolloff), 1))
+
+        features = np.vstack((MFCC, zcr, rms, cent, rolloff))
+        return features
 
 
 if __name__ == "__main__":  # pragma: no cover
