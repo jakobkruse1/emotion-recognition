@@ -147,19 +147,20 @@ class HMMClassifier(SpeechEmotionClassifier):
 
         predictions = np.zeros((features.shape[0], 7))
         for index, class_name in enumerate(CLASS_NAMES):
-            predictions[:, index] = self.models[class_name].score_samples(
-                features
-            )
+            for id, sample in enumerate(features):
+                predictions[id, index] = self.models[class_name].score(
+                    np.reshape(sample, (1, -1))
+                )
         return np.argmax(predictions, axis=1)
 
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = HMMClassifier()
-    classifier.train({"which_set": Set.TEST})
+    classifier.train({"which_set": Set.TRAIN})
     classifier.save()
     classifier.load()
     emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.VAL)
+    labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
     print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
