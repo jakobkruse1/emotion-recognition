@@ -23,3 +23,4 @@ alive-progress
 seaborn
 transformers
 hmmlearn
+librosa

@@ -52,9 +52,11 @@ if __name__ == "__main__":
 
     hubert_configs = make_dictionaries(
         {"epochs": 50, "patience": 10},
-        learning_rate=[5e-5, 0.0001, 0.0003, 0.001],
+        learning_rate=[5e-5, 0.0001, 0.0003],
         dropout=[0.1, 0.2],
         num_hidden_layers=[12, 10, 8],
+        freeze=[True, False],
+        extra_layer=[0, 1024],
         gpu=[which_gpu],
     )
     runner.add_grid_experiments(
@@ -65,9 +67,11 @@ if __name__ == "__main__":
 
     wav2vec2_configs = make_dictionaries(
         {"epochs": 50, "patience": 10},
-        learning_rate=[5e-5, 0.0001, 0.0003, 0.001],
+        learning_rate=[5e-5, 0.0001, 0.0003],
         dropout=[0.1, 0.2],
         num_hidden_layers=[12, 10, 8],
+        freeze=[True, False],
+        extra_layer=[0, 1024],
         gpu=[which_gpu],
     )
     runner.add_grid_experiments(

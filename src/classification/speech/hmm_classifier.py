@@ -67,6 +67,7 @@ class HMMClassifier(SpeechEmotionClassifier):
             model = hmm.GaussianHMM(
                 n_components=n_components,
             )
+            print(data.shape)
             model.fit(
                 np.reshape(
                     data, (data.shape[0] * data.shape[1], data.shape[2])

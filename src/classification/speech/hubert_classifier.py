@@ -29,6 +29,9 @@ class FinetuningHuBERTModel(nn.Module):
         super().__init__()
         parameters = parameters or {}
         dropout = parameters.get("dropout", 0.1)
+        freeze = parameters.get("freeze", False)
+        extra_layer = parameters.get("extra_layer", None)
+
         model_config = HubertConfig(
             hidden_dropout=dropout,
             attention_dropout=dropout,
@@ -44,7 +47,15 @@ class FinetuningHuBERTModel(nn.Module):
             config=model_config,
             cache_dir=cache_dir,
         )
-        self.classifier = nn.Linear(114432, 7)
+        if freeze:
+            self.processor.requires_grad = False
+            self.model.requires_grad = False
+        if extra_layer:
+            self.hidden = nn.Linear(114432, extra_layer)
+            self.classifier = nn.Linear(extra_layer, 7)
+        else:
+            self.hidden = None
+            self.classifier = nn.Linear(114432, 7)
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -59,8 +70,10 @@ class FinetuningHuBERTModel(nn.Module):
         ).input_values[0]
         input_values = input_values.to(self.device)
         logits = self.model(input_values).last_hidden_state
-        flat = torch.flatten(logits, start_dim=1)
-        out = self.classifier(flat)
+        out = torch.flatten(logits, start_dim=1)
+        if self.hidden:
+            out = self.hidden(out)
+        out = self.classifier(out)
         out = self.softmax(out)
         return out
 
@@ -122,11 +135,13 @@ class HuBERTClassifier(SpeechEmotionClassifier):
 
         with tf.device("/cpu:0"):
             self.prepare_data(parameters)
-            total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[
-                0
-            ]
+            total_train_images = self.data_reader.get_labels(
+                Set.TRAIN, parameters
+            ).shape[0]
             batches = int(np.ceil(total_train_images / batch_size))
-            total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
+            total_val_images = self.data_reader.get_labels(
+                Set.VAL, parameters
+            ).shape[0]
             val_batches = int(np.ceil(total_val_images / batch_size))
         best_acc = 0
         waiting_for_improve = 0
@@ -272,11 +287,12 @@ if __name__ == "__main__":  # pragma: no cover
             "batch_size": 64,
             "shuffle": True,
             "num_hidden_layers": 12,
+            "dataset": "all",
         }
     )
     classifier.save()
     classifier.load()
-    emotions = classifier.classify()
+    emotions = classifier.classify({"dataset": "all"})
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")

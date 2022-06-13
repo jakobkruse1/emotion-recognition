@@ -1,76 +1,78 @@
 """ This file contains the MFCC-LSTM speech emotion classifier """
-
+import os
+import pickle
 from typing import Dict
 
 import numpy as np
 import tensorflow as tf
+from sklearn.mixture import GaussianMixture
 
 from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
+from src.data.classwise_speech_data_reader import ClasswiseSpeechDataReader
 from src.data.data_reader import Set
 
+CLASS_NAMES = [
+    "angry",
+    "surprise",
+    "disgust",
+    "happy",
+    "fear",
+    "sad",
+    "neutral",
+]
 
-class MFCCLSTMClassifier(SpeechEmotionClassifier):
+
+class GMMClassifier(SpeechEmotionClassifier):
     """
-    Class that implements a speech emotion classifier that uses mfc features
-    in a LSTM based classifier model.
+    Class that implements a speech emotion classifier that uses
+    a Gaussian Mixture Model for classification
     """
 
     def __init__(self, parameters: Dict = None):
         """
-        Initialize the MFCC-LSTM emotion classifier
+        Initialize the GMMemotion classifier
 
         :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
-        super().__init__("mfcc_lstm", parameters)
-        tf.get_logger().setLevel("ERROR")
-        self.model = None
-
-    def initialize_model(self, parameters: Dict) -> None:
-        """
-        Initializes a new and pretrained version of the MFCC-LSTM model
-        """
-        lstm_units = parameters.get("lstm_units", 256)
-        dropout = parameters.get("dropout", 0.2)
+        super().__init__("gmm", parameters)
+        self.models = {}
+        self.train_data_reader = ClasswiseSpeechDataReader(
+            folder=self.data_reader.folder
+        )
         input = tf.keras.layers.Input(
             shape=(48000), dtype=tf.float32, name="raw"
         )
         mfcc = self.compute_mfccs(input)
-        out = tf.keras.layers.LSTM(lstm_units)(mfcc)
-        out = tf.keras.layers.Dropout(dropout)(out)
-        out = tf.keras.layers.Dense(1024, activation="relu")(out)
-        out = tf.keras.layers.Dense(512, activation="relu")(out)
-        out = tf.keras.layers.Dense(7, activation="softmax")(out)
-        self.model = tf.keras.Model(input, out)
+        self.mfcc_model = tf.keras.Model(input, mfcc)
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
-        Training method for MFCC-LSTM model
+        Training method for HMM model
 
         :param parameters: Parameter dictionary used for training
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        epochs = parameters.get("epochs", 20)
-
-        if not self.model:
-            self.initialize_model(parameters)
-        self.prepare_training(parameters)
-        self.model.compile(
-            optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
+        which_set = parameters.get("which_set", Set.TRAIN)
+        self.train_data = self.train_data_reader.get_emotion_data(
+            self.emotions, which_set, -1, parameters
         )
-        self.prepare_data(parameters)
-        print(self.class_weights)
+        n_components = parameters.get("n_components", 4)
 
-        _ = self.model.fit(
-            x=self.train_data,
-            validation_data=self.val_data,
-            epochs=epochs,
-            callbacks=[self.callback],
-            class_weight=self.class_weights,
-        )
+        for data, class_name in self.train_data:
+            data = self.mfcc_model(data).numpy()
+            model = GaussianMixture(n_components)
+            print(data.shape)
+            model.fit(
+                np.reshape(
+                    data, (data.shape[0] * data.shape[1], data.shape[2])
+                )
+            )
+            self.models[class_name] = model
+
         self.is_trained = True
 
     def load(self, parameters: Dict = None, **kwargs) -> None:
@@ -81,8 +83,13 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/mfcc_lstm")
-        self.model = tf.keras.models.load_model(save_path)
+        save_path = parameters.get("save_path", "models/speech/gmm")
+        for class_name in CLASS_NAMES:
+            model_path = os.path.join(save_path, f"{class_name}.pkl")
+            with open(model_path, "rb") as file:
+                model = pickle.load(file)
+            self.models[class_name] = model
+        self.is_trained = True
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -96,8 +103,13 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/mfcc_lstm")
-        self.model.save(save_path, include_optimizer=False)
+        save_path = parameters.get("save_path", "models/speech/gmm")
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+        for name, model in self.models.items():
+            model_path = os.path.join(save_path, f"{name}.pkl")
+            with open(model_path, "wb") as file:
+                pickle.dump(model, file)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
@@ -113,27 +125,22 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
         dataset = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, parameters
         )
-
-        if not self.model:
-            raise RuntimeError(
-                "Please load or train the model before inference!"
-            )
-        results = self.model.predict(dataset)
-        return np.argmax(results, axis=1)
+        predictions = []
+        for data, labels in dataset:
+            data = self.mfcc_model(data).numpy()
+            for sample in data:
+                class_prediction = []
+                for class_name in CLASS_NAMES:
+                    sample_prediction = self.models[class_name].score(sample)
+                    class_prediction.append(sample_prediction)
+                predictions.append(np.argmax(class_prediction))
+        predictions = np.asarray(predictions)
+        return predictions
 
 
 if __name__ == "__main__":  # pragma: no cover
-    classifier = MFCCLSTMClassifier()
-    classifier.train(
-        {
-            "epochs": 50,
-            "patience": 10,
-            "learning_rate": 0.0003,
-            "lstm_units": 128,
-            "dropout": 0.2,
-            "weighted": True,
-        }
-    )
+    classifier = GMMClassifier()
+    classifier.train({"which_set": Set.VAL})
     classifier.save()
     classifier.load()
     emotions = classifier.classify()

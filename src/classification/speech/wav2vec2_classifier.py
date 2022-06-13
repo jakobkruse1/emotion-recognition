@@ -28,6 +28,9 @@ class FinetuningWav2Vec2Model(nn.Module):
         cache_dir = "models/cache"
         parameters = parameters or {}
         dropout = parameters.get("dropout", 0.1)
+        freeze = parameters.get("freeze", False)
+        extra_layer = parameters.get("extra_layer", None)
+
         model_config = Wav2Vec2Config(
             hidden_dropout=dropout,
             attention_dropout=dropout,
@@ -42,6 +45,15 @@ class FinetuningWav2Vec2Model(nn.Module):
             cache_dir=cache_dir,
             config=model_config,
         )
+        if freeze:
+            self.processor.requires_grad = False
+            self.model.requires_grad = False
+        if extra_layer:
+            self.hidden = nn.Linear(114432, extra_layer)
+            self.classifier = nn.Linear(extra_layer, 7)
+        else:
+            self.hidden = None
+            self.classifier = nn.Linear(114432, 7)
         self.classifier = nn.Linear(114432, 7)
         self.softmax = nn.Softmax(dim=1)
 
@@ -57,8 +69,10 @@ class FinetuningWav2Vec2Model(nn.Module):
         ).input_values[0]
         input_values = input_values.to(self.device)
         logits = self.model(input_values).last_hidden_state
-        flat = torch.flatten(logits, start_dim=1)
-        out = self.classifier(flat)
+        out = torch.flatten(logits, start_dim=1)
+        if self.hidden:
+            out = self.hidden(out)
+        out = self.classifier(out)
         out = self.softmax(out)
         return out
 
