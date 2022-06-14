@@ -62,7 +62,6 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
             optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
         )
         self.prepare_data(parameters)
-        print(self.class_weights)
 
         _ = self.model.fit(
             x=self.train_data,

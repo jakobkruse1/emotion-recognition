@@ -80,6 +80,46 @@ if __name__ == "__main__":
         train_parameters=wav2vec2_configs,
     )
 
+    hmm_configs = make_dictionaries(
+        {}, n_components=[4, 8, 12, 16], mfcc_num=[13, 20, 40]
+    )
+    runner.add_grid_experiments(
+        modality="speech",
+        model="hmm",
+        train_parameters=hmm_configs,
+    )
+
+    runner.add_grid_experiments(
+        modality="speech",
+        model="gmm",
+        train_parameters=hmm_configs,
+    )
+
+    svm_configs = make_dictionaries(
+        {},
+        mfcc_num=[13, 20, 40],
+        kernel=["linear", "poly", "rbf", "sigmoid", "precomputed"],
+    )
+    runner.add_grid_experiments(
+        modality="speech",
+        model="svm",
+        train_parameters=svm_configs,
+    )
+
+    byols_configs = make_dictionaries(
+        {"epochs": 50, "patience": 10},
+        model_name=["cvt", "resnetish34", "default"],
+        hidden=[1024, 2048, 4096, 512],
+        learning_rate=[5e-5, 1e-4, 3e-4, 1e-3],
+        freeze=[True, False],
+        gpu=[which_gpu],
+    )
+    runner.add_grid_experiments(
+        modality="speech",
+        model="byols",
+        train_parameters=byols_configs,
+    )
+
     my_experiments = list(range(len(runner.experiments)))[
         my_task_id::num_tasks
     ]

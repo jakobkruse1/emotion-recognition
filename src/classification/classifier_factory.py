@@ -8,8 +8,12 @@ from src.classification.image import (
     VGG16Classifier,
 )
 from src.classification.speech import (
+    BYOLSClassifier,
+    GMMClassifier,
+    HMMClassifier,
     HuBERTClassifier,
     MFCCLSTMClassifier,
+    SVMClassifier,
     Wav2Vec2Classifier,
 )
 from src.classification.text import (
@@ -114,5 +118,13 @@ class SpeechClassifierFactory:
             return HuBERTClassifier(parameters)
         elif model == "wav2vec2":
             return Wav2Vec2Classifier(parameters)
+        elif model == "hmm":
+            return HMMClassifier(parameters)
+        elif model == "gmm":
+            return GMMClassifier(parameters)
+        elif model == "svm":
+            return SVMClassifier(parameters)
+        elif model == "byols":
+            return BYOLSClassifier(parameters)
         else:
             raise ValueError(f"Speech model {model} not implemented!")

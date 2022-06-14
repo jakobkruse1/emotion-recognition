@@ -51,6 +51,7 @@ class SVMClassifier(SpeechEmotionClassifier):
         parameters = self.init_parameters(parameters, **kwargs)
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
+        kernel = parameters.get("kernel", "rbf")
         self.train_data = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, parameters
         )
@@ -82,7 +83,7 @@ class SVMClassifier(SpeechEmotionClassifier):
         self.model = (
             OneVsOneClassifier(
                 svm.SVC(
-                    kernel="rbf",
+                    kernel=kernel,
                     gamma="auto",
                     C=1,
                     class_weight="balanced",

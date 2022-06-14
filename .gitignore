@@ -16,6 +16,8 @@ models/speech/wav2vec2
 models/speech/hmm
 models/speech/gmm
 models/speech/svm
+models/speech/serab-byols
+models/speech/byols
 models/cache
 
 # Documentation
