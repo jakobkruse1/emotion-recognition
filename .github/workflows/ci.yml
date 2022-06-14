@@ -32,6 +32,8 @@ jobs:
           python-version: "3.8"
       - name: Debug
         run: ls
+      - name: Dependencies Installation
+        run: apt install libsndfile1
       - name: Install pip packages
         run: pip install -r requirements.txt
       - name: Install all models for tests
