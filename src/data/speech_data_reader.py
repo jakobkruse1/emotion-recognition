@@ -141,6 +141,7 @@ class SpeechDataReader(DataReader):
         if max_elements:
             dataset = dataset.take(max_elements)
         dataset = dataset.batch(batch_size)
+        dataset = dataset.map(map_func=self.set_tensor_shapes)
         return dataset
 
     def get_three_emotion_data(
@@ -226,7 +227,9 @@ class SpeechDataReader(DataReader):
         audio = tf.squeeze(audio, axis=-1, name="audio")
         emotion = file_path.decode("utf-8").split(os.path.sep)[-2]
         label = CLASS_NAMES.index(emotion)
-        y = tf.keras.utils.to_categorical(label, num_classes=7)
+        y = tf.convert_to_tensor(
+            tf.keras.utils.to_categorical(label, num_classes=7)
+        )
         return audio, y
 
     @staticmethod
@@ -249,8 +252,30 @@ class SpeechDataReader(DataReader):
             value=0,
         )[0]
         y = CREMA_LABELS[y]
-        y = tf.keras.utils.to_categorical(y, num_classes=7)
+        y = tf.convert_to_tensor(
+            tf.keras.utils.to_categorical(y, num_classes=7)
+        )
         return audio, y
+
+    @staticmethod
+    @tf.function
+    def set_tensor_shapes(
+        x: tf.Tensor, y: tf.Tensor
+    ) -> Tuple[tf.Tensor, tf.Tensor]:
+        """
+        Function that sets the tensor shapes in the dataset manually.
+        This fixes an issue where using Dataset.map and numpy_function causes
+        the tensor shape to be unknown.
+        See the issue here:
+        https://github.com/tensorflow/tensorflow/issues/47032
+
+        :param x: The speech tensor
+        :param y: The labels tensor
+        :return: Tuple with speech and labels tensor
+        """
+        x.set_shape([None, 48000])
+        y.set_shape([None, 7])
+        return x, y
 
 
 if __name__ == "__main__":  # pragma: no cover
