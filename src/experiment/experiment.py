@@ -128,6 +128,7 @@ class ExperimentRunner:
             else:
                 exit(0)
         except EOFError:
+            print("Continuing.")
             return  # pragma: no cover
 
     def add_grid_experiments(self, **kwargs):
