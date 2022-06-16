@@ -56,7 +56,7 @@ class SVMClassifier(SpeechEmotionClassifier):
             self.emotions, which_set, batch_size, parameters
         )
         features = np.empty((0, parameters.get("mfcc_num", 40) + 4))
-        labels = np.empty((0, 1))
+        labels = np.empty((0,))
         batches = self.data_reader.num_batch[which_set]
         with alive_bar(
             batches, title="Processing batches", force_tty=True
@@ -70,10 +70,7 @@ class SVMClassifier(SpeechEmotionClassifier):
                         [features, sample_features], axis=0
                     )
                 labels = np.concatenate(
-                    [
-                        labels,
-                        np.expand_dims(np.argmax(batch_labels, axis=1), 1),
-                    ],
+                    [labels, np.argmax(batch_labels, axis=1)],
                     axis=0,
                 )
                 bar()
@@ -111,7 +108,6 @@ class SVMClassifier(SpeechEmotionClassifier):
         scaler_path = os.path.join(save_path, "scaler.pkl")
         with open(scaler_path, "rb") as file:
             self.scaler = pickle.load(file)
-        self.is_trained = True
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -149,8 +145,12 @@ class SVMClassifier(SpeechEmotionClassifier):
         dataset = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, parameters
         )
+        if not self.model:
+            raise RuntimeError(
+                "Please load or train the model before inference!"
+            )
         features = np.empty((0, parameters.get("mfcc_num", 40) + 4))
-        labels = np.empty((0, 1))
+        labels = np.empty((0,))
         batches = self.data_reader.num_batch[which_set]
         with alive_bar(
             batches, title="Processing batches", force_tty=True
@@ -164,10 +164,7 @@ class SVMClassifier(SpeechEmotionClassifier):
                         [features, sample_features], axis=0
                     )
                 labels = np.concatenate(
-                    [
-                        labels,
-                        np.expand_dims(np.argmax(batch_labels, axis=1), 1),
-                    ],
+                    [labels, np.argmax(batch_labels, axis=1)],
                     axis=0,
                 )
                 bar()

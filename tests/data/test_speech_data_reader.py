@@ -148,3 +148,55 @@ def test_crema_d_dataset():
     assert val_ds.shape[0] == num_val
     test_ds = dr.get_labels(Set.TEST)
     assert test_ds.shape[0] == num_test
+
+
+def test_dataset_selection():
+    dr = SpeechDataReader(folder="tests/test_data/speech")
+    val_ds = dr.get_labels(Set.VAL, parameters={"dataset": "meld"})
+    assert val_ds.shape[0] == 7
+    val_ds = dr.get_labels(Set.VAL, parameters={"dataset": "crema"})
+    assert val_ds.shape[0] == 738
+
+
+def test_get_waveform():
+    dr = SpeechDataReader(folder="tests/test_data/speech")
+    audio, label = dr.get_waveform_and_label(
+        b"tests/test_data/speech/train/angry/03-01-05-01-01-01-02.wav"
+    )
+    audio = audio.numpy()
+    label = label.numpy()
+    assert audio.shape == (48000,)
+    assert label.shape == (7,)
+    assert label[0] == 1
+    for i in range(1, 7):
+        assert label[i] == 0
+    assert np.max(audio) <= 1
+    assert np.min(audio) >= -1
+
+
+def test_process_crema():
+    dr = SpeechDataReader(folder="tests/test_data/speech")
+    audio_raw = (np.random.rand(42000) - 0.5) * 2 * 32768
+    audio, label = dr.process_crema(audio_raw, 1)
+    assert audio.shape == (48000,)
+    assert label.shape == (7,)
+    assert label[3] == 1
+    for i in list(range(0, 3)) + list(range(4, 7)):
+        assert label[i] == 0
+    assert np.max(audio) <= 1
+    assert np.min(audio) >= -1
+
+
+def test_tensor_shapes():
+    audio = np.random.rand(1, 48000)
+    label = np.zeros((1, 7))
+    label[0, 3] = 1
+    audio_tensor = tf.convert_to_tensor(audio)
+    label_tensor = tf.convert_to_tensor(label)
+    audio_tensor.set_shape(tf.TensorShape(None))
+    label_tensor.set_shape(tf.TensorShape(None))
+
+    x, y = SpeechDataReader.set_tensor_shapes(audio_tensor, label_tensor)
+
+    assert x.shape.rank == 2
+    assert y.shape.rank == 2

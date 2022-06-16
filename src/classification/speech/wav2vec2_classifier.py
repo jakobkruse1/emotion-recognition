@@ -54,7 +54,6 @@ class FinetuningWav2Vec2Model(nn.Module):
         else:
             self.hidden = None
             self.classifier = nn.Linear(114432, 7)
-        self.classifier = nn.Linear(114432, 7)
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -117,7 +116,7 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         batch_size = parameters.get("batch_size", 64)
         parameters["batch_size"] = batch_size
         patience = parameters.get("patience", 5)
-        if "gpu" in parameters:
+        if "gpu" in parameters:  # pragma: no cover
             self.device = torch.device(
                 f"cuda:{parameters['gpu']}"
                 if torch.cuda.is_available()
@@ -223,7 +222,7 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
             "save_path", "models/speech/wav2vec2/wav2vec2.pth"
         )
         saved_data = torch.load(save_path, map_location=self.device)
-        self.model = FinetuningWav2Vec2Model(self.device)
+        self.model = FinetuningWav2Vec2Model(self.device, parameters)
         self.model.load_state_dict(saved_data["model_state_dict"])
         self.model.eval()
 

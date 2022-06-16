@@ -4,12 +4,12 @@ import shutil
 import numpy as np
 import pytest
 
-from src.classification.speech import Wav2Vec2Classifier
+from src.classification.speech import BYOLSClassifier
 from src.data.speech_data_reader import Set, SpeechDataReader
 
 
-def test_wav2vec2_initialization():
-    classifier = Wav2Vec2Classifier()
+def test_byols_initialization():
+    classifier = BYOLSClassifier()
     assert not classifier.model
     assert not classifier.is_trained
 
@@ -19,9 +19,8 @@ def test_wav2vec2_initialization():
         classifier.classify()
 
 
-@pytest.mark.filterwarnings("ignore::DeprecationWarning")
-def test_wav2vec2_workflow():
-    classifier = Wav2Vec2Classifier()
+def test_byols_workflow():
+    classifier = BYOLSClassifier()
     assert not classifier.model
     train_parameters = {
         "epochs": 1,
@@ -30,25 +29,20 @@ def test_wav2vec2_workflow():
         "max_elements": 7,
         "shuffle": False,
         "freeze": True,
-        "extra_layer": 1024,
     }
     classifier.data_reader = SpeechDataReader(folder="tests/test_data/speech")
     classifier.train(train_parameters)
 
-    assert classifier.model.hidden is not None
-
-    shutil.rmtree("tests/temp/wav2vec2", ignore_errors=True)
-    save_parameters = {
-        "save_path": "tests/temp/wav2vec2/wav2vec2.pth",
-        "extra_layer": 1024,
-    }
+    shutil.rmtree("tests/temp/byols", ignore_errors=True)
+    save_parameters = {"save_path": "tests/temp/byols/byols.pth"}
     classifier.save(save_parameters)
-    assert os.path.exists("tests/temp/wav2vec2/wav2vec2.pth")
+    assert os.path.exists("tests/temp/byols/byols.pth")
+    assert os.path.exists("tests/temp/byols/model.txt")
     results = classifier.classify({"max_elements": 7, "shuffle": False})
     assert isinstance(results, np.ndarray)
     assert results.shape == (7,)
 
-    new_classifier = Wav2Vec2Classifier()
+    new_classifier = BYOLSClassifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = SpeechDataReader(
         folder="tests/test_data/speech"
@@ -59,23 +53,6 @@ def test_wav2vec2_workflow():
     assert np.array_equal(new_results, results)
 
     with pytest.raises(RuntimeError):
-        new_classifier.save({"save_path": "tests/temp/wav2vec2/wav2vec2.pth"})
+        new_classifier.save({"save_path": "tests/temp/byols/byols.pth"})
 
     shutil.rmtree("tests/temp", ignore_errors=True)
-
-
-def test_no_extra_layer():
-    classifier = Wav2Vec2Classifier()
-    assert not classifier.model
-    classifier.data_reader = SpeechDataReader(folder="tests/test_data/speech")
-    train_parameters = {
-        "epochs": 0,
-        "which_set": Set.VAL,
-        "batch_size": 8,
-        "max_elements": 7,
-        "freeze": True,
-        "shuffle": False,
-        "dataset": "meld",
-    }
-    classifier.train(train_parameters)
-    assert classifier.model.hidden is None

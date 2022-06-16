@@ -97,6 +97,7 @@ class BYOLSClassifier(SpeechEmotionClassifier):
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
         self.model = None
+
         from functools import partialmethod
 
         from tqdm import tqdm
@@ -124,7 +125,7 @@ class BYOLSClassifier(SpeechEmotionClassifier):
         batch_size = parameters.get("batch_size", 64)
         parameters["batch_size"] = batch_size
         patience = parameters.get("patience", 5)
-        if "gpu" in parameters:
+        if "gpu" in parameters:  # pragma: no cover
             self.device = torch.device(
                 f"cuda:{parameters['gpu']}"
                 if torch.cuda.is_available()

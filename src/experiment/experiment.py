@@ -123,6 +123,7 @@ class ExperimentRunner:
         try:
             choice = input("Do you want to continue? [Y/N] : ").lower()
             if choice in yes or not sys.__stdin__.isatty():
+                print("Continuing.")
                 return
             else:
                 exit(0)

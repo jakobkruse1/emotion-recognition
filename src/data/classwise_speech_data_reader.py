@@ -56,19 +56,32 @@ class ClasswiseSpeechDataReader(DataReader):
         shuffle = parameters.get(
             "shuffle", True if which_set == Set.TRAIN else False
         )
+        dataset = parameters.get("dataset", "all")
+        use_meld = dataset == "all" or dataset == "meld"
+        use_crema = dataset == "all" or dataset == "crema"
+        assert use_crema or use_meld
         folder = self.folder_map[which_set]
-        crema_d, cd_info = tfds.load(
-            "crema_d",
-            split="validation" if folder == "val" else folder,
-            shuffle_files=False,
-            with_info=True,
-            as_supervised=True,
-        )
+        if use_crema:
+            crema_d, cd_info = tfds.load(
+                "crema_d",
+                split="validation" if folder == "val" else folder,
+                shuffle_files=False,
+                with_info=True,
+                as_supervised=True,
+            )
         data_dir = os.path.join(self.folder, folder)
         for emotion_class in CLASS_NAMES:
-            crema_samples = self.get_crema_samples(crema_d, emotion_class)
-            file_samples = self.get_file_samples(emotion_class, data_dir)
-            all_samples = np.concatenate([crema_samples, file_samples])
+            if not use_meld:
+                all_samples = self.get_crema_samples(crema_d, emotion_class)
+            elif not use_crema:
+                all_samples = self.get_file_samples(emotion_class, data_dir)
+            else:
+                all_samples = np.concatenate(
+                    [
+                        self.get_crema_samples(crema_d, emotion_class),
+                        self.get_file_samples(emotion_class, data_dir),
+                    ]
+                )
             if shuffle:
                 np.random.shuffle(all_samples)
             yield (all_samples, emotion_class)
@@ -202,7 +215,9 @@ class ClasswiseSpeechDataReader(DataReader):
         audio = tf.squeeze(audio, axis=-1, name="audio")
         emotion = file_path.decode("utf-8").split(os.path.sep)[-2]
         label = CLASS_NAMES.index(emotion)
-        y = tf.keras.utils.to_categorical(label, num_classes=7)
+        y = tf.convert_to_tensor(
+            tf.keras.utils.to_categorical(label, num_classes=7)
+        )
         return audio, y
 
     @staticmethod
@@ -225,7 +240,9 @@ class ClasswiseSpeechDataReader(DataReader):
             value=0,
         )[0]
         y = CREMA_LABELS[y]
-        y = tf.keras.utils.to_categorical(y, num_classes=7)
+        y = tf.convert_to_tensor(
+            tf.keras.utils.to_categorical(y, num_classes=7)
+        )
         return audio, y
 
 

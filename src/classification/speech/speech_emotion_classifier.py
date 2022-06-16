@@ -154,7 +154,9 @@ class SpeechEmotionClassifier(EmotionClassifier):
         return mfccs
 
     @staticmethod
-    def compute_spectrogram(audio_tensor: tf.Tensor) -> tf.Tensor:
+    def compute_spectrogram(
+        audio_tensor: tf.Tensor,
+    ) -> tf.Tensor:  # pragma: no cover
         """
         Performs a short term fourier transform on the raw audio data to
         generate a spectrogram which can be used for classification.

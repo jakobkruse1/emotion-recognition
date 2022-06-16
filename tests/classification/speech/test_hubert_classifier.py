@@ -8,7 +8,7 @@ from src.classification.speech import HuBERTClassifier
 from src.data.speech_data_reader import Set, SpeechDataReader
 
 
-def test_mfcc_lstm_initialization():
+def test_hubert_initialization():
     classifier = HuBERTClassifier()
     assert not classifier.model
     assert not classifier.is_trained
@@ -19,7 +19,8 @@ def test_mfcc_lstm_initialization():
         classifier.classify()
 
 
-def test_mfcc_lstm_workflow():
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")
+def test_hubert_workflow():
     classifier = HuBERTClassifier()
     assert not classifier.model
     train_parameters = {
@@ -27,13 +28,18 @@ def test_mfcc_lstm_workflow():
         "which_set": Set.VAL,
         "batch_size": 8,
         "max_elements": 7,
+        "freeze": True,
+        "extra_layer": 1024,
         "shuffle": False,
     }
     classifier.data_reader = SpeechDataReader(folder="tests/test_data/speech")
     classifier.train(train_parameters)
-
+    assert classifier.model.hidden is not None
     shutil.rmtree("tests/temp/hubert", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/hubert/hubert.pth"}
+    save_parameters = {
+        "save_path": "tests/temp/hubert/hubert.pth",
+        "extra_layer": 1024,
+    }
     classifier.save(save_parameters)
     assert os.path.exists("tests/temp/hubert/hubert.pth")
     results = classifier.classify({"max_elements": 7, "shuffle": False})
@@ -54,3 +60,20 @@ def test_mfcc_lstm_workflow():
         new_classifier.save({"save_path": "tests/temp/hubert/hubert.pth"})
 
     shutil.rmtree("tests/temp", ignore_errors=True)
+
+
+def test_no_extra_layer():
+    classifier = HuBERTClassifier()
+    assert not classifier.model
+    classifier.data_reader = SpeechDataReader(folder="tests/test_data/speech")
+    train_parameters = {
+        "epochs": 0,
+        "which_set": Set.VAL,
+        "batch_size": 8,
+        "max_elements": 7,
+        "freeze": True,
+        "shuffle": False,
+        "dataset": "meld",
+    }
+    classifier.train(train_parameters)
+    assert classifier.model.hidden is None

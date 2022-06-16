@@ -258,7 +258,6 @@ class SpeechDataReader(DataReader):
         return audio, y
 
     @staticmethod
-    @tf.function
     def set_tensor_shapes(
         x: tf.Tensor, y: tf.Tensor
     ) -> Tuple[tf.Tensor, tf.Tensor]:

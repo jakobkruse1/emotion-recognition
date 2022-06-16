@@ -57,6 +57,7 @@ class GMMClassifier(SpeechEmotionClassifier):
             self.emotions, which_set, -1, parameters
         )
         n_components = parameters.get("n_components", 4)
+        max_iter = kwargs.get("max_iter", 100000)
 
         for data, class_name in self.train_data:
             features = np.empty((0, parameters.get("mfcc_num", 40) + 4))
@@ -69,7 +70,7 @@ class GMMClassifier(SpeechEmotionClassifier):
                 features
             )
             tr_fea = self.scaler[class_name].transform(features)
-            model = GaussianMixture(n_components)
+            model = GaussianMixture(n_components, max_iter=max_iter)
             model.fit(tr_fea)
             self.models[class_name] = model
 
@@ -93,7 +94,6 @@ class GMMClassifier(SpeechEmotionClassifier):
             with open(scaler_path, "rb") as file:
                 scaler = pickle.load(file)
             self.scaler[class_name] = scaler
-        self.is_trained = True
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -132,6 +132,10 @@ class GMMClassifier(SpeechEmotionClassifier):
         dataset = self.data_reader.get_emotion_data(
             self.emotions, which_set, -1, parameters
         )
+        if not len(self.models):
+            raise RuntimeError(
+                "Please load or train the model before inference!"
+            )
         features = np.empty((0, parameters.get("mfcc_num", 40) + 4))
         for data, class_name in dataset:
             for index, sample in enumerate(data):
