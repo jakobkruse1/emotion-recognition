@@ -220,14 +220,19 @@ class ExperimentRunner:
 
         classifier.train(experiment.train_parameters)
         parameters = experiment.get_parameter_dict()
+        eval_parameters = parameters.get("train_parameters", {}).copy()
+        eval_parameters["which_set"] = Set.TRAIN
+        eval_parameters["shuffle"] = False
         parameters["train_predictions"] = classifier.classify(
-            {"which_set": Set.TRAIN}
+            eval_parameters
         ).tolist()
+        eval_parameters["which_set"] = Set.VAL
         parameters["val_predictions"] = classifier.classify(
-            {"which_set": Set.VAL}
+            eval_parameters
         ).tolist()
+        eval_parameters["which_set"] = Set.TEST
         parameters["test_predictions"] = classifier.classify(
-            {"which_set": Set.TEST}
+            eval_parameters
         ).tolist()
         with open(os.path.join(self.folder, file_path), "w") as json_file:
             json.dump(parameters, json_file)
