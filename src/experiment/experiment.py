@@ -183,7 +183,9 @@ class ExperimentRunner:
         classifier.data_reader = kwargs.get(
             "data_reader", classifier.data_reader
         )
-        labels = classifier.data_reader.get_labels(Set.TEST)
+        labels = classifier.data_reader.get_labels(
+            Set.TEST, experiment.train_parameters
+        )
         file_path = f"{index:03d}_results.json"
         if os.path.exists(os.path.join(self.folder, file_path)):
             print("Skipping experiment as results already exist!")

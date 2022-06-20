@@ -123,4 +123,10 @@ if __name__ == "__main__":
     my_experiments = list(range(len(runner.experiments)))[
         my_task_id::num_tasks
     ]
+
+    print(
+        f"Running {len(my_experiments)} out of "
+        f"{len(runner.experiments)} experiments."
+    )
+
     runner.run_all(indices=my_experiments)
