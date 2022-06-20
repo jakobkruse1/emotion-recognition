@@ -3,7 +3,6 @@
 import itertools
 import json
 import os
-import sys
 import warnings
 from typing import Dict, List
 
@@ -105,31 +104,8 @@ class ExperimentRunner:
             base_folder, f"experiments/results/{experiment_name}"
         )
         if os.path.exists(self.folder):
-            warnings.warn(
-                "The experiment folder already exists! "
-                "Files might be overwritten!"
-            )
-            self._check_with_user()
+            warnings.warn("The experiment folder already exists!")
         os.makedirs(self.folder, exist_ok=True)
-
-    @staticmethod
-    def _check_with_user():
-        """
-        Function requiring user input to proceed.
-        The user needs to input yes or y on the keyboard otherwise the program
-        is terminated.
-        """
-        yes = ["yes", "y"]
-        try:
-            choice = input("Do you want to continue? [Y/N] : ").lower()
-            if choice in yes or not sys.__stdin__.isatty():
-                print("Continuing.")
-                return
-            else:
-                exit(0)
-        except EOFError:  # pragma: no cover
-            print("Continuing.")
-            return
 
     def add_grid_experiments(self, **kwargs):
         """
