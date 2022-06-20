@@ -38,13 +38,14 @@ class SpeechDataReader(DataReader):
         }
 
     def _get_crema_dataset(
-        self, folder: str, shuffle: bool
+        self, folder: str, shuffle: bool, download: bool = True
     ) -> Tuple[tf.data.Dataset, int]:
         """
         Function that loads the crema d dataset from tensorflow datasets.
 
         :param folder: The subset to look at (train, test or val)
         :param shuffle: Whether to shuffle the data or not.
+        :param download: Whether to download the data
         :return: Tuple containing Dataset instance and size of dataset
         """
         crema_d, cd_info = tfds.load(
@@ -53,6 +54,7 @@ class SpeechDataReader(DataReader):
             shuffle_files=False,
             with_info=True,
             as_supervised=True,
+            download=download,
         )
         crema_d = crema_d.map(
             lambda x, y: tf.numpy_function(
@@ -110,13 +112,16 @@ class SpeechDataReader(DataReader):
             "shuffle", True if which_set == Set.TRAIN else False
         )
         dataset = parameters.get("dataset", "all")
+        download = parameters.get("download", True)
         use_meld = dataset == "all" or dataset == "meld"
         use_crema = dataset == "all" or dataset == "crema"
         assert use_crema or use_meld
         max_elements = parameters.get("max_elements", None)
         folder = self.folder_map[which_set]
         if use_crema:
-            crema_ds, num_crema = self._get_crema_dataset(folder, shuffle)
+            crema_ds, num_crema = self._get_crema_dataset(
+                folder, shuffle, download
+            )
         if use_meld:
             meld_ds, num_meld = self._get_meld_dataset(folder, shuffle)
         total = (num_crema if use_crema else 0) + (num_meld if use_meld else 0)

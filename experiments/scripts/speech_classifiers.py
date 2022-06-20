@@ -38,7 +38,7 @@ if __name__ == "__main__":
     runner = ExperimentRunner("speech_parameters")
 
     lstm_configs = make_dictionaries(
-        {"epochs": 50, "patience": 10},
+        {"epochs": 50, "patience": 10, "download": False},
         learning_rate=[0.0003, 0.001, 0.003],
         lstm_units=[128, 256, 512],
         dropout=[0.2, 0.3],
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     )
 
     hubert_configs = make_dictionaries(
-        {"epochs": 50, "patience": 10},
+        {"epochs": 50, "patience": 10, "download": False},
         learning_rate=[5e-5, 0.0001, 0.0003],
         dropout=[0.1, 0.2],
         num_hidden_layers=[12, 10, 8],
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     )
 
     wav2vec2_configs = make_dictionaries(
-        {"epochs": 50, "patience": 10},
+        {"epochs": 50, "patience": 10, "download": False},
         learning_rate=[5e-5, 0.0001, 0.0003],
         dropout=[0.1, 0.2],
         num_hidden_layers=[12, 10, 8],
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     )
 
     hmm_configs = make_dictionaries(
-        {}, n_components=[4, 8, 12, 16], mfcc_num=[13, 20, 40]
+        {"download": False}, n_components=[4, 8, 12, 16], mfcc_num=[13, 20, 40]
     )
     runner.add_grid_experiments(
         modality="speech",
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     )
 
     svm_configs = make_dictionaries(
-        {},
+        {"download": False},
         mfcc_num=[13, 20, 40],
         kernel=["linear", "poly", "rbf", "sigmoid", "precomputed"],
     )
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     )
 
     byols_configs = make_dictionaries(
-        {"epochs": 50, "patience": 10},
+        {"epochs": 50, "patience": 10, "download": False},
         model_name=["cvt", "resnetish34", "default"],
         hidden=[1024, 2048, 4096, 512],
         learning_rate=[5e-5, 1e-4, 3e-4, 1e-3],

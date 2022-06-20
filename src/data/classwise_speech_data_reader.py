@@ -68,6 +68,7 @@ class ClasswiseSpeechDataReader(DataReader):
                 shuffle_files=False,
                 with_info=True,
                 as_supervised=True,
+                download=parameters.get("download", True),
             )
         data_dir = os.path.join(self.folder, folder)
         for emotion_class in CLASS_NAMES:
@@ -86,7 +87,16 @@ class ClasswiseSpeechDataReader(DataReader):
                 np.random.shuffle(all_samples)
             yield (all_samples, emotion_class)
 
-    def get_crema_samples(self, crema_d: tf.data.Dataset, class_name: str):
+    def get_crema_samples(
+        self, crema_d: tf.data.Dataset, class_name: str
+    ) -> np.ndarray:
+        """
+        Gets the samples from a specified class from the crema dataset
+
+        :param crema_d: The entire crema dataset instance
+        :param class_name: The class to extract from crema_d
+        :return: A numpy array with the extracted data
+        """
         crema_ds = crema_d.map(
             lambda x, y: tf.numpy_function(
                 func=self.process_crema,
@@ -103,7 +113,16 @@ class ClasswiseSpeechDataReader(DataReader):
             all_data = np.concatenate([all_data, class_data])
         return all_data
 
-    def get_file_samples(self, emotion_class: str, data_dir: str):
+    def get_file_samples(
+        self, emotion_class: str, data_dir: str
+    ) -> np.ndarray:
+        """
+        Extract the data from a specific class from disk
+
+        :param emotion_class: The class to load from disk
+        :param data_dir: The directory on disk that contains the data
+        :return: Numpy array with the data
+        """
         filenames = tf.io.gfile.glob(f"{str(data_dir)}/{emotion_class}/*.wav")
         files_ds = tf.data.Dataset.from_tensor_slices(filenames)
         wave_ds = files_ds.map(
