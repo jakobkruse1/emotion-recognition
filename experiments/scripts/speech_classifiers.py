@@ -98,7 +98,7 @@ if __name__ == "__main__":
     svm_configs = make_dictionaries(
         {"download": False},
         mfcc_num=[13, 20, 40],
-        kernel=["linear", "poly", "rbf", "sigmoid", "precomputed"],
+        kernel=["linear", "poly", "rbf", "sigmoid"],
     )
     runner.add_grid_experiments(
         modality="speech",
