@@ -283,15 +283,18 @@ if __name__ == "__main__":  # pragma: no cover
     classifier = HuBERTClassifier()
     classifier.train(
         {
-            "epochs": 10,
-            "batch_size": 64,
-            "shuffle": True,
-            "num_hidden_layers": 12,
-            "dataset": "all",
+            'epochs': 50,
+            'patience': 10,
+            'learning_rate': 5e-05,
+            'dropout': 0.1,
+            'num_hidden_layers': 10,
+            'freeze': False,
+            'extra_layer': 0,
+            'batch_size': 64
         }
     )
     classifier.save()
-    classifier.load()
+    #classifier.load()
     emotions = classifier.classify({"dataset": "all"})
     labels = classifier.data_reader.get_labels(Set.TEST, {"dataset": "all"})
     print(f"Labels Shape: {labels.shape}")

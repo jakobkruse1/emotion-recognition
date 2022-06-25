@@ -1,5 +1,6 @@
 """This script prints the five best image models from the experiments."""
 import glob
+import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,6 +16,9 @@ labels = DataFactory.get_data_reader("speech").get_labels(Set.TEST)
 
 def plot_confusion_matrix(model_data, title="Confusion Matrix"):
     predictions = np.asarray(model_data["test_predictions"])
+    if len(np.unique(predictions)) != 7:
+        warnings.warn(f"{model_data['model']} did not produce all labels. Check model!")
+        return
 
     data = {"true": labels, "pred": predictions}
     df = pd.DataFrame(data, columns=["true", "pred"])
@@ -68,7 +72,7 @@ if __name__ == "__main__":  # pragma: no cover
 
     best_model_id = sorted_ind[0]
     best_model_data = evaluator.result_data[best_model_id]
-    plot_confusion_matrix(best_model_data)
+    plot_confusion_matrix(best_model_data, "Best model confusion")
 
     models = np.array([params["model"] for params in sorted_params])
     for model in np.unique(models):
