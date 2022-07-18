@@ -4,8 +4,8 @@ import sys
 from typing import Dict
 
 import numpy as np
-import serab_byols
 import tensorflow as tf
+import serab_byols
 import torch
 from alive_progress import alive_bar
 from torch import nn
@@ -307,9 +307,12 @@ class BYOLSClassifier(SpeechEmotionClassifier):
 if __name__ == "__main__":  # pragma: no cover
     classifier = BYOLSClassifier()
     parameters = {
-        "epochs": 1,
+        "epochs": 50,
         "patience": 10,
-        "learning_rate": 0.0003,
+        "learning_rate": 0.0001,
+        "model_name": "resnetish34",
+        "hidden": 1024,
+        "freeze": True
     }
     if not os.path.exists("models/speech/byols") or "train" in sys.argv:
         classifier.train(parameters)
