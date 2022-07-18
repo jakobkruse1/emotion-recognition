@@ -280,9 +280,18 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = Wav2Vec2Classifier()
-    parameters = {"epochs": 10, "batch_size": 64, "shuffle": True}
-    # classifier.train(parameters)
-    # classifier.save()
+    parameters = {
+        "epochs": 50,
+        "batch_size": 64,
+        "patience": 10,
+        "learning_rate": 5e-05,
+        "dropout": 0.1,
+        "num_hidden_layers": 8,
+        "freeze": True,
+        "extra_layer": 0
+    }
+    classifier.train(parameters)
+    classifier.save()
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
