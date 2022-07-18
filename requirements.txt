@@ -12,6 +12,8 @@ tensorflow_hub==0.12.0
 pydub
 torch>=1.12
 torchvision>=0.13
+torchaudio>=0.12
+torchtext>=0.13
 nrclex
 umap-learn
 datashader
