@@ -59,6 +59,10 @@ class BYOLSModel(nn.Module):
 
         self.hidden = nn.Linear(2048, hidden)
         self.relu = nn.ReLU()
+        self.hidden2 = nn.Linear(hidden, hidden)
+        self.relu2 = nn.ReLU()
+        self.hidden3 = nn.Linear(hidden, hidden)
+        self.relu3 = nn.ReLU()
         self.classifier = nn.Linear(hidden, 7)
         self.softmax = nn.Softmax(dim=1)
 
@@ -74,6 +78,10 @@ class BYOLSModel(nn.Module):
         )
         out = self.hidden(embeddings)
         out = self.relu(out)
+        out = self.hidden2(out)
+        out = self.relu2(out)
+        out = self.hidden3(out)
+        out = self.relu3(out)
         out = self.classifier(out)
         out = self.softmax(out)
         return out
