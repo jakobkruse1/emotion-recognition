@@ -156,24 +156,23 @@ class VGG16Classifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = VGG16Classifier()
-    classifier.train(
-        {
-            "epochs": 30,
-            "batch_size": 64,
-            "patience": 8,
-            "learning_rate": 0.0001,
-            "deep": True,
-            "dropout": 0.4,
-            "frozen_layers": 0,
-            "l1": 0,
-            "l2": 1e-05,
-            "augment": True,
-            "weighted": False,
-            "balanced": False,
-        }
-    )
-    classifier.save()
-    classifier.load()
+    parameters = {
+        "epochs": 30,
+        "batch_size": 64,
+        "patience": 8,
+        "learning_rate": 0.0001,
+        "deep": True,
+        "dropout": 0.4,
+        "frozen_layers": 0,
+        "l1": 0,
+        "l2": 1e-05,
+        "augment": True,
+        "weighted": False,
+        "balanced": False,
+    }
+    # classifier.train(parameters)
+    # classifier.save()
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

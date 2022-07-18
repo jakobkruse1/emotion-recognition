@@ -64,9 +64,10 @@ class DistilBertClassifier(BertClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = DistilBertClassifier()
-    classifier.train({"dropout_rate": 0.2, "dense_layer": 1024})
-    classifier.save()
-    classifier.load()
+    parameters = {"dropout_rate": 0.2, "dense_layer": 1024}
+    # classifier.train(parameters)
+    # classifier.save()
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

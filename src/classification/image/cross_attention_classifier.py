@@ -37,7 +37,7 @@ class DAN(nn.Module):
         """
         super(DAN, self).__init__()
 
-        resnet = models.resnet18(pretrained=pretrained)
+        resnet = models.resnet18(weights=models.ResNet18_Weights.DEFAULT if pretrained else None)
 
         self.features = nn.Sequential(*list(resnet.children())[:-2])
         self.num_head = num_head
@@ -545,16 +545,15 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = CrossAttentionNetworkClassifier()
-    classifier.train(
-        {
-            "learning_rate": 0.0003,
-            "augment": False,
-            "weighted": False,
-            "balanced": False,
-        }
-    )
-    classifier.save()
-    classifier.load()
+    parameters = {
+        "learning_rate": 0.0003,
+        "augment": False,
+        "weighted": False,
+        "balanced": False,
+    }
+    # classifier.train(parameters)
+    # classifier.save()
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

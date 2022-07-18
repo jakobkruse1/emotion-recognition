@@ -157,8 +157,8 @@ class GMMClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = GMMClassifier()
-    classifier.train({"which_set": Set.VAL})
-    classifier.save()
+    # classifier.train()
+    # classifier.save()
     classifier.load()
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

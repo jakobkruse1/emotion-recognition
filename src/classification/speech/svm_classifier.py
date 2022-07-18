@@ -175,8 +175,8 @@ class SVMClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = SVMClassifier()
-    classifier.train({"shuffle": True})
-    classifier.save()
+    # classifier.train()
+    # classifier.save()
     classifier.load()
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

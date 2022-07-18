@@ -123,18 +123,17 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = MFCCLSTMClassifier()
-    classifier.train(
-        {
-            "epochs": 50,
-            "patience": 10,
-            "learning_rate": 0.0003,
-            "lstm_units": 128,
-            "dropout": 0.2,
-            "weighted": True,
-        }
-    )
-    classifier.save()
-    classifier.load()
+    parameters = {
+        "epochs": 50,
+        "patience": 10,
+        "learning_rate": 0.0003,
+        "lstm_units": 128,
+        "dropout": 0.2,
+        "weighted": True,
+    }
+    # classifier.train(parameters)
+    # classifier.save()
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

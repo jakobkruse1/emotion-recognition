@@ -297,15 +297,14 @@ class BYOLSClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = BYOLSClassifier()
-    classifier.train(
-        {
-            "epochs": 1,
-            "patience": 10,
-            "learning_rate": 0.0003,
-        }
-    )
-    classifier.save()
-    classifier.load()
+    parameters = {
+        "epochs": 1,
+        "patience": 10,
+        "learning_rate": 0.0003,
+    }
+    # classifier.train(parameters)
+    # classifier.save()
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

@@ -180,8 +180,8 @@ class BertClassifier(TextEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = BertClassifier()
-    classifier.train()
-    classifier.save()
+    # classifier.train()
+    # classifier.save()
     classifier.load()
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
