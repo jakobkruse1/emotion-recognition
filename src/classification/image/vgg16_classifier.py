@@ -1,5 +1,6 @@
 """ This file contains the VGG16 facial emotion classifier """
-
+import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -170,8 +171,10 @@ if __name__ == "__main__":  # pragma: no cover
         "weighted": False,
         "balanced": False,
     }
-    # classifier.train(parameters)
-    # classifier.save()
+    if not os.path.exists("models/image/vgg16") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

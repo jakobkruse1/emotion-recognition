@@ -1,5 +1,6 @@
 """ This file contains the EfficientNet facial emotion classifier """
-
+import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -148,8 +149,10 @@ if __name__ == "__main__":  # pragma: no cover
         "augment": True,
         "weighted": True,
     }
-    # classifier.train(parameters)
-    # classifier.save()
+    if not os.path.exists("models/image/efficientnet") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

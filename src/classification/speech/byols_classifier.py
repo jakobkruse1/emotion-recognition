@@ -1,5 +1,6 @@
 """ This file contains the BYOL-S speech emotion classifier """
 import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -302,8 +303,10 @@ if __name__ == "__main__":  # pragma: no cover
         "patience": 10,
         "learning_rate": 0.0003,
     }
-    # classifier.train(parameters)
-    # classifier.save()
+    if not os.path.exists("models/speech/byols") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

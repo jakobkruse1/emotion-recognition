@@ -1,5 +1,6 @@
 """ This file contains the MFCC-LSTM speech emotion classifier """
-
+import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -131,8 +132,10 @@ if __name__ == "__main__":  # pragma: no cover
         "dropout": 0.2,
         "weighted": True,
     }
-    # classifier.train(parameters)
-    # classifier.save()
+    if not os.path.exists("models/speech/mfcc_lstm") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

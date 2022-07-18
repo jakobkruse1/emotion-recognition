@@ -1,5 +1,6 @@
 """ This file contains the HuBERT speech emotion classifier """
 import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -291,8 +292,10 @@ if __name__ == "__main__":  # pragma: no cover
         "extra_layer": 0,
         "batch_size": 64,
     }
-    # classifier.train(parameters)
-    # classifier.save()
+    if not os.path.exists("models/speech/hubert") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
     classifier.load(parameters)
     emotions = classifier.classify({"dataset": "all"})
     labels = classifier.data_reader.get_labels(Set.TEST, {"dataset": "all"})

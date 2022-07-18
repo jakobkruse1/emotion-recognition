@@ -37,7 +37,9 @@ class DAN(nn.Module):
         """
         super(DAN, self).__init__()
 
-        resnet = models.resnet18(weights=models.ResNet18_Weights.DEFAULT if pretrained else None)
+        resnet = models.resnet18(
+            weights=models.ResNet18_Weights.DEFAULT if pretrained else None
+        )
 
         self.features = nn.Sequential(*list(resnet.children())[:-2])
         self.num_head = num_head
@@ -551,8 +553,13 @@ if __name__ == "__main__":  # pragma: no cover
         "weighted": False,
         "balanced": False,
     }
-    # classifier.train(parameters)
-    # classifier.save()
+    if (
+        not os.path.exists("models/image/cross_attention")
+        or "train" in sys.argv
+    ):
+        classifier.train(parameters)
+        classifier.save()
+
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

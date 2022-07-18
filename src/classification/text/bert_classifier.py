@@ -1,4 +1,6 @@
 """Implementation of an emotion classifier using BERT"""
+import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -180,9 +182,12 @@ class BertClassifier(TextEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = BertClassifier()
-    # classifier.train()
-    # classifier.save()
-    classifier.load()
+    parameters = {"init_lr": 1e-05, "dropout_rate": 0.1, "dense_layer": 0}
+    if not os.path.exists("models/text/bert") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

@@ -1,6 +1,7 @@
 """ This file contains the MFCC-LSTM speech emotion classifier """
 import os
 import pickle
+import sys
 from typing import Dict
 
 import numpy as np
@@ -179,10 +180,11 @@ if __name__ == "__main__":  # pragma: no cover
         "download": False,
         "mfcc_num": 40,
         "kernel": "poly",
-        "shuffle": False
+        "shuffle": False,
     }
-    classifier.train(parameters)
-    classifier.save()
+    if not os.path.exists("models/speech/svm") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

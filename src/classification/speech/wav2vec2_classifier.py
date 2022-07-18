@@ -1,5 +1,6 @@
 """ This file contains the Wav2Vec2 speech emotion classifier """
 import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -288,10 +289,12 @@ if __name__ == "__main__":  # pragma: no cover
         "dropout": 0.1,
         "num_hidden_layers": 8,
         "freeze": True,
-        "extra_layer": 0
+        "extra_layer": 0,
     }
-    # classifier.train(parameters)
-    # classifier.save()
+    if not os.path.exists("models/speech/wav2vec2") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

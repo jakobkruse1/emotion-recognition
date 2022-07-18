@@ -1,6 +1,7 @@
 """ This file contains the MFCC-LSTM speech emotion classifier """
 import os
 import pickle
+import sys
 from typing import Dict
 
 import numpy as np
@@ -157,9 +158,12 @@ class GMMClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = GMMClassifier()
-    # classifier.train()
-    # classifier.save()
-    classifier.load()
+    parameters = {"n_components": 16, "mfcc_num": 40}
+    if not os.path.exists("models/speech/gmm") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
