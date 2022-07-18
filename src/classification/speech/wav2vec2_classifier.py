@@ -290,8 +290,8 @@ if __name__ == "__main__":  # pragma: no cover
         "freeze": True,
         "extra_layer": 0
     }
-    classifier.train(parameters)
-    classifier.save()
+    # classifier.train(parameters)
+    # classifier.save()
     classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)

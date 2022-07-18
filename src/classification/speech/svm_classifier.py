@@ -175,9 +175,15 @@ class SVMClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = SVMClassifier()
-    # classifier.train()
-    # classifier.save()
-    classifier.load()
+    parameters = {
+        "download": False,
+        "mfcc_num": 40,
+        "kernel": "poly",
+        "shuffle": False
+    }
+    classifier.train(parameters)
+    classifier.save()
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
