@@ -17,7 +17,9 @@ labels = DataFactory.get_data_reader("speech").get_labels(Set.TEST)
 def plot_confusion_matrix(model_data, title="Confusion Matrix"):
     predictions = np.asarray(model_data["test_predictions"])
     if len(np.unique(predictions)) != 7:
-        warnings.warn(f"{model_data['model']} did not produce all labels. Check model!")
+        warnings.warn(
+            f"{model_data['model']} did not produce all labels. Check model!"
+        )
         return
 
     data = {"true": labels, "pred": predictions}

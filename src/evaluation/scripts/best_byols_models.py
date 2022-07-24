@@ -1,9 +1,7 @@
 """This script evaluates the overall best BYOL-S models."""
 import glob
 
-import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 
 from src.evaluation.evaluator import Evaluator
 
