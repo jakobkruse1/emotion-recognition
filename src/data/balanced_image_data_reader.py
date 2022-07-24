@@ -224,15 +224,20 @@ class BalancedImageDataReader(ImageDataReader):
         dataset = self.add_augmentations(dataset, augment)
         return dataset
 
-    def get_labels(self, which_set: Set = Set.TRAIN) -> np.ndarray:
+    def get_labels(
+        self, which_set: Set = Set.TRAIN, parameters: Dict = None
+    ) -> np.ndarray:
         """
         Get the labels for the text dataset that is specified in an array
 
         :param which_set: Train, val or test set
+        :param parameters: Parameter dictionary
         :return: The labels in an array of shape (num_samples,)
         """
+        parameters = parameters or {}
+        parameters.update({"shuffle": False})
         dataset = self._get_unbalanced_seven_emotion_data(
-            which_set, parameters={"shuffle": False}
+            which_set, parameters=parameters
         )
         all_labels = np.empty((0,))
         for images, labels in dataset:

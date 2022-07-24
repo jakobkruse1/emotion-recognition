@@ -25,6 +25,7 @@ done
 
 if [ $FORCE -eq 1 ]; then
   echo "Force"
+  rm -f data/train/image/done
 fi
 
 if [ ! -d "image" ]; then
@@ -126,4 +127,5 @@ else
         export PYTHONPATH=.
         python data/train/prepare_image_data.py
     fi
+    touch data/train/image/done
 fi

@@ -78,8 +78,9 @@ class NRCLexTextClassifier(TextEmotionClassifier):
         parameters = self.init_parameters(parameters, **kwargs)
         which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
+        parameters["shuffle"] = False
         dataset = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size, parameters={"shuffle": False}
+            self.emotions, which_set, batch_size, parameters
         )
         results = []
         for texts, _ in dataset:

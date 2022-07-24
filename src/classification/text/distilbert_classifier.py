@@ -1,4 +1,6 @@
 """Implements a text emotion classifier based on Distilbert"""
+import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -64,9 +66,12 @@ class DistilBertClassifier(BertClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = DistilBertClassifier()
-    classifier.train({"dropout_rate": 0.2, "dense_layer": 1024})
-    classifier.save()
-    classifier.load()
+    parameters = {"init_lr": 1e-05, "dropout_rate": 0.2, "dense_layer": 1024}
+    if not os.path.exists("models/text/distilbert") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

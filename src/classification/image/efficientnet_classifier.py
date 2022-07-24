@@ -1,5 +1,6 @@
 """ This file contains the EfficientNet facial emotion classifier """
-
+import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -125,7 +126,7 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
         dataset = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size
+            self.emotions, which_set, batch_size, parameters
         ).map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
 
         if not self.model:
@@ -138,20 +139,21 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = MultiTaskEfficientNetB2Classifier()
-    classifier.train(
-        {
-            "epochs": 50,
-            "batch_size": 256,
-            "patience": 15,
-            "learning_rate": 0.003,
-            "frozen_layers": 0,
-            "extra_layer": 2048,
-            "augment": True,
-            "weighted": True,
-        }
-    )
-    classifier.save()
-    classifier.load()
+    parameters = {
+        "epochs": 50,
+        "batch_size": 256,
+        "patience": 15,
+        "learning_rate": 0.003,
+        "frozen_layers": 0,
+        "extra_layer": 2048,
+        "augment": True,
+        "weighted": True,
+    }
+    if not os.path.exists("models/image/efficientnet") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

@@ -50,6 +50,7 @@ class TextDataReader(DataReader):
         if shuffle:
             dataset = dataset.shuffle(1024)
         dataset = dataset.cache().batch(batch_size).prefetch(tf.data.AUTOTUNE)
+        self.num_batch[which_set] = int(dataset.cardinality().numpy())
         return dataset
 
     def get_three_emotion_data(
@@ -79,13 +80,17 @@ class TextDataReader(DataReader):
         if shuffle:
             dataset = dataset.shuffle(1024)
         dataset = dataset.cache().batch(batch_size).prefetch(tf.data.AUTOTUNE)
+        self.num_batch[which_set] = int(dataset.cardinality().numpy())
         return dataset
 
-    def get_labels(self, which_set: Set = Set.TRAIN) -> np.ndarray:
+    def get_labels(
+        self, which_set: Set = Set.TRAIN, parameters: Dict = None
+    ) -> np.ndarray:
         """
         Get the labels for the text dataset that is specified in an array
 
         :param which_set: Train, val or test set
+        :param parameters: Parameter dict (unused)
         :return: The labels in an array of shape (num_samples,)
         """
         csv_file_path = os.path.join(self.folder, self.file_map[which_set])
