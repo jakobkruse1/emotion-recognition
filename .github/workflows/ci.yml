@@ -33,7 +33,7 @@ jobs:
       - name: Debug
         run: ls
       - name: Dependencies Installation
-        run: sudo apt update && sudo apt install -y libsndfile1
+        run: sudo apt update && sudo apt install -y libsndfile1 ffmpeg
       - name: Install pip packages
         run: pip install -r requirements.txt
       - name: Install all models for tests
