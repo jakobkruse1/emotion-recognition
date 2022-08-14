@@ -310,7 +310,7 @@ if __name__ == "__main__":  # pragma: no cover
         "epochs": 50,
         "patience": 10,
         "learning_rate": 0.0001,
-        "model_name": "resnetish34",
+        "model_name": "cvt",
         "hidden": 1024,
         "freeze": True,
     }
