@@ -12,6 +12,14 @@ src.data.balanced\_image\_data\_reader module
    :undoc-members:
    :show-inheritance:
 
+src.data.classwise\_speech\_data\_reader module
+-----------------------------------------------
+
+.. automodule:: src.data.classwise_speech_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.data.data\_factory module
 -----------------------------
 
@@ -32,6 +40,14 @@ src.data.image\_data\_reader module
 -----------------------------------
 
 .. automodule:: src.data.image_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.data.speech\_data\_reader module
+------------------------------------
+
+.. automodule:: src.data.speech_data_reader
    :members:
    :undoc-members:
    :show-inheritance:

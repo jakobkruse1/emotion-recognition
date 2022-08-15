@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,6 +11,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
@@ -57,13 +58,9 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.html#src.emotion_set.AbstractEmotionSet">AbstractEmotionSet (class in src.emotion_set)</a>
 </li>
-      <li><a href="src.data.html#src.data.image_data_reader.ImageDataReader.add_augmentations">add_augmentations() (src.data.image_data_reader.ImageDataReader method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="src.experiment.html#src.experiment.experiment.ExperimentRunner.add_grid_experiments">add_grid_experiments() (src.experiment.experiment.ExperimentRunner method)</a>
-</li>
-      <li><a href="src.experiment.html#src.experiment.experiment.ExperimentRunner.add_single_experiment">add_single_experiment() (src.experiment.experiment.ExperimentRunner method)</a>
+      <li><a href="src.data.html#src.data.image_data_reader.ImageDataReader.add_augmentations">add_augmentations() (src.data.image_data_reader.ImageDataReader method)</a>
 </li>
       <li><a href="src.classification.image.html#src.classification.image.cross_attention_classifier.AffinityLoss">AffinityLoss (class in src.classification.image.cross_attention_classifier)</a>
 </li>
@@ -87,10 +84,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.classification.image.html#src.classification.image.cross_attention_classifier.ChannelAttention">ChannelAttention (class in src.classification.image.cross_attention_classifier)</a>
 </li>
-      <li><a href="src.experiment.html#src.experiment.experiment.Experiment.check_parameters">check_parameters() (src.experiment.experiment.Experiment method)</a>
-</li>
-      <li><a href="src.classification.html#src.classification.classifier_factory.ClassifierFactory">ClassifierFactory (class in src.classification.classifier_factory)</a>
-</li>
       <li><a href="src.classification.html#src.classification.emotion_classifier.EmotionClassifier.classify">classify() (src.classification.emotion_classifier.EmotionClassifier method)</a>
 
       <ul>
@@ -111,6 +104,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader">ClasswiseSpeechDataReader (class in src.data.classwise_speech_data_reader)</a>
+</li>
       <li><a href="src.data.html#src.data.data_reader.DataReader.convert_to_numpy">convert_to_numpy() (src.data.data_reader.DataReader static method)</a>
 </li>
       <li><a href="src.data.html#src.data.data_reader.DataReader.convert_to_three_emotions">convert_to_three_emotions() (src.data.data_reader.DataReader static method)</a>
@@ -149,17 +144,13 @@
 </li>
       <li><a href="src.classification.html#src.classification.emotion_classifier.EmotionClassifier">EmotionClassifier (class in src.classification.emotion_classifier)</a>
 </li>
-      <li><a href="src.html#src.emotion_set.EmotionMapper">EmotionMapper (class in src.emotion_set)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src.html#src.emotion_set.EmotionMapper">EmotionMapper (class in src.emotion_set)</a>
+</li>
       <li><a href="src.html#src.emotion_set.EmotionSetFactory">EmotionSetFactory (class in src.emotion_set)</a>
 </li>
       <li><a href="src.evaluation.html#src.evaluation.evaluator.Evaluator">Evaluator (class in src.evaluation.evaluator)</a>
-</li>
-      <li><a href="src.experiment.html#src.experiment.experiment.Experiment">Experiment (class in src.experiment.experiment)</a>
-</li>
-      <li><a href="src.experiment.html#src.experiment.experiment.ExperimentRunner">ExperimentRunner (class in src.experiment.experiment)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -189,17 +180,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.html#src.emotion_set.EmotionSetFactory.generate">generate() (src.emotion_set.EmotionSetFactory static method)</a>
 </li>
-      <li><a href="src.classification.html#src.classification.classifier_factory.ClassifierFactory.get">get() (src.classification.classifier_factory.ClassifierFactory static method)</a>
-
-      <ul>
-        <li><a href="src.classification.html#src.classification.classifier_factory.ImageClassifierFactory.get">(src.classification.classifier_factory.ImageClassifierFactory static method)</a>
-</li>
-        <li><a href="src.classification.html#src.classification.classifier_factory.TextClassifierFactory.get">(src.classification.classifier_factory.TextClassifierFactory static method)</a>
-</li>
-      </ul></li>
       <li><a href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.get_best_emotion">get_best_emotion() (src.classification.text.nrclex_classifier.NRCLexTextClassifier method)</a>
 </li>
       <li><a href="src.classification.html#src.classification.emotion_classifier.EmotionClassifier.get_class_weights">get_class_weights() (src.classification.emotion_classifier.EmotionClassifier method)</a>
+</li>
+      <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_crema_samples">get_crema_samples() (src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
 </li>
       <li><a href="src.data.html#src.data.data_factory.DataFactory.get_data_reader">get_data_reader() (src.data.data_factory.DataFactory static method)</a>
 </li>
@@ -209,20 +194,24 @@
 </li>
       <li><a href="src.html#src.emotion_set.AbstractEmotionSet.get_emotions">get_emotions() (src.emotion_set.AbstractEmotionSet method)</a>
 </li>
+      <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_file_samples">get_file_samples() (src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
+</li>
       <li><a href="src.data.html#src.data.balanced_image_data_reader.BalancedImageDataReader.get_labels">get_labels() (src.data.balanced_image_data_reader.BalancedImageDataReader method)</a>
 
       <ul>
+        <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_labels">(src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
+</li>
         <li><a href="src.data.html#src.data.data_reader.DataReader.get_labels">(src.data.data_reader.DataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.image_data_reader.ImageDataReader.get_labels">(src.data.image_data_reader.ImageDataReader method)</a>
+</li>
+        <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader.get_labels">(src.data.speech_data_reader.SpeechDataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.text_data_reader.TextDataReader.get_labels">(src.data.text_data_reader.TextDataReader method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="src.experiment.html#src.experiment.experiment.Experiment.get_parameter_dict">get_parameter_dict() (src.experiment.experiment.Experiment method)</a>
-</li>
       <li><a href="src.evaluation.html#src.evaluation.evaluator.Evaluator.get_parameters">get_parameters() (src.evaluation.evaluator.Evaluator method)</a>
 </li>
       <li><a href="src.evaluation.html#src.evaluation.evaluator.Evaluator.get_scores">get_scores() (src.evaluation.evaluator.Evaluator method)</a>
@@ -230,9 +219,13 @@
       <li><a href="src.data.html#src.data.balanced_image_data_reader.BalancedImageDataReader.get_seven_emotion_data">get_seven_emotion_data() (src.data.balanced_image_data_reader.BalancedImageDataReader method)</a>
 
       <ul>
+        <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_seven_emotion_data">(src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
+</li>
         <li><a href="src.data.html#src.data.data_reader.DataReader.get_seven_emotion_data">(src.data.data_reader.DataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.image_data_reader.ImageDataReader.get_seven_emotion_data">(src.data.image_data_reader.ImageDataReader method)</a>
+</li>
+        <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader.get_seven_emotion_data">(src.data.speech_data_reader.SpeechDataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.text_data_reader.TextDataReader.get_seven_emotion_data">(src.data.text_data_reader.TextDataReader method)</a>
 </li>
@@ -240,11 +233,21 @@
       <li><a href="src.data.html#src.data.balanced_image_data_reader.BalancedImageDataReader.get_three_emotion_data">get_three_emotion_data() (src.data.balanced_image_data_reader.BalancedImageDataReader method)</a>
 
       <ul>
+        <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_three_emotion_data">(src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
+</li>
         <li><a href="src.data.html#src.data.data_reader.DataReader.get_three_emotion_data">(src.data.data_reader.DataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.image_data_reader.ImageDataReader.get_three_emotion_data">(src.data.image_data_reader.ImageDataReader method)</a>
 </li>
+        <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader.get_three_emotion_data">(src.data.speech_data_reader.SpeechDataReader method)</a>
+</li>
         <li><a href="src.data.html#src.data.text_data_reader.TextDataReader.get_three_emotion_data">(src.data.text_data_reader.TextDataReader method)</a>
+</li>
+      </ul></li>
+      <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_waveform_and_label">get_waveform_and_label() (src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader static method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader.get_waveform_and_label">(src.data.speech_data_reader.SpeechDataReader static method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -253,8 +256,6 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="src.classification.html#src.classification.classifier_factory.ImageClassifierFactory">ImageClassifierFactory (class in src.classification.classifier_factory)</a>
-</li>
       <li><a href="src.data.html#src.data.image_data_reader.ImageDataReader">ImageDataReader (class in src.data.image_data_reader)</a>
 </li>
       <li><a href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier">ImageEmotionClassifier (class in src.classification.image.image_emotion_classifier)</a>
@@ -305,12 +306,16 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="src.experiment.html#src.experiment.experiment.make_dictionaries">make_dictionaries() (in module src.experiment.experiment)</a>
-</li>
       <li><a href="src.html#src.emotion_set.EmotionMapper.map_emotion">map_emotion() (src.emotion_set.EmotionMapper method)</a>
 </li>
-      <li><a href="src.data.html#src.data.image_data_reader.ImageDataReader.map_emotions">map_emotions() (src.data.image_data_reader.ImageDataReader static method)</a>
+      <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.map_emotions">map_emotions() (src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader static method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.image_data_reader.ImageDataReader.map_emotions">(src.data.image_data_reader.ImageDataReader static method)</a>
 </li>
+        <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader.map_emotions">(src.data.speech_data_reader.SpeechDataReader static method)</a>
+</li>
+      </ul></li>
       <li>
     module
 
@@ -318,8 +323,6 @@
         <li><a href="src.html#module-src">src</a>
 </li>
         <li><a href="src.classification.html#module-src.classification">src.classification</a>
-</li>
-        <li><a href="src.classification.html#module-src.classification.classifier_factory">src.classification.classifier_factory</a>
 </li>
         <li><a href="src.classification.html#module-src.classification.emotion_classifier">src.classification.emotion_classifier</a>
 </li>
@@ -347,11 +350,15 @@
 </li>
         <li><a href="src.data.html#module-src.data.balanced_image_data_reader">src.data.balanced_image_data_reader</a>
 </li>
+        <li><a href="src.data.html#module-src.data.classwise_speech_data_reader">src.data.classwise_speech_data_reader</a>
+</li>
         <li><a href="src.data.html#module-src.data.data_factory">src.data.data_factory</a>
 </li>
         <li><a href="src.data.html#module-src.data.data_reader">src.data.data_reader</a>
 </li>
         <li><a href="src.data.html#module-src.data.image_data_reader">src.data.image_data_reader</a>
+</li>
+        <li><a href="src.data.html#module-src.data.speech_data_reader">src.data.speech_data_reader</a>
 </li>
         <li><a href="src.data.html#module-src.data.text_data_reader">src.data.text_data_reader</a>
 </li>
@@ -362,8 +369,6 @@
         <li><a href="src.evaluation.html#module-src.evaluation.evaluator">src.evaluation.evaluator</a>
 </li>
         <li><a href="src.experiment.html#module-src.experiment">src.experiment</a>
-</li>
-        <li><a href="src.experiment.html#module-src.experiment.experiment">src.experiment.experiment</a>
 </li>
       </ul></li>
   </ul></td>
@@ -386,12 +391,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.classification.image.html#src.classification.image.cross_attention_classifier.PartitionLoss">PartitionLoss (class in src.classification.image.cross_attention_classifier)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.prepare_data">prepare_data() (src.classification.image.image_emotion_classifier.ImageEmotionClassifier method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.prepare_training">prepare_training() (src.classification.image.image_emotion_classifier.ImageEmotionClassifier method)</a>
 </li>
+      <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.process_crema">process_crema() (src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader static method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader.process_crema">(src.data.speech_data_reader.SpeechDataReader static method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -399,12 +410,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.evaluation.html#src.evaluation.evaluator.Evaluator.read_results">read_results() (src.evaluation.evaluator.Evaluator method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="src.experiment.html#src.experiment.experiment.ExperimentRunner.run_all">run_all() (src.experiment.experiment.ExperimentRunner method)</a>
-</li>
-      <li><a href="src.experiment.html#src.experiment.experiment.ExperimentRunner.run_experiment">run_experiment() (src.experiment.experiment.ExperimentRunner method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -434,9 +439,13 @@
       </ul></li>
       <li><a href="src.data.html#src.data.data_reader.Set">Set (class in src.data.data_reader)</a>
 </li>
+      <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader.set_tensor_shapes">set_tensor_shapes() (src.data.speech_data_reader.SpeechDataReader static method)</a>
+</li>
       <li><a href="src.html#src.emotion_set.EmotionMapper.setup_map">setup_map() (src.emotion_set.EmotionMapper method)</a>
 </li>
       <li><a href="src.classification.image.html#src.classification.image.cross_attention_classifier.SpatialAttention">SpatialAttention (class in src.classification.image.cross_attention_classifier)</a>
+</li>
+      <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader">SpeechDataReader (class in src.data.speech_data_reader)</a>
 </li>
       <li>
     src
@@ -450,13 +459,6 @@
 
       <ul>
         <li><a href="src.classification.html#module-src.classification">module</a>
-</li>
-      </ul></li>
-      <li>
-    src.classification.classifier_factory
-
-      <ul>
-        <li><a href="src.classification.html#module-src.classification.classifier_factory">module</a>
 </li>
       </ul></li>
       <li>
@@ -553,6 +555,13 @@
 </li>
       </ul></li>
       <li>
+    src.data.classwise_speech_data_reader
+
+      <ul>
+        <li><a href="src.data.html#module-src.data.classwise_speech_data_reader">module</a>
+</li>
+      </ul></li>
+      <li>
     src.data.data_factory
 
       <ul>
@@ -571,6 +580,13 @@
 
       <ul>
         <li><a href="src.data.html#module-src.data.image_data_reader">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.data.speech_data_reader
+
+      <ul>
+        <li><a href="src.data.html#module-src.data.speech_data_reader">module</a>
 </li>
       </ul></li>
       <li>
@@ -608,13 +624,6 @@
         <li><a href="src.experiment.html#module-src.experiment">module</a>
 </li>
       </ul></li>
-      <li>
-    src.experiment.experiment
-
-      <ul>
-        <li><a href="src.experiment.html#module-src.experiment.experiment">module</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -622,8 +631,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.data.html#src.data.data_reader.Set.TEST">TEST (src.data.data_reader.Set attribute)</a>
-</li>
-      <li><a href="src.classification.html#src.classification.classifier_factory.TextClassifierFactory">TextClassifierFactory (class in src.classification.classifier_factory)</a>
 </li>
       <li><a href="src.data.html#src.data.text_data_reader.TextDataReader">TextDataReader (class in src.data.text_data_reader)</a>
 </li>
@@ -704,7 +711,7 @@
 <h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">thesis-emotion-detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">emotion-recognition</a></li>
 </ul>
 
 <div class="relations">
@@ -723,7 +730,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -740,7 +747,7 @@
       &copy;2022, Jakob Kruse.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

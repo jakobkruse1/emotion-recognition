@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>src package &#8212; Emotion Measurement 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,11 +12,12 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="src.classification package" href="src.classification.html" />
-    <link rel="prev" title="thesis-emotion-detection" href="modules.html" />
+    <link rel="prev" title="emotion-recognition" href="modules.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -34,9 +35,9 @@
           <div class="body" role="main">
             
   <section id="src-package">
-<h1>src package<a class="headerlink" href="#src-package" title="Permalink to this headline">¶</a></h1>
+<h1>src package<a class="headerlink" href="#src-package" title="Permalink to this heading">¶</a></h1>
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="src.classification.html">src.classification package</a><ul>
@@ -48,6 +49,19 @@
 <li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.image_emotion_classifier">src.classification.image.image_emotion_classifier module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.vgg16_classifier">src.classification.image.vgg16_classifier module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#module-src.classification.image">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.speech.html">src.classification.speech package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#src-classification-speech-byols-classifier-module">src.classification.speech.byols_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#src-classification-speech-gmm-classifier-module">src.classification.speech.gmm_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#src-classification-speech-hmm-classifier-module">src.classification.speech.hmm_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#src-classification-speech-hubert-classifier-module">src.classification.speech.hubert_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#src-classification-speech-mfcc-lstm-classifier-module">src.classification.speech.mfcc_lstm_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#src-classification-speech-speech-emotion-classifier-module">src.classification.speech.speech_emotion_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#src-classification-speech-svm-classifier-module">src.classification.speech.svm_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#src-classification-speech-wav2vec2-classifier-module">src.classification.speech.wav2vec2_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.speech.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="src.classification.text.html">src.classification.text package</a><ul>
@@ -62,7 +76,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="src.classification.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.html#module-src.classification.classifier_factory">src.classification.classifier_factory module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.html#src-classification-classifier-factory-module">src.classification.classifier_factory module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.classification.html#module-src.classification.emotion_classifier">src.classification.emotion_classifier module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.classification.html#module-src.classification">Module contents</a></li>
 </ul>
@@ -70,9 +84,11 @@
 <li class="toctree-l1"><a class="reference internal" href="src.data.html">src.data package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="src.data.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.balanced_image_data_reader">src.data.balanced_image_data_reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.classwise_speech_data_reader">src.data.classwise_speech_data_reader module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.data_factory">src.data.data_factory module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.data_reader">src.data.data_reader module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.image_data_reader">src.data.image_data_reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.speech_data_reader">src.data.speech_data_reader module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data.text_data_reader">src.data.text_data_reader module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.data.html#module-src.data">Module contents</a></li>
 </ul>
@@ -85,7 +101,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="src.experiment.html">src.experiment package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="src.experiment.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.experiment.html#module-src.experiment.experiment">src.experiment.experiment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.experiment.html#src-experiment-experiment-module">src.experiment.experiment module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.experiment.html#module-src.experiment">Module contents</a></li>
 </ul>
 </li>
@@ -93,10 +109,10 @@
 </div>
 </section>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-src.emotion_set">
-<span id="src-emotion-set-module"></span><h2>src.emotion_set module<a class="headerlink" href="#module-src.emotion_set" title="Permalink to this headline">¶</a></h2>
+<span id="src-emotion-set-module"></span><h2>src.emotion_set module<a class="headerlink" href="#module-src.emotion_set" title="Permalink to this heading">¶</a></h2>
 <p>This file defines the emotion sets that are available in this work.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.emotion_set.AbstractEmotionSet">
@@ -110,13 +126,13 @@ between 6 or more distinct emotions (joy, anger, fear, …).
 This class models this behaviour by defining different emotion sets.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.emotion_set.AbstractEmotionSet.get_emotions">
-<span class="sig-name descname"><span class="pre">get_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.emotion_set.AbstractEmotionSet.get_emotions" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.emotion_set.AbstractEmotionSet.get_emotions" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns the emotion strings for given indices</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>indices</strong> – The index or indices of the emotions</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Array of emotion strings or single emotion string</p>
 </dd>
 </dl>
@@ -127,7 +143,7 @@ This class models this behaviour by defining different emotion sets.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.emotion_set.EkmanEmotions">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">EkmanEmotions</span></span><a class="headerlink" href="#src.emotion_set.EkmanEmotions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.emotion_set.AbstractEmotionSet</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractEmotionSet</span></code></a></p>
 <p>Emotion set defined by Paul Ekman that is commonly used in research.
 It contains 6 basic emotions:
 anger, surprise, disgust, enjoyment, fear, and sadness</p>
@@ -136,7 +152,7 @@ anger, surprise, disgust, enjoyment, fear, and sadness</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.emotion_set.EkmanNeutralEmotions">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">EkmanNeutralEmotions</span></span><a class="headerlink" href="#src.emotion_set.EkmanNeutralEmotions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.emotion_set.AbstractEmotionSet</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractEmotionSet</span></code></a></p>
 <p>Ekman Emotion set extended by a neutral state.</p>
 </dd></dl>
 
@@ -149,10 +165,10 @@ anger, surprise, disgust, enjoyment, fear, and sadness</p>
 <span class="sig-name descname"><span class="pre">map_emotion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emotion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#src.emotion_set.EmotionMapper.map_emotion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maps an emotion to its equivalent in the NeutralEkman emotion set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>emotion</strong> – The name of the emotion to map to Ekman</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The name of the corresponding Ekman emotion</p>
 </dd>
 </dl>
@@ -173,17 +189,17 @@ anger, surprise, disgust, enjoyment, fear, and sadness</p>
 <p>Factory class that generates emotion set instances</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.emotion_set.EmotionSetFactory.generate">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><span class="pre">src.emotion_set.AbstractEmotionSet</span></a></span></span><a class="headerlink" href="#src.emotion_set.EmotionSetFactory.generate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><span class="pre">AbstractEmotionSet</span></a></span></span><a class="headerlink" href="#src.emotion_set.EmotionSetFactory.generate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that creates and returns an instance of the emotion set
 specified by the name parameter</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> – The name of the desired emotion set</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – Raised if the name does not represent an emotion set</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The created emotion set</p>
 </dd>
 </dl>
@@ -194,13 +210,13 @@ specified by the name parameter</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.emotion_set.ThreeEmotions">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.emotion_set.</span></span><span class="sig-name descname"><span class="pre">ThreeEmotions</span></span><a class="headerlink" href="#src.emotion_set.ThreeEmotions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.emotion_set.AbstractEmotionSet</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#src.emotion_set.AbstractEmotionSet" title="src.emotion_set.AbstractEmotionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractEmotionSet</span></code></a></p>
 <p>Simple emotion set with only three categories: positive, neutral, negative</p>
 </dd></dl>
 
 </section>
 <section id="module-src">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src" title="Permalink to this heading">¶</a></h2>
 <p>Package containing the entire source code</p>
 </section>
 </section>
@@ -224,7 +240,7 @@ specified by the name parameter</p>
 <h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">thesis-emotion-detection</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">emotion-recognition</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">src package</a></li>
 </ul>
 </li>
@@ -234,8 +250,8 @@ specified by the name parameter</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="modules.html">thesis-emotion-detection</a><ul>
-      <li>Previous: <a href="modules.html" title="previous chapter">thesis-emotion-detection</a></li>
+  <li><a href="modules.html">emotion-recognition</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">emotion-recognition</a></li>
       <li>Next: <a href="src.classification.html" title="next chapter">src.classification package</a></li>
   </ul></li>
   </ul></li>
@@ -250,7 +266,7 @@ specified by the name parameter</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -267,7 +283,7 @@ specified by the name parameter</p>
       &copy;2022, Jakob Kruse.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

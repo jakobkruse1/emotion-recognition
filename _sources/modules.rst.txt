@@ -1,5 +1,5 @@
-thesis-emotion-detection
-========================
+emotion-recognition
+===================
 
 .. toctree::
    :maxdepth: 4

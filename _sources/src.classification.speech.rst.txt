@@ -1,0 +1,77 @@
+src.classification.speech package
+=================================
+
+Submodules
+----------
+
+src.classification.speech.byols\_classifier module
+--------------------------------------------------
+
+.. automodule:: src.classification.speech.byols_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.speech.gmm\_classifier module
+------------------------------------------------
+
+.. automodule:: src.classification.speech.gmm_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.speech.hmm\_classifier module
+------------------------------------------------
+
+.. automodule:: src.classification.speech.hmm_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.speech.hubert\_classifier module
+---------------------------------------------------
+
+.. automodule:: src.classification.speech.hubert_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.speech.mfcc\_lstm\_classifier module
+-------------------------------------------------------
+
+.. automodule:: src.classification.speech.mfcc_lstm_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.speech.speech\_emotion\_classifier module
+------------------------------------------------------------
+
+.. automodule:: src.classification.speech.speech_emotion_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.speech.svm\_classifier module
+------------------------------------------------
+
+.. automodule:: src.classification.speech.svm_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.speech.wav2vec2\_classifier module
+-----------------------------------------------------
+
+.. automodule:: src.classification.speech.wav2vec2_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.classification.speech
+   :members:
+   :undoc-members:
+   :show-inheritance:

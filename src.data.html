@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>src.data package &#8212; Emotion Measurement 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,17 +35,17 @@
           <div class="body" role="main">
             
   <section id="src-data-package">
-<h1>src.data package<a class="headerlink" href="#src-data-package" title="Permalink to this headline">¶</a></h1>
+<h1>src.data package<a class="headerlink" href="#src-data-package" title="Permalink to this heading">¶</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-src.data.balanced_image_data_reader">
-<span id="src-data-balanced-image-data-reader-module"></span><h2>src.data.balanced_image_data_reader module<a class="headerlink" href="#module-src.data.balanced_image_data_reader" title="Permalink to this headline">¶</a></h2>
+<span id="src-data-balanced-image-data-reader-module"></span><h2>src.data.balanced_image_data_reader module<a class="headerlink" href="#module-src.data.balanced_image_data_reader" title="Permalink to this heading">¶</a></h2>
 <p>This file implements an image data reader which balances data.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.data.balanced_image_data_reader.BalancedImageDataReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.balanced_image_data_reader.</span></span><span class="sig-name descname"><span class="pre">BalancedImageDataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.balanced_image_data_reader.BalancedImageDataReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.data.image_data_reader.ImageDataReader" title="src.data.image_data_reader.ImageDataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.data.image_data_reader.ImageDataReader</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#src.data.image_data_reader.ImageDataReader" title="src.data.image_data_reader.ImageDataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageDataReader</span></code></a></p>
 <p>Class that reads images from folders in a balanced way.
 This means that of all classes, there should be an approximately equal
 amount of images from that class. This means that some images from
@@ -53,13 +54,16 @@ overrepresented classes might not appear at all.
 Note: Has higher memory requirements than other Data Readers.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.balanced_image_data_reader.BalancedImageDataReader.get_labels">
-<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#src.data.balanced_image_data_reader.BalancedImageDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.balanced_image_data_reader.BalancedImageDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the labels for the text dataset that is specified in an array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>which_set</strong> – Train, val or test set</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Train, val or test set</p></li>
+<li><p><strong>parameters</strong> – Parameter dictionary</p></li>
+</ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The labels in an array of shape (num_samples,)</p>
 </dd>
 </dl>
@@ -67,18 +71,18 @@ Note: Has higher memory requirements than other Data Readers.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.balanced_image_data_reader.BalancedImageDataReader.get_seven_emotion_data">
-<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.balanced_image_data_reader.BalancedImageDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.balanced_image_data_reader.BalancedImageDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main data reading function which reads the CSV file into a dataset
 and also converts the emotion labels to the three emotion space.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
 <li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
 <li><p><strong>parameters</strong> – Additional arguments</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The tensorflow Dataset instance</p>
 </dd>
 </dl>
@@ -86,18 +90,18 @@ and also converts the emotion labels to the three emotion space.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.balanced_image_data_reader.BalancedImageDataReader.get_three_emotion_data">
-<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.balanced_image_data_reader.BalancedImageDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.balanced_image_data_reader.BalancedImageDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main data reading function which reads the CSV file into a dataset
 and also converts the emotion labels to the three emotion space.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
 <li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
 <li><p><strong>parameters</strong> – Additional arguments</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The tensorflow Dataset instance</p>
 </dd>
 </dl>
@@ -106,8 +110,150 @@ and also converts the emotion labels to the three emotion space.</p>
 </dd></dl>
 
 </section>
+<section id="module-src.data.classwise_speech_data_reader">
+<span id="src-data-classwise-speech-data-reader-module"></span><h2>src.data.classwise_speech_data_reader module<a class="headerlink" href="#module-src.data.classwise_speech_data_reader" title="Permalink to this heading">¶</a></h2>
+<p>This file implements classwise data reading for speech data.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.classwise_speech_data_reader.</span></span><span class="sig-name descname"><span class="pre">ClasswiseSpeechDataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'classwise_speech'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataReader</span></code></a></p>
+<p>Class that reads the speech datasets per class.
+This means that the data extraction methods return one array per class.
+This is required for HMM and GMM classifiers which need all data for one
+class at the same time and do not support batching like NNs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_crema_samples">
+<span class="sig-name descname"><span class="pre">get_crema_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crema_d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DatasetV2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_crema_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the samples from a specified class from the crema dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>crema_d</strong> – The entire crema dataset instance</p></li>
+<li><p><strong>class_name</strong> – The class to extract from crema_d</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array with the extracted data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_file_samples">
+<span class="sig-name descname"><span class="pre">get_file_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emotion_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_file_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the data from a specific class from disk</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>emotion_class</strong> – The class to load from disk</p></li>
+<li><p><strong>data_dir</strong> – The directory on disk that contains the data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Numpy array with the data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the labels for the text dataset that is specified in an array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Train, val or test set</p></li>
+<li><p><strong>parameters</strong> – Parameter dictionary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The labels in an array of shape (num_samples,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_seven_emotion_data">
+<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main data reading function which reads the audio files
+and then returns them one class at a time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
+<li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
+<li><p><strong>parameters</strong> – Additional parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Generator that yields (array, class name)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_three_emotion_data">
+<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main data reading function which reads the audio data from disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
+<li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
+<li><p><strong>parameters</strong> – Additional arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tensorflow Dataset instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_waveform_and_label">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_waveform_and_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_waveform_and_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocessing function for the audio files that are read from the data
+folder. Files are read, decoded and padded or truncated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The path of one audio file to read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Audio tensor and label tensor in a tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.map_emotions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">map_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.map_emotions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conversion function that is applied when three emotion labels are
+required.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.process_crema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">process_crema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.process_crema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocessing function for the crema dataset read from
+tensorflow_datasets package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – The audio data</p></li>
+<li><p><strong>y</strong> – The label data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed audio and label data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-src.data.data_factory">
-<span id="src-data-data-factory-module"></span><h2>src.data.data_factory module<a class="headerlink" href="#module-src.data.data_factory" title="Permalink to this headline">¶</a></h2>
+<span id="src-data-data-factory-module"></span><h2>src.data.data_factory module<a class="headerlink" href="#module-src.data.data_factory" title="Permalink to this heading">¶</a></h2>
 <p>This class implements a factory for easy access to data readers and data</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.data.data_factory.DataFactory">
@@ -116,19 +262,19 @@ and also converts the emotion labels to the three emotion space.</p>
 <p>The Data Factory returning data readers or data sets</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_factory.DataFactory.get_data_reader">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_data_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><span class="pre">src.data.data_reader.DataReader</span></a></span></span><a class="headerlink" href="#src.data.data_factory.DataFactory.get_data_reader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_data_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><span class="pre">DataReader</span></a></span></span><a class="headerlink" href="#src.data.data_factory.DataFactory.get_data_reader" title="Permalink to this definition">¶</a></dt>
 <dd><p>This factory method returns a data reader instance</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_type</strong> – The type of data to return the reader for</p></li>
 <li><p><strong>data_folder</strong> – Override data folder for the data reader</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the data_type does not exist</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataReader for the specified data type</p>
 </dd>
 </dl>
@@ -136,10 +282,10 @@ and also converts the emotion labels to the three emotion space.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_factory.DataFactory.get_dataset">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">emotions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'neutral_ekman'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_factory.DataFactory.get_dataset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">emotions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'neutral_ekman'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_factory.DataFactory.get_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a specific dataset from a data reader</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_type</strong> – The data type to consider</p></li>
 <li><p><strong>which_set</strong> – Which dataset to return: train, val or test</p></li>
@@ -149,10 +295,10 @@ and also converts the emotion labels to the three emotion space.</p>
 <li><p><strong>parameters</strong> – Additional parameters for creating data</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the emotion type is not available</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dataset instance that was requested</p>
 </dd>
 </dl>
@@ -162,23 +308,23 @@ and also converts the emotion labels to the three emotion space.</p>
 
 </section>
 <section id="module-src.data.data_reader">
-<span id="src-data-data-reader-module"></span><h2>src.data.data_reader module<a class="headerlink" href="#module-src.data.data_reader" title="Permalink to this headline">¶</a></h2>
+<span id="src-data-data-reader-module"></span><h2>src.data.data_reader module<a class="headerlink" href="#module-src.data.data_reader" title="Permalink to this heading">¶</a></h2>
 <p>This file implements that basic functions for data reading</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.data_reader.</span></span><span class="sig-name descname"><span class="pre">DataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.data_reader.DataReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>The DataReader class is responsible for creating a tensorflow DataSet
 which is used for training and evaluating the emotion detection models.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader.convert_to_numpy">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_to_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.convert_to_numpy" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_to_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DatasetV2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.convert_to_numpy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a given tensorflow dataset into a single numpy array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>dataset</strong> – The dataset to convert to numpy</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple containing two array:
 - numpy array containing data from all batches
 - numpy array containing labels from all batches</p>
@@ -188,13 +334,13 @@ which is used for training and evaluating the emotion detection models.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader.convert_to_three_emotions">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_to_three_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.convert_to_three_emotions" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_to_three_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.convert_to_three_emotions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the NeutralEkmanEmotion labels to the ThreeEmotionSet</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>labels</strong> – The integer labels from 0-6 in NeutralEkman format</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The integer labels from 0-2 in ThreeEmotion format</p>
 </dd>
 </dl>
@@ -202,14 +348,14 @@ which is used for training and evaluating the emotion detection models.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader.convert_to_three_emotions_onehot">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_to_three_emotions_onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.convert_to_three_emotions_onehot" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_to_three_emotions_onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.convert_to_three_emotions_onehot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the NeutralEkmanEmotion labels to the ThreeEmotionSet</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>labels</strong> – The integer labels from 0-6 in a one-hot encoding
 -&gt; shape (n, 7)</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The integer labels from 0-2 in ThreeEmotion format in
 one-hot encoding: shape (n,3)</p>
 </dd>
@@ -218,10 +364,10 @@ one-hot encoding: shape (n,3)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader.get_emotion_data">
-<span class="sig-name descname"><span class="pre">get_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emotions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'neutral_ekman'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_emotion_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emotions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'neutral_ekman'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that returns a dataset depending on the emotion set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>emotions</strong> – The emotion set to use: neutral_ekman or three</p></li>
 <li><p><strong>which_set</strong> – train, test or val set</p></li>
@@ -229,7 +375,7 @@ one-hot encoding: shape (n,3)</p>
 <li><p><strong>parameters</strong> – Additional arguments</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The obtained dataset</p>
 </dd>
 </dl>
@@ -237,13 +383,16 @@ one-hot encoding: shape (n,3)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader.get_labels">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_labels" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that gets only the labels for the dataset that is specified</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>which_set</strong> – Which set to use, train, val or test</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which set to use, train, val or test</p></li>
+<li><p><strong>parameters</strong> – Parameter dictionary</p></li>
+</ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>An array of labels in shape (num_samples,)</p>
 </dd>
 </dl>
@@ -251,17 +400,17 @@ one-hot encoding: shape (n,3)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader.get_seven_emotion_data">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main method which loads the data from disk into a Dataset instance</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which_set</strong> – Which set to use, can be either train, val or test</p></li>
 <li><p><strong>batch_size</strong> – The batch size for the requested dataset</p></li>
 <li><p><strong>parameters</strong> – Additional parameters</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Dataset instance to use in the emotion classifiers</p>
 </dd>
 </dl>
@@ -269,7 +418,7 @@ one-hot encoding: shape (n,3)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader.get_three_emotion_data">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that loads the dataset from disk and stores the labels
 in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet
 :param which_set: train, val or test set distinguisher
@@ -283,7 +432,7 @@ in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet
 <dl class="py class">
 <dt class="sig sig-object py" id="src.data.data_reader.Set">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.data_reader.</span></span><span class="sig-name descname"><span class="pre">Set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.data_reader.Set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>Define the different set types that are available</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="src.data.data_reader.Set.TEST">
@@ -304,16 +453,16 @@ in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet
 
 </section>
 <section id="module-src.data.image_data_reader">
-<span id="src-data-image-data-reader-module"></span><h2>src.data.image_data_reader module<a class="headerlink" href="#module-src.data.image_data_reader" title="Permalink to this headline">¶</a></h2>
+<span id="src-data-image-data-reader-module"></span><h2>src.data.image_data_reader module<a class="headerlink" href="#module-src.data.image_data_reader" title="Permalink to this heading">¶</a></h2>
 <p>This file implements the data reading functionality for image data.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.data.image_data_reader.ImageDataReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.image_data_reader.</span></span><span class="sig-name descname"><span class="pre">ImageDataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'image'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.data.data_reader.DataReader</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataReader</span></code></a></p>
 <p>Class that reads the CSV datasets from the data/train/text folder</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.image_data_reader.ImageDataReader.add_augmentations">
-<span class="sig-name descname"><span class="pre">add_augmentations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_augmentations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.add_augmentations" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_augmentations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DatasetV2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_augmentations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.add_augmentations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function that adds augmentation to the dataset.
 This helps reduce overfitting of the model.
 :param dataset: The dataset containing images
@@ -323,13 +472,16 @@ This helps reduce overfitting of the model.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.image_data_reader.ImageDataReader.get_labels">
-<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the labels for the text dataset that is specified in an array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>which_set</strong> – Train, val or test set</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Train, val or test set</p></li>
+<li><p><strong>parameters</strong> – Parameter dictionary</p></li>
+</ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The labels in an array of shape (num_samples,)</p>
 </dd>
 </dl>
@@ -337,17 +489,17 @@ This helps reduce overfitting of the model.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.image_data_reader.ImageDataReader.get_seven_emotion_data">
-<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main data reading function which reads the images into a dataset</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
 <li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
 <li><p><strong>parameters</strong> – Additional parameters</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The tensorflow Dataset instance</p>
 </dd>
 </dl>
@@ -355,18 +507,18 @@ This helps reduce overfitting of the model.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.image_data_reader.ImageDataReader.get_three_emotion_data">
-<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main data reading function which reads the CSV file into a dataset
 and also converts the emotion labels to the three emotion space.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
 <li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
 <li><p><strong>parameters</strong> – Additional arguments</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The tensorflow Dataset instance</p>
 </dd>
 </dl>
@@ -382,23 +534,151 @@ required.</p>
 </dd></dl>
 
 </section>
+<section id="module-src.data.speech_data_reader">
+<span id="src-data-speech-data-reader-module"></span><h2>src.data.speech_data_reader module<a class="headerlink" href="#module-src.data.speech_data_reader" title="Permalink to this heading">¶</a></h2>
+<p>This file implements the data reading functionality for speech data.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.data.speech_data_reader.SpeechDataReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.speech_data_reader.</span></span><span class="sig-name descname"><span class="pre">SpeechDataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'speech'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataReader</span></code></a></p>
+<p>Class that reads the speech datasets</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.speech_data_reader.SpeechDataReader.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the labels for the text dataset that is specified in an array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Train, val or test set</p></li>
+<li><p><strong>parameters</strong> – Parameter dictionary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The labels in an array of shape (num_samples,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.speech_data_reader.SpeechDataReader.get_seven_emotion_data">
+<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main data reading function which reads the audio files into a dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
+<li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
+<li><p><strong>parameters</strong> – Additional parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tensorflow Dataset instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.speech_data_reader.SpeechDataReader.get_three_emotion_data">
+<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main data reading function which reads the audio data from disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
+<li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
+<li><p><strong>parameters</strong> – Additional arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tensorflow Dataset instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.speech_data_reader.SpeechDataReader.get_waveform_and_label">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_waveform_and_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader.get_waveform_and_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocessing function for the audio files that are read from the data
+folder. Files are read, decoded and padded or truncated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The path of one audio file to read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Audio tensor and label tensor in a tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.speech_data_reader.SpeechDataReader.map_emotions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">map_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader.map_emotions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conversion function that is applied when three emotion labels are
+required.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.speech_data_reader.SpeechDataReader.process_crema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">process_crema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader.process_crema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocessing function for the crema dataset read from
+tensorflow_datasets package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – The audio data</p></li>
+<li><p><strong>y</strong> – The label data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed audio and label data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.speech_data_reader.SpeechDataReader.set_tensor_shapes">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_tensor_shapes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader.set_tensor_shapes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that sets the tensor shapes in the dataset manually.
+This fixes an issue where using Dataset.map and numpy_function causes
+the tensor shape to be unknown.
+See the issue here:
+<a class="reference external" href="https://github.com/tensorflow/tensorflow/issues/47032">https://github.com/tensorflow/tensorflow/issues/47032</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – The speech tensor</p></li>
+<li><p><strong>y</strong> – The labels tensor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple with speech and labels tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-src.data.text_data_reader">
-<span id="src-data-text-data-reader-module"></span><h2>src.data.text_data_reader module<a class="headerlink" href="#module-src.data.text_data_reader" title="Permalink to this headline">¶</a></h2>
+<span id="src-data-text-data-reader-module"></span><h2>src.data.text_data_reader module<a class="headerlink" href="#module-src.data.text_data_reader" title="Permalink to this heading">¶</a></h2>
 <p>This file implements the data reading functionality for text data.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.data.text_data_reader.TextDataReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.text_data_reader.</span></span><span class="sig-name descname"><span class="pre">TextDataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'data/train/text'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.text_data_reader.TextDataReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.data.data_reader.DataReader</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataReader</span></code></a></p>
 <p>Class that reads the CSV datasets from the data/train/text folder</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.text_data_reader.TextDataReader.get_labels">
-<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#src.data.text_data_reader.TextDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.text_data_reader.TextDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the labels for the text dataset that is specified in an array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>which_set</strong> – Train, val or test set</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Train, val or test set</p></li>
+<li><p><strong>parameters</strong> – Parameter dict (unused)</p></li>
+</ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The labels in an array of shape (num_samples,)</p>
 </dd>
 </dl>
@@ -406,17 +686,17 @@ required.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.text_data_reader.TextDataReader.get_seven_emotion_data">
-<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.text_data_reader.TextDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.text_data_reader.TextDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main data reading function which reads the CSV file into a dataset</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
 <li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
 <li><p><strong>parameters</strong> – Additional parameters</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The tensorflow Dataset instance</p>
 </dd>
 </dl>
@@ -424,18 +704,18 @@ required.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.text_data_reader.TextDataReader.get_three_emotion_data">
-<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">src.data.data_reader.Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></span></span><a class="headerlink" href="#src.data.text_data_reader.TextDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.text_data_reader.TextDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main data reading function which reads the CSV file into a dataset
 and also converts the emotion labels to the three emotion space.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
 <li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
 <li><p><strong>parameters</strong> – Additional arguments</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The tensorflow Dataset instance</p>
 </dd>
 </dl>
@@ -445,7 +725,7 @@ and also converts the emotion labels to the three emotion space.</p>
 
 </section>
 <section id="module-src.data">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.data" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.data" title="Permalink to this heading">¶</a></h2>
 <p>Package responsible for data reading and processing</p>
 </section>
 </section>
@@ -469,7 +749,7 @@ and also converts the emotion labels to the three emotion space.</p>
 <h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">thesis-emotion-detection</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">emotion-recognition</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="src.html">src package</a></li>
 </ul>
 </li>
@@ -479,7 +759,7 @@ and also converts the emotion labels to the three emotion space.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="modules.html">thesis-emotion-detection</a><ul>
+  <li><a href="modules.html">emotion-recognition</a><ul>
   <li><a href="src.html">src package</a><ul>
       <li>Previous: <a href="src.classification.text.html" title="previous chapter">src.classification.text package</a></li>
       <li>Next: <a href="src.evaluation.html" title="next chapter">src.evaluation package</a></li>
@@ -497,7 +777,7 @@ and also converts the emotion labels to the three emotion space.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -514,7 +794,7 @@ and also converts the emotion labels to the three emotion space.</p>
       &copy;2022, Jakob Kruse.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

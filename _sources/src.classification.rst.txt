@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    src.classification.image
+   src.classification.speech
    src.classification.text
 
 Submodules
