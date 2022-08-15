@@ -9,6 +9,6 @@ echo "Number of Tasks: " $LLSUB_SIZE
 
 export PYTHONPATH=.
 export TFHUB_CACHE_DIR="$(pwd)/models/cache"
-python experiments/scripts/parameters_efficientnet.py $LLSUB_RANK $LLSUB_SIZE
+python experiments/scripts/byols_parameters.py $LLSUB_RANK $LLSUB_SIZE
 
 # Might need to run chmod u+x job_array.sh

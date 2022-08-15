@@ -20,8 +20,8 @@ This will download two datasets:
 
 After downloading, the datasets will be combined and stored in the text subfolder.
 
-### Facial Data
-To download the text datasets, please use the `download_image_data.sh` script in the train folder.
+### Image Data
+To download the image datasets, please use the `download_image_data.sh` script in the train folder.
 This will download two datasets:
 1. [FER2013+ Dataset](https://github.com/microsoft/FERPlus)
    1. This dataset requires a manual download step. The FER2013 dataset needs to be downloaded manually.
@@ -48,6 +48,17 @@ I recommend the following datasets:
    1. Download the data and label it manually. No labels are available.
 7. [BU-3DFE Dataset](https://www.cs.binghamton.edu/~lijun/Research/3DFE/3DFE_Analysis.html)
    1. You need to request the data online. It is already labelled.
+
+All the datasets above can be automatically extracted by the `download_image_data.sh` script.
+Please take a look at the script to see how data should be formatted.
+
+### Speech Data
+To download the speech datasets, please use the `download_speech_data.sh` script in the train folder.
+This will download these datasets:
+1. [RAVDESS database](https://smartlaboratory.org/ravdess/)
+2. [MELD dataset](https://affective-meld.github.io/)
+3. [Crema D Dataset](https://www.tensorflow.org/datasets/catalog/crema_d):
+   1. This dataset is stored in your tfds download folder (usually `/home/$USER/tensorflow-datasets`)
 
 ## Eval data
 TODO

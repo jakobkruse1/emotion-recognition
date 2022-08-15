@@ -3,7 +3,6 @@
 import itertools
 import json
 import os
-import sys
 import warnings
 from typing import Dict, List
 
@@ -70,7 +69,7 @@ class Experiment:
         This function either throws an Assertion Error or Value Error in case
         of wrong parameters.
         """
-        assert self.modality in ["text", "image"]
+        assert self.modality in ["text", "image", "speech"]
         _ = ClassifierFactory.get(self.modality, self.model, {})
         assert (
             isinstance(self.train_parameters, dict)
@@ -105,29 +104,8 @@ class ExperimentRunner:
             base_folder, f"experiments/results/{experiment_name}"
         )
         if os.path.exists(self.folder):
-            warnings.warn(
-                "The experiment folder already exists! "
-                "Files might be overwritten!"
-            )
-            self._check_with_user()
+            warnings.warn("The experiment folder already exists!")
         os.makedirs(self.folder, exist_ok=True)
-
-    @staticmethod
-    def _check_with_user():
-        """
-        Function requiring user input to proceed.
-        The user needs to input yes or y on the keyboard otherwise the program
-        is terminated.
-        """
-        yes = ["yes", "y"]
-        try:
-            choice = input("Do you want to continue? [Y/N] : ").lower()
-            if choice in yes or not sys.__stdin__.isatty():
-                return
-            else:
-                exit(0)
-        except EOFError:
-            return  # pragma: no cover
 
     def add_grid_experiments(self, **kwargs):
         """
@@ -205,7 +183,9 @@ class ExperimentRunner:
         classifier.data_reader = kwargs.get(
             "data_reader", classifier.data_reader
         )
-        labels = classifier.data_reader.get_labels(Set.TEST)
+        labels = classifier.data_reader.get_labels(
+            Set.TEST, experiment.train_parameters
+        )
         file_path = f"{index:03d}_results.json"
         if os.path.exists(os.path.join(self.folder, file_path)):
             print("Skipping experiment as results already exist!")
@@ -218,18 +198,22 @@ class ExperimentRunner:
 
         classifier.train(experiment.train_parameters)
         parameters = experiment.get_parameter_dict()
+        eval_parameters = parameters.get("train_parameters", {}).copy()
+        eval_parameters["which_set"] = Set.TRAIN
+        eval_parameters["shuffle"] = False
         parameters["train_predictions"] = classifier.classify(
-            {"which_set": Set.TRAIN}
+            eval_parameters
         ).tolist()
+        eval_parameters["which_set"] = Set.VAL
         parameters["val_predictions"] = classifier.classify(
-            {"which_set": Set.VAL}
+            eval_parameters
         ).tolist()
+        eval_parameters["which_set"] = Set.TEST
         parameters["test_predictions"] = classifier.classify(
-            {"which_set": Set.TEST}
+            eval_parameters
         ).tolist()
         with open(os.path.join(self.folder, file_path), "w") as json_file:
             json.dump(parameters, json_file)
-
         return (
             np.sum(parameters["test_predictions"] == labels) / labels.shape[0]
         )

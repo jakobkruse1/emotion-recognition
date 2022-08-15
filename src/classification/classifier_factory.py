@@ -7,6 +7,15 @@ from src.classification.image import (
     MultiTaskEfficientNetB2Classifier,
     VGG16Classifier,
 )
+from src.classification.speech import (
+    BYOLSClassifier,
+    GMMClassifier,
+    HMMClassifier,
+    HuBERTClassifier,
+    MFCCLSTMClassifier,
+    SVMClassifier,
+    Wav2Vec2Classifier,
+)
 from src.classification.text import (
     BertClassifier,
     DistilBertClassifier,
@@ -35,6 +44,8 @@ class ClassifierFactory:
             return TextClassifierFactory.get(model, parameters)
         elif modality == "image":
             return ImageClassifierFactory.get(model, parameters)
+        elif modality == "speech":
+            return SpeechClassifierFactory.get(model, parameters)
         else:
             raise ValueError(f"Modality {modality} not supported!")
 
@@ -85,3 +96,35 @@ class ImageClassifierFactory:
             return CrossAttentionNetworkClassifier(parameters)
         else:
             raise ValueError(f"Image model {model} not implemented!")
+
+
+class SpeechClassifierFactory:
+    """
+    Factory class that generates speech emotion classifiers
+    """
+
+    @staticmethod
+    def get(model: str, parameters: Dict = None) -> EmotionClassifier:
+        """
+        Method that returns an instance of a speech emotion classifier
+
+        :param model: The name of the speech model
+        :param parameters: The parameters for the speech model
+        :return: The constructed speech classifier
+        """
+        if model == "mfcc_lstm":
+            return MFCCLSTMClassifier(parameters)
+        elif model == "hubert":
+            return HuBERTClassifier(parameters)
+        elif model == "wav2vec2":
+            return Wav2Vec2Classifier(parameters)
+        elif model == "hmm":
+            return HMMClassifier(parameters)
+        elif model == "gmm":
+            return GMMClassifier(parameters)
+        elif model == "svm":
+            return SVMClassifier(parameters)
+        elif model == "byols":
+            return BYOLSClassifier(parameters)
+        else:
+            raise ValueError(f"Speech model {model} not implemented!")

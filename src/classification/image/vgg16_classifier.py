@@ -1,5 +1,6 @@
 """ This file contains the VGG16 facial emotion classifier """
-
+import os
+import sys
 from typing import Dict
 
 import numpy as np
@@ -143,7 +144,7 @@ class VGG16Classifier(ImageEmotionClassifier):
         which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
         dataset = self.data_reader.get_emotion_data(
-            self.emotions, which_set, batch_size
+            self.emotions, which_set, batch_size, parameters
         ).map(lambda x, y: (tf.image.grayscale_to_rgb(x), y))
 
         if not self.model:
@@ -156,24 +157,25 @@ class VGG16Classifier(ImageEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = VGG16Classifier()
-    classifier.train(
-        {
-            "epochs": 30,
-            "batch_size": 64,
-            "patience": 8,
-            "learning_rate": 0.0001,
-            "deep": True,
-            "dropout": 0.4,
-            "frozen_layers": 0,
-            "l1": 0,
-            "l2": 1e-05,
-            "augment": True,
-            "weighted": False,
-            "balanced": False,
-        }
-    )
-    classifier.save()
-    classifier.load()
+    parameters = {
+        "epochs": 30,
+        "batch_size": 64,
+        "patience": 8,
+        "learning_rate": 0.0001,
+        "deep": True,
+        "dropout": 0.4,
+        "frozen_layers": 0,
+        "l1": 0,
+        "l2": 1e-05,
+        "augment": True,
+        "weighted": False,
+        "balanced": False,
+    }
+    if not os.path.exists("models/image/vgg16") or "train" in sys.argv:
+        classifier.train(parameters)
+        classifier.save()
+
+    classifier.load(parameters)
     emotions = classifier.classify()
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")

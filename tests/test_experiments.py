@@ -40,20 +40,9 @@ def test_experiment():
         _ = Experiment(init_parameters=3)
 
 
-@pytest.mark.filterwarnings("ignore:The experiment")
 def test_experiment_runner_configs(monkeypatch):
     shutil.rmtree("experiments/results/test_name", ignore_errors=True)
 
-    _ = ExperimentRunner("test_name")
-    # Same runner again - should ask user for input
-    monkeypatch.setattr("builtins.input", lambda _: "n")
-    monkeypatch.setattr("sys.__stdin__.isatty", lambda: True)
-    with pytest.raises(SystemExit) as error:
-        _ = ExperimentRunner("test_name")
-    assert error.type == SystemExit
-    assert error.value.code == 0
-
-    monkeypatch.setattr("builtins.input", lambda _: "y")
     runner = ExperimentRunner("test_name")
 
     assert len(runner.experiments) == 0

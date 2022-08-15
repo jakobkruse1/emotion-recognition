@@ -1,14 +1,23 @@
 # Project
 data/train/text
 data/train/image
+data/train/speech
 experiments/results
 
 # Models
 models/text/bert
 models/text/distilbert
 models/image/efficientnet
-models/image/vgg16
 models/image/cross_attention
+models/image/vgg16
+models/speech/mfcc_lstm
+models/speech/hubert
+models/speech/wav2vec2
+models/speech/hmm
+models/speech/gmm
+models/speech/svm
+models/speech/serab-byols
+models/speech/byols
 models/cache
 
 # Documentation

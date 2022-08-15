@@ -75,15 +75,18 @@ class EmotionClassifier(ABC):
         """
         raise NotImplementedError("Abstract class")  # pragma: no cover
 
-    def get_class_weights(self, which_set: Set) -> Dict[int, int]:
+    def get_class_weights(
+        self, which_set: Set, parameters: Dict = None
+    ) -> Dict[int, int]:
         """
         Function that returns a class weights dictionary for a given dataset.
         The dictionary's keys are the labels and the values are the counts.
 
         :param which_set: Which set to use for calculating the class weights.
+        :param parameters: Parameter dictionary
         :return: Dictionary with the class weights
         """
-        labels = self.data_reader.get_labels(which_set)
+        labels = self.data_reader.get_labels(which_set, parameters)
         total = labels.shape[0]
         count_arr = np.bincount(labels.astype(int))
         return {
