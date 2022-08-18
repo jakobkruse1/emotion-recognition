@@ -28,17 +28,20 @@ class PlantExperimentDataReader(ExperimentDataReader):
         self.default_label_mode = default_label_mode
         assert default_label_mode in ["expected", "faceapi"]
         self.files = glob.glob(os.path.join(self.folder, "*.wav"))
-        if default_label_mode == "faceapi" and \
-                len(glob.glob("data/ground_truth/*.json")) != len(self.files):
+        if default_label_mode == "faceapi" and len(
+            glob.glob("data/ground_truth/*.json")
+        ) != len(self.files):
             self.prepare_faceapi_labels()
 
-    def get_seven_emotion_data(self, which_set: Set, batch_size: int = 64,
-                               parameters: Dict = None) -> tf.data.Dataset:
+    def get_seven_emotion_data(
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
+    ) -> tf.data.Dataset:
         parameters = parameters or {}
-        label_mode = parameters.get("label_mode", self.default_label_mode)
+        _ = parameters.get("label_mode", self.default_label_mode)
 
-    def get_three_emotion_data(self, which_set: Set, batch_size: int = 64,
-                               parameters: Dict = None) -> tf.data.Dataset:
+    def get_three_emotion_data(
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
+    ) -> tf.data.Dataset:
         """
         Create a dataset that uses only three emotions.
 
@@ -47,7 +50,9 @@ class PlantExperimentDataReader(ExperimentDataReader):
         :param parameters: Additional parameters
         :return: Dataset with three emotion labels.
         """
-        dataset = self.get_seven_emotion_data(which_set, batch_size, parameters)
+        dataset = self.get_seven_emotion_data(
+            which_set, batch_size, parameters
+        )
         dataset = dataset.map(
             lambda x, y: tf.numpy_function(
                 func=self.map_emotions,
@@ -57,8 +62,9 @@ class PlantExperimentDataReader(ExperimentDataReader):
         )
         return dataset
 
-    def get_labels(self, which_set: Set = Set.TRAIN,
-                   parameters: Dict = None) -> np.ndarray:
+    def get_labels(
+        self, which_set: Set = Set.TRAIN, parameters: Dict = None
+    ) -> np.ndarray:
         """
         This function returns labels for the dataset
 
@@ -73,8 +79,10 @@ class PlantExperimentDataReader(ExperimentDataReader):
         elif label_mode == "faceapi":
             return self.get_faceapi_labels()
         else:
-            raise ValueError(f"Invalid label mode {label_mode}, "
-                             f"please use one of: 'expected', 'faceapi'")
+            raise ValueError(
+                f"Invalid label mode {label_mode}, "
+                f"please use one of: 'expected', 'faceapi'"
+            )
 
     def get_expected_labels(self) -> np.ndarray:
         pass
@@ -89,8 +97,10 @@ class PlantExperimentDataReader(ExperimentDataReader):
         """
         for file in glob.glob("data/video/*.mp4"):
             emotions_file = os.path.join(
-                "data", "ground_truth",
-                f"{os.path.basename(file).split('.')[0]}_emotions.json")
+                "data",
+                "ground_truth",
+                f"{os.path.basename(file).split('.')[0]}_emotions.json",
+            )
             if not os.path.exists(emotions_file):
                 experiment_ground_truth(file)
 

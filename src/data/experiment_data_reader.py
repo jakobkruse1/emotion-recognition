@@ -1,8 +1,8 @@
 """ This file contains a base class for data readers that read experiment
 related data and implements common functionality. """
 
-from typing import Dict
 from abc import abstractmethod
+from typing import Dict
 
 import numpy as np
 import tensorflow as tf
@@ -54,8 +54,9 @@ class ExperimentDataReader(DataReader):
         return emotion_times
 
     @abstractmethod
-    def get_seven_emotion_data(self, which_set: Set, batch_size: int = 64,
-                               parameters: Dict = None) -> tf.data.Dataset:
+    def get_seven_emotion_data(
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
+    ) -> tf.data.Dataset:
         """
         The abstract method for getting the dataset to train on.
 
@@ -67,8 +68,9 @@ class ExperimentDataReader(DataReader):
         raise NotImplementedError()  # pragma: no cover
 
     @abstractmethod
-    def get_three_emotion_data(self, which_set: Set, batch_size: int = 64,
-                               parameters: Dict = None) -> tf.data.Dataset:
+    def get_three_emotion_data(
+        self, which_set: Set, batch_size: int = 64, parameters: Dict = None
+    ) -> tf.data.Dataset:
         """
         The abstract method for getting the dataset to train on.
         This method should return only three emotions.
@@ -81,8 +83,9 @@ class ExperimentDataReader(DataReader):
         raise NotImplementedError()  # pragma: no cover
 
     @abstractmethod
-    def get_labels(self, which_set: Set = Set.TRAIN,
-                   parameters: Dict = None) -> np.ndarray:
+    def get_labels(
+        self, which_set: Set = Set.TRAIN, parameters: Dict = None
+    ) -> np.ndarray:
         """
         Return the labels for the unsorted data in the dataset.
 

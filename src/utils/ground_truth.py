@@ -1,15 +1,15 @@
-import time
-from typing import List, Union, Dict
 import json
 import os
 import subprocess
 import threading
+import time
+from typing import Dict, List, Union
 
 import numpy as np
 import requests
-from PIL import Image
-from moviepy.editor import VideoFileClip
 from alive_progress import alive_bar
+from moviepy.editor import VideoFileClip
+from PIL import Image
 
 
 class FaceAPIThread(threading.Thread):
@@ -60,7 +60,11 @@ def experiment_ground_truth(video_file: str) -> None:
     video = VideoFileClip(video_file)
     port = 6060 + int(os.path.basename(video_file)[:3])
     emotions = _get_emotions(video, port)
-    destination = os.path.join("data", "ground_truth", f"{os.path.basename(video_file).split('.')[0]}_emotions.json")
+    destination = os.path.join(
+        "data",
+        "ground_truth",
+        f"{os.path.basename(video_file).split('.')[0]}_emotions.json",
+    )
     with open(destination, "w") as dest_file:
         json.dump(emotions, dest_file)
 
@@ -86,20 +90,18 @@ def _get_emotions(
     this_second = 0
     this_second_values = []
     with alive_bar(
-        int(video.fps * video.duration) // 30 + 1, title="Frame", force_tty=True
+        int(video.fps * video.duration) // 30 + 1,
+        title="Frame",
+        force_tty=True,
     ) as bar:
         for frame in frames:
             if counter // fps > this_second:
-                emotion_list.append(
-                    [str(counter / fps), this_second_values]
-                )
+                emotion_list.append([str(counter / fps), this_second_values])
                 this_second += 1
                 this_second_values = []
             if counter % 30 == 0:
                 if frame.shape[0] == 1080:
-                    frame = (
-                        frame.reshape((540, 2, 960, 2, 3)).max(3).max(1)
-                    )
+                    frame = frame.reshape((540, 2, 960, 2, 3)).max(3).max(1)
                 else:
                     image = Image.fromarray(np.uint8(frame), "RGB")
                     image = image.resize((960, 540))
