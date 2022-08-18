@@ -59,14 +59,14 @@ def experiment_ground_truth(video_file: str) -> None:
     """
     video = VideoFileClip(video_file)
     port = 6060 + int(os.path.basename(video_file)[:3])
+    print(
+        f"Running face-api.js to get ground truth for experiment {port-6060}."
+    )
     emotions = _get_emotions(video, port)
     destination = os.path.join(
         "data",
         "ground_truth",
         f"{os.path.basename(video_file).split('.')[0]}_emotions.json",
-    )
-    print(
-        f"Running face-api.js to get ground truth for experiment {port-6060}."
     )
     with open(destination, "w") as dest_file:
         json.dump(emotions, dest_file)
