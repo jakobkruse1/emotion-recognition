@@ -1,16 +1,18 @@
 # Data Folder Structure
 
 This file describes how you need to setup the data folder for the code to work properly.
-This folder contains two subfolders:
-The train folder is used to store all the data that is used for training the emotion classification models.
-The eval folder contains the custom data that is used for evaluation accross different modalities.
+This folder contains multiple subfolders:
+The train folder is used to store all the data that is used for training the text, voice and face emotion classification models.
+The other folders contain the custom data that is used for evaluation across different modalities.
 <div class="disclaimer" style="background-color: #f5ea92">
    ⚠️&nbsp When using any of these datasets, please remember to cite the corresponding papers! Check the websites for more information.
 </div>
 
 ## Training data
 To download the training datasets required for training certain emotion classification models,
-use the bash scripts provided in the train folder.
+use the bash scripts provided in the train folder.  
+Some of the datasets can not be downloaded automatically because you need to request access to them and they are to be used for research only.
+The following sections will list all the datasets and how you can access them.
 
 ### Text Data
 To download the text datasets, please use the `download_text_data.sh` script in the train folder.
@@ -60,5 +62,10 @@ This will download these datasets:
 3. [Crema D Dataset](https://www.tensorflow.org/datasets/catalog/crema_d):
    1. This dataset is stored in your tfds download folder (usually `/home/$USER/tensorflow-datasets`)
 
-## Eval data
-TODO
+## Evaluation data
+This part of the data has been collected by myself during my time at MIT.  
+It can not be disclosed publicly because of privacy reasons of the subjects of the data stud
+
+### Plant Data
+The plant data should be cut to the experiment duration and then placed in the `plant` subfolder.  
+

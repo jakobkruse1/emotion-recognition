@@ -27,3 +27,5 @@ seaborn
 transformers
 hmmlearn
 librosa
+requests
+moviepy

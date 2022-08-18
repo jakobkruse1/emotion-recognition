@@ -1,7 +1,12 @@
-# Project
+# Project Data
 data/train/text
 data/train/image
 data/train/speech
+
+data/plant
+data/video
+data/ground_truth
+
 experiments/results
 
 # Models
@@ -28,6 +33,11 @@ docs/*
 !docs/make.bat
 !docs/Makefile
 .idea
+
+# Project Other
+src/utils/faceapi/node_modules/
+src/utils/faceapi/package-lock.json
+src/utils/faceapi/weights/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

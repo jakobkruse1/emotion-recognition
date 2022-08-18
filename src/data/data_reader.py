@@ -156,3 +156,14 @@ class DataReader(ABC):
         return np.concatenate(np_data, axis=0), np.concatenate(
             np_labels, axis=0
         )
+
+    @staticmethod
+    def map_emotions(data, labels):
+        """
+        Conversion function that is applied when three emotion labels are
+        required.
+        """
+        new_labels = DataReader.convert_to_three_emotions_onehot(
+            labels
+        ).astype(np.float32)
+        return data, new_labels

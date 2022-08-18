@@ -111,17 +111,6 @@ class ImageDataReader(DataReader):
         dataset = self.add_augmentations(dataset, augment)
         return dataset
 
-    @staticmethod
-    def map_emotions(data, labels):
-        """
-        Conversion function that is applied when three emotion labels are
-        required.
-        """
-        new_labels = DataReader.convert_to_three_emotions_onehot(
-            labels
-        ).astype(np.float32)
-        return data, new_labels
-
     def get_labels(
         self, which_set: Set = Set.TRAIN, parameters: Dict = None
     ) -> np.ndarray:
