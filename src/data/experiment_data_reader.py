@@ -32,6 +32,15 @@ class ExperimentDataReader(DataReader):
             "sadness",
             "fear",
         ]
+        self.emotion_labels = {
+            "anger": 0,
+            "surprise": 1,
+            "disgust": 2,
+            "joy": 3,
+            "fear": 4,
+            "sadness": 5,
+            "neutral": 6,
+        }
         self.emotion_times = self.get_emotion_times()
 
     def get_emotion_times(self) -> Dict[str, Dict[str, float]]:
