@@ -40,6 +40,7 @@ class PlantLSTMClassifier(PlantEmotionClassifier):
         out = tf.keras.layers.Dense(512, activation="relu")(out)
         out = tf.keras.layers.Dense(7, activation="softmax")(out)
         self.model = tf.keras.Model(input, out)
+        print(self.model.summary())
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -125,7 +126,7 @@ if __name__ == "__main__":  # pragma: no cover
         "learning_rate": 0.001,
         "lstm_units": 128,
         "dropout": 0.2,
-        "batch_size": 8,
+        "batch_size": 32,
     }
     if not os.path.exists("models/plant/plant_lstm") or "train" in sys.argv:
         classifier.train(parameters)

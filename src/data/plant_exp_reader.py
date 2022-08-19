@@ -262,9 +262,13 @@ class PlantExperimentDataReader(ExperimentDataReader):
 
 if __name__ == "__main__":
     reader = PlantExperimentDataReader()
+    reader.prepare_faceapi_labels()
     data = reader.get_seven_emotion_data(
         Set.TRAIN, 64, {"label_mode": "expected"}
     ).take(1)
     for batch, labels in data:
         print(batch.shape)
         print(labels.shape)
+    all_labels = reader.get_labels(Set.TRAIN)
+    print(all_labels.shape)
+    print(np.unique(all_labels, return_counts=True))
