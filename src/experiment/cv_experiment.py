@@ -54,23 +54,13 @@ class CrossValidationExperimentRunner(ExperimentRunner):
                 data = json.load(json_file)
                 return np.sum(data["predictions"] == labels) / labels.shape[0]
 
-        predictions = np.empty(
-            [
-                0,
-            ]
-        )
+        predictions = np.empty((0,))
 
         for cv_split in range(self.cv_splits):
             classifier = ClassifierFactory.get(
                 experiment.modality,
                 experiment.model,
                 experiment.init_parameters,
-            )
-            classifier.data_reader = kwargs.get(
-                "data_reader", classifier.data_reader
-            )
-            labels = classifier.data_reader.get_labels(
-                Set.TEST, experiment.train_parameters
             )
             train_parameters = experiment.train_parameters.copy()
             train_parameters["cv_portions"] = self.cv_splits

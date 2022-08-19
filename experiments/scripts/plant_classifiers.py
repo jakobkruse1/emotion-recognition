@@ -39,15 +39,15 @@ if __name__ == "__main__":
     runner = CrossValidationExperimentRunner("plant_parameters")
 
     lstm_configs = make_dictionaries(
-        {"epochs": 50, "patience": 10, "batch_size": 8},
+        {"epochs": 1, "patience": 10, "batch_size": 8},
         learning_rate=[0.0003, 0.001],
         lstm_units=[64, 256, 1024],
         lstm_layers=[1, 2],
-        dropout=[0.2, 0.3],
+        dropout=[0, 0.2, 0.3],
         label_mode=["expected", "faceapi"],
         window=[5, 10, 20],
         hop=[5, 10],
-        weighted=[True, False],
+        weighted=[False, True],
     )
     runner.add_grid_experiments(
         modality="plant",
