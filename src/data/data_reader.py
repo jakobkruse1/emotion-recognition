@@ -16,6 +16,7 @@ class Set(Enum):
     TRAIN = 0
     VAL = 1
     TEST = 2
+    ALL = 3
 
 
 class DataReader(ABC):

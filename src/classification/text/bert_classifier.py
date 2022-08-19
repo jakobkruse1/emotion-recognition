@@ -13,6 +13,7 @@ from src.classification.text.text_emotion_classifier import (
     TextEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy
 
 
 class BertClassifier(TextEmotionClassifier):
@@ -192,4 +193,4 @@ if __name__ == "__main__":  # pragma: no cover
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    print(f"Accuracy: {accuracy(labels, emotions)}")

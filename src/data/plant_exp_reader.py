@@ -47,14 +47,13 @@ class PlantExperimentDataReader(ExperimentDataReader):
     ) -> tf.data.Dataset:
         parameters = parameters or {}
         label_mode = parameters.get("label_mode", self.default_label_mode)
-        window = parameters.get("window", 10)
         self.get_raw_data()
         self.get_raw_labels(label_mode)
         dataset = tf.data.Dataset.from_generator(
             self.get_data_generator(which_set, parameters),
             output_types=(tf.float32, tf.float32),
             output_shapes=(
-                tf.TensorShape([window * self.sample_rate]),
+                tf.TensorShape([self.get_input_shape(parameters)[0]]),
                 tf.TensorShape([7]),
             ),
         )
@@ -85,12 +84,15 @@ class PlantExperimentDataReader(ExperimentDataReader):
                 data = self.raw_data[data_index, :]
                 labels = self.raw_labels[data_index, :]
                 for second in range(window, self.raw_labels.shape[1], hop):
-                    yield (
+                    sample = self.preprocess_sample(
                         data[
                             (second - window)
                             * self.sample_rate : second
                             * self.sample_rate
-                        ],
+                        ]
+                    )
+                    yield (
+                        sample,
                         tf.keras.utils.to_categorical(
                             np.array(labels[second]), num_classes=7
                         ),
@@ -110,20 +112,22 @@ class PlantExperimentDataReader(ExperimentDataReader):
             - cv_index: Which split to use.
         :return: List of indexes in a cv form.
         """
+        if which_set == Set.ALL:
+            return list(range(len(self.files)))
         cv_portions = parameters.get("cv_portions", 8)
         cv_index = parameters.get("cv_index", 0)
-        assert cv_portions - 2 >= cv_index >= 0
+        assert cv_portions - 1 >= cv_index >= 0
         borders = np.linspace(0, len(self.files), cv_portions + 1).astype(int)
         if which_set == Set.TEST:
-            test_split = 8 - cv_index
+            test_split = cv_portions - cv_index
             return list(range(borders[test_split - 1], borders[test_split]))
         elif which_set == Set.VAL:
-            val_split = (7 - cv_index) % 8
+            val_split = (cv_portions - 1 - cv_index) % cv_portions
             return list(range(borders[val_split - 1], borders[val_split]))
         elif which_set == Set.TRAIN:
             indices = []
             for i in range(1, cv_portions - 1):
-                train_split = (i - cv_index) % 8
+                train_split = (i - cv_index) % cv_portions
                 train_split = (
                     train_split - 1 if train_split == 0 else train_split
                 )
@@ -257,18 +261,55 @@ class PlantExperimentDataReader(ExperimentDataReader):
         for index, plant_file in enumerate(self.files):
             sample_rate, data = wavfile.read(plant_file)
             assert sample_rate == 10000, "WAV file has incorrect sample rate!"
+            mean = np.mean(data)
+            var = np.var(data)
+            data = (data - mean) / var
             self.raw_data[index, :] = data
+
+    @staticmethod
+    def preprocess_sample(
+        sample: np.ndarray, parameters: Dict = None
+    ) -> np.ndarray:
+        """
+        Gets a sample with shape (window_size * 10000,) and then preprocesses it
+        before using it in the classifier.
+
+        :param sample: The data sample to preprocess.
+        :param parameters: Additional parameters for preprocessing.
+        :return: The preprocessed sample.
+        """
+        downsampling_factor = 500
+        pad_size = downsampling_factor - sample.shape[0] % downsampling_factor
+        pad_size = 0 if pad_size == downsampling_factor else pad_size
+        padded_sample = np.append(sample, np.zeros(pad_size) * np.NaN)
+        downsampled_sample = np.nanmean(
+            padded_sample.reshape(-1, downsampling_factor), axis=1
+        )
+        return downsampled_sample
+
+    def get_input_shape(self, parameters: Dict) -> Tuple[int]:
+        """
+        Returns the shape of a preprocessed sample.
+
+        :param parameters: Parameter dictionary
+        :return: Tuple that is the shape of the sample.
+        """
+        parameters = parameters or {}
+        window = parameters.get("window", 10)
+        test_input = np.zeros((window * self.sample_rate,))
+        test_sample = self.preprocess_sample(test_input)
+        return test_sample.shape
 
 
 if __name__ == "__main__":
     reader = PlantExperimentDataReader()
     reader.prepare_faceapi_labels()
     data = reader.get_seven_emotion_data(
-        Set.TRAIN, 64, {"label_mode": "expected"}
+        Set.TRAIN, 64, {"label_mode": "faceapi"}
     ).take(1)
     for batch, labels in data:
         print(batch.shape)
         print(labels.shape)
-    all_labels = reader.get_labels(Set.TRAIN)
+    all_labels = reader.get_labels(Set.TRAIN, {"label_mode": "faceapi"})
     print(all_labels.shape)
     print(np.unique(all_labels, return_counts=True))

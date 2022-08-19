@@ -10,6 +10,7 @@ from src.classification.plant.plant_emotion_classifier import (
     PlantEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy, per_class_accuracy
 
 
 class PlantLSTMClassifier(PlantEmotionClassifier):
@@ -30,17 +31,21 @@ class PlantLSTMClassifier(PlantEmotionClassifier):
         """
         lstm_units = parameters.get("lstm_units", 512)
         dropout = parameters.get("dropout", 0.2)
-        window = parameters.get("window", 10)
+        input_size = self.data_reader.get_input_shape(parameters)[0]
+        lstm_layers = parameters.get("lstm_layers", 1)
         input = tf.keras.layers.Input(
-            shape=(window * 10000, 1), dtype=tf.float32, name="raw"
+            shape=(input_size, 1), dtype=tf.float32, name="raw"
         )
+        if lstm_layers == 2:
+            input = tf.keras.layers.LSTM(lstm_units, return_sequences=True)(
+                input
+            )
         out = tf.keras.layers.LSTM(lstm_units)(input)
         out = tf.keras.layers.Dropout(dropout)(out)
         out = tf.keras.layers.Dense(1024, activation="relu")(out)
         out = tf.keras.layers.Dense(512, activation="relu")(out)
         out = tf.keras.layers.Dense(7, activation="softmax")(out)
         self.model = tf.keras.Model(input, out)
-        print(self.model.summary())
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -137,4 +142,5 @@ if __name__ == "__main__":  # pragma: no cover
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    print(f"Accuracy: {accuracy(labels, emotions)}")
+    print(f"Per Class Accuracy: {per_class_accuracy(labels, emotions)}")
