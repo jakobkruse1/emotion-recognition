@@ -76,4 +76,4 @@ class CrossValidationExperimentRunner(ExperimentRunner):
         parameters["predictions"] = predictions.tolist()
         with open(os.path.join(self.folder, file_path), "w") as json_file:
             json.dump(parameters, json_file)
-        return np.sum(parameters["predictions"] == labels) / labels.shape[0]
+        return np.sum(predictions == labels) / labels.shape[0]
