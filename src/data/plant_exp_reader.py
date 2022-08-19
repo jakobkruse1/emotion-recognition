@@ -19,14 +19,17 @@ class PlantExperimentDataReader(ExperimentDataReader):
     This data reader reads the plant spiker box files from the experiments
     """
 
-    def __init__(self, default_label_mode: str = "expected") -> None:
+    def __init__(
+        self, folder: str = "data/plant", default_label_mode: str = "expected"
+    ) -> None:
         """
         Initialize the plant data reader for the experiment data.
 
+        :param folder: The folder that contains the plant files
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("plant_exp", "data/plant")
+        super().__init__("plant_exp", folder or "data/plant")
         self.default_label_mode = default_label_mode
         assert default_label_mode in ["expected", "faceapi"]
         self.files = glob.glob(os.path.join(self.folder, "*.wav"))
@@ -52,9 +55,13 @@ class PlantExperimentDataReader(ExperimentDataReader):
             output_types=(tf.float32, tf.float32),
             output_shapes=(
                 tf.TensorShape([window * self.sample_rate]),
-                tf.TensorShape([]),
+                tf.TensorShape([7]),
             ),
         )
+        if parameters.get(
+            "shuffle", True if which_set == Set.TRAIN else False
+        ):
+            dataset = dataset.shuffle(1024)
         dataset = dataset.batch(batch_size)
         return dataset
 
@@ -67,7 +74,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
         :param which_set: Train, val or test set
         :param parameters: Additional parameters including:
             - window: The length of the window to use in seconds
-        :return:
+        :return: Generator that yields data and label.
         """
 
         def generator():
@@ -84,9 +91,9 @@ class PlantExperimentDataReader(ExperimentDataReader):
                             * self.sample_rate : second
                             * self.sample_rate
                         ],
-                        np.array(
-                            labels[second]
-                        ),  # TODO: Do I want emotion at the end?
+                        tf.keras.utils.to_categorical(
+                            np.array(labels[second]), num_classes=7
+                        ),
                     )
 
         return generator
@@ -159,22 +166,14 @@ class PlantExperimentDataReader(ExperimentDataReader):
         :return: Label numpy array
         """
         parameters = parameters or {}
-        label_mode = parameters.get("label_mode", self.default_label_mode)
-        if label_mode == "expected":
-            return self.get_expected_labels()
-        elif label_mode == "faceapi":
-            return self.get_faceapi_labels()
-        else:
-            raise ValueError(
-                f"Invalid label mode {label_mode}, "
-                f"please use one of: 'expected', 'faceapi'"
+        parameters["shuffle"] = False
+        dataset = self.get_seven_emotion_data(which_set, 100, parameters)
+        labels = np.empty((0,))
+        for _, batch_labels in dataset:
+            labels = np.concatenate(
+                [labels, np.argmax(batch_labels, axis=1)], axis=0
             )
-
-    def get_expected_labels(self) -> np.ndarray:
-        pass
-
-    def get_faceapi_labels(self) -> np.ndarray:
-        pass
+        return labels
 
     def get_raw_labels(self, label_mode: str) -> None:
         """
@@ -265,4 +264,7 @@ if __name__ == "__main__":
     reader = PlantExperimentDataReader()
     data = reader.get_seven_emotion_data(
         Set.TRAIN, 64, {"label_mode": "expected"}
-    )
+    ).take(1)
+    for batch, labels in data:
+        print(batch.shape)
+        print(labels.shape)
