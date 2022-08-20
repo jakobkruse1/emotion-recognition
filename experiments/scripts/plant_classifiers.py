@@ -39,7 +39,7 @@ if __name__ == "__main__":
     runner = CrossValidationExperimentRunner("plant_parameters")
 
     lstm_configs = make_dictionaries(
-        {"epochs": 1, "patience": 10, "batch_size": 8},
+        {"epochs": 1, "patience": 10, "batch_size": 64},
         learning_rate=[0.0003, 0.001],
         lstm_units=[64, 256, 1024],
         lstm_layers=[1, 2],

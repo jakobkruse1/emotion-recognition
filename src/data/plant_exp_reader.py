@@ -114,7 +114,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
         """
         if which_set == Set.ALL:
             return list(range(len(self.files)))
-        cv_portions = parameters.get("cv_portions", 8)
+        cv_portions = parameters.get("cv_portions", 5)
         cv_index = parameters.get("cv_index", 0)
         assert cv_portions - 1 >= cv_index >= 0
         borders = np.linspace(0, len(self.files), cv_portions + 1).astype(int)
@@ -310,6 +310,7 @@ if __name__ == "__main__":
     for batch, labels in data:
         print(batch.shape)
         print(labels.shape)
-    all_labels = reader.get_labels(Set.TRAIN, {"label_mode": "faceapi"})
-    print(all_labels.shape)
-    print(np.unique(all_labels, return_counts=True))
+    print(f"Train size: {reader.get_labels(Set.TRAIN).shape[0]}")
+    print(f"Val size: {reader.get_labels(Set.VAL).shape[0]}")
+    print(f"Test size: {reader.get_labels(Set.TEST).shape[0]}")
+    print(f"All size: {reader.get_labels(Set.ALL).shape[0]}")

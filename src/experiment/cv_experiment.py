@@ -43,7 +43,7 @@ class CrossValidationExperimentRunner(ExperimentRunner):
         print(experiment.get_parameter_dict())
 
         labels = ClassifierFactory.get(
-            experiment.modality, experiment.model, experiment.init_parameters
+            experiment.modality, experiment.model, experiment.train_parameters
         ).data_reader.get_labels(Set.ALL)
 
         # If already exists
