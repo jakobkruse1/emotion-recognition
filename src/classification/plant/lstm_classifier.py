@@ -37,10 +37,12 @@ class PlantLSTMClassifier(PlantEmotionClassifier):
             shape=(input_size, 1), dtype=tf.float32, name="raw"
         )
         if lstm_layers == 2:
-            input = tf.keras.layers.LSTM(lstm_units, return_sequences=True)(
-                input
-            )
-        out = tf.keras.layers.LSTM(lstm_units)(input)
+            input = tf.keras.layers.Bidirectional(
+                tf.keras.layers.LSTM(lstm_units, return_sequences=True)
+            )(input)
+        out = tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(lstm_units))(
+            input
+        )
         out = tf.keras.layers.Dropout(dropout)(out)
         out = tf.keras.layers.Dense(1024, activation="relu")(out)
         out = tf.keras.layers.Dense(512, activation="relu")(out)
