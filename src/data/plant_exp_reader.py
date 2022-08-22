@@ -38,7 +38,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
             glob.glob("data/ground_truth/*.json")
         ) != len(self.files):
             self.prepare_faceapi_labels()
-        self.raw_data = None
+        self.raw_data = []
         self.raw_labels = None
         self.sample_rate = 10_000
 
@@ -82,7 +82,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
             preprocess = parameters.get("preprocess", True)
             indices = self.get_cross_validation_indices(which_set, parameters)
             for data_index in indices:
-                data = self.raw_data[data_index, :]
+                data = self.raw_data[data_index]
                 labels = self.raw_labels[data_index, :]
                 for second in range(window, self.raw_labels.shape[1], hop):
                     sample = data[
@@ -258,14 +258,14 @@ class PlantExperimentDataReader(ExperimentDataReader):
         """
         Load the raw plant data from the wave files.
         """
-        self.raw_data = np.zeros((len(self.files), 10000 * 690))
+        self.raw_data = []
         for index, plant_file in enumerate(self.files):
             sample_rate, data = wavfile.read(plant_file)
             assert sample_rate == 10000, "WAV file has incorrect sample rate!"
             mean = np.mean(data)
             var = np.var(data)
             data = (data - mean) / var
-            self.raw_data[index, :] = data
+            self.raw_data.append(data)
 
     @staticmethod
     def preprocess_sample(
