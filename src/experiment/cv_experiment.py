@@ -72,6 +72,8 @@ class CrossValidationExperimentRunner(ExperimentRunner):
             predictions = np.concatenate(
                 [test_predictions, predictions], axis=0
             )
+            del classifier.data_reader.raw_data
+            del classifier.data_reader.raw_labels
         parameters = experiment.get_parameter_dict()
         parameters["predictions"] = predictions.tolist()
         with open(os.path.join(self.folder, file_path), "w") as json_file:
