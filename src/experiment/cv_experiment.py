@@ -42,9 +42,12 @@ class CrossValidationExperimentRunner(ExperimentRunner):
         print(f"Running experiment {index}")
         print(experiment.get_parameter_dict())
 
-        labels = ClassifierFactory.get(
+        reader = ClassifierFactory.get(
             experiment.modality, experiment.model, experiment.init_parameters
-        ).data_reader.get_labels(Set.ALL, experiment.train_parameters)
+        ).data_reader
+        labels = reader.get_labels(Set.ALL, experiment.train_parameters)
+        del reader.raw_data
+        del reader.raw_labels
 
         # If already exists
         file_path = f"{index:03d}_results.json"
