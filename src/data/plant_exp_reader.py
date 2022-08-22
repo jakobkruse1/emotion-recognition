@@ -124,6 +124,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
             return list(range(borders[test_split - 1], borders[test_split]))
         elif which_set == Set.VAL:
             val_split = (cv_portions - 1 - cv_index) % cv_portions
+            val_split = val_split - 1 if val_split == 0 else val_split
             return list(range(borders[val_split - 1], borders[val_split]))
         elif which_set == Set.TRAIN:
             indices = []
@@ -307,13 +308,12 @@ class PlantExperimentDataReader(ExperimentDataReader):
 if __name__ == "__main__":
     reader = PlantExperimentDataReader()
     reader.prepare_faceapi_labels()
-    data = reader.get_seven_emotion_data(
-        Set.TRAIN, 64, {"label_mode": "faceapi"}
-    ).take(1)
+    parameters = {"label_mode": "faceapi", "cv_portions": 5, "cv_index": 4}
+    data = reader.get_seven_emotion_data(Set.VAL, 64, parameters).take(1)
     for batch, labels in data:
         print(batch.shape)
         print(labels.shape)
-    print(f"Train size: {reader.get_labels(Set.TRAIN).shape[0]}")
-    print(f"Val size: {reader.get_labels(Set.VAL).shape[0]}")
-    print(f"Test size: {reader.get_labels(Set.TEST).shape[0]}")
-    print(f"All size: {reader.get_labels(Set.ALL).shape[0]}")
+    print(f"Train size: {reader.get_labels(Set.TRAIN, parameters).shape[0]}")
+    print(f"Val size: {reader.get_labels(Set.VAL, parameters).shape[0]}")
+    print(f"Test size: {reader.get_labels(Set.TEST, parameters).shape[0]}")
+    print(f"All size: {reader.get_labels(Set.ALL, parameters).shape[0]}")
