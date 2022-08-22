@@ -7,7 +7,11 @@ from src.classification.image import (
     MultiTaskEfficientNetB2Classifier,
     VGG16Classifier,
 )
-from src.classification.plant import PlantLSTMClassifier
+from src.classification.plant import (
+    PlantDenseClassifier,
+    PlantLSTMClassifier,
+    PlantMFCCCNNClassifier,
+)
 from src.classification.speech import (
     BYOLSClassifier,
     GMMClassifier,
@@ -149,5 +153,9 @@ class PlantClassifierFactory:
         """
         if model == "plant_lstm":
             return PlantLSTMClassifier(parameters)
+        elif model == "plant_dense":
+            return PlantDenseClassifier(parameters)
+        elif model == "plant_mfcc_cnn":
+            return PlantMFCCCNNClassifier(parameters)
         else:
             raise ValueError(f"Plant model {model} not implemented!")

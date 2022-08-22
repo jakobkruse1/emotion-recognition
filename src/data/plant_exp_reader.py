@@ -79,18 +79,19 @@ class PlantExperimentDataReader(ExperimentDataReader):
         def generator():
             window = parameters.get("window", 10)
             hop = parameters.get("hop", 5)
+            preprocess = parameters.get("preprocess", True)
             indices = self.get_cross_validation_indices(which_set, parameters)
             for data_index in indices:
                 data = self.raw_data[data_index, :]
                 labels = self.raw_labels[data_index, :]
                 for second in range(window, self.raw_labels.shape[1], hop):
-                    sample = self.preprocess_sample(
-                        data[
-                            (second - window)
-                            * self.sample_rate : second
-                            * self.sample_rate
-                        ]
-                    )
+                    sample = data[
+                        (second - window)
+                        * self.sample_rate : second
+                        * self.sample_rate
+                    ]
+                    if preprocess:
+                        sample = self.preprocess_sample(sample)
                     yield (
                         sample,
                         tf.keras.utils.to_categorical(
@@ -296,6 +297,8 @@ class PlantExperimentDataReader(ExperimentDataReader):
         """
         parameters = parameters or {}
         window = parameters.get("window", 10)
+        if not parameters.get("preprocess", True):
+            return (window * self.sample_rate,)
         test_input = np.zeros((window * self.sample_rate,))
         test_sample = self.preprocess_sample(test_input)
         return test_sample.shape

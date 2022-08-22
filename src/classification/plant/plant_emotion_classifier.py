@@ -119,7 +119,7 @@ class PlantEmotionClassifier(EmotionClassifier):
 
         # A 1024-point STFT with frames of 64 ms and 75% overlap.
         stfts = tf.signal.stft(
-            audio_tensor, frame_length=1000, frame_step=250, fft_length=1000
+            audio_tensor, frame_length=2500, frame_step=1250, fft_length=2500
         )
         spectrograms = tf.abs(stfts)
 
@@ -148,7 +148,7 @@ class PlantEmotionClassifier(EmotionClassifier):
         # Compute MFCCs from log_mel_spectrograms and take the first 40.
         mfccs = tf.signal.mfccs_from_log_mel_spectrograms(
             log_mel_spectrograms
-        )[..., :40]
+        )[..., :20]
 
         return mfccs
 
@@ -158,6 +158,8 @@ if __name__ == "__main__":  # pragma: no cover
 
     dr = PlantExperimentDataReader()
 
-    for speech, labels in dr.get_seven_emotion_data(Set.TEST).take(1):
+    for speech, labels in dr.get_seven_emotion_data(
+        Set.TEST, parameters={"preprocess": False}
+    ).take(1):
         mfcc = PlantEmotionClassifier.compute_mfccs(speech)
         print(mfcc.shape)
