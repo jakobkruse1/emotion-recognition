@@ -3,7 +3,7 @@ functionality and data reading"""
 
 import glob
 import json
-from typing import Dict, Iterable, List, Union
+from typing import Any, Dict, Iterable, List, Union
 
 import numpy as np
 
@@ -22,6 +22,8 @@ class Evaluator:
         """
         self.result_paths = None
         self.result_data = []
+        self.data_readers = {}
+        self.precomputed_labels = {}
 
     def read_results(self, paths: Union[str, Iterable[str]]) -> None:
         """
@@ -55,15 +57,86 @@ class Evaluator:
     def get_parameters(self) -> List[Dict]:
         """
         Function that returns the parameters of all experiments in a list.
+
+        :return: List of all experiment configurations without predictions.
         """
         parameters = []
         for experiment in self.result_data:
             data = experiment.copy()
-            del data["train_predictions"]
-            del data["val_predictions"]
-            del data["test_predictions"]
+            if "train_predictions" in data.keys():
+                del data["train_predictions"]
+                del data["val_predictions"]
+                del data["test_predictions"]
+            else:
+                del data["predictions"]
             parameters.append(data)
         return parameters
+
+    def get_labels(
+        self, modality: str, predictions_key: str, parameters: Dict[str, Any]
+    ) -> np.ndarray:
+        """
+        Function that returns labels without recomputing them if used before.
+
+        :param modality: The modality of the data.
+        :param predictions_key: "test_predictions" or "predicitons"
+        :param parameters: Additional parameters required for label generation.
+        :return: Label numpy array.
+        """
+        critical_parameters = ["label_mode", "window", "hop"]
+        which_set = (
+            Set.TEST if predictions_key == "test_predictions" else Set.ALL
+        )
+        if modality not in self.data_readers.keys():
+            self.data_readers[modality] = DataFactory.get_data_reader(modality)
+            self.precomputed_labels[modality] = []
+        contains_critical = np.any(
+            [param in parameters.keys() for param in critical_parameters]
+        )
+        if not contains_critical:
+            for label_dict in self.precomputed_labels[modality]:
+                if which_set == label_dict["which_set"]:
+                    return label_dict["labels"]
+            self.precomputed_labels[modality].append(
+                {
+                    "labels": self.data_readers[modality].get_labels(
+                        which_set
+                    ),
+                    "which_set": which_set,
+                }
+            )
+            for label_dict in self.precomputed_labels[modality]:
+                if which_set == label_dict["which_set"]:
+                    return label_dict["labels"]
+        else:
+            for label_dict in self.precomputed_labels[modality]:
+                if which_set == label_dict["which_set"] and np.all(
+                    [
+                        label_dict[param] == parameters[param]
+                        for param in critical_parameters
+                    ]
+                ):
+                    return label_dict["labels"]
+            self.precomputed_labels[modality].append(
+                {
+                    "labels": self.data_readers[modality].get_labels(
+                        which_set, parameters
+                    ),
+                    "which_set": which_set,
+                    **{
+                        critical_param: parameters.get(critical_param, None)
+                        for critical_param in critical_parameters
+                    },
+                }
+            )
+            for label_dict in self.precomputed_labels[modality]:
+                if which_set == label_dict["which_set"] and np.all(
+                    [
+                        label_dict[param] == parameters[param]
+                        for param in critical_parameters
+                    ]
+                ):
+                    return label_dict["labels"]
 
     def get_scores(self, score: str, **kwargs) -> List[float]:
         """
@@ -74,37 +147,43 @@ class Evaluator:
         :return: List of computed scores
         """
         scores = []
-        data_readers = {}
-        labels = {}
+        predictions_key = (
+            "test_predictions"
+            if "test_predictions" in self.result_data[0].keys()
+            else "predictions"
+        )
         for experiment in self.result_data:
-            if experiment["modality"] not in data_readers.keys():
-                data_readers[
-                    experiment["modality"]
-                ] = DataFactory.get_data_reader(
-                    experiment["modality"], **kwargs
-                )
-                labels[experiment["modality"]] = data_readers[
-                    experiment["modality"]
-                ].get_labels(Set.TEST)
             if score == "accuracy":
                 scores.append(
                     self._accuracy(
-                        labels[experiment["modality"]],
-                        np.asarray(experiment["test_predictions"]),
+                        self.get_labels(
+                            experiment["modality"],
+                            predictions_key,
+                            experiment["train_parameters"],
+                        ),
+                        np.asarray(experiment[predictions_key]),
                     )
                 )
             elif score == "avg_recall":
                 scores.append(
                     self._avg_recall(
-                        labels[experiment["modality"]],
-                        np.asarray(experiment["test_predictions"]),
+                        self.get_labels(
+                            experiment["modality"],
+                            predictions_key,
+                            experiment["train_parameters"],
+                        ),
+                        np.asarray(experiment[predictions_key]),
                     )
                 )
             elif score == "avg_precision":
                 scores.append(
                     self._avg_precision(
-                        labels[experiment["modality"]],
-                        np.asarray(experiment["test_predictions"]),
+                        self.get_labels(
+                            experiment["modality"],
+                            predictions_key,
+                            experiment["train_parameters"],
+                        ),
+                        np.asarray(experiment[predictions_key]),
                     )
                 )
         return scores

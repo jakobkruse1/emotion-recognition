@@ -7,6 +7,7 @@ import numpy as np
 import tensorflow as tf
 
 from src.classification import EmotionClassifier
+from src.data.data_factory import DataFactory
 from src.data.data_reader import Set
 
 
@@ -102,6 +103,12 @@ class PlantEmotionClassifier(EmotionClassifier):
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
         weighted = parameters.get("weighted", False)
+
+        balanced = parameters.get("balanced", False)
+        if balanced:
+            self.data_reader = DataFactory.get_data_reader(
+                "balanced_plant", self.data_reader.folder
+            )
 
         self.train_data = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, parameters
