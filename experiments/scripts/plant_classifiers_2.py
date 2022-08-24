@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     lstm_configs = make_dictionaries(
         {"epochs": 1, "patience": 10, "batch_size": 64},
-        learning_rate=[0.001],
+        learning_rate=[0.0003, 0.001],
         lstm_units=[1024],
         lstm_layers=[2],
         dropout=[0.2],
@@ -56,12 +56,12 @@ if __name__ == "__main__":
     )
 
     mfcc_configs = make_dictionaries(
-        {"epochs": 1, "patience": 10, "batch_size": 64, "preprocess": False},
+        {"epochs": 50, "patience": 10, "batch_size": 64, "preprocess": False},
         learning_rate=[0.0003],
         conv_filters=[64],
         conv_layers=[2],
-        conv_kernel_size=[5, 7],
-        dropout=[0.2],
+        conv_kernel_size=[3, 5, 7],
+        dropout=[0, 0.2],
         label_mode=["expected", "faceapi"],
         window=[10, 20, 30],
         hop=[10, 20],
@@ -74,11 +74,11 @@ if __name__ == "__main__":
     )
 
     balanced_lstm_configs = make_dictionaries(
-        {"epochs": 1, "patience": 10, "batch_size": 64},
-        learning_rate=[0.001],
-        lstm_units=[1024],
+        {"epochs": 50, "patience": 10, "batch_size": 64},
+        learning_rate=[0.0003, 0.001],
+        lstm_units=[512, 1024],
         lstm_layers=[2],
-        dropout=[0.2],
+        dropout=[0, 0.2],
         label_mode=["expected", "faceapi"],
         window=[20, 30],
         hop=[10, 20, 30],
@@ -91,12 +91,12 @@ if __name__ == "__main__":
     )
 
     balanced_mfcc_configs = make_dictionaries(
-        {"epochs": 1, "patience": 10, "batch_size": 64, "preprocess": False},
+        {"epochs": 50, "patience": 10, "batch_size": 64, "preprocess": False},
         learning_rate=[0.0003],
-        conv_filters=[64],
+        conv_filters=[32, 64, 96],
         conv_layers=[2],
-        conv_kernel_size=[5, 7],
-        dropout=[0.2],
+        conv_kernel_size=[3, 5, 7],
+        dropout=[0, 0.2],
         label_mode=["expected", "faceapi"],
         window=[10, 20, 30],
         hop=[10, 20],
