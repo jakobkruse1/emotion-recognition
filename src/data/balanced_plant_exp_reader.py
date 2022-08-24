@@ -95,8 +95,10 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
             "sad",
             "neutral",
         ]
+        unb_parameters = parameters.copy()
+        unb_parameters.update({"shuffle": False, "augment": False})
         for plant_data, labels in self._get_unbalanced_seven_emotion_data(
-            which_set, 1024, {"shuffle": False, "augment": False}
+            which_set, 1024, unb_parameters
         ):
             plant_class = np.argmax(labels.numpy(), axis=1)
             plant_data = plant_data.numpy()
