@@ -40,11 +40,11 @@ def plot_confusion_matrix(model_data, title="Confusion Matrix"):
 
 
 def filter_experiments(
-    parameters: List[Dict[str, Any]], key: str, value: Any
+    parameters: List[Dict[str, Any]], key: str, value: Any, default: Any = None
 ) -> List[int]:
     filtered_indices = []
     for index, experiment in enumerate(parameters):
-        if experiment["train_parameters"][key] == value:
+        if experiment["train_parameters"].get(key, default) == value:
             filtered_indices.append(index)
     return filtered_indices
 
@@ -52,7 +52,7 @@ def filter_experiments(
 if __name__ == "__main__":  # pragma: no cover
     # Best models
     evaluator = Evaluator()
-    evaluator.read_results("experiments/results/plant_parameters/*.json")
+    evaluator.read_results("experiments/results/plant_parameters_2/*.json")
     accuracies = evaluator.get_scores("per_class_accuracy")
     parameters = evaluator.get_parameters()
     all_data = evaluator.result_data
@@ -63,65 +63,29 @@ if __name__ == "__main__":  # pragma: no cover
     sorted_data = np.array([all_data[ind] for ind in sorted_ind])
 
     # Drop all data with weighted=False, because they are useless
-    weighted_ind = filter_experiments(sorted_params, "weighted", True)
-    weighted_acc = sorted_acc[weighted_ind]
-    weighted_params = sorted_params[weighted_ind]
-    weighted_data = sorted_data[weighted_ind]
 
     print("++++++++ Best Expected Labels Models ++++++++")
     expected_indices = filter_experiments(
-        weighted_params, "label_mode", "expected"
+        sorted_params, "label_mode", "expected"
     )
-    expected_acc = weighted_acc[expected_indices]
-    expected_params = [weighted_params[ind] for ind in expected_indices]
+    expected_acc = sorted_acc[expected_indices]
+    expected_params = [sorted_params[ind] for ind in expected_indices]
     plot_confusion_matrix(
-        weighted_data[expected_indices[0]], "Best expected labels model"
+        sorted_data[expected_indices[0]], "Best expected labels model"
     )
     for i in range(5):
-        print(f"Model {i+1}, Accuracy {expected_acc[i]}")
+        print(f"Model {i+1}, Per Class Accuracy {expected_acc[i]}")
         print(f"\tParameters: {expected_params[i]}\n")
 
     print("++++++++ Best Faceapi Labels Models ++++++++")
     faceapi_indices = filter_experiments(
-        weighted_params, "label_mode", "faceapi"
+        sorted_params, "label_mode", "faceapi"
     )
-    faceapi_acc = weighted_acc[faceapi_indices]
-    faceapi_params = [weighted_params[ind] for ind in faceapi_indices]
+    faceapi_acc = sorted_acc[faceapi_indices]
+    faceapi_params = [sorted_params[ind] for ind in faceapi_indices]
     plot_confusion_matrix(
-        weighted_data[faceapi_indices[0]], "Best faceapi labels model"
+        sorted_data[faceapi_indices[0]], "Best faceapi labels model"
     )
     for i in range(5):
-        print(f"Model {i + 1}, Accuracy {faceapi_acc[i]}")
+        print(f"Model {i + 1}, Per Class Accuracy {faceapi_acc[i]}")
         print(f"\tParameters: {faceapi_params[i]}\n")
-
-    # Class
-    classes = [
-        "angry",
-        "surprise",
-        "disgust",
-        "happy",
-        "fear",
-        "sad",
-        "neutral",
-    ]
-    print("++++++++ Expected Labels Class Distribution ++++++++")
-    labels = DataFactory.get_data_reader("plant").get_labels(
-        Set.ALL, parameters={"label_mode": "expected"}
-    )
-    for index, class_name in enumerate(classes):
-        class_count = np.sum(labels == index)
-        print(
-            f"{class_name.ljust(10)}:\t {class_count} \t"
-            f" {(class_count/labels.shape[0])*100:.1f}%"
-        )
-
-    print("++++++++ Faceapi Labels Class Distribution ++++++++")
-    labels = DataFactory.get_data_reader("plant").get_labels(
-        Set.ALL, parameters={"label_mode": "faceapi"}
-    )
-    for index, class_name in enumerate(classes):
-        class_count = np.sum(labels == index)
-        print(
-            f"{class_name.ljust(10)}:\t {class_count} \t"
-            f" {(class_count / labels.shape[0]) * 100:.1f}%"
-        )

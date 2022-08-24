@@ -58,12 +58,18 @@ class PlantLSTMClassifier(PlantNNBaseClassifier):
 if __name__ == "__main__":  # pragma: no cover
     classifier = PlantLSTMClassifier()
     parameters = {
-        "epochs": 10,
-        "patience": 5,
-        "learning_rate": 0.001,
-        "lstm_units": 128,
+        "epochs": 50,
+        "patience": 10,
+        "batch_size": 64,
+        "learning_rate": 0.0003,
+        "lstm_units": 256,
+        "lstm_layers": 1,
         "dropout": 0.2,
-        "batch_size": 32,
+        "label_mode": "faceapi",
+        "window": 10,
+        "hop": 10,
+        "weighted": True,
+        "shuffle": False,
     }
     if not os.path.exists("models/plant/plant_lstm") or "train" in sys.argv:
         classifier.train(parameters)

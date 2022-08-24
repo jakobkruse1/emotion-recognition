@@ -43,6 +43,10 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         self.raw_labels = None
         self.sample_rate = 10_000
 
+    def cleanup(self, parameters: Dict = None) -> None:
+        del self.raw_data
+        del self.raw_labels
+
     def get_seven_emotion_data(
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
@@ -394,7 +398,8 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         :param parameters: Additional parameters for preprocessing.
         :return: The preprocessed sample.
         """
-        downsampling_factor = 500
+        parameters = parameters or {}
+        downsampling_factor = parameters.get("downsampling_factor", 500)
         pad_size = downsampling_factor - sample.shape[0] % downsampling_factor
         pad_size = 0 if pad_size == downsampling_factor else pad_size
         padded_sample = np.append(sample, np.zeros(pad_size) * np.NaN)

@@ -105,6 +105,7 @@ class Evaluator:
                     "which_set": which_set,
                 }
             )
+            self.data_readers[modality].cleanup()
             for label_dict in self.precomputed_labels[modality]:
                 if which_set == label_dict["which_set"]:
                     return label_dict["labels"]
@@ -129,6 +130,7 @@ class Evaluator:
                     },
                 }
             )
+            self.data_readers[modality].cleanup()
             for label_dict in self.precomputed_labels[modality]:
                 if which_set == label_dict["which_set"] and np.all(
                     [
@@ -186,6 +188,17 @@ class Evaluator:
                         np.asarray(experiment[predictions_key]),
                     )
                 )
+            elif score == "per_class_accuracy":
+                scores.append(
+                    self._per_class_accuracy(
+                        self.get_labels(
+                            experiment["modality"],
+                            predictions_key,
+                            experiment["train_parameters"],
+                        ),
+                        np.asarray(experiment[predictions_key]),
+                    )
+                )
         return scores
 
     @staticmethod
@@ -198,6 +211,28 @@ class Evaluator:
         :return: The accuracy
         """
         return np.sum(true == pred) / true.shape[0]
+
+    @staticmethod
+    def _per_class_accuracy(true: np.ndarray, pred: np.ndarray) -> float:
+        """
+        Score function that computes accuracy per class and returns an average
+
+        :param true: The true labels
+        :param pred: The predicted labels
+        :return: The accuracy
+        """
+        per_class_accs = []
+        for class_id in range(7):
+            map = true == class_id
+            class_predictions = pred[map]
+            if class_predictions.size == 0:
+                per_class_accs.append(0)
+            else:
+                per_class_accs.append(
+                    np.sum(class_predictions == class_id)
+                    / class_predictions.shape[0]
+                )
+        return np.mean(per_class_accs)
 
     @staticmethod
     def _avg_recall(true: np.ndarray, pred: np.ndarray) -> float:

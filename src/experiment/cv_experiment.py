@@ -46,8 +46,7 @@ class CrossValidationExperimentRunner(ExperimentRunner):
             experiment.modality, experiment.model, experiment.init_parameters
         ).data_reader
         labels = reader.get_labels(Set.ALL, experiment.train_parameters)
-        del reader.raw_data
-        del reader.raw_labels
+        reader.cleanup()
 
         # If already exists
         file_path = f"{index:03d}_results.json"
@@ -75,8 +74,7 @@ class CrossValidationExperimentRunner(ExperimentRunner):
             predictions = np.concatenate(
                 [test_predictions, predictions], axis=0
             )
-            del classifier.data_reader.raw_data
-            del classifier.data_reader.raw_labels
+            classifier.data_reader.cleanup()
         parameters = experiment.get_parameter_dict()
         parameters["predictions"] = predictions.tolist()
         with open(os.path.join(self.folder, file_path), "w") as json_file:

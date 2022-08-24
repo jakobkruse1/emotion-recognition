@@ -137,6 +137,14 @@ class DataReader(ABC):
         """
         raise NotImplementedError("Abstract method")  # pragma: no cover
 
+    def cleanup(self, parameters: Dict = None) -> None:
+        """
+        Optional cleanup method that deletes unneccessary memory elements.
+
+        :param parameters: Parameters that might be required
+        """
+        pass
+
     @staticmethod
     def convert_to_numpy(
         dataset: tf.data.Dataset,
