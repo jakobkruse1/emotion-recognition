@@ -37,6 +37,7 @@ docs/*
 !docs/make.bat
 !docs/Makefile
 .idea
+logs
 
 # Project Other
 src/utils/faceapi/node_modules/
