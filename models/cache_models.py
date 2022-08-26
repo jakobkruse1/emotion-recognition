@@ -35,30 +35,22 @@ if __name__ == "__main__":
     model_names.append(
         "https://tfhub.dev/jeongukjae/distilbert_en_uncased_preprocess/2"
     )
-    input = tf.keras.layers.Input(
-        shape=(48, 48, 3), dtype=tf.float32, name="image"
-    )
     print("Loading EfficientNet")
     model2 = tf.keras.applications.EfficientNetB2(
-        include_top=False,
-        weights="imagenet",
-        input_tensor=input,
-        input_shape=(48, 48, 3),
+        include_top=False, weights="imagenet"
     )
     print("Loading VGG16")
-    model3 = tf.keras.applications.VGG16(
-        include_top=False,
-        weights="imagenet",
-        input_tensor=input,
-        input_shape=(48, 48, 3),
-    )
+    model3 = tf.keras.applications.VGG16(include_top=False, weights="imagenet")
+
+    print("Loading ResNet50")
+    model3 = tf.keras.applications.VGG16(include_top=False, weights="imagenet")
 
     for model in model_names:
         print(f"Loading {model}")
         _ = hub.KerasLayer(model)
 
     print("Loading ResNet18")
-    resnet = models.resnet18(pretrained=True)
+    resnet = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
 
     print("Loading HuBERT")
     processor = Wav2Vec2Processor.from_pretrained(

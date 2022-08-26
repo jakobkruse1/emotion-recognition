@@ -11,6 +11,7 @@ from src.classification.plant import (
     PlantDenseClassifier,
     PlantLSTMClassifier,
     PlantMFCCCNNClassifier,
+    PlantMFCCResnetClassifier,
 )
 from src.classification.speech import (
     BYOLSClassifier,
@@ -157,5 +158,7 @@ class PlantClassifierFactory:
             return PlantDenseClassifier(parameters)
         elif model == "plant_mfcc_cnn":
             return PlantMFCCCNNClassifier(parameters)
+        elif model == "plant_mfcc_resnet":
+            return PlantMFCCResnetClassifier(parameters)
         else:
             raise ValueError(f"Plant model {model} not implemented!")

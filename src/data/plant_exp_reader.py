@@ -31,14 +31,14 @@ class PlantExperimentDataReader(ExperimentDataReader):
         """
         super().__init__("plant_exp", folder or "data/plant")
         self.default_label_mode = default_label_mode
-        assert default_label_mode in ["expected", "faceapi"]
+        assert default_label_mode in ["expected", "faceapi", "both"]
         self.files = glob.glob(os.path.join(self.folder, "*.wav"))
         self.files.sort()
         if default_label_mode == "faceapi" and len(
             glob.glob("data/ground_truth/*.json")
         ) != len(self.files):
             self.prepare_faceapi_labels()
-        self.raw_data = []
+        self.raw_data = None
         self.raw_labels = None
         self.sample_rate = 10_000
 
@@ -50,9 +50,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         parameters = parameters or {}
-        label_mode = parameters.get("label_mode", self.default_label_mode)
-        self.get_raw_data()
-        self.get_raw_labels(label_mode)
+        self.get_raw_data(parameters)
         dataset = tf.data.Dataset.from_generator(
             self.get_data_generator(which_set, parameters),
             output_types=(tf.float32, tf.float32),
@@ -81,27 +79,19 @@ class PlantExperimentDataReader(ExperimentDataReader):
         """
 
         def generator():
-            window = parameters.get("window", 10)
-            hop = parameters.get("hop", 5)
             preprocess = parameters.get("preprocess", True)
             indices = self.get_cross_validation_indices(which_set, parameters)
             for data_index in indices:
-                data = self.raw_data[data_index]
-                labels = self.raw_labels[data_index, :]
-                for second in range(window, self.raw_labels.shape[1], hop):
-                    sample = data[
-                        (second - window)
-                        * self.sample_rate : second
-                        * self.sample_rate
-                    ]
-                    if preprocess:
-                        sample = self.preprocess_sample(sample)
-                    yield (
-                        sample,
-                        tf.keras.utils.to_categorical(
-                            np.array(labels[second]), num_classes=7
-                        ),
-                    )
+                data = self.raw_data[data_index, :]
+                label = self.raw_labels[data_index]
+                if preprocess:
+                    data = self.preprocess_sample(data)
+                yield (
+                    data,
+                    tf.keras.utils.to_categorical(
+                        np.array(label), num_classes=7
+                    ),
+                )
 
         return generator
 
@@ -118,29 +108,50 @@ class PlantExperimentDataReader(ExperimentDataReader):
         :return: List of indexes in a cv form.
         """
         if which_set == Set.ALL:
-            return list(range(len(self.files)))
+            return list(range(self.raw_labels.shape[0]))
         cv_portions = parameters.get("cv_portions", 5)
         cv_index = parameters.get("cv_index", 0)
         assert cv_portions - 1 >= cv_index >= 0
-        borders = np.linspace(0, len(self.files), cv_portions + 1).astype(int)
-        if which_set == Set.TEST:
-            test_split = cv_portions - cv_index
-            return list(range(borders[test_split - 1], borders[test_split]))
-        elif which_set == Set.VAL:
-            val_split = (cv_portions - 1 - cv_index) % cv_portions
-            val_split = val_split - 1 if val_split == 0 else val_split
-            return list(range(borders[val_split - 1], borders[val_split]))
-        elif which_set == Set.TRAIN:
-            indices = []
-            for i in range(1, cv_portions - 1):
-                train_split = (i - cv_index) % cv_portions
-                train_split = (
-                    train_split - 1 if train_split == 0 else train_split
+        all_indices = []
+        for emotion_index in range(7):
+            emotion_samples = np.where(self.raw_labels == emotion_index)[0]
+            borders = np.linspace(
+                0, emotion_samples.shape[0], cv_portions + 1
+            ).astype(int)
+            if which_set == Set.TEST:
+                test_split = cv_portions - cv_index
+                all_indices.extend(
+                    list(
+                        emotion_samples[
+                            borders[test_split - 1] : borders[test_split]
+                        ]
+                    )
                 )
-                indices.extend(
-                    list(range(borders[train_split - 1], borders[train_split]))
+            elif which_set == Set.VAL:
+                val_split = (cv_portions - 1 - cv_index) % cv_portions
+                val_split = val_split - 1 if val_split == 0 else val_split
+                all_indices.extend(
+                    list(
+                        emotion_samples[
+                            borders[val_split - 1] : borders[val_split]
+                        ]
+                    )
                 )
-            return indices
+            elif which_set == Set.TRAIN:
+                for i in range(1, cv_portions - 1):
+                    train_split = (i - cv_index) % cv_portions
+                    train_split = (
+                        train_split - 1 if train_split == 0 else train_split
+                    )
+                    all_indices.extend(
+                        list(
+                            emotion_samples[
+                                borders[train_split - 1] : borders[train_split]
+                            ]
+                        )
+                    )
+        all_indices.sort()
+        return all_indices
 
     def get_three_emotion_data(
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
@@ -185,34 +196,49 @@ class PlantExperimentDataReader(ExperimentDataReader):
             )
         return labels
 
-    def get_raw_labels(self, label_mode: str) -> None:
+    def get_raw_labels(self, label_mode: str) -> np.ndarray:
         """
         Get the raw labels per experiment and time.
         Populates the raw_labels member of this class.
         The two axis are [experiment_index, time_in_seconds]
 
         :param label_mode: Whether to use expected or faceapi labels
+        :return: Array of all labels in shape (file, second)
         """
-        self.raw_labels = np.zeros((len(self.files), 690))
+        raw_labels = np.zeros((len(self.files), 690))
         if label_mode == "expected":
-            self.get_raw_expected_labels()
+            raw_labels = self.get_raw_expected_labels()
         elif label_mode == "faceapi":
-            self.get_raw_faceapi_labels()
-        self.raw_labels = self.raw_labels[:, :613]
+            raw_labels = self.get_raw_faceapi_labels()
+        elif label_mode == "both":
+            expected = self.get_raw_expected_labels()
+            faceapi = self.get_raw_faceapi_labels()
+            expected[expected != faceapi] = -1
+            raw_labels = expected
+        return raw_labels[:, :613]
 
-    def get_raw_expected_labels(self):
+    def get_raw_expected_labels(self) -> np.ndarray:
         """
         Load the raw emotions from the expected emotions during the video.
+        The expected emotion means that while the participant is watching a
+        happy video, we expect them to be happy, thus the label is happy.
+
+        :return: Labels that are expected from the user.
         """
+        labels = np.zeros((len(self.files), 690))
         for emotion, times in self.emotion_times.items():
-            self.raw_labels[
+            labels[
                 :, int(times["start"]) : int(times["end"])
             ] = self.emotion_labels[emotion]
+        return labels
 
-    def get_raw_faceapi_labels(self):
+    def get_raw_faceapi_labels(self) -> np.ndarray:
         """
         Load the raw labels from the faceapi output files.
+
+        :return: Labels that are collected from the user's face expression.
         """
+        labels = np.zeros((len(self.files), 690))
         emotions_sorted = [
             "angry",
             "surprised",
@@ -241,7 +267,8 @@ class PlantExperimentDataReader(ExperimentDataReader):
                     previous = label
                 else:
                     label = previous
-                self.raw_labels[file_index, time_index] = label
+                labels[file_index, time_index] = label
+        return labels
 
     @staticmethod
     def prepare_faceapi_labels() -> None:
@@ -259,18 +286,67 @@ class PlantExperimentDataReader(ExperimentDataReader):
             if not os.path.exists(emotions_file):
                 experiment_ground_truth(file)
 
-    def get_raw_data(self) -> None:
+    @staticmethod
+    def _get_num_valid_data(
+        all_labels: np.ndarray, parameters: Dict = None
+    ) -> int:
         """
-        Load the raw plant data from the wave files.
+        Function that determines how many valid data entries do exist.
+        This is used to allocate memory for the raw data arrays in advance.
+
+        :param all_labels: The raw labels obtained from get_raw_labels
+        :param parameters: Additional parameters
+        :return: How many samples exist in Set.ALL
         """
-        self.raw_data = []
+        parameters = parameters or {}
+        window = parameters.get("window", 10)
+        hop = parameters.get("hop", 5)
+        count = 0
+        for file_index in range(all_labels.shape[0]):
+            for second in range(window, all_labels.shape[1], hop):
+                if 0 <= all_labels[file_index, second] < 7:
+                    count += 1
+        return count
+
+    def get_raw_data(self, parameters: Dict) -> None:
+        """
+        Load the raw plant data from the wave files and split it into
+        windows according to the parameters.
+
+        :param parameters: Additional parameters
+        """
+        window = parameters.get("window", 10)
+        hop = parameters.get("hop", 5)
+        all_labels = self.get_raw_labels(
+            parameters.get("label_mode", self.default_label_mode)
+        )
+        count = self._get_num_valid_data(all_labels, parameters)
+        raw_data = np.empty((count, parameters.get("window", 10) * 10000))
+        raw_labels = np.empty((count,))
+        count = 0
         for index, plant_file in enumerate(self.files):
             sample_rate, data = wavfile.read(plant_file)
             assert sample_rate == 10000, "WAV file has incorrect sample rate!"
             mean = np.mean(data)
             var = np.var(data)
             data = (data - mean) / var
-            self.raw_data.append(data)
+            labels = all_labels[index, :]
+            for second in range(window, all_labels.shape[1], hop):
+                if labels[second] == -1:
+                    continue
+                sample = np.reshape(
+                    data[
+                        (second - window)
+                        * self.sample_rate : second
+                        * self.sample_rate
+                    ],
+                    (1, -1),
+                )
+                raw_data[count, :] = sample
+                raw_labels[count] = labels[second]
+                count += 1
+        self.raw_data = raw_data
+        self.raw_labels = raw_labels
 
     @staticmethod
     def preprocess_sample(
@@ -313,12 +389,25 @@ class PlantExperimentDataReader(ExperimentDataReader):
 if __name__ == "__main__":
     reader = PlantExperimentDataReader()
     reader.prepare_faceapi_labels()
-    parameters = {"label_mode": "faceapi", "cv_portions": 5, "cv_index": 4}
-    data = reader.get_seven_emotion_data(Set.VAL, 64, parameters).take(1)
-    for batch, labels in data:
-        print(batch.shape)
-        print(labels.shape)
-    print(f"Train size: {reader.get_labels(Set.TRAIN, parameters).shape[0]}")
-    print(f"Val size: {reader.get_labels(Set.VAL, parameters).shape[0]}")
-    print(f"Test size: {reader.get_labels(Set.TEST, parameters).shape[0]}")
-    print(f"All size: {reader.get_labels(Set.ALL, parameters).shape[0]}")
+    main_params = {
+        "label_mode": "both",
+        "cv_portions": 5,
+        "window": 10,
+        "hop": 10,
+    }
+    for cv_index in range(5):
+        main_params["cv_index"] = cv_index
+        main_data = reader.get_seven_emotion_data(Set.TRAIN, 64, main_params)
+        main_all_labels = np.empty((0,))
+        for _, mlabels in main_data:
+            main_all_labels = np.concatenate(
+                [main_all_labels, np.argmax(mlabels, axis=1)], axis=0
+            )
+        print(
+            f"CV Split {cv_index}: Data Distribution "
+            f"{np.unique(main_all_labels, return_counts=True)}"
+        )
+    print(f"Train size: {reader.get_labels(Set.TRAIN, main_params).shape[0]}")
+    print(f"Val size: {reader.get_labels(Set.VAL, main_params).shape[0]}")
+    print(f"Test size: {reader.get_labels(Set.TEST, main_params).shape[0]}")
+    print(f"All size: {reader.get_labels(Set.ALL, main_params).shape[0]}")

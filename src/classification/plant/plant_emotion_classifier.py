@@ -122,8 +122,11 @@ class PlantEmotionClassifier(EmotionClassifier):
             self.class_weights = None
 
     @staticmethod
-    def compute_mfccs(audio_tensor: tf.Tensor) -> tf.Tensor:
-
+    def compute_mfccs(
+        audio_tensor: tf.Tensor, parameters: Dict = None
+    ) -> tf.Tensor:
+        parameters = parameters or {}
+        num_mfcc = parameters.get("num_mfcc", 20)
         # A 1024-point STFT with frames of 64 ms and 75% overlap.
         stfts = tf.signal.stft(
             audio_tensor, frame_length=2500, frame_step=1250, fft_length=2500
@@ -155,7 +158,7 @@ class PlantEmotionClassifier(EmotionClassifier):
         # Compute MFCCs from log_mel_spectrograms and take the first 40.
         mfccs = tf.signal.mfccs_from_log_mel_spectrograms(
             log_mel_spectrograms
-        )[..., :20]
+        )[..., :num_mfcc]
 
         return mfccs
 

@@ -45,9 +45,9 @@ if __name__ == "__main__":
         downsampling_factor=[500, 1000, 2000],
         lstm_layers=[2],
         dropout=[0.2],
-        label_mode=["expected", "faceapi"],
-        window=[20],
-        hop=[20],
+        label_mode=["expected", "faceapi", "both"],
+        window=[10, 20],
+        hop=[10],
     )
     lstm_configs_2 = lstm_configs.copy()
     for lstm_params in lstm_configs:
@@ -63,9 +63,9 @@ if __name__ == "__main__":
         downsampling_factor=[500, 1000, 2000],
         dense_layers=[2, 4],
         dropout=[0.2],
-        label_mode=["expected", "faceapi"],
-        window=[20],
-        hop=[20],
+        label_mode=["expected", "faceapi", "both"],
+        window=[10, 20],
+        hop=[10],
     )
     dense_configs_2 = dense_configs.copy()
     for dense_params in dense_configs:
@@ -81,9 +81,9 @@ if __name__ == "__main__":
         conv_layers=[2],
         conv_kernel_size=[7],
         dropout=[0, 0.2],
-        label_mode=["expected", "faceapi"],
-        window=[20],
-        hop=[20],
+        label_mode=["expected", "faceapi", "both"],
+        window=[10, 20],
+        hop=[10],
     )
     mfcc_configs_2 = mfcc_configs.copy()
     for mfcc_params in mfcc_configs:
@@ -91,6 +91,23 @@ if __name__ == "__main__":
     for mfcc_params in mfcc_configs_2:
         mfcc_params.update({"balanced": True})
     mfcc_configs.extend(mfcc_configs_2)
+
+    resnet_configs = make_dictionaries(
+        {"epochs": 50, "patience": 10, "batch_size": 64, "preprocess": False},
+        learning_rate=[0.0003, 0.001],
+        dropout=[0, 0.2],
+        label_mode=["expected", "faceapi", "both"],
+        pretrained=[True, False],
+        num_mfcc=[20, 40, 60],
+        window=[10, 20],
+        hop=[10],
+    )
+    resnet_configs_2 = resnet_configs.copy()
+    for resnet_params in resnet_configs:
+        resnet_params.update({"weighted": True})
+    for resnet_params in resnet_configs_2:
+        resnet_params.update({"balanced": True})
+    resnet_configs.extend(resnet_configs_2)
 
     runner.add_grid_experiments(
         modality="plant",
@@ -108,6 +125,12 @@ if __name__ == "__main__":
         modality="plant",
         model="plant_mfcc_cnn",
         train_parameters=mfcc_configs,
+    )
+
+    runner.add_grid_experiments(
+        modality="plant",
+        model="plant_mfcc_resnet",
+        train_parameters=resnet_configs,
     )
 
     my_experiments = list(range(len(runner.experiments)))[
