@@ -1,6 +1,7 @@
 """File that contains the evaluator class implementing basic evaluation
 functionality and data reading"""
 
+import copy
 import glob
 import json
 from typing import Any, Dict, Iterable, List, Union
@@ -62,7 +63,7 @@ class Evaluator:
         """
         parameters = []
         for experiment in self.result_data:
-            data = experiment.copy()
+            data = copy.deepcopy(experiment)
             if "train_predictions" in data.keys():
                 del data["train_predictions"]
                 del data["val_predictions"]

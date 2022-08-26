@@ -1,4 +1,5 @@
 """This script runs some plant classifier configs for testing"""
+import copy
 import sys
 
 import tensorflow as tf
@@ -49,7 +50,7 @@ if __name__ == "__main__":
         window=[10, 20],
         hop=[10],
     )
-    lstm_configs_2 = lstm_configs.copy()
+    lstm_configs_2 = copy.deepcopy(lstm_configs)
     for lstm_params in lstm_configs:
         lstm_params.update({"weighted": True})
     for lstm_params in lstm_configs_2:
@@ -67,7 +68,7 @@ if __name__ == "__main__":
         window=[10, 20],
         hop=[10],
     )
-    dense_configs_2 = dense_configs.copy()
+    dense_configs_2 = copy.deepcopy(dense_configs)
     for dense_params in dense_configs:
         dense_params.update({"weighted": True})
     for dense_params in dense_configs_2:
@@ -85,7 +86,7 @@ if __name__ == "__main__":
         window=[10, 20],
         hop=[10],
     )
-    mfcc_configs_2 = mfcc_configs.copy()
+    mfcc_configs_2 = copy.deepcopy(mfcc_configs)
     for mfcc_params in mfcc_configs:
         mfcc_params.update({"weighted": True})
     for mfcc_params in mfcc_configs_2:
@@ -102,7 +103,7 @@ if __name__ == "__main__":
         window=[10, 20],
         hop=[10],
     )
-    resnet_configs_2 = resnet_configs.copy()
+    resnet_configs_2 = copy.deepcopy(resnet_configs)
     for resnet_params in resnet_configs:
         resnet_params.update({"weighted": True})
     for resnet_params in resnet_configs_2:

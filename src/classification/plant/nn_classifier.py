@@ -1,5 +1,6 @@
 """ This file implements an LSTM based classifier for the plant data. """
 
+import copy
 from abc import abstractmethod
 from typing import Dict
 
@@ -95,7 +96,7 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
         parameters = self.init_parameters(parameters, **kwargs)
         which_set = parameters.get("which_set", Set.TEST)
         batch_size = parameters.get("batch_size", 64)
-        eval_parameters = parameters.copy()
+        eval_parameters = copy.deepcopy(parameters)
         eval_parameters["balanced"] = False
         dataset = self.data_reader.get_emotion_data(
             self.emotions, which_set, batch_size, eval_parameters

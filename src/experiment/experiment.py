@@ -1,5 +1,6 @@
 """Experiment running functionality for grid searching parameters"""
 
+import copy
 import itertools
 import json
 import os
@@ -136,7 +137,7 @@ class ExperimentRunner:
         experiments = list(itertools.product(*grid_search_values))
 
         for experiment in experiments:
-            experiment_dict = base_dict.copy()
+            experiment_dict = copy.deepcopy(base_dict)
             for index, element in enumerate(grid_search_keys):
                 experiment_dict[element] = experiment[index]
             self.experiments.append(Experiment(**experiment_dict))
@@ -198,7 +199,7 @@ class ExperimentRunner:
 
         classifier.train(experiment.train_parameters)
         parameters = experiment.get_parameter_dict()
-        eval_parameters = parameters.get("train_parameters", {}).copy()
+        eval_parameters = copy.deepcopy(parameters.get("train_parameters", {}))
         eval_parameters["which_set"] = Set.TRAIN
         eval_parameters["shuffle"] = False
         parameters["train_predictions"] = classifier.classify(
@@ -229,7 +230,7 @@ def make_dictionaries(base_dict: Dict = None, **kwargs) -> List[Dict]:
     """
     all_configs = []
     base_dict = base_dict or {}
-    base_dictionary = base_dict.copy()
+    base_dictionary = copy.deepcopy(base_dict)
     grid_search_keys = []
     grid_search_values = []
     for key, value in kwargs.items():
@@ -241,7 +242,7 @@ def make_dictionaries(base_dict: Dict = None, **kwargs) -> List[Dict]:
     configurations = list(itertools.product(*grid_search_values))
 
     for config in configurations:
-        config_dict = base_dictionary.copy()
+        config_dict = copy.deepcopy(base_dictionary)
         for index, element in enumerate(grid_search_keys):
             config_dict[element] = config[index]
         all_configs.append(config_dict)

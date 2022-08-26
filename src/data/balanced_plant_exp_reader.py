@@ -1,5 +1,6 @@
 """ This data reader reads the PlantSpikerBox data from the experiments. """
 
+import copy
 from typing import Dict, Tuple
 
 import numpy as np
@@ -95,7 +96,7 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
             "sad",
             "neutral",
         ]
-        unb_parameters = parameters.copy()
+        unb_parameters = copy.deepcopy(parameters)
         unb_parameters.update({"shuffle": False})
         for plant_data, labels in self._get_unbalanced_seven_emotion_data(
             which_set, 1024, unb_parameters

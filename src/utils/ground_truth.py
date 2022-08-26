@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 import subprocess
@@ -34,7 +35,7 @@ class FaceAPIThread(threading.Thread):
         that listens on localhost:self.port/emotions.
 
         """
-        env = os.environ.copy()
+        env = copy.deepcopy(os.environ)
         env["PORT"] = f"{self.port}"
         self.api = subprocess.Popen(
             ["npm", "run", "dev"],

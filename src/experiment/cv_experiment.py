@@ -1,6 +1,7 @@
 """Experiment running functionality for grid searching parameters
 with cross validation ."""
 
+import copy
 import json
 import os
 
@@ -64,11 +65,11 @@ class CrossValidationExperimentRunner(ExperimentRunner):
                 experiment.model,
                 experiment.init_parameters,
             )
-            train_parameters = experiment.train_parameters.copy()
+            train_parameters = copy.deepcopy(experiment.train_parameters)
             train_parameters["cv_portions"] = self.cv_splits
             train_parameters["cv_index"] = cv_split
             classifier.train(train_parameters)
-            eval_parameters = train_parameters.copy()
+            eval_parameters = copy.deepcopy(train_parameters)
             eval_parameters["which_set"] = Set.TEST
             test_predictions = classifier.classify(eval_parameters)
             predictions = np.concatenate(
