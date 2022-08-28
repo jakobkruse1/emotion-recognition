@@ -1,5 +1,6 @@
 """ This file implements a Resnet classifier for the MFCC features derived
 from the plant data. """
+import copy
 import os
 import sys
 from typing import Dict
@@ -29,6 +30,8 @@ class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
         dropout = parameters.get("dropout", 0.2)
         num_mfcc = parameters.get("num_mfcc", 40)
         pretrained = parameters.get("pretrained", True)
+        l1 = parameters.get("l1", 1e-4)
+        l2 = parameters.get("l2", 1e-3)
         input_size = self.data_reader.get_input_shape(parameters)[0]
         input = tf.keras.layers.Input(
             shape=(input_size,), dtype=tf.float32, name="raw"
@@ -40,10 +43,18 @@ class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
             include_top=False,
             weights="imagenet" if pretrained else None,
             pooling=None,
-        )(mfcc)
+        )
+        regularizer = tf.keras.regularizers.L1L2(l1=l1, l2=l2)
+        for layer in resnet.layers:
+            for attr in ["kernel_regularizer", "bias_regularizer"]:
+                if hasattr(layer, attr):
+                    setattr(layer, attr, regularizer)
+        resnet_out = resnet(mfcc)
 
-        hidden = tf.keras.layers.Flatten()(resnet)
-        hidden = tf.keras.layers.Dense(1024)(hidden)
+        hidden = tf.keras.layers.Flatten()(resnet_out)
+        hidden = tf.keras.layers.Dense(1024, kernel_regularizer=regularizer)(
+            hidden
+        )
         hidden = tf.keras.layers.Dropout(dropout)(hidden)
         out = tf.keras.layers.Dense(7, activation="softmax")(hidden)
         self.model = tf.keras.Model(input, out)
@@ -66,13 +77,13 @@ class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
 if __name__ == "__main__":  # pragma: no cover
     classifier = PlantMFCCResnetClassifier()
     parameters = {
-        "epochs": 50,
-        "patience": 10,
+        "epochs": 1000,
+        "patience": 100,
         "batch_size": 64,
         "preprocess": False,
         "learning_rate": 0.001,
         "dropout": 0.2,
-        "label_mode": "faceapi",
+        "label_mode": "both",
         "pretrained": False,
         "num_mfcc": 60,
         "window": 20,
@@ -83,8 +94,24 @@ if __name__ == "__main__":  # pragma: no cover
         not os.path.exists("models/plant/plant_mfcc_resnet")
         or "train" in sys.argv
     ):
-        classifier.train(parameters)
-        classifier.save()
+        accuracies = []
+        per_class_accuracies = []
+        for i in range(5):
+            cv_params = copy.deepcopy(parameters)
+            cv_params["cv_index"] = i
+            classifier.train(cv_params)
+            if i == 0:
+                classifier.save()
+            classifier.load({"save_path": "models/plant/checkpoint"})
+            pred = classifier.classify(cv_params)
+            labels = classifier.data_reader.get_labels(Set.TEST, cv_params)
+            accuracies.append(accuracy(labels, pred))
+            per_class_accuracies.append(per_class_accuracy(labels, pred))
+        print(f"Training Acc: {np.mean(accuracies)} | {accuracies}")
+        print(
+            f"Training Class Acc: {np.mean(per_class_accuracies)} | "
+            f"{per_class_accuracies}"
+        )
 
     classifier.load(parameters)
     emotions = classifier.classify(parameters)

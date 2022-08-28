@@ -1,9 +1,11 @@
 """ This file implements a CNN classifier for the MFCC features derived
 from the plant data. """
+import copy
 import os
 import sys
 from typing import Dict
 
+import numpy as np
 import tensorflow as tf
 
 from src.classification.plant.nn_classifier import PlantNNBaseClassifier
@@ -85,8 +87,24 @@ if __name__ == "__main__":  # pragma: no cover
         not os.path.exists("models/plant/plant_mfcc_cnn")
         or "train" in sys.argv
     ):
-        classifier.train(parameters)
-        classifier.save()
+        accuracies = []
+        per_class_accuracies = []
+        for i in range(5):
+            cv_params = copy.deepcopy(parameters)
+            cv_params["cv_index"] = i
+            classifier.train(cv_params)
+            if i == 0:
+                classifier.save()
+            classifier.load({"save_path": "models/plant/checkpoint"})
+            pred = classifier.classify(cv_params)
+            labels = classifier.data_reader.get_labels(Set.TEST, cv_params)
+            accuracies.append(accuracy(labels, pred))
+            per_class_accuracies.append(per_class_accuracy(labels, pred))
+        print(f"Training Acc: {np.mean(accuracies)} | {accuracies}")
+        print(
+            f"Training Class Acc: {np.mean(per_class_accuracies)} | "
+            f"{per_class_accuracies}"
+        )
 
     classifier.load(parameters)
     emotions = classifier.classify(parameters)

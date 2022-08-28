@@ -26,7 +26,7 @@ class PlantEmotionClassifier(EmotionClassifier):
         """
         super().__init__(name, "plant", parameters)
         parameters = parameters or {}
-        self.callback = None
+        self.callbacks = None
         self.optimizer = None
         self.loss = None
         self.metrics = None
@@ -85,9 +85,19 @@ class PlantEmotionClassifier(EmotionClassifier):
         learning_rate = parameters.get("learning_rate", 0.001)
         patience = parameters.get("patience", 5)
 
-        self.callback = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=patience, restore_best_weights=True
-        )
+        self.callbacks = [
+            tf.keras.callbacks.EarlyStopping(
+                monitor="val_loss",
+                patience=patience,
+                restore_best_weights=True,
+            ),
+            tf.keras.callbacks.ModelCheckpoint(
+                "models/plant/checkpoint",
+                save_best_only=True,
+                monitor="val_categorical_accuracy",
+                mode="max",
+            ),
+        ]
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         self.metrics = [tf.metrics.CategoricalAccuracy()]
         self.loss = tf.keras.losses.CategoricalCrossentropy()

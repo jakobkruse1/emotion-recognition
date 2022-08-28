@@ -54,7 +54,7 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
             x=self.train_data,
             validation_data=self.val_data,
             epochs=epochs,
-            callbacks=[self.callback],
+            callbacks=self.callbacks,
             class_weight=self.class_weights,
         )
         self.is_trained = True
