@@ -40,61 +40,58 @@ def plot_confusion_matrix(model_data, title="Confusion Matrix"):
 
 
 def filter_experiments(
-    parameters: List[Dict[str, Any]], key: str, value: Any
+    parameters: List[Dict[str, Any]], key: str, value: Any, default: Any = None
 ) -> List[int]:
     filtered_indices = []
     for index, experiment in enumerate(parameters):
-        if experiment["train_parameters"][key] == value:
-            filtered_indices.append(index)
+        if key not in experiment.keys():
+            if experiment["train_parameters"].get(key, default) == value:
+                filtered_indices.append(index)
+        else:
+            if experiment.get(key, default) == value:
+                filtered_indices.append(index)
     return filtered_indices
 
 
-if __name__ == "__main__":  # pragma: no cover
-    # Best models
-    evaluator = Evaluator()
-    evaluator.read_results("experiments/results/plant_parameters/*.json")
-    accuracies = evaluator.get_scores("per_class_accuracy")
-    parameters = evaluator.get_parameters()
-    all_data = evaluator.result_data
+def print_best_models(accs, pcaccs, params, data, indices, name) -> None:
+    """
+    Visualization function that prints and plots certain results
 
-    sorted_ind = np.argsort(-np.asarray(accuracies))
-    sorted_acc = np.asarray(accuracies)[sorted_ind]
-    sorted_params = np.array([parameters[ind] for ind in sorted_ind])
-    sorted_data = np.array([all_data[ind] for ind in sorted_ind])
-
-    # Drop all data with weighted=False, because they are useless
-    weighted_ind = filter_experiments(sorted_params, "weighted", True)
-    weighted_acc = sorted_acc[weighted_ind]
-    weighted_params = sorted_params[weighted_ind]
-    weighted_data = sorted_data[weighted_ind]
-
-    print("++++++++ Best Expected Labels Models ++++++++")
-    expected_indices = filter_experiments(
-        weighted_params, "label_mode", "expected"
-    )
-    expected_acc = weighted_acc[expected_indices]
-    expected_params = [weighted_params[ind] for ind in expected_indices]
-    plot_confusion_matrix(
-        weighted_data[expected_indices[0]], "Best expected labels model"
-    )
+    :param accs: Accuracies
+    :param pcaccs: Per Class Accuracies
+    :param params: Parameters
+    :param data: All results data
+    :param indices: Indices to filter for
+    :param name: Name of the config to look at
+    """
+    if not len(indices):
+        return
+    print(f"++++++++ Best {name} models ++++++++")
+    expected_pcacc = pcaccs[indices]
+    expected_acc = accs[indices]
+    expected_params = [params[ind] for ind in indices]
+    plot_confusion_matrix(data[indices[0]], f"Best {name} model")
     for i in range(5):
-        print(f"Model {i+1}, Accuracy {expected_acc[i]}")
+        print(
+            f"Model {i + 1}, Per Class Accuracy {expected_pcacc[i]}, "
+            f"Accuracy {expected_acc[i]}"
+        )
         print(f"\tParameters: {expected_params[i]}\n")
 
-    print("++++++++ Best Faceapi Labels Models ++++++++")
-    faceapi_indices = filter_experiments(
-        weighted_params, "label_mode", "faceapi"
-    )
-    faceapi_acc = weighted_acc[faceapi_indices]
-    faceapi_params = [weighted_params[ind] for ind in faceapi_indices]
-    plot_confusion_matrix(
-        weighted_data[faceapi_indices[0]], "Best faceapi labels model"
-    )
-    for i in range(5):
-        print(f"Model {i + 1}, Accuracy {faceapi_acc[i]}")
-        print(f"\tParameters: {faceapi_params[i]}\n")
 
-    # Class
+def print_class_distribution(label_mode, parameters: Dict = None):
+    """
+    Function that prints the class distribution for certain labels and params.
+
+    :param label_mode:
+    :return:
+    """
+    parameters = parameters or {}
+    print(f"++++++++ {label_mode} Labels Class Distribution ++++++++")
+    reader = DataFactory.get_data_reader("plant")
+    parameters.update({"label_mode": label_mode})
+    labels = reader.get_labels(Set.ALL, parameters=parameters)
+    reader.cleanup()
     classes = [
         "angry",
         "surprise",
@@ -104,24 +101,63 @@ if __name__ == "__main__":  # pragma: no cover
         "sad",
         "neutral",
     ]
-    print("++++++++ Expected Labels Class Distribution ++++++++")
-    labels = DataFactory.get_data_reader("plant").get_labels(
-        Set.ALL, parameters={"label_mode": "expected"}
-    )
-    for index, class_name in enumerate(classes):
-        class_count = np.sum(labels == index)
-        print(
-            f"{class_name.ljust(10)}:\t {class_count} \t"
-            f" {(class_count/labels.shape[0])*100:.1f}%"
-        )
-
-    print("++++++++ Faceapi Labels Class Distribution ++++++++")
-    labels = DataFactory.get_data_reader("plant").get_labels(
-        Set.ALL, parameters={"label_mode": "faceapi"}
-    )
     for index, class_name in enumerate(classes):
         class_count = np.sum(labels == index)
         print(
             f"{class_name.ljust(10)}:\t {class_count} \t"
             f" {(class_count / labels.shape[0]) * 100:.1f}%"
         )
+
+
+if __name__ == "__main__":  # pragma: no cover
+    # Best models
+    evaluator = Evaluator()
+    evaluator.read_results("experiments/results/plant_parameters_3/*.json")
+    per_class_accuracies = evaluator.get_scores("per_class_accuracy")
+    accuracies = evaluator.get_scores("accuracy")
+    parameters = evaluator.get_parameters()
+    all_data = evaluator.result_data
+
+    sorted_ind = np.argsort(-np.asarray(per_class_accuracies))
+    sorted_pcacc = np.asarray(per_class_accuracies)[sorted_ind]
+    sorted_acc = np.asarray(accuracies)[sorted_ind]
+    sorted_params = [parameters[ind] for ind in sorted_ind]
+    sorted_data = np.array([all_data[ind] for ind in sorted_ind])
+
+    # Drop all data with weighted=False, because they are useless
+
+    expected_indices = filter_experiments(
+        sorted_params, "label_mode", "expected"
+    )
+    print_best_models(
+        sorted_acc,
+        sorted_pcacc,
+        sorted_params,
+        sorted_data,
+        expected_indices,
+        "expected labels",
+    )
+
+    faceapi_indices = filter_experiments(
+        sorted_params, "label_mode", "faceapi"
+    )
+    print_best_models(
+        sorted_acc,
+        sorted_pcacc,
+        sorted_params,
+        sorted_data,
+        faceapi_indices,
+        "faceapi labels",
+    )
+
+    both_indices = filter_experiments(sorted_params, "label_mode", "both")
+    print_best_models(
+        sorted_acc,
+        sorted_pcacc,
+        sorted_params,
+        sorted_data,
+        both_indices,
+        "both labels",
+    )
+
+    print_class_distribution("both", {})

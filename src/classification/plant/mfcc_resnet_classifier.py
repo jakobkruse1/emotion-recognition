@@ -68,10 +68,15 @@ if __name__ == "__main__":  # pragma: no cover
     parameters = {
         "epochs": 50,
         "patience": 10,
-        "batch_size": 32,
+        "batch_size": 64,
+        "preprocess": False,
+        "learning_rate": 0.001,
+        "dropout": 0.2,
+        "label_mode": "faceapi",
+        "pretrained": False,
+        "num_mfcc": 60,
         "window": 20,
-        "hop": 20,
-        "label_mode": "both",
+        "hop": 10,
         "balanced": True,
     }
     if (

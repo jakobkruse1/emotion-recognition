@@ -62,14 +62,13 @@ if __name__ == "__main__":  # pragma: no cover
         "patience": 10,
         "batch_size": 64,
         "learning_rate": 0.0003,
-        "lstm_units": 256,
-        "lstm_layers": 1,
-        "dropout": 0.2,
+        "lstm_units": 1024,
+        "lstm_layers": 2,
+        "dropout": 0,
         "label_mode": "faceapi",
-        "window": 10,
-        "hop": 10,
-        "weighted": True,
-        "shuffle": False,
+        "window": 30,
+        "hop": 30,
+        "balanced": True,
     }
     if not os.path.exists("models/plant/plant_lstm") or "train" in sys.argv:
         classifier.train(parameters)

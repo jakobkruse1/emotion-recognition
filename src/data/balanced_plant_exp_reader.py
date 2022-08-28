@@ -43,6 +43,7 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         """
         del self.raw_data
         del self.raw_labels
+        self.unbalanced_reader.cleanup(parameters)
 
     def get_seven_emotion_data(
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None

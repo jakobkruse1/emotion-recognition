@@ -43,13 +43,18 @@ class PlantDenseClassifier(PlantNNBaseClassifier):
 if __name__ == "__main__":  # pragma: no cover
     classifier = PlantDenseClassifier()
     parameters = {
-        "epochs": 10,
-        "patience": 5,
+        "epochs": 50,
+        "patience": 10,
+        "batch_size": 64,
         "learning_rate": 0.001,
-        "dense_units": 1024,
-        "hidden_layers": 2,
+        "dense_units": 4096,
+        "downsampling_factor": 500,
+        "dense_layers": 2,
         "dropout": 0.2,
-        "batch_size": 32,
+        "label_mode": "both",
+        "window": 20,
+        "hop": 10,
+        "balanced": True,
     }
     if not os.path.exists("models/plant/plant_dense") or "train" in sys.argv:
         classifier.train(parameters)

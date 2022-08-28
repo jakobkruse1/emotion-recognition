@@ -70,11 +70,16 @@ if __name__ == "__main__":  # pragma: no cover
         "epochs": 50,
         "patience": 10,
         "batch_size": 64,
-        "conv_filters": 64,
+        "preprocess": False,
+        "learning_rate": 0.0003,
+        "conv_filters": 96,
         "conv_layers": 2,
-        "conv_kernel_size": 3,
-        "window": 5,
-        "hop": 5,
+        "conv_kernel_size": 7,
+        "dropout": 0.2,
+        "label_mode": "both",
+        "window": 10,
+        "hop": 10,
+        "weighted": True,
     }
     if (
         not os.path.exists("models/plant/plant_mfcc_cnn")
