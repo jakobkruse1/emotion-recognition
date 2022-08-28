@@ -90,7 +90,7 @@ if __name__ == "__main__":  # pragma: no cover
 
     classifier.load(parameters)
     emotions = classifier.classify(parameters)
-    labels = classifier.data_reader.get_labels(Set.TEST)
+    labels = classifier.data_reader.get_labels(Set.TEST, parameters)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
     print(f"Accuracy: {accuracy(labels, emotions)}")
