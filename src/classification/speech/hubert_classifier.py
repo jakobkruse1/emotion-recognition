@@ -90,12 +90,10 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         """
         Initialize the HuBERT emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("hubert", parameters)
         tf.get_logger().setLevel("ERROR")
-        tf.config.set_visible_devices([], "GPU")
         self.model = None
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -283,7 +281,7 @@ class HuBERTClassifier(SpeechEmotionClassifier):
 
 if __name__ == "__main__":  # pragma: no cover
     classifier = HuBERTClassifier()
-    parameters = {
+    train_parameters = {
         "epochs": 50,
         "patience": 10,
         "learning_rate": 5e-05,
@@ -294,12 +292,12 @@ if __name__ == "__main__":  # pragma: no cover
         "batch_size": 64,
     }
     if not os.path.exists("models/speech/hubert") or "train" in sys.argv:
-        classifier.train(parameters)
+        classifier.train(train_parameters)
         classifier.save()
 
-    classifier.load(parameters)
-    emotions = classifier.classify({"dataset": "all"})
-    labels = classifier.data_reader.get_labels(Set.TEST, {"dataset": "all"})
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+    classifier.load(train_parameters)
+    memotions = classifier.classify({"dataset": "all"})
+    mlabels = classifier.data_reader.get_labels(Set.TEST, {"dataset": "all"})
+    print(f"Labels Shape: {mlabels.shape}")
+    print(f"Emotions Shape: {memotions.shape}")
+    print(f"Accuracy: {accuracy(mlabels, memotions)}")

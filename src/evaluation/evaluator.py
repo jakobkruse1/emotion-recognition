@@ -4,7 +4,7 @@ functionality and data reading"""
 import copy
 import glob
 import json
-from typing import Any, Dict, Iterable, List, Union
+from typing import Any, Dict, Iterable, List, Union, Optional
 
 import numpy as np
 
@@ -74,7 +74,8 @@ class Evaluator:
         return parameters
 
     def get_labels(
-        self, modality: str, predictions_key: str, parameters: Dict[str, Any]
+        self, modality: str, predictions_key: str, parameters: Dict[str, Any],
+            data_folder: Optional[str] = None
     ) -> np.ndarray:
         """
         Function that returns labels without recomputing them if used before.
@@ -82,6 +83,7 @@ class Evaluator:
         :param modality: The modality of the data.
         :param predictions_key: "test_predictions" or "predicitons"
         :param parameters: Additional parameters required for label generation.
+        :param data_folder: Data folder for the data reader.
         :return: Label numpy array.
         """
         critical_parameters = ["label_mode", "window", "hop"]
@@ -89,7 +91,9 @@ class Evaluator:
             Set.TEST if predictions_key == "test_predictions" else Set.ALL
         )
         if modality not in self.data_readers.keys():
-            self.data_readers[modality] = DataFactory.get_data_reader(modality)
+            self.data_readers[modality] = DataFactory.get_data_reader(
+                modality, data_folder
+            )
             self.precomputed_labels[modality] = []
         contains_critical = np.any(
             [param in parameters.keys() for param in critical_parameters]
@@ -155,6 +159,7 @@ class Evaluator:
             if "test_predictions" in self.result_data[0].keys()
             else "predictions"
         )
+        data_folder = kwargs.get("data_folder", None)
         for experiment in self.result_data:
             if score == "accuracy":
                 scores.append(
@@ -163,6 +168,7 @@ class Evaluator:
                             experiment["modality"],
                             predictions_key,
                             experiment["train_parameters"],
+                            data_folder
                         ),
                         np.asarray(experiment[predictions_key]),
                     )
@@ -174,6 +180,7 @@ class Evaluator:
                             experiment["modality"],
                             predictions_key,
                             experiment["train_parameters"],
+                            data_folder
                         ),
                         np.asarray(experiment[predictions_key]),
                     )
@@ -185,6 +192,7 @@ class Evaluator:
                             experiment["modality"],
                             predictions_key,
                             experiment["train_parameters"],
+                            data_folder
                         ),
                         np.asarray(experiment[predictions_key]),
                     )
@@ -196,6 +204,7 @@ class Evaluator:
                             experiment["modality"],
                             predictions_key,
                             experiment["train_parameters"],
+                            data_folder
                         ),
                         np.asarray(experiment[predictions_key]),
                     )

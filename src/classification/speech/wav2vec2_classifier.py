@@ -93,7 +93,6 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         """
         super().__init__("hubert", parameters)
         tf.get_logger().setLevel("ERROR")
-        tf.config.set_visible_devices([], "GPU")
         self.model = None
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"

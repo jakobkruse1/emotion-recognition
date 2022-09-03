@@ -344,11 +344,11 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                 if torch.cuda.is_available()
                 else "cpu"
             )
-        total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[0]
-        batches = int(np.ceil(total_train_images / batch_size))
-        total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
 
         with tf.device("/cpu:0"):
+            total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[0]
+            batches = int(np.ceil(total_train_images / batch_size))
+            total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
             self.prepare_data(parameters)
 
         if not self.model:
