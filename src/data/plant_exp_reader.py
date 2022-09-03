@@ -1,5 +1,5 @@
 """ This data reader reads the PlantSpikerBox data from the experiments. """
-
+import copy
 import glob
 import json
 import os
@@ -107,9 +107,16 @@ class PlantExperimentDataReader(ExperimentDataReader):
             - cv_index: Which split to use.
         :return: List of indexes in a cv form.
         """
-        if which_set == Set.ALL:
-            return list(range(self.raw_labels.shape[0]))
         cv_portions = parameters.get("cv_portions", 5)
+        if which_set == Set.ALL:
+            indices = []
+            cv_params = copy.deepcopy(parameters)
+            for cv_index in range(cv_portions):
+                cv_params["cv_index"] = cv_index
+                indices.extend(
+                    self.get_cross_validation_indices(Set.TEST, cv_params)
+                )
+            return indices
         cv_index = parameters.get("cv_index", 0)
         assert cv_portions - 1 >= cv_index >= 0
         all_indices = []

@@ -34,7 +34,7 @@ def per_class_accuracy(
     """
     matrix = confusion_matrix(labels, prediction)
     per_class_accs = matrix.diagonal() / matrix.sum(axis=1)
-    return np.mean(per_class_accs)
+    return np.nanmean(per_class_accs)
 
 
 def precision(labels: np.ndarray, prediction: np.ndarray, **kwargs) -> float:
