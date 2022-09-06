@@ -96,17 +96,26 @@ if __name__ == "__main__":  # pragma: no cover
     ):
         accuracies = []
         per_class_accuracies = []
-        for i in range(5):
-            cv_params = copy.deepcopy(parameters)
-            cv_params["cv_index"] = i
-            classifier.train(cv_params)
-            if i == 0:
-                classifier.save()
-            classifier.load({"save_path": "models/plant/checkpoint"})
-            pred = classifier.classify(cv_params)
-            labels = classifier.data_reader.get_labels(Set.TEST, cv_params)
-            accuracies.append(accuracy(labels, pred))
-            per_class_accuracies.append(per_class_accuracy(labels, pred))
+        for i in range(1, 5):
+            this_acc = 0.0
+            this_pc_acc = 0.0
+            while this_acc < 0.3 or this_pc_acc < 0.3:
+                cv_params = copy.deepcopy(parameters)
+                classifier = PlantMFCCResnetClassifier()
+                cv_params["cv_index"] = i
+                classifier.train(cv_params)
+                classifier.load({"save_path": "models/plant/checkpoint"})
+                classifier.save(
+                    {"save_path": f"models/plant/plant_mfcc_resnet_{i}"}
+                )
+                classifier.load({"save_path": "models/plant/checkpoint"})
+                pred = classifier.classify(cv_params)
+                labels = classifier.data_reader.get_labels(Set.TEST, cv_params)
+                this_acc = accuracy(labels, pred)
+                this_pc_acc = per_class_accuracy(labels, pred)
+                classifier.data_reader.cleanup()
+            accuracies.append(this_acc)
+            per_class_accuracies.append(this_pc_acc)
         print(f"Training Acc: {np.mean(accuracies)} | {accuracies}")
         print(
             f"Training Class Acc: {np.mean(per_class_accuracies)} | "

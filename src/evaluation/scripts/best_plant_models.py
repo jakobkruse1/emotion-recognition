@@ -10,6 +10,7 @@ import seaborn as sns
 
 from src.classification.plant import PlantMFCCResnetClassifier
 from src.data.data_factory import DataFactory, Set
+from src.evaluation.evaluator import Evaluator
 from src.utils.metrics import accuracy, per_class_accuracy
 
 
@@ -149,56 +150,58 @@ def print_class_distribution(label_mode, parameters: Dict = None):
 
 if __name__ == "__main__":  # pragma: no cover
     # Best models
-    # evaluator = Evaluator()
-    # evaluator.read_results("experiments/results/plant_parameters_3/*.json")
-    # per_class_accuracies = evaluator.get_scores("per_class_accuracy")
-    # accuracies = evaluator.get_scores("accuracy")
-    # parameters = evaluator.get_parameters()
-    # all_data = evaluator.result_data
-    #
-    # sorted_ind = np.argsort(-np.asarray(per_class_accuracies))
-    # sorted_pcacc = np.asarray(per_class_accuracies)[sorted_ind]
-    # sorted_acc = np.asarray(accuracies)[sorted_ind]
-    # sorted_params = [parameters[ind] for ind in sorted_ind]
-    # sorted_data = np.array([all_data[ind] for ind in sorted_ind])
-    #
-    # # Drop all data with weighted=False, because they are useless
-    #
-    # expected_indices = filter_experiments(
-    #     sorted_params, "label_mode", "expected"
-    # )
-    # print_best_models(
-    #     sorted_acc,
-    #     sorted_pcacc,
-    #     sorted_params,
-    #     sorted_data,
-    #     expected_indices,
-    #     "expected labels",
-    # )
-    #
-    # faceapi_indices = filter_experiments(
-    #     sorted_params, "label_mode", "faceapi"
-    # )
-    # print_best_models(
-    #     sorted_acc,
-    #     sorted_pcacc,
-    #     sorted_params,
-    #     sorted_data,
-    #     faceapi_indices,
-    #     "faceapi labels",
-    # )
-    #
-    # both_indices = filter_experiments(sorted_params, "label_mode", "both")
-    # print_best_models(
-    #     sorted_acc,
-    #     sorted_pcacc,
-    #     sorted_params,
-    #     sorted_data,
-    #     both_indices,
-    #     "both labels",
-    # )
-    #
-    # print_class_distribution("both", {})
+    evaluator = Evaluator()
+    evaluator.read_results("experiments/results/plant_parameters_3/*.json")
+    per_class_accuracies = evaluator.get_scores("per_class_accuracy")
+    accuracies = evaluator.get_scores("accuracy")
+    parameters = evaluator.get_parameters()
+    all_data = evaluator.result_data
+
+    sorted_ind = np.argsort(-np.asarray(per_class_accuracies))
+    sorted_pcacc = np.asarray(per_class_accuracies)[sorted_ind]
+    sorted_acc = np.asarray(accuracies)[sorted_ind]
+    sorted_params = [parameters[ind] for ind in sorted_ind]
+    sorted_data = np.array([all_data[ind] for ind in sorted_ind])
+
+    # Drop all data with weighted=False, because they are useless
+
+    expected_indices = filter_experiments(
+        sorted_params, "label_mode", "expected"
+    )
+    print_best_models(
+        sorted_acc,
+        sorted_pcacc,
+        sorted_params,
+        sorted_data,
+        expected_indices,
+        "expected labels",
+    )
+
+    faceapi_indices = filter_experiments(
+        sorted_params, "label_mode", "faceapi"
+    )
+    print_best_models(
+        sorted_acc,
+        sorted_pcacc,
+        sorted_params,
+        sorted_data,
+        faceapi_indices,
+        "faceapi labels",
+    )
+
+    both_indices = filter_experiments(sorted_params, "label_mode", "both")
+    print_best_models(
+        sorted_acc,
+        sorted_pcacc,
+        sorted_params,
+        sorted_data,
+        both_indices,
+        "both labels",
+    )
+
+    print_class_distribution("expected", {})
+    print_class_distribution("faceapi", {})
+    print_class_distribution("both", {})
 
     # Evaluate the best plant model with seven emotions here.
     if not os.path.exists("models/plant/plant_mfcc_resnet_4"):

@@ -31,22 +31,32 @@ class PlantMFCCCNNClassifier(PlantNNBaseClassifier):
         conv_layers = parameters.get("conv_layers", 3)
         conv_filters = parameters.get("conv_filters", 64)
         conv_kernel_size = parameters.get("conv_kernel_size", 7)
+        l1 = parameters.get("l1", 1e-4)
+        l2 = parameters.get("l2", 1e-3)
         input_size = self.data_reader.get_input_shape(parameters)[0]
         input = tf.keras.layers.Input(
             shape=(input_size,), dtype=tf.float32, name="raw"
         )
+        regularizer = tf.keras.regularizers.L1L2(l1=l1, l2=l2)
         mfcc = self.compute_mfccs(input)
         hidden = tf.expand_dims(mfcc, 3)
         for i in range(conv_layers):
             hidden = tf.keras.layers.Conv2D(
-                conv_filters, kernel_size=conv_kernel_size, padding="same"
+                conv_filters,
+                kernel_size=conv_kernel_size,
+                padding="same",
+                kernel_regularizer=regularizer,
             )(hidden)
             hidden = tf.keras.layers.MaxPooling2D()(hidden)
 
         hidden = tf.keras.layers.Flatten()(hidden)
-        hidden = tf.keras.layers.Dense(1024)(hidden)
+        hidden = tf.keras.layers.Dense(1024, kernel_regularizer=regularizer)(
+            hidden
+        )
         hidden = tf.keras.layers.Dropout(dropout)(hidden)
-        hidden = tf.keras.layers.Dense(1024)(hidden)
+        hidden = tf.keras.layers.Dense(1024, kernel_regularizer=regularizer)(
+            hidden
+        )
         hidden = tf.keras.layers.Dropout(dropout)(hidden)
         out = tf.keras.layers.Dense(7, activation="softmax")(hidden)
         self.model = tf.keras.Model(input, out)
