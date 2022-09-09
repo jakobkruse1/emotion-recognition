@@ -13,7 +13,7 @@ from moviepy.editor import VideoFileClip
 from PIL import Image
 
 
-class FaceAPIThread(threading.Thread):
+class FaceAPIThread(threading.Thread):  # pragma: no cover
     """
     Thread that runs face-api.js as a background server.
     """
@@ -51,7 +51,7 @@ class FaceAPIThread(threading.Thread):
         self.api.kill()
 
 
-def experiment_ground_truth(video_file: str) -> None:
+def experiment_ground_truth(video_file: str) -> None:  # pragma: no cover
     """
     Main function that creates ground truth for the experiments
     using face expression emotions from face-api.js.
@@ -75,7 +75,7 @@ def experiment_ground_truth(video_file: str) -> None:
 
 def _get_emotions(
     video: VideoFileClip, port: int
-) -> List[List[Union[str, Dict[str, float]]]]:
+) -> List[List[Union[str, Dict[str, float]]]]:  # pragma: no cover
     """
     Get emotions for timestamps in the video.
 

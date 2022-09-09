@@ -278,7 +278,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
         return labels
 
     @staticmethod
-    def prepare_faceapi_labels() -> None:
+    def prepare_faceapi_labels() -> None:  # pragma: no cover
         """
         This function prepares the faceapi labels if they are not computed yet.
         """
@@ -328,7 +328,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
             parameters.get("label_mode", self.default_label_mode)
         )
         count = self._get_num_valid_data(all_labels, parameters)
-        raw_data = np.empty((count, parameters.get("window", 10) * 10000))
+        raw_data = np.empty((count, window * 10000))
         raw_labels = np.empty((count,))
         count = 0
         for index, plant_file in enumerate(self.files):
@@ -389,11 +389,11 @@ class PlantExperimentDataReader(ExperimentDataReader):
         if not parameters.get("preprocess", True):
             return (window * self.sample_rate,)
         test_input = np.zeros((window * self.sample_rate,))
-        test_sample = self.preprocess_sample(test_input)
+        test_sample = self.preprocess_sample(test_input, parameters)
         return test_sample.shape
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     reader = PlantExperimentDataReader()
     reader.prepare_faceapi_labels()
     main_params = {

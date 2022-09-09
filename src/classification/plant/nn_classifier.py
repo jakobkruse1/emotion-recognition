@@ -26,7 +26,7 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
         self.model = None
 
     @abstractmethod
-    def initialize_model(self, parameters: Dict) -> None:
+    def initialize_model(self, parameters: Dict) -> None:  # pragma: no cover
         """
         Base class that creates self.model, a tf Model instance
         """

@@ -46,7 +46,9 @@ def precision(labels: np.ndarray, prediction: np.ndarray, **kwargs) -> float:
     :param kwargs: Additional kwargs.
     :return: Precision
     """
-    return precision_score(labels, prediction, average="macro")
+    return precision_score(
+        labels, prediction, average="macro", zero_division=0
+    )
 
 
 def recall(labels: np.ndarray, prediction: np.ndarray, **kwargs) -> float:
