@@ -4,12 +4,13 @@ functionality and data reading"""
 import copy
 import glob
 import json
-from typing import Any, Dict, Iterable, List, Union, Optional
+from typing import Any, Dict, Iterable, List, Optional, Union
 
 import numpy as np
 
 from src.data.data_factory import DataFactory
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy, per_class_accuracy, precision, recall
 
 
 class Evaluator:
@@ -74,8 +75,11 @@ class Evaluator:
         return parameters
 
     def get_labels(
-        self, modality: str, predictions_key: str, parameters: Dict[str, Any],
-            data_folder: Optional[str] = None
+        self,
+        modality: str,
+        predictions_key: str,
+        parameters: Dict[str, Any],
+        data_folder: Optional[str] = None,
     ) -> np.ndarray:
         """
         Function that returns labels without recomputing them if used before.
@@ -163,118 +167,52 @@ class Evaluator:
         for experiment in self.result_data:
             if score == "accuracy":
                 scores.append(
-                    self._accuracy(
+                    accuracy(
                         self.get_labels(
                             experiment["modality"],
                             predictions_key,
                             experiment["train_parameters"],
-                            data_folder
+                            data_folder,
                         ),
                         np.asarray(experiment[predictions_key]),
                     )
                 )
             elif score == "avg_recall":
                 scores.append(
-                    self._avg_recall(
+                    recall(
                         self.get_labels(
                             experiment["modality"],
                             predictions_key,
                             experiment["train_parameters"],
-                            data_folder
+                            data_folder,
                         ),
                         np.asarray(experiment[predictions_key]),
                     )
                 )
             elif score == "avg_precision":
                 scores.append(
-                    self._avg_precision(
+                    precision(
                         self.get_labels(
                             experiment["modality"],
                             predictions_key,
                             experiment["train_parameters"],
-                            data_folder
+                            data_folder,
                         ),
                         np.asarray(experiment[predictions_key]),
                     )
                 )
             elif score == "per_class_accuracy":
                 scores.append(
-                    self._per_class_accuracy(
+                    per_class_accuracy(
                         self.get_labels(
                             experiment["modality"],
                             predictions_key,
                             experiment["train_parameters"],
-                            data_folder
+                            data_folder,
                         ),
                         np.asarray(experiment[predictions_key]),
                     )
                 )
-        return scores
-
-    @staticmethod
-    def _accuracy(true: np.ndarray, pred: np.ndarray) -> float:
-        """
-        Score function that computes accuracy
-
-        :param true: The true labels
-        :param pred: The predicted labels
-        :return: The accuracy
-        """
-        return np.sum(true == pred) / true.shape[0]
-
-    @staticmethod
-    def _per_class_accuracy(true: np.ndarray, pred: np.ndarray) -> float:
-        """
-        Score function that computes accuracy per class and returns an average
-
-        :param true: The true labels
-        :param pred: The predicted labels
-        :return: The accuracy
-        """
-        per_class_accs = []
-        for class_id in range(7):
-            map = true == class_id
-            class_predictions = pred[map]
-            if class_predictions.size == 0:
-                per_class_accs.append(0)
             else:
-                per_class_accs.append(
-                    np.sum(class_predictions == class_id)
-                    / class_predictions.shape[0]
-                )
-        return np.mean(per_class_accs)
-
-    @staticmethod
-    def _avg_recall(true: np.ndarray, pred: np.ndarray) -> float:
-        """
-        Score function that computes average recall over all classes
-
-        :param true: The true labels
-        :param pred: The predicted labels
-        :return: The average class recall
-        """
-        recall = 0.0
-        for class_id in range(7):
-            recall += (
-                np.sum(true[true == class_id] == pred[true == class_id])
-                / true[true == class_id].shape[0]
-            )
-        return recall / 7.0
-
-    @staticmethod
-    def _avg_precision(true: np.ndarray, pred: np.ndarray) -> float:
-        """
-        Score function that computes average precision over all classes
-
-        :param true: The true labels
-        :param pred: The predicted labels
-        :return: The average class precision
-        """
-        prec = 0.0
-        for class_id in range(7):
-            if true[pred == class_id].shape[0]:
-                prec += (
-                    np.sum(true[pred == class_id] == pred[pred == class_id])
-                    / true[pred == class_id].shape[0]
-                )
-        return prec / 7.0
+                raise ValueError(f"Score {score} does not exist!")
+        return scores

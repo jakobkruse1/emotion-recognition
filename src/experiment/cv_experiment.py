@@ -42,10 +42,14 @@ class CrossValidationExperimentRunner(ExperimentRunner):
         """
         print(f"Running experiment {index}")
         print(experiment.get_parameter_dict())
-
-        reader = ClassifierFactory.get(
-            experiment.modality, experiment.model, experiment.init_parameters
-        ).data_reader
+        reader = kwargs.get(
+            "data_reader",
+            ClassifierFactory.get(
+                experiment.modality,
+                experiment.model,
+                experiment.init_parameters,
+            ).data_reader,
+        )
         labels = reader.get_labels(Set.ALL, experiment.train_parameters)
         reader.cleanup()
 
@@ -64,6 +68,9 @@ class CrossValidationExperimentRunner(ExperimentRunner):
                 experiment.modality,
                 experiment.model,
                 experiment.init_parameters,
+            )
+            classifier.data_reader = kwargs.get(
+                "data_reader", classifier.data_reader
             )
             train_parameters = copy.deepcopy(experiment.train_parameters)
             train_parameters["cv_portions"] = self.cv_splits

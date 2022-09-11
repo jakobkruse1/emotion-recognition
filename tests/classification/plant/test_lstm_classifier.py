@@ -3,6 +3,7 @@ import shutil
 
 import numpy as np
 import pytest
+import tensorflow as tf
 
 from src.classification.plant import PlantLSTMClassifier
 from src.data.plant_exp_reader import PlantExperimentDataReader, Set
@@ -63,8 +64,24 @@ def test_lstm_workflow():
     )
     new_results = new_classifier.classify(train_parameters)
     assert np.array_equal(new_results, results)
+    lstm_count = 0
+    for layer in new_classifier.model.layers:
+        if isinstance(layer, tf.keras.layers.Bidirectional):
+            lstm_count += 1
+    assert lstm_count == 3
 
     with pytest.raises(RuntimeError):
         new_classifier.save({"save_path": "tests/temp/plant_lstm"})
 
     shutil.rmtree("tests/temp", ignore_errors=True)
+
+
+def test_one_lstm_layer():
+    classifier = PlantLSTMClassifier()
+    classifier.initialize_model({"lstm_layers": 1})
+    lstm_count = 0
+    for layer in classifier.model.layers:
+        print(type(layer))
+        if isinstance(layer, tf.keras.layers.Bidirectional):
+            lstm_count += 1
+    assert lstm_count == 1

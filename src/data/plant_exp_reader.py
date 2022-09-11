@@ -85,7 +85,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
                 data = self.raw_data[data_index, :]
                 label = self.raw_labels[data_index]
                 if preprocess:
-                    data = self.preprocess_sample(data)
+                    data = self.preprocess_sample(data, parameters)
                 yield (
                     data,
                     tf.keras.utils.to_categorical(

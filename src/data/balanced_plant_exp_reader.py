@@ -31,8 +31,6 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         self.unbalanced_reader = PlantExperimentDataReader(
             folder, default_label_mode
         )
-        self.raw_data = []
-        self.raw_labels = None
         self.sample_rate = 10_000
 
     def cleanup(self, parameters: Dict = None) -> None:
@@ -41,8 +39,6 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
 
         :param parameters: Parameter Dictionary
         """
-        del self.raw_data
-        del self.raw_labels
         self.unbalanced_reader.cleanup(parameters)
 
     def get_seven_emotion_data(
@@ -220,7 +216,7 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         return self.unbalanced_reader.get_input_shape(parameters)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     reader = BalancedPlantExperimentDataReader()
     mparameters = {
         "label_mode": "both",
