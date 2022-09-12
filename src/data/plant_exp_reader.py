@@ -255,10 +255,15 @@ class PlantExperimentDataReader(ExperimentDataReader):
             "sad",
             "neutral",
         ]
+        gt_folder = (
+            "tests/test_data/ground_truth"
+            if self.folder == "tests/test_data/plant"
+            else "data/ground_truth"
+        )
         for file_index, file in enumerate(self.files):
             experiment_index = os.path.basename(file)[:3]
             ground_truth_file = glob.glob(
-                f"data/ground_truth/{experiment_index}*.json"
+                f"{gt_folder}/{experiment_index}*.json"
             )[0]
             with open(ground_truth_file, "r") as emotions_file:
                 raw_emotions = json.load(emotions_file)
