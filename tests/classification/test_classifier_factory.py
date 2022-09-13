@@ -7,6 +7,12 @@ from src.classification.image import (
     MultiTaskEfficientNetB2Classifier,
     VGG16Classifier,
 )
+from src.classification.plant import (
+    PlantDenseClassifier,
+    PlantLSTMClassifier,
+    PlantMFCCCNNClassifier,
+    PlantMFCCResnetClassifier,
+)
 from src.classification.speech import (
     BYOLSClassifier,
     GMMClassifier,
@@ -91,3 +97,29 @@ def test_speech_factory():
 
     with pytest.raises(ValueError):
         _ = ClassifierFactory.get("speech", "wrong", {})
+
+
+def test_plant_factory():
+    classifier = ClassifierFactory.get("plant", "plant_dense", {})
+    assert isinstance(classifier, PlantDenseClassifier)
+
+    classifier = ClassifierFactory.get(
+        "plant", "plant_dense", {"model_name": "123"}
+    )
+    assert isinstance(classifier, PlantDenseClassifier)
+    assert classifier.parameters["model_name"] == "123"
+
+    classifier = ClassifierFactory.get("plant", "plant_lstm", {})
+    assert isinstance(classifier, PlantLSTMClassifier)
+
+    classifier = ClassifierFactory.get("plant", "plant_mfcc_cnn", {})
+    assert isinstance(classifier, PlantMFCCCNNClassifier)
+
+    classifier = ClassifierFactory.get("plant", "plant_mfcc_resnet", {})
+    assert isinstance(classifier, PlantMFCCResnetClassifier)
+
+    with pytest.raises(ValueError):
+        _ = ClassifierFactory.get("wrong", "plant_mfcc_cnn", {})
+
+    with pytest.raises(ValueError):
+        _ = ClassifierFactory.get("plant", "wrong", {})

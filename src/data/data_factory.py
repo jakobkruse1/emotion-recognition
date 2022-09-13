@@ -5,8 +5,12 @@ from typing import Dict
 import tensorflow as tf
 
 from src.data.balanced_image_data_reader import BalancedImageDataReader
+from src.data.balanced_plant_exp_reader import (
+    BalancedPlantExperimentDataReader,
+)
 from src.data.data_reader import DataReader, Set
 from src.data.image_data_reader import ImageDataReader
+from src.data.plant_exp_reader import PlantExperimentDataReader
 from src.data.speech_data_reader import SpeechDataReader
 from src.data.text_data_reader import TextDataReader
 
@@ -34,6 +38,10 @@ class DataFactory:
             return BalancedImageDataReader(folder=data_folder)
         elif data_type == "speech":
             return SpeechDataReader(folder=data_folder)
+        elif data_type == "plant":
+            return PlantExperimentDataReader(folder=data_folder)
+        elif data_type == "balanced_plant":
+            return BalancedPlantExperimentDataReader(folder=data_folder)
         else:
             raise ValueError(
                 f'The Data Reader for type "{data_type}" ' f"does not exist!"

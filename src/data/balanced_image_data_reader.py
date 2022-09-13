@@ -75,7 +75,6 @@ class BalancedImageDataReader(ImageDataReader):
         """
         Main data reading function which reads the images into a dataset.
         This function balances the different classes in the dataset.
-        This means that the
 
         :param which_set: Which dataset to use - train, val or test
         :param batch_size: The batch size for the resulting dataset

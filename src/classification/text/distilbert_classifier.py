@@ -3,11 +3,11 @@ import os
 import sys
 from typing import Dict
 
-import numpy as np
 import tensorflow as tf
 
 from src.classification.text.bert_classifier import BertClassifier
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy
 
 
 class DistilBertClassifier(BertClassifier):
@@ -76,4 +76,4 @@ if __name__ == "__main__":  # pragma: no cover
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    print(f"Accuracy: {accuracy(labels, emotions)}")

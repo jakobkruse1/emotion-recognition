@@ -1,6 +1,7 @@
 pre-commit
 pytest
 pytest-cov
+pytest-env
 sphinx
 numpy
 datasets
@@ -20,6 +21,7 @@ datashader
 matplotlib
 bokeh
 holoviews
+scikit-learn
 scikit-image
 colorcet
 alive-progress
@@ -27,3 +29,5 @@ seaborn
 transformers
 hmmlearn
 librosa
+requests
+moviepy

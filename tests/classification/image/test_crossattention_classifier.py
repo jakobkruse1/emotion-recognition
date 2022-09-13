@@ -25,7 +25,7 @@ def test_crossattention_workflow():
     train_parameters = {
         "epochs": 2,
         "which_set": Set.TRAIN,
-        "gpu": 1,  # To see if this is caught
+        "gpu": 0,  # To see if this is caught
     }
     classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
     classifier.train(train_parameters)

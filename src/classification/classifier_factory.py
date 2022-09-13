@@ -7,6 +7,12 @@ from src.classification.image import (
     MultiTaskEfficientNetB2Classifier,
     VGG16Classifier,
 )
+from src.classification.plant import (
+    PlantDenseClassifier,
+    PlantLSTMClassifier,
+    PlantMFCCCNNClassifier,
+    PlantMFCCResnetClassifier,
+)
 from src.classification.speech import (
     BYOLSClassifier,
     GMMClassifier,
@@ -46,6 +52,8 @@ class ClassifierFactory:
             return ImageClassifierFactory.get(model, parameters)
         elif modality == "speech":
             return SpeechClassifierFactory.get(model, parameters)
+        elif modality == "plant":
+            return PlantClassifierFactory.get(model, parameters)
         else:
             raise ValueError(f"Modality {modality} not supported!")
 
@@ -128,3 +136,29 @@ class SpeechClassifierFactory:
             return BYOLSClassifier(parameters)
         else:
             raise ValueError(f"Speech model {model} not implemented!")
+
+
+class PlantClassifierFactory:
+    """
+    Factory class that generates plant emotion classifiers
+    """
+
+    @staticmethod
+    def get(model: str, parameters: Dict = None) -> EmotionClassifier:
+        """
+        Method that returns an instance of a plant emotion classifier
+
+        :param model: The name of the plant model
+        :param parameters: The parameters for the plant model
+        :return: The constructed plant classifier
+        """
+        if model == "plant_lstm":
+            return PlantLSTMClassifier(parameters)
+        elif model == "plant_dense":
+            return PlantDenseClassifier(parameters)
+        elif model == "plant_mfcc_cnn":
+            return PlantMFCCCNNClassifier(parameters)
+        elif model == "plant_mfcc_resnet":
+            return PlantMFCCResnetClassifier(parameters)
+        else:
+            raise ValueError(f"Plant model {model} not implemented!")

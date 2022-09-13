@@ -1,7 +1,12 @@
-# Project
+# Project Data
 data/train/text
 data/train/image
 data/train/speech
+
+data/plant
+data/video
+data/ground_truth
+
 experiments/results
 
 # Models
@@ -19,6 +24,11 @@ models/speech/svm
 models/speech/serab-byols
 models/speech/byols
 models/cache
+models/plant/plant_dense
+models/plant/plant_lstm
+models/plant/plant_mfcc_cnn
+models/plant/plant_mfcc_resnet*
+models/plant/checkpoint
 
 # Documentation
 !docs
@@ -28,6 +38,12 @@ docs/*
 !docs/make.bat
 !docs/Makefile
 .idea
+logs
+
+# Project Other
+src/utils/faceapi/node_modules/
+src/utils/faceapi/package-lock.json
+src/utils/faceapi/weights/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

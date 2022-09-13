@@ -15,5 +15,9 @@ skip_glob = [".github/*", ".idea/*", ".pytest_cache/*", "data/*", "docs/*", "mod
 filterwarnings = [
     'ignore:the imp module is deprecated:DeprecationWarning',
     'ignore:distutils Version classes are deprecated:DeprecationWarning',
-    'ignore:[a-zA-Z]* is deprecated and will be removed in Pillow 10:DeprecationWarning'
+    'ignore:[a-zA-Z]* is deprecated and will be removed in Pillow 10:DeprecationWarning',
+    'ignore:The distutils package is deprecated and slated:DeprecationWarning'
+]
+env = [
+    "CUDA_VISIBLE_DEVICES = ''"
 ]

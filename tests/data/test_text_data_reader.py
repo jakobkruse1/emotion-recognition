@@ -13,6 +13,7 @@ def test_initialization():
     assert dr.folder == "data/train/text"
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
         assert dr.file_map[set_type]
+    dr.cleanup()
 
 
 def test_reading():

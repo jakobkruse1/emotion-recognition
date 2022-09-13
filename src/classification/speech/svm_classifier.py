@@ -13,6 +13,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy, per_class_accuracy, precision, recall
 
 CLASS_NAMES = [
     "angry",
@@ -190,4 +191,7 @@ if __name__ == "__main__":  # pragma: no cover
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    print(f"Accuracy: {accuracy(labels, emotions)}")
+    print(f"Per Class Accuracy: {per_class_accuracy(labels, emotions)}")
+    print(f"Precision: {precision(labels, emotions)}")
+    print(f"Recall: {recall(labels, emotions)}")

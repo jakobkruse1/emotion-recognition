@@ -14,6 +14,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy
 
 
 class FinetuningWav2Vec2Model(nn.Module):
@@ -92,7 +93,6 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         """
         super().__init__("hubert", parameters)
         tf.get_logger().setLevel("ERROR")
-        tf.config.set_visible_devices([], "GPU")
         self.model = None
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -300,4 +300,4 @@ if __name__ == "__main__":  # pragma: no cover
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    print(f"Accuracy: {accuracy(labels, emotions)}")

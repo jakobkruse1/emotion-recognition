@@ -14,6 +14,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy
 
 
 class BYOLSModel(nn.Module):
@@ -323,4 +324,4 @@ if __name__ == "__main__":  # pragma: no cover
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    print(f"Accuracy: {accuracy(labels, emotions)}")

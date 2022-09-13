@@ -16,6 +16,7 @@ class Set(Enum):
     TRAIN = 0
     VAL = 1
     TEST = 2
+    ALL = 3
 
 
 class DataReader(ABC):
@@ -136,6 +137,14 @@ class DataReader(ABC):
         """
         raise NotImplementedError("Abstract method")  # pragma: no cover
 
+    def cleanup(self, parameters: Dict = None) -> None:
+        """
+        Optional cleanup method that deletes unneccessary memory elements.
+
+        :param parameters: Parameters that might be required
+        """
+        pass
+
     @staticmethod
     def convert_to_numpy(
         dataset: tf.data.Dataset,
@@ -156,3 +165,14 @@ class DataReader(ABC):
         return np.concatenate(np_data, axis=0), np.concatenate(
             np_labels, axis=0
         )
+
+    @staticmethod
+    def map_emotions(data, labels):
+        """
+        Conversion function that is applied when three emotion labels are
+        required.
+        """
+        new_labels = DataReader.convert_to_three_emotions_onehot(
+            labels
+        ).astype(np.float32)
+        return data, new_labels

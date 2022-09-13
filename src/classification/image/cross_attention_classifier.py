@@ -17,6 +17,7 @@ from src.classification.image.image_emotion_classifier import (
     ImageEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy
 
 
 class DAN(nn.Module):
@@ -343,11 +344,13 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                 if torch.cuda.is_available()
                 else "cpu"
             )
-        total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[0]
-        batches = int(np.ceil(total_train_images / batch_size))
-        total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
 
         with tf.device("/cpu:0"):
+            total_train_images = self.data_reader.get_labels(Set.TRAIN).shape[
+                0
+            ]
+            batches = int(np.ceil(total_train_images / batch_size))
+            total_val_images = self.data_reader.get_labels(Set.VAL).shape[0]
             self.prepare_data(parameters)
 
         if not self.model:
@@ -565,4 +568,4 @@ if __name__ == "__main__":  # pragma: no cover
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    print(f"Accuracy: {accuracy(labels, emotions)}")

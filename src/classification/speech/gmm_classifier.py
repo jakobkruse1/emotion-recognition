@@ -13,6 +13,7 @@ from src.classification.speech.speech_emotion_classifier import (
 )
 from src.data.classwise_speech_data_reader import ClasswiseSpeechDataReader
 from src.data.data_reader import Set
+from src.utils.metrics import accuracy
 
 CLASS_NAMES = [
     "angry",
@@ -168,4 +169,4 @@ if __name__ == "__main__":  # pragma: no cover
     labels = classifier.data_reader.get_labels(Set.TEST)
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {np.sum(emotions == labels) / labels.shape[0]}")
+    print(f"Accuracy: {accuracy(labels, emotions)}")
