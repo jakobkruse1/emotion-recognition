@@ -1,0 +1,61 @@
+src.classification.plant package
+================================
+
+Submodules
+----------
+
+src.classification.plant.dense\_classifier module
+-------------------------------------------------
+
+.. automodule:: src.classification.plant.dense_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.plant.lstm\_classifier module
+------------------------------------------------
+
+.. automodule:: src.classification.plant.lstm_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.plant.mfcc\_cnn\_classifier module
+-----------------------------------------------------
+
+.. automodule:: src.classification.plant.mfcc_cnn_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.plant.mfcc\_resnet\_classifier module
+--------------------------------------------------------
+
+.. automodule:: src.classification.plant.mfcc_resnet_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.plant.nn\_classifier module
+----------------------------------------------
+
+.. automodule:: src.classification.plant.nn_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.plant.plant\_emotion\_classifier module
+----------------------------------------------------------
+
+.. automodule:: src.classification.plant.plant_emotion_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.classification.plant
+   :members:
+   :undoc-members:
+   :show-inheritance:

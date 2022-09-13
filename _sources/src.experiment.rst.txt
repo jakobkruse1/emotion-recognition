@@ -4,6 +4,14 @@ src.experiment package
 Submodules
 ----------
 
+src.experiment.cv\_experiment module
+------------------------------------
+
+.. automodule:: src.experiment.cv_experiment
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.experiment.experiment module
 --------------------------------
 

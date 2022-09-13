@@ -12,6 +12,14 @@ src.data.balanced\_image\_data\_reader module
    :undoc-members:
    :show-inheritance:
 
+src.data.balanced\_plant\_exp\_reader module
+--------------------------------------------
+
+.. automodule:: src.data.balanced_plant_exp_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.data.classwise\_speech\_data\_reader module
 -----------------------------------------------
 
@@ -36,10 +44,26 @@ src.data.data\_reader module
    :undoc-members:
    :show-inheritance:
 
+src.data.experiment\_data\_reader module
+----------------------------------------
+
+.. automodule:: src.data.experiment_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.data.image\_data\_reader module
 -----------------------------------
 
 .. automodule:: src.data.image_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.data.plant\_exp\_reader module
+----------------------------------
+
+.. automodule:: src.data.plant_exp_reader
    :members:
    :undoc-members:
    :show-inheritance:
