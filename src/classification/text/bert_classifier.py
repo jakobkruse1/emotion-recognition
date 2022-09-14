@@ -13,6 +13,7 @@ from src.classification.text.text_emotion_classifier import (
     TextEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils import logging
 from src.utils.metrics import accuracy
 
 
@@ -40,6 +41,13 @@ class BertClassifier(TextEmotionClassifier):
         )
         self.preprocess_path = (
             "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3"
+        )
+        self.logger = logging.KerasLogger()
+        self.logger.log_start(
+            {
+                "init_parameters": parameters,
+                "model_name": self.model_name,
+            }
         )
         self.classifier = None
 
@@ -86,6 +94,7 @@ class BertClassifier(TextEmotionClassifier):
             Not used currently
         """
         parameters = self.init_parameters(parameters, **kwargs)
+        self.logger.log_start({"train_parameters": parameters})
         init_lr = parameters.get("init_lr", 1e-5)
         epochs = parameters.get("epochs", 100)
         which_set = parameters.get("which_set", Set.TRAIN)
@@ -117,12 +126,14 @@ class BertClassifier(TextEmotionClassifier):
             self.emotions, Set.VAL, batch_size
         )
 
-        _ = self.classifier.fit(
+        history = self.classifier.fit(
             x=train_data,
             validation_data=val_data,
             epochs=epochs,
             callbacks=[callback],
         )
+        self.logger.log_end({"history": history})
+
         self.is_trained = True
 
     def load(self, parameters: Dict = None, **kwargs) -> None:
@@ -156,6 +167,7 @@ class BertClassifier(TextEmotionClassifier):
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/text/bert")
         self.classifier.save(save_path, include_optimizer=False)
+        self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """

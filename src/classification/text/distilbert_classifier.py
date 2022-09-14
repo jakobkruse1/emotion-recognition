@@ -7,6 +7,7 @@ import tensorflow as tf
 
 from src.classification.text.bert_classifier import BertClassifier
 from src.data.data_reader import Set
+from src.utils import logging
 from src.utils.metrics import accuracy
 
 
@@ -29,6 +30,10 @@ class DistilBertClassifier(BertClassifier):
         self.model_path = f"https://tfhub.dev/jeongukjae/{self.model_name}/1"
         self.preprocess_path = (
             "https://tfhub.dev/jeongukjae/distilbert_en_uncased_preprocess/2"
+        )
+        self.logger = logging.KerasLogger()
+        self.logger.log_start(
+            {"init_parameters": parameters, "model_name": self.model_name}
         )
 
     def load(self, parameters: Dict = None, **kwargs) -> None:
@@ -62,6 +67,7 @@ class DistilBertClassifier(BertClassifier):
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/text/distilbert")
         self.classifier.save(save_path, include_optimizer=False)
+        self.logger.log_start({"train_parameters": parameters})
 
 
 if __name__ == "__main__":  # pragma: no cover
