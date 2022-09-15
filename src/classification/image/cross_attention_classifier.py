@@ -17,6 +17,7 @@ from src.classification.image.image_emotion_classifier import (
     ImageEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils import logging
 from src.utils.metrics import accuracy
 
 
@@ -313,12 +314,14 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
+        self.logger = logging.TorchLogger()
 
     def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the CrossAttention model
         """
         self.model = DAN(num_class=7, num_head=4, pretrained=True)
+        self.logger.log_start({"init_parameters": parameters})
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -334,6 +337,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
             torch.backends.cudnn.enabled = True
 
         parameters = self.init_parameters(parameters, **kwargs)
+        self.logger.log_start({"train_parameters": parameters})
         epochs = parameters.get("epochs", 50)
         batch_size = parameters.get("batch_size", 64)
         learning_rate = parameters.get("learning_rate", 0.001)
@@ -409,11 +413,11 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                     correct_sum += correct_num
                     bar()
 
-            acc = correct_sum / total_train_images
-            running_loss = running_loss / iter_cnt
+            train_acc = correct_sum / total_train_images
+            train_loss = running_loss / iter_cnt
             tqdm.write(
-                f"[Epoch {epoch}] Training accuracy: {acc:.4f}. "
-                f"Loss: {running_loss:.3f}"
+                f"[Epoch {epoch}] Training accuracy: {train_acc:.4f}. "
+                f"Loss: {train_loss:.3f}"
             )
 
             with torch.no_grad():
@@ -453,6 +457,14 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                     f"Loss:{running_loss:.3f}"
                 )
                 tqdm.write("best_acc:" + str(best_acc))
+                self.logger.log_epoch(
+                    {
+                        "train_acc": train_acc,
+                        "train_loss": train_loss,
+                        "val_acc": acc,
+                        "val_loss": running_loss,
+                    }
+                )
                 if waiting_for_improve > patience:
                     break  # pragma: no cover
 
@@ -492,6 +504,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         )
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         torch.save({"model_state_dict": self.model.state_dict()}, save_path)
+        self.logger.save_logs(os.path.dirname(save_path))
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """

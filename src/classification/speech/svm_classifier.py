@@ -13,6 +13,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils import logging
 from src.utils.metrics import accuracy, per_class_accuracy, precision, recall
 
 CLASS_NAMES = [
@@ -42,6 +43,8 @@ class SVMClassifier(SpeechEmotionClassifier):
         super().__init__("svm", parameters)
         self.model = None
         self.scaler = None
+        self.logger = logging.StandardLogger()
+        self.logger.log_start({"init_parameters": parameters})
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -51,6 +54,9 @@ class SVMClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
+        self.logger.log_start(
+            {"train_parameters": parameters, "train_kwargs": kwargs}
+        )
         which_set = parameters.get("which_set", Set.TRAIN)
         batch_size = parameters.get("batch_size", 64)
         kernel = parameters.get("kernel", "rbf")
@@ -132,6 +138,7 @@ class SVMClassifier(SpeechEmotionClassifier):
         scaler_path = os.path.join(save_path, "scaler.pkl")
         with open(scaler_path, "wb") as file:
             pickle.dump(self.scaler, file)
+        self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
