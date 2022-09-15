@@ -1,6 +1,8 @@
 """ Implement a logger for tensorflow keras models. """
 from typing import Any, Dict
 
+from torch import Tensor
+
 from src.utils.logging.base_logger import BaseLogger
 
 
@@ -21,7 +23,12 @@ class TorchLogger(BaseLogger):
         :param data: Dictionary with data to log.
         """
         for key in ["train_loss", "val_loss", "train_acc", "val_acc"]:
-            self.logs[key].append(data[key])
+            item = (
+                data[key].item()
+                if isinstance(data[key], Tensor)
+                else float(data[key])
+            )
+            self.logs[key].append(item)
 
     def log_end(self, data: Dict[str, Any]) -> None:
         """

@@ -31,7 +31,7 @@ class BaseLogger(ABC):
 
         :param data: The dictionary containing epoch data and metrics.
         """
-        raise NotImplementedError("Abstract method!")
+        raise NotImplementedError("Abstract method!")  # pragma: no cover
 
     @abstractmethod
     def log_end(self, data: Dict[str, Any]) -> None:
@@ -42,7 +42,7 @@ class BaseLogger(ABC):
 
         :param data: The dictionary containing training data and metrics.
         """
-        raise NotImplementedError("Abstract method!")
+        raise NotImplementedError("Abstract method!")  # pragma: no cover
 
     @abstractmethod
     def log_start(self, data: Dict[str, Any]) -> None:
@@ -53,7 +53,7 @@ class BaseLogger(ABC):
 
         :param data: The dictionary containing data and config.
         """
-        raise NotImplementedError("Abstract method!")
+        raise NotImplementedError("Abstract method!")  # pragma: no cover
 
     def save_logs(self, folder: str) -> None:
         """

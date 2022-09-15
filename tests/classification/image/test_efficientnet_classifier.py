@@ -23,7 +23,7 @@ def test_efficientnet_workflow():
     classifier = MultiTaskEfficientNetB2Classifier()
     assert not classifier.model
     train_parameters = {
-        "epochs": 2,
+        "epochs": 1,
         "which_set": Set.TRAIN,
     }
     classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
@@ -57,10 +57,9 @@ def test_extra_layer():
     classifier = MultiTaskEfficientNetB2Classifier()
     assert not classifier.model
     train_parameters = {
-        "epochs": 0,
+        "epochs": 1,
         "which_set": Set.TRAIN,
         "extra_layer": 1024,
     }
-    classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
-    classifier.train(train_parameters)
+    classifier.initialize_model(train_parameters)
     assert len(classifier.model.layers) == 5
