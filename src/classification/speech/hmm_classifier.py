@@ -13,6 +13,7 @@ from src.classification.speech.speech_emotion_classifier import (
 )
 from src.data.classwise_speech_data_reader import ClasswiseSpeechDataReader
 from src.data.data_reader import Set
+from src.utils import logging
 from src.utils.metrics import accuracy
 
 CLASS_NAMES = [
@@ -45,6 +46,8 @@ class HMMClassifier(SpeechEmotionClassifier):
             folder=self.data_reader.folder
         )
         self.scaler = {}
+        self.logger = logging.StandardLogger()
+        self.logger.log_start({"init_parameters": parameters})
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -54,6 +57,9 @@ class HMMClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
+        self.logger.log_start(
+            {"train_parameters": parameters, "train_kwargs": kwargs}
+        )
         which_set = parameters.get("which_set", Set.TRAIN)
         self.train_data = self.data_reader.get_emotion_data(
             self.emotions, which_set, -1, parameters
@@ -119,6 +125,7 @@ class HMMClassifier(SpeechEmotionClassifier):
             scaler_path = os.path.join(save_path, f"{name}_scaler.pkl")
             with open(scaler_path, "wb") as file:
                 pickle.dump(scaler, file)
+        self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """

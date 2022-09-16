@@ -1,14 +1,14 @@
 """This file implements that basic functions for data reading"""
 
 from abc import ABC, abstractmethod
-from enum import Enum
+from enum import IntEnum
 from typing import Dict, Tuple
 
 import numpy as np
 import tensorflow as tf
 
 
-class Set(Enum):
+class Set(IntEnum):
     """
     Define the different set types that are available
     """

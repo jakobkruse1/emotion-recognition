@@ -10,6 +10,7 @@ from src.classification.image.image_emotion_classifier import (
     ImageEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils import logging
 from src.utils.metrics import accuracy
 
 
@@ -28,6 +29,8 @@ class VGG16Classifier(ImageEmotionClassifier):
         super().__init__("vgg16", parameters)
         tf.get_logger().setLevel("ERROR")
         self.model = None
+        self.logger = logging.KerasLogger()
+        self.logger.log_start({"init_parameters": parameters})
 
     def initialize_model(self, parameters: Dict) -> None:
         """
@@ -87,6 +90,7 @@ class VGG16Classifier(ImageEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
+        self.logger.log_start({"train_parameters": parameters})
         epochs = parameters.get("epochs", 20)
 
         if not self.model:
@@ -98,13 +102,14 @@ class VGG16Classifier(ImageEmotionClassifier):
         )
         self.prepare_data(parameters)
 
-        _ = self.model.fit(
+        history = self.model.fit(
             x=self.train_data,
             validation_data=self.val_data,
             epochs=epochs,
             callbacks=[self.callback],
             class_weight=self.class_weights,
         )
+        self.logger.log_end({"history": history})
         self.is_trained = True
 
     def load(self, parameters: Dict = None, **kwargs) -> None:
@@ -132,6 +137,7 @@ class VGG16Classifier(ImageEmotionClassifier):
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/image/vgg16")
         self.model.save(save_path, include_optimizer=False)
+        self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """

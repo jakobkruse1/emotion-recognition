@@ -14,6 +14,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
+from src.utils import logging
 from src.utils.metrics import accuracy
 
 
@@ -97,6 +98,8 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
+        self.logger = logging.TorchLogger()
+        self.logger.log_start({"init_parameters": parameters})
 
     def initialize_model(self, parameters: Dict) -> None:
         """
@@ -112,6 +115,7 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
+        self.logger.log_start({"train_parameters": parameters})
         epochs = parameters.get("epochs", 20)
         learning_rate = parameters.get("learning_rate", 5e-5)
         batch_size = parameters.get("batch_size", 64)
@@ -173,9 +177,9 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
                         f"Acc {correct_sum/((batch+1)*batch_size):.3f}"
                     )
                     bar()
-            acc = correct_sum / total_train_images
-            running_loss = running_loss / batches
-            print(f"Epoch {epoch}: Acc {acc:.3f}, Loss {running_loss:.3f}")
+            train_acc = correct_sum / total_train_images
+            train_loss = running_loss / batches
+            print(f"Epoch {epoch}: Acc {train_acc:.3f}, Loss {train_loss:.3f}")
 
             with torch.no_grad():
                 running_loss = 0.0
@@ -205,6 +209,14 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
                 print(
                     f"Epoch {epoch}: Val Acc {acc:.3f}, "
                     f"Val Loss {running_loss:.3f}"
+                )
+                self.logger.log_epoch(
+                    {
+                        "train_acc": train_acc,
+                        "train_loss": train_loss,
+                        "val_acc": acc,
+                        "val_loss": running_loss,
+                    }
                 )
                 if waiting_for_improve > patience:
                     break  # pragma: no cover
@@ -244,6 +256,7 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         )
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         torch.save({"model_state_dict": self.model.state_dict()}, save_path)
+        self.logger.save_logs(os.path.dirname(save_path))
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
