@@ -13,11 +13,14 @@ from src.utils.metrics import accuracy, per_class_accuracy
 
 
 class PlantDenseClassifier(PlantNNBaseClassifier):
+    """
+    Classifier consisting of Dense layers only.
+    """
+
     def __init__(self, parameters: Dict = None):
         """
         Initialize the Plant-Dense emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("plant_dense", parameters)
@@ -25,6 +28,8 @@ class PlantDenseClassifier(PlantNNBaseClassifier):
     def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the Plant-Dense model
+
+        :param parameters: Parameters for initializing the model.
         """
         dense_units = parameters.get("dense_units", 512)
         dropout = parameters.get("dropout", 0.2)

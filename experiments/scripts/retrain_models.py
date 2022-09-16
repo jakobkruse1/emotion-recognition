@@ -140,7 +140,7 @@ if __name__ == "__main__":
     }
 
     this_model = model_names[my_task_id]
-    this_modality = model_names[my_task_id]
+    this_modality = modalities[my_task_id]
     this_goal = acc_goals[my_task_id]
     this_parameters = parameters[this_model]
 

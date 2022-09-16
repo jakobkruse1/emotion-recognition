@@ -18,6 +18,9 @@ class ImageDataReader(DataReader):
     def __init__(self, name: str = "image", folder: str = None):
         """
         Initialization for the class
+
+        :param name: The name for the image reader.
+        :param folder: The folder that contains the data.
         """
         super().__init__(name, folder or "data/train/image")
         self.folder_map = {
@@ -138,6 +141,7 @@ class ImageDataReader(DataReader):
         """
         Function that adds augmentation to the dataset.
         This helps reduce overfitting of the model.
+
         :param dataset: The dataset containing images
         :param use_augmentations: Boolean flag to enable augmentation
         :return: The dataset with augmented images

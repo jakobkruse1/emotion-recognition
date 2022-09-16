@@ -24,7 +24,6 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
         """
         Initialize the MFCC-LSTM emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("mfcc_lstm", parameters)
@@ -36,6 +35,8 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
     def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the MFCC-LSTM model
+
+        :param parameters: Parameters for initializing the model.
         """
         lstm_units = parameters.get("lstm_units", 256)
         dropout = parameters.get("dropout", 0.2)

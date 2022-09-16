@@ -23,7 +23,6 @@ class VGG16Classifier(ImageEmotionClassifier):
         """
         Initialize the VGG16 emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("vgg16", parameters)
@@ -35,6 +34,8 @@ class VGG16Classifier(ImageEmotionClassifier):
     def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the VGG16Classifier model
+
+        :param parameters: Parameters for initializing the model.
         """
         l1 = parameters.get("l1", 0.0)
         l2 = parameters.get("l2", 0.0)

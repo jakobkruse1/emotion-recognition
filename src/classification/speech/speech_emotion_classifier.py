@@ -117,6 +117,12 @@ class SpeechEmotionClassifier(EmotionClassifier):
 
     @staticmethod
     def compute_mfccs(audio_tensor: tf.Tensor) -> tf.Tensor:
+        """
+        Function that computes MFCC features from an audio tensor.
+
+        :param audio_tensor: The tensor containing raw audio data.
+        :return: tensor of mfcc features.
+        """
 
         # A 1024-point STFT with frames of 64 ms and 75% overlap.
         stfts = tf.signal.stft(
@@ -162,7 +168,7 @@ class SpeechEmotionClassifier(EmotionClassifier):
         generate a spectrogram which can be used for classification.
 
         :param audio_tensor: The tensor containing raw audio data.
-        :return:
+        :return: tensor with spectrogram data.
         """
         stfts = tf.signal.stft(
             audio_tensor, frame_length=1024, frame_step=256, fft_length=1024
@@ -175,7 +181,8 @@ class SpeechEmotionClassifier(EmotionClassifier):
         data: np.ndarray, parameters: Dict = None
     ) -> np.ndarray:
         """
-        Feature construction method for the GMM classifier
+        Feature construction method for speech classifiers that use
+        both mfcc and other audio features.
 
         :param data: The raw audio array of one sentence.
         :param parameters: Parameter dictionary

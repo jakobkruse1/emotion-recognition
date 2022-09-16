@@ -57,6 +57,7 @@ class DataReader(ABC):
         """
         Method that loads the dataset from disk and stores the labels
         in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet
+
         :param which_set: train, val or test set distinguisher
         :param batch_size: the batch size for the dataset
         :param parameters: Additional arguments
@@ -171,6 +172,9 @@ class DataReader(ABC):
         """
         Conversion function that is applied when three emotion labels are
         required.
+
+        :param data: The emotional data.
+        :param labels: The labels that need to be converted to three emotions.
         """
         new_labels = DataReader.convert_to_three_emotions_onehot(
             labels

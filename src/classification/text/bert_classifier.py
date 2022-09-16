@@ -26,7 +26,6 @@ class BertClassifier(TextEmotionClassifier):
         """
         Initialize the emotion classifier.
 
-        :param name: The classifier name
         :param parameters: Configuration parameters dictionary
             model_name: tf hub model name
         """

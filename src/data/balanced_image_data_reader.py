@@ -22,6 +22,8 @@ class BalancedImageDataReader(ImageDataReader):
     def __init__(self, folder: str = None):
         """
         Initialization for the class
+
+        :param folder: folder that contains the data.
         """
         super().__init__("balanced_image", folder or "data/train/image")
 

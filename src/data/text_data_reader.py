@@ -18,6 +18,8 @@ class TextDataReader(DataReader):
     def __init__(self, folder: str = "data/train/text"):
         """
         Initialization for the class
+
+        :param folder: The folder that contains the data.
         """
         super().__init__("text", folder or "data/train/text")
         self.file_map = {

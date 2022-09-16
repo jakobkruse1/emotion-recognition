@@ -14,11 +14,14 @@ from src.utils.metrics import accuracy, per_class_accuracy
 
 
 class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
+    """
+    Model that uses MFCC features and a resnet50 classifier.
+    """
+
     def __init__(self, parameters: Dict = None):
         """
         Initialize the Plant-MFCC-Resnet emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("plant_mfcc_resnet", parameters)
@@ -26,6 +29,8 @@ class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
     def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the Plant-MFCC-Resnet model
+
+        :param parameters: Parameters for initializing the model
         """
         dropout = parameters.get("dropout", 0.2)
         num_mfcc = parameters.get("num_mfcc", 40)

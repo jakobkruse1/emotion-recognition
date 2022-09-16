@@ -99,7 +99,6 @@ class BYOLSClassifier(SpeechEmotionClassifier):
         """
         Initialize the BYOL-S emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("byols", parameters)

@@ -26,6 +26,9 @@ class FinetuningWav2Vec2Model(nn.Module):
     def __init__(self, device: torch.device, parameters: Dict = None) -> None:
         """
         Constructor for the model class that initializes the layers.
+
+        :param device: Torch device to run model on.
+        :param parameters: Additional config parameters.
         """
         super().__init__()
         cache_dir = "models/cache"
@@ -89,7 +92,6 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         """
         Initialize the Wav2Vec2 emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("hubert", parameters)

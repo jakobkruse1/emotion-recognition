@@ -153,6 +153,7 @@ class Evaluator:
         """
         Function that uses all experiments in this evaluator and computes
         a score for them. Returns a list of scores.
+
         :param score: String that represents the score to compute
         :param kwargs: Additional keyword arguments
         :return: List of computed scores

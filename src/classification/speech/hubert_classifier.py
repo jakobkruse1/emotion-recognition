@@ -105,6 +105,8 @@ class HuBERTClassifier(SpeechEmotionClassifier):
     def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the HuBERT model
+
+        :param parameters: Parameters for the model initialization.
         """
         self.model = FinetuningHuBERTModel(self.device, parameters)
 

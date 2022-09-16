@@ -37,7 +37,6 @@ class GMMClassifier(SpeechEmotionClassifier):
         """
         Initialize the GMMemotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("gmm", parameters)

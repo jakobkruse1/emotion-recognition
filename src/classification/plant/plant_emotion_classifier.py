@@ -135,6 +135,13 @@ class PlantEmotionClassifier(EmotionClassifier):
     def compute_mfccs(
         audio_tensor: tf.Tensor, parameters: Dict = None
     ) -> tf.Tensor:
+        """
+        Function that computes MFCC features from the input tensor.
+
+        :param audio_tensor: The tensor containing raw time series data.
+        :param parameters: Parameters for the MFCC computation.
+        :return: Tensor with MFCC features.
+        """
         parameters = parameters or {}
         num_mfcc = parameters.get("num_mfcc", 20)
         # A 1024-point STFT with frames of 64 ms and 75% overlap.

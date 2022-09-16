@@ -13,11 +13,14 @@ from src.utils.metrics import accuracy, per_class_accuracy
 
 
 class PlantLSTMClassifier(PlantNNBaseClassifier):
+    """
+    Classifier that uses LSTM layers and a Dense head for classification.
+    """
+
     def __init__(self, parameters: Dict = None):
         """
         Initialize the Plant-LSTM emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("plant_lstm", parameters)
@@ -25,6 +28,8 @@ class PlantLSTMClassifier(PlantNNBaseClassifier):
     def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the Plant-LSTM model
+
+        :param parameters: Parameters for initializing the model.
         """
         lstm_units = parameters.get("lstm_units", 512)
         dropout = parameters.get("dropout", 0.2)

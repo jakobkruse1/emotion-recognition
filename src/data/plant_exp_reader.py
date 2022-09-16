@@ -43,12 +43,26 @@ class PlantExperimentDataReader(ExperimentDataReader):
         self.sample_rate = 10_000
 
     def cleanup(self, parameters: Dict = None) -> None:
+        """
+        Cleanup method to free RAM which due to a bug in garbage collection
+        is not cleared up automatically.
+
+        :param parameters: Parameters.
+        """
         del self.raw_data
         del self.raw_labels
 
     def get_seven_emotion_data(
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
+        """
+        Method that returns a dataset of plant data.
+
+        :param which_set: Which set to use.
+        :param batch_size: Batch size for the dataset.
+        :param parameters: Additional parameters.
+        :return: Dataset instance.
+        """
         parameters = parameters or {}
         self.get_raw_data(parameters)
         dataset = tf.data.Dataset.from_generator(

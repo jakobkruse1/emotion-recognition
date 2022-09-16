@@ -32,6 +32,9 @@ class ClasswiseSpeechDataReader(DataReader):
     def __init__(self, name: str = "classwise_speech", folder: str = None):
         """
         Initialization for the class
+
+        :param name: name of the data reader.
+        :param folder: folder that contains the data.
         """
         super().__init__(name, folder or "data/train/speech")
         self.folder_map = {
@@ -180,6 +183,9 @@ class ClasswiseSpeechDataReader(DataReader):
         """
         Conversion function that is applied when three emotion labels are
         required.
+
+        :param data: The emotions data.
+        :param labels: The labels that are to be converted to three emotions.
         """
         new_labels = DataReader.convert_to_three_emotions_onehot(
             labels

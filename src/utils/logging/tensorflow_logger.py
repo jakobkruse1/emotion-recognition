@@ -11,6 +11,9 @@ class KerasLogger(BaseLogger):
     """
 
     def __init__(self):
+        """
+        Initialization method.
+        """
         super().__init__()
 
     def log_epoch(self, data: Dict[str, Any]) -> None:
