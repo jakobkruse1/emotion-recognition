@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>src.utils.logging package &#8212; Emotion Measurement 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="src.utils package" href="src.utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="src-utils-logging-package">
+<h1>src.utils.logging package<a class="headerlink" href="#src-utils-logging-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-src.utils.logging.base_logger">
+<span id="src-utils-logging-base-logger-module"></span><h2>src.utils.logging.base_logger module<a class="headerlink" href="#module-src.utils.logging.base_logger" title="Permalink to this heading">¶</a></h2>
+<p>This file implements the base logger which is an interface for loggers.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.utils.logging.base_logger.BaseLogger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.utils.logging.base_logger.</span></span><span class="sig-name descname"><span class="pre">BaseLogger</span></span><a class="headerlink" href="#src.utils.logging.base_logger.BaseLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>This class is the interface for all loggers.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.base_logger.BaseLogger.log_end">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.base_logger.BaseLogger.log_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging function that is called after training for logging training
+statistics. For example, it can be used to parse tensorflows history
+object after it is returned after training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – The dictionary containing training data and metrics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.base_logger.BaseLogger.log_epoch">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log_epoch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.base_logger.BaseLogger.log_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging function that is called every epoch for logging epoch
+statistics. For example, it can be used to save the epoch’s loss and
+metrics to the overall logging data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – The dictionary containing epoch data and metrics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.base_logger.BaseLogger.log_start">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.base_logger.BaseLogger.log_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging function that is called before training for logging training
+parameters and metrics. For example, it can be used to save
+initialization parameters or configuration details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – The dictionary containing data and config.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.base_logger.BaseLogger.save_logs">
+<span class="sig-name descname"><span class="pre">save_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.base_logger.BaseLogger.save_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function saves the gathered data in a json file for review and
+plotting the statistics later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>folder</strong> – The folder to store the statistics in.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.utils.logging.pytorch_logger">
+<span id="src-utils-logging-pytorch-logger-module"></span><h2>src.utils.logging.pytorch_logger module<a class="headerlink" href="#module-src.utils.logging.pytorch_logger" title="Permalink to this heading">¶</a></h2>
+<p>Implement a logger for tensorflow keras models.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.utils.logging.pytorch_logger.TorchLogger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.utils.logging.pytorch_logger.</span></span><span class="sig-name descname"><span class="pre">TorchLogger</span></span><a class="headerlink" href="#src.utils.logging.pytorch_logger.TorchLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.utils.logging.base_logger.BaseLogger" title="src.utils.logging.base_logger.BaseLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLogger</span></code></a></p>
+<p>Implements a logger for pytorch models that receives relevant values every
+epoch and creates the logs from them.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.pytorch_logger.TorchLogger.log_end">
+<span class="sig-name descname"><span class="pre">log_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.pytorch_logger.TorchLogger.log_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log additional data at the end of the training if necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Data dictionary containing important logs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.pytorch_logger.TorchLogger.log_epoch">
+<span class="sig-name descname"><span class="pre">log_epoch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.pytorch_logger.TorchLogger.log_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Epoch logging method. Pass a loss, val_loss, acc and val_acc
+every epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Dictionary with data to log.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.pytorch_logger.TorchLogger.log_start">
+<span class="sig-name descname"><span class="pre">log_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.pytorch_logger.TorchLogger.log_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log arbitrary data like training parameters etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Data dictionary containing important data to log.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.utils.logging.standard_logger">
+<span id="src-utils-logging-standard-logger-module"></span><h2>src.utils.logging.standard_logger module<a class="headerlink" href="#module-src.utils.logging.standard_logger" title="Permalink to this heading">¶</a></h2>
+<p>This file implements the base logger which is an interface for loggers.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.utils.logging.standard_logger.StandardLogger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.utils.logging.standard_logger.</span></span><span class="sig-name descname"><span class="pre">StandardLogger</span></span><a class="headerlink" href="#src.utils.logging.standard_logger.StandardLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.utils.logging.base_logger.BaseLogger" title="src.utils.logging.base_logger.BaseLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLogger</span></code></a></p>
+<p>This class is a standard logger that logs random dictionaries.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.standard_logger.StandardLogger.log_end">
+<span class="sig-name descname"><span class="pre">log_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.standard_logger.StandardLogger.log_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging function that is called after training for logging training
+statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – The dictionary containing training data and metrics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.standard_logger.StandardLogger.log_epoch">
+<span class="sig-name descname"><span class="pre">log_epoch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.standard_logger.StandardLogger.log_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging function that is called every epoch for logging epoch
+statistics. For example, it can be used to save the epoch’s loss and
+metrics to the overall logging data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – The dictionary containing epoch data and metrics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.standard_logger.StandardLogger.log_start">
+<span class="sig-name descname"><span class="pre">log_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.standard_logger.StandardLogger.log_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging function that is called before training for logging training
+parameters and metrics. For example, it can be used to save
+initialization parameters or configuration details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – The dictionary containing data and config.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.utils.logging.tensorflow_logger">
+<span id="src-utils-logging-tensorflow-logger-module"></span><h2>src.utils.logging.tensorflow_logger module<a class="headerlink" href="#module-src.utils.logging.tensorflow_logger" title="Permalink to this heading">¶</a></h2>
+<p>Implement a logger for tensorflow keras models.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.utils.logging.tensorflow_logger.KerasLogger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.utils.logging.tensorflow_logger.</span></span><span class="sig-name descname"><span class="pre">KerasLogger</span></span><a class="headerlink" href="#src.utils.logging.tensorflow_logger.KerasLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.utils.logging.base_logger.BaseLogger" title="src.utils.logging.base_logger.BaseLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLogger</span></code></a></p>
+<p>Implements a logger for keras models that uses tensorflow’s
+history object and extracts the logs from it.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.tensorflow_logger.KerasLogger.log_end">
+<span class="sig-name descname"><span class="pre">log_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.tensorflow_logger.KerasLogger.log_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log all the gathered training logs from tensorflow and keras.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Data dictionary containing important logs.
+history: We expect a history object to be present here.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.tensorflow_logger.KerasLogger.log_epoch">
+<span class="sig-name descname"><span class="pre">log_epoch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.tensorflow_logger.KerasLogger.log_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Empty epoch logging method.
+Tensorflow logs all epoch logs itself and returns it in a history
+object. Therefore, no logging per epoch is required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Dictionary with data to log.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.utils.logging.tensorflow_logger.KerasLogger.log_start">
+<span class="sig-name descname"><span class="pre">log_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.utils.logging.tensorflow_logger.KerasLogger.log_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log arbitrary data like training parameters etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Data dictionary containing important data to log.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.utils.logging">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.utils.logging" title="Permalink to this heading">¶</a></h2>
+<p>Logging functionality is implemented in this package.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Emotion Measurement</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">emotion-recognition</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html">src package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">emotion-recognition</a><ul>
+  <li><a href="src.html">src package</a><ul>
+  <li><a href="src.utils.html">src.utils package</a><ul>
+      <li>Previous: <a href="src.utils.html" title="previous chapter">src.utils package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Jakob Kruse.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/src.utils.logging.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

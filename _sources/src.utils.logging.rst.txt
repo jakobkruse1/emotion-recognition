@@ -1,0 +1,45 @@
+src.utils.logging package
+=========================
+
+Submodules
+----------
+
+src.utils.logging.base\_logger module
+-------------------------------------
+
+.. automodule:: src.utils.logging.base_logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.utils.logging.pytorch\_logger module
+----------------------------------------
+
+.. automodule:: src.utils.logging.pytorch_logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.utils.logging.standard\_logger module
+-----------------------------------------
+
+.. automodule:: src.utils.logging.standard_logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.utils.logging.tensorflow\_logger module
+-------------------------------------------
+
+.. automodule:: src.utils.logging.tensorflow_logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.utils.logging
+   :members:
+   :undoc-members:
+   :show-inheritance:

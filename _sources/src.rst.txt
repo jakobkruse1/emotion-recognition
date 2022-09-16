@@ -11,6 +11,7 @@ Subpackages
    src.data
    src.evaluation
    src.experiment
+   src.utils
 
 Submodules
 ----------
