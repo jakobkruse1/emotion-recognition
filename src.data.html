@@ -321,6 +321,14 @@ folder. Files are read, decoded and padded or truncated.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">map_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.map_emotions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conversion function that is applied when three emotion labels are
 required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The emotions data.</p></li>
+<li><p><strong>labels</strong> – The labels that are to be converted to three emotions.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -523,11 +531,19 @@ one-hot encoding: shape (n,3)</p>
 <dt class="sig sig-object py" id="src.data.data_reader.DataReader.get_three_emotion_data">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.data_reader.DataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that loads the dataset from disk and stores the labels
-in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet
-:param which_set: train, val or test set distinguisher
-:param batch_size: the batch size for the dataset
-:param parameters: Additional arguments
-:return: The Dataset that contains data and labels</p>
+in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – train, val or test set distinguisher</p></li>
+<li><p><strong>batch_size</strong> – the batch size for the dataset</p></li>
+<li><p><strong>parameters</strong> – Additional arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Dataset that contains data and labels</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -535,6 +551,14 @@ in the ThreeEmotionSet instead of the NeutralEkmanEmotionSet
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">map_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.data_reader.DataReader.map_emotions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conversion function that is applied when three emotion labels are
 required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The emotional data.</p></li>
+<li><p><strong>labels</strong> – The labels that need to be converted to three emotions.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -657,10 +681,18 @@ This method should return only three emotions.</p>
 <dt class="sig sig-object py" id="src.data.image_data_reader.ImageDataReader.add_augmentations">
 <span class="sig-name descname"><span class="pre">add_augmentations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DatasetV2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_augmentations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.image_data_reader.ImageDataReader.add_augmentations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function that adds augmentation to the dataset.
-This helps reduce overfitting of the model.
-:param dataset: The dataset containing images
-:param use_augmentations: Boolean flag to enable augmentation
-:return: The dataset with augmented images</p>
+This helps reduce overfitting of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> – The dataset containing images</p></li>
+<li><p><strong>use_augmentations</strong> – Boolean flag to enable augmentation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dataset with augmented images</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -731,10 +763,11 @@ and also converts the emotion labels to the three emotion space.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.plant_exp_reader.PlantExperimentDataReader.cleanup">
 <span class="sig-name descname"><span class="pre">cleanup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.data.plant_exp_reader.PlantExperimentDataReader.cleanup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Optional cleanup method that deletes unneccessary memory elements.</p>
+<dd><p>Cleanup method to free RAM which due to a bug in garbage collection
+is not cleared up automatically.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>parameters</strong> – Parameters that might be required</p>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameters.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -862,17 +895,17 @@ The two axis are [experiment_index, time_in_seconds]</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data.plant_exp_reader.PlantExperimentDataReader.get_seven_emotion_data">
 <span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.plant_exp_reader.PlantExperimentDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>The abstract method for getting the dataset to train on.</p>
+<dd><p>Method that returns a dataset of plant data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>which_set</strong> – Training, Validation or Test Set</p></li>
-<li><p><strong>batch_size</strong> – Batch Size for the dataset</p></li>
+<li><p><strong>which_set</strong> – Which set to use.</p></li>
+<li><p><strong>batch_size</strong> – Batch size for the dataset.</p></li>
 <li><p><strong>parameters</strong> – Additional parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tensorflow Dataset instance.</p>
+<dd class="field-even"><p>Dataset instance.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1003,6 +1036,14 @@ folder. Files are read, decoded and padded or truncated.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">map_emotions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.speech_data_reader.SpeechDataReader.map_emotions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conversion function that is applied when three emotion labels are
 required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The emotional data.</p></li>
+<li><p><strong>labels</strong> – The labels that need to be converted to three emotions.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

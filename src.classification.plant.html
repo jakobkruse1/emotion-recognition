@@ -46,10 +46,16 @@
 <dt class="sig sig-object py" id="src.classification.plant.dense_classifier.PlantDenseClassifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.plant.dense_classifier.</span></span><span class="sig-name descname"><span class="pre">PlantDenseClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.plant.dense_classifier.PlantDenseClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.classification.plant.nn_classifier.PlantNNBaseClassifier" title="src.classification.plant.nn_classifier.PlantNNBaseClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlantNNBaseClassifier</span></code></a></p>
+<p>Classifier consisting of Dense layers only.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.dense_classifier.PlantDenseClassifier.initialize_model">
 <span class="sig-name descname"><span class="pre">initialize_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.classification.plant.dense_classifier.PlantDenseClassifier.initialize_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes a new and pretrained version of the Plant-Dense model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameters for initializing the model.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -62,10 +68,16 @@
 <dt class="sig sig-object py" id="src.classification.plant.lstm_classifier.PlantLSTMClassifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.plant.lstm_classifier.</span></span><span class="sig-name descname"><span class="pre">PlantLSTMClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.plant.lstm_classifier.PlantLSTMClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.classification.plant.nn_classifier.PlantNNBaseClassifier" title="src.classification.plant.nn_classifier.PlantNNBaseClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlantNNBaseClassifier</span></code></a></p>
+<p>Classifier that uses LSTM layers and a Dense head for classification.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.lstm_classifier.PlantLSTMClassifier.initialize_model">
 <span class="sig-name descname"><span class="pre">initialize_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.classification.plant.lstm_classifier.PlantLSTMClassifier.initialize_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes a new and pretrained version of the Plant-LSTM model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameters for initializing the model.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -79,6 +91,7 @@ from the plant data.</p>
 <dt class="sig sig-object py" id="src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.plant.mfcc_cnn_classifier.</span></span><span class="sig-name descname"><span class="pre">PlantMFCCCNNClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.classification.plant.nn_classifier.PlantNNBaseClassifier" title="src.classification.plant.nn_classifier.PlantNNBaseClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlantNNBaseClassifier</span></code></a></p>
+<p>Model that uses MFCC features and Conv layers for classification.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier.init_parameters">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier.init_parameters" title="Permalink to this definition">¶</a></dt>
@@ -100,6 +113,11 @@ from the plant data.</p>
 <dt class="sig sig-object py" id="src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier.initialize_model">
 <span class="sig-name descname"><span class="pre">initialize_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier.initialize_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes a new and pretrained version of the Plant-MFCC-CNN model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameters for initializing the model</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -113,6 +131,7 @@ from the plant data.</p>
 <dt class="sig sig-object py" id="src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.plant.mfcc_resnet_classifier.</span></span><span class="sig-name descname"><span class="pre">PlantMFCCResnetClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.classification.plant.nn_classifier.PlantNNBaseClassifier" title="src.classification.plant.nn_classifier.PlantNNBaseClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlantNNBaseClassifier</span></code></a></p>
+<p>Model that uses MFCC features and a resnet50 classifier.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier.init_parameters">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier.init_parameters" title="Permalink to this definition">¶</a></dt>
@@ -134,6 +153,11 @@ from the plant data.</p>
 <dt class="sig sig-object py" id="src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier.initialize_model">
 <span class="sig-name descname"><span class="pre">initialize_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier.initialize_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes a new and pretrained version of the Plant-MFCC-Resnet model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameters for initializing the model</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -141,15 +165,16 @@ from the plant data.</p>
 </section>
 <section id="module-src.classification.plant.nn_classifier">
 <span id="src-classification-plant-nn-classifier-module"></span><h2>src.classification.plant.nn_classifier module<a class="headerlink" href="#module-src.classification.plant.nn_classifier" title="Permalink to this heading">¶</a></h2>
-<p>This file implements an LSTM based classifier for the plant data.</p>
+<p>This file defines an interface for classifiers for the plant data.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.classification.plant.nn_classifier.PlantNNBaseClassifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.plant.nn_classifier.</span></span><span class="sig-name descname"><span class="pre">PlantNNBaseClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.plant.nn_classifier.PlantNNBaseClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier" title="src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlantEmotionClassifier</span></code></a></p>
+<p>Base class for all NN classifiers in tensorflow for plant data.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.nn_classifier.PlantNNBaseClassifier.classify">
 <span class="sig-name descname"><span class="pre">classify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#src.classification.plant.nn_classifier.PlantNNBaseClassifier.classify" title="Permalink to this definition">¶</a></dt>
-<dd><p>Classification method used to classify emotions from speech</p>
+<dd><p>Classification method used to classify emotions from plant data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -166,7 +191,12 @@ from the plant data.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.nn_classifier.PlantNNBaseClassifier.initialize_model">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initialize_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.classification.plant.nn_classifier.PlantNNBaseClassifier.initialize_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Base class that creates self.model, a tf Model instance</p>
+<dd><p>Abstract method that creates self.model, a tf Model instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameters for initializing the model</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -200,7 +230,7 @@ from the plant data.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.nn_classifier.PlantNNBaseClassifier.train">
 <span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.classification.plant.nn_classifier.PlantNNBaseClassifier.train" title="Permalink to this definition">¶</a></dt>
-<dd><p>Training method for Plant-LSTM model</p>
+<dd><p>Training method for plant models</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -243,7 +273,19 @@ that concerns all plant classifiers.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.compute_mfccs">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_mfccs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_tensor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.compute_mfccs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function that computes MFCC features from the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio_tensor</strong> – The tensor containing raw time series data.</p></li>
+<li><p><strong>parameters</strong> – Parameters for the MFCC computation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor with MFCC features.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.load">

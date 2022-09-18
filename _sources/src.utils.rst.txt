@@ -28,6 +28,14 @@ src.utils.metrics module
    :undoc-members:
    :show-inheritance:
 
+src.utils.training module
+-------------------------
+
+.. automodule:: src.utils.training
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

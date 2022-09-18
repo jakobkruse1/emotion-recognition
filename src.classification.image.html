@@ -41,7 +41,7 @@
 </section>
 <section id="module-src.classification.image.cross_attention_classifier">
 <span id="src-classification-image-cross-attention-classifier-module"></span><h2>src.classification.image.cross_attention_classifier module<a class="headerlink" href="#module-src.classification.image.cross_attention_classifier" title="Permalink to this heading">¶</a></h2>
-<p>This file contains the CrossAttention facial emotion classifier</p>
+<p>This file contains the CrossAttention facial emotion classifier.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.classification.image.cross_attention_classifier.AffinityLoss">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.image.cross_attention_classifier.</span></span><span class="sig-name descname"><span class="pre">AffinityLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feat_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.image.cross_attention_classifier.AffinityLoss" title="Permalink to this definition">¶</a></dt>
@@ -483,6 +483,11 @@ loss, metrics and callbacks for training.</p>
 <dt class="sig sig-object py" id="src.classification.image.vgg16_classifier.VGG16Classifier.initialize_model">
 <span class="sig-name descname"><span class="pre">initialize_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.classification.image.vgg16_classifier.VGG16Classifier.initialize_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes a new and pretrained version of the VGG16Classifier model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameters for initializing the model.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -532,7 +537,8 @@ loss, metrics and callbacks for training.</p>
 </section>
 <section id="module-src.classification.image">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.classification.image" title="Permalink to this heading">¶</a></h2>
-<p>Package for image based emotion classifiers</p>
+<p>This package contains a few image emotion classifiers based on different
+classifier architectures.</p>
 </section>
 </section>
 
