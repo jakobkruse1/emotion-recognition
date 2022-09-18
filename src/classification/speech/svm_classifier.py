@@ -1,7 +1,6 @@
-""" This file contains the MFCC-LSTM speech emotion classifier """
+""" This file contains the SVM speech emotion classifier """
 import os
 import pickle
-import sys
 from typing import Dict
 
 import numpy as np
@@ -13,8 +12,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy, per_class_accuracy, precision, recall
+from src.utils import logging, training_loop
 
 CLASS_NAMES = [
     "angry",
@@ -37,7 +35,6 @@ class SVMClassifier(SpeechEmotionClassifier):
         """
         Initialize the SVM emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("svm", parameters)
@@ -182,7 +179,7 @@ class SVMClassifier(SpeechEmotionClassifier):
         return predictions
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = SVMClassifier()
     parameters = {
         "download": False,
@@ -190,15 +187,9 @@ if __name__ == "__main__":  # pragma: no cover
         "kernel": "poly",
         "shuffle": False,
     }
-    if not os.path.exists("models/speech/svm") or "train" in sys.argv:
-        classifier.train(parameters)
-        classifier.save()
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
-    print(f"Per Class Accuracy: {per_class_accuracy(labels, emotions)}")
-    print(f"Precision: {precision(labels, emotions)}")
-    print(f"Recall: {recall(labels, emotions)}")
+    save_path = "models/speech/svm"
+    training_loop(classifier, parameters, save_path)
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

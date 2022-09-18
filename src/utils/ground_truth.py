@@ -23,6 +23,7 @@ class FaceAPIThread(threading.Thread):  # pragma: no cover
         Create a thread that runs face-api.js
 
         :param port: The port to start the API on.
+        :param logging: Whether to use logging or not.
         """
         super().__init__()
         self.port = port
@@ -33,7 +34,6 @@ class FaceAPIThread(threading.Thread):  # pragma: no cover
         """
         Thread run function that starts a subprocess with face-api.js
         that listens on localhost:self.port/emotions.
-
         """
         env = copy.deepcopy(os.environ)
         env["PORT"] = f"{self.port}"
@@ -80,6 +80,7 @@ def _get_emotions(
     Get emotions for timestamps in the video.
 
     :param video: The video file to get the emotions for.
+    :param port: The port to run the FaceAPI on.
     :return: Emotions list in the format needed for the API.
     """
 

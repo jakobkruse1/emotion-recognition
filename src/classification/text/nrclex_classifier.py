@@ -8,7 +8,7 @@ from src.classification.text.text_emotion_classifier import (
     TextEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils.metrics import accuracy
+from src.utils import training_loop
 
 
 class NRCLexTextClassifier(TextEmotionClassifier):
@@ -123,10 +123,12 @@ class NRCLexTextClassifier(TextEmotionClassifier):
         return np.random.choice(max_keys)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = NRCLexTextClassifier()
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+    parameters = {}
+    save_path = "models/text/nrclex"
+    training_loop(classifier, parameters, save_path)
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

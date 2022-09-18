@@ -7,6 +7,7 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 
 from src.data.data_reader import DataReader, Set
+from src.utils import reader_main
 
 CLASS_NAMES = [
     "angry",
@@ -29,6 +30,9 @@ class SpeechDataReader(DataReader):
     def __init__(self, name: str = "speech", folder: str = None):
         """
         Initialization for the class
+
+        :param name: The name of the data reader, speech
+        :param folder: Folder that contains the data.
         """
         super().__init__(name, folder or "data/train/speech")
         self.folder_map = {
@@ -179,6 +183,9 @@ class SpeechDataReader(DataReader):
         """
         Conversion function that is applied when three emotion labels are
         required.
+
+        :param data: The emotional data.
+        :param labels: The labels that need to be converted to three emotions.
         """
         new_labels = DataReader.convert_to_three_emotions_onehot(
             labels
@@ -282,9 +289,10 @@ class SpeechDataReader(DataReader):
         return x, y
 
 
-if __name__ == "__main__":  # pragma: no cover
-    dr = SpeechDataReader()
-    ds = dr.get_seven_emotion_data(Set.TRAIN, batch_size=64)
+def _main():  # pragma: no cover
+    reader = SpeechDataReader()
+    reader_main(reader, {})
 
-    for data, labels in ds:
-        print(f"{data.shape} | {labels.shape}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

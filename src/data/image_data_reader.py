@@ -8,6 +8,7 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 
 from src.data.data_reader import DataReader, Set
+from src.utils import reader_main
 
 
 class ImageDataReader(DataReader):
@@ -18,6 +19,9 @@ class ImageDataReader(DataReader):
     def __init__(self, name: str = "image", folder: str = None):
         """
         Initialization for the class
+
+        :param name: The name for the image reader.
+        :param folder: The folder that contains the data.
         """
         super().__init__(name, folder or "data/train/image")
         self.folder_map = {
@@ -138,6 +142,7 @@ class ImageDataReader(DataReader):
         """
         Function that adds augmentation to the dataset.
         This helps reduce overfitting of the model.
+
         :param dataset: The dataset containing images
         :param use_augmentations: Boolean flag to enable augmentation
         :return: The dataset with augmented images
@@ -178,3 +183,12 @@ class ImageDataReader(DataReader):
         degrees = degrees * 0.017453292519943295
         image = tfa.image.rotate(image, degrees)
         return image, label
+
+
+def _main():  # pragma: no cover
+    reader = ImageDataReader()
+    reader_main(reader, {})
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

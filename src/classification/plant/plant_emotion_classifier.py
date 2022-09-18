@@ -25,7 +25,6 @@ class PlantEmotionClassifier(EmotionClassifier):
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__(name, "plant", parameters)
-        parameters = parameters or {}
         self.callbacks = None
         self.optimizer = None
         self.loss = None
@@ -135,6 +134,13 @@ class PlantEmotionClassifier(EmotionClassifier):
     def compute_mfccs(
         audio_tensor: tf.Tensor, parameters: Dict = None
     ) -> tf.Tensor:
+        """
+        Function that computes MFCC features from the input tensor.
+
+        :param audio_tensor: The tensor containing raw time series data.
+        :param parameters: Parameters for the MFCC computation.
+        :return: Tensor with MFCC features.
+        """
         parameters = parameters or {}
         num_mfcc = parameters.get("num_mfcc", 20)
         # A 1024-point STFT with frames of 64 ms and 75% overlap.
@@ -173,7 +179,7 @@ class PlantEmotionClassifier(EmotionClassifier):
         return mfccs
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     from src.data.plant_exp_reader import PlantExperimentDataReader
 
     dr = PlantExperimentDataReader()
@@ -183,3 +189,7 @@ if __name__ == "__main__":  # pragma: no cover
     ).take(1):
         mfcc = PlantEmotionClassifier.compute_mfccs(speech)
         print(mfcc.shape)
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

@@ -18,11 +18,12 @@ class Experiment:
     Experiment class containing the parameters for one run
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """
         This constructor is called to create an experiment instance.
         parses all kwargs to create a fully defined experiment. All parameters
         which are not in the kwargs are set to default values here.
+
         :param kwargs: Arguments that define the experiments
             See all possible keys below in the list
         """
@@ -87,9 +88,10 @@ class ExperimentRunner:
     Experiment runner class to run multiple experiments easily
     """
 
-    def __init__(self, experiment_name: str, **kwargs):
+    def __init__(self, experiment_name: str, **kwargs) -> None:
         """
         Constructor for the ExperimentRunner class
+
         :param experiment_name: Name of the experiment for log files and result
         :param kwargs: Additional keyword arguments
             Not currently used
@@ -108,12 +110,12 @@ class ExperimentRunner:
             warnings.warn("The experiment folder already exists!")
         os.makedirs(self.folder, exist_ok=True)
 
-    def add_grid_experiments(self, **kwargs):
+    def add_grid_experiments(self, **kwargs) -> None:
         """
         Create the cross product of all the arguments lists and create
         experiments from that like in a grid search
+
         :param kwargs: Keyword arguments which shall be grid searched
-            All possible keys can be seen below
         """
         for key, _ in kwargs.items():
             # Check the kwargs for wrong keys
@@ -142,16 +144,18 @@ class ExperimentRunner:
                 experiment_dict[element] = experiment[index]
             self.experiments.append(Experiment(**experiment_dict))
 
-    def add_single_experiment(self, **kwargs):
+    def add_single_experiment(self, **kwargs) -> None:
         """
         Add an experiment to the experiments list
+
         :param kwargs: Arguments for the experiment
         """
         self.experiments.append(Experiment(**kwargs))
 
-    def run_all(self, **kwargs):
+    def run_all(self, **kwargs) -> None:
         """
         Main run function that runs all experiment in the self.experiments list
+
         :param kwargs: Additional keyword arguments
         """
         self.accuracy = []
@@ -176,6 +180,7 @@ class ExperimentRunner:
         :param index: The index of the experiment for saving the results
         :param kwargs: Additional kwargs
             data_reader: Overwrite data reader for testing purposes
+        :return: The accuracy of the experiment.
         """
         print(f"Running experiment {index}")
         print(experiment.get_parameter_dict())

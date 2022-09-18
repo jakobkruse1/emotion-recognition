@@ -1,6 +1,7 @@
-""" This file implements an LSTM based classifier for the plant data. """
+""" This file defines an interface for classifiers for the plant data. """
 
 import copy
+import os.path
 from abc import abstractmethod
 from typing import Dict
 
@@ -15,9 +16,15 @@ from src.utils import logging
 
 
 class PlantNNBaseClassifier(PlantEmotionClassifier):
+    """
+    Base class for all NN classifiers in tensorflow for plant data.
+    """
+
     def __init__(self, name: str, parameters: Dict = None):
         """
-        Initialize the Plant-LSTM emotion classifier
+        Initialize the Plant classifier. All tensorflow plant classifiers
+        require the same training, classification, save and load functions.
+        This class implements these methods for all classifiers at once.
 
         :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
@@ -31,13 +38,15 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
     @abstractmethod
     def initialize_model(self, parameters: Dict) -> None:  # pragma: no cover
         """
-        Base class that creates self.model, a tf Model instance
+        Abstract method that creates self.model, a tf Model instance
+
+        :param parameters: Parameters for initializing the model
         """
         raise NotImplementedError()
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
-        Training method for Plant-LSTM model
+        Training method for plant models
 
         :param parameters: Parameter dictionary used for training
         :param kwargs: Additional kwargs parameters
@@ -46,8 +55,7 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
         self.logger.log_start({"train_parameters": parameters})
         epochs = parameters.get("epochs", 20)
 
-        if not self.model:
-            self.initialize_model(parameters)
+        self.initialize_model(parameters)
         self.prepare_training(parameters)
         self.model.compile(
             optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
@@ -88,12 +96,14 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
             )
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", f"models/plant/{self.name}")
+        if os.path.exists("models/plant/checkpoint"):
+            self.load({"save_path": "models/plant/checkpoint"})
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
-        Classification method used to classify emotions from speech
+        Classification method used to classify emotions from plant data
 
         :param parameters: Parameter dictionary used for classification
         :param kwargs: Additional kwargs parameters

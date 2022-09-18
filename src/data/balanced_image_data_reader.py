@@ -7,6 +7,7 @@ import numpy as np
 import tensorflow as tf
 
 from src.data.image_data_reader import ImageDataReader, Set
+from src.utils import reader_main
 
 
 class BalancedImageDataReader(ImageDataReader):
@@ -22,6 +23,8 @@ class BalancedImageDataReader(ImageDataReader):
     def __init__(self, folder: str = None):
         """
         Initialization for the class
+
+        :param folder: folder that contains the data.
         """
         super().__init__("balanced_image", folder or "data/train/image")
 
@@ -247,18 +250,10 @@ class BalancedImageDataReader(ImageDataReader):
         return all_labels
 
 
+def _main():  # pragma: no cover
+    reader = BalancedImageDataReader()
+    reader_main(reader, {"balanced": True})
+
+
 if __name__ == "__main__":  # pragma: no cover
-    dr = BalancedImageDataReader()
-    dataset = dr.get_seven_emotion_data(
-        Set.TRAIN, 64, {"balanced": True, "augment": True}
-    )
-    size = 0
-    counts = [0] * 7
-    for images, labels in dataset:
-        size += labels.numpy().shape[0]
-        if size > 1_000_000:
-            break
-        for label in np.argmax(labels.numpy(), axis=1):
-            counts[label] += 1
-    print(size)
-    print(counts)
+    _main()

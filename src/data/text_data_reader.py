@@ -8,6 +8,7 @@ import pandas as pd
 import tensorflow as tf
 
 from src.data.data_reader import DataReader, Set
+from src.utils import reader_main
 
 
 class TextDataReader(DataReader):
@@ -18,6 +19,8 @@ class TextDataReader(DataReader):
     def __init__(self, folder: str = "data/train/text"):
         """
         Initialization for the class
+
+        :param folder: The folder that contains the data.
         """
         super().__init__("text", folder or "data/train/text")
         self.file_map = {
@@ -98,3 +101,12 @@ class TextDataReader(DataReader):
             csv_file_path, delimiter="\t", usecols=[1], header=None
         )
         return np.reshape(labels.to_numpy(), (-1,))
+
+
+def _main():  # pragma: no cover
+    reader = TextDataReader()
+    reader_main(reader, {})
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

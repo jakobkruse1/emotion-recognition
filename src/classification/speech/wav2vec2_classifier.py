@@ -1,6 +1,5 @@
 """ This file contains the Wav2Vec2 speech emotion classifier """
 import os
-import sys
 from typing import Dict
 
 import numpy as np
@@ -14,8 +13,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
 class FinetuningWav2Vec2Model(nn.Module):
@@ -26,6 +24,9 @@ class FinetuningWav2Vec2Model(nn.Module):
     def __init__(self, device: torch.device, parameters: Dict = None) -> None:
         """
         Constructor for the model class that initializes the layers.
+
+        :param device: Torch device to run model on.
+        :param parameters: Additional config parameters.
         """
         super().__init__()
         cache_dir = "models/cache"
@@ -89,7 +90,6 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         """
         Initialize the Wav2Vec2 emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("hubert", parameters)
@@ -292,7 +292,7 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         return np.argmax(results, axis=1)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = Wav2Vec2Classifier()
     parameters = {
         "epochs": 50,
@@ -304,13 +304,9 @@ if __name__ == "__main__":  # pragma: no cover
         "freeze": True,
         "extra_layer": 0,
     }
-    if not os.path.exists("models/speech/wav2vec2") or "train" in sys.argv:
-        classifier.train(parameters)
-        classifier.save()
+    save_path = "models/speech/wav2vec2"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

@@ -31,3 +31,6 @@ hmmlearn
 librosa
 requests
 moviepy
+tqdm
+scipy
+pandas

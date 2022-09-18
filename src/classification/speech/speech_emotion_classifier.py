@@ -25,7 +25,6 @@ class SpeechEmotionClassifier(EmotionClassifier):
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__(name, "speech", parameters)
-        parameters = parameters or {}
         self.callback = None
         self.optimizer = None
         self.loss = None
@@ -117,6 +116,12 @@ class SpeechEmotionClassifier(EmotionClassifier):
 
     @staticmethod
     def compute_mfccs(audio_tensor: tf.Tensor) -> tf.Tensor:
+        """
+        Function that computes MFCC features from an audio tensor.
+
+        :param audio_tensor: The tensor containing raw audio data.
+        :return: tensor of mfcc features.
+        """
 
         # A 1024-point STFT with frames of 64 ms and 75% overlap.
         stfts = tf.signal.stft(
@@ -162,7 +167,7 @@ class SpeechEmotionClassifier(EmotionClassifier):
         generate a spectrogram which can be used for classification.
 
         :param audio_tensor: The tensor containing raw audio data.
-        :return:
+        :return: tensor with spectrogram data.
         """
         stfts = tf.signal.stft(
             audio_tensor, frame_length=1024, frame_step=256, fft_length=1024
@@ -175,7 +180,8 @@ class SpeechEmotionClassifier(EmotionClassifier):
         data: np.ndarray, parameters: Dict = None
     ) -> np.ndarray:
         """
-        Feature construction method for the GMM classifier
+        Feature construction method for speech classifiers that use
+        both mfcc and other audio features.
 
         :param data: The raw audio array of one sentence.
         :param parameters: Parameter dictionary
@@ -186,59 +192,59 @@ class SpeechEmotionClassifier(EmotionClassifier):
         frame_n = round(sr * frame_t)
         hop_n = round(0.01 * sr)
         mfcc_num = parameters.get("mfcc_num", 40)
-        Ethresh = 0.01
+        ethresh = 0.01
 
         # RMSE per frame
-        S, phase = librosa.magphase(
+        s, phase = librosa.magphase(
             librosa.stft(y=data, win_length=frame_n, hop_length=hop_n)
         )
-        rmst = librosa.feature.rms(S=S, hop_length=hop_n)
+        rmst = librosa.feature.rms(S=s, hop_length=hop_n)
 
-        Elocs = np.where(rmst > Ethresh)[1]
-        if Elocs.size == 0:
-            Elocs = [60, 249]
-        Eloc = np.arange(Elocs[0], Elocs[-1] + 1)
-        rms = rmst[:, Eloc]
+        elocs = np.where(rmst > ethresh)[1]
+        if elocs.size == 0:
+            elocs = [60, 249]
+        eloc = np.arange(elocs[0], elocs[-1] + 1)
+        rms = rmst[:, eloc]
 
         # MFCC per frame
-        MFCCt = librosa.feature.mfcc(
+        mfcct = librosa.feature.mfcc(
             y=data, sr=sr, n_fft=frame_n, hop_length=hop_n, n_mfcc=mfcc_num
         )
-        MFCC = MFCCt[:, Eloc]
+        mfcc = mfcct[:, eloc]
         #         print('Shape of MFCC', MFCC.shape)
 
         _cent = librosa.feature.spectral_centroid(
             y=data, sr=sr, n_fft=frame_n, hop_length=hop_n
         )
-        cent = _cent[:, Eloc]
+        cent = _cent[:, eloc]
 
         _rolloff = librosa.feature.spectral_rolloff(
             y=data, sr=sr, n_fft=frame_n, hop_length=hop_n
         )
-        rolloff = _rolloff[:, Eloc]
+        rolloff = _rolloff[:, eloc]
 
         # Zero Crossing Rate per frame
         zcrt = librosa.feature.zero_crossing_rate(
             y=data, frame_length=frame_n, hop_length=hop_n
         )
-        zcr = zcrt[:, Eloc]
+        zcr = zcrt[:, eloc]
 
-        MFCC = np.mean(MFCC, axis=1)
+        mfcc = np.mean(mfcc, axis=1)
         zcr = np.mean(zcr, axis=1)
         rms = np.mean(rms, axis=1)
         cent = np.mean(cent, axis=1)
         rolloff = np.mean(rolloff, axis=1)
-        MFCC = np.reshape(MFCC, (len(MFCC), 1))
+        mfcc = np.reshape(mfcc, (len(mfcc), 1))
         zcr = np.reshape(zcr, (len(zcr), 1))
         rms = np.reshape(rms, (len(rms), 1))
         cent = np.reshape(cent, (len(cent), 1))
         rolloff = np.reshape(rolloff, (len(rolloff), 1))
 
-        features = np.vstack((MFCC, zcr, rms, cent, rolloff))
+        features = np.vstack((mfcc, zcr, rms, cent, rolloff))
         return features
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     from src.data.speech_data_reader import SpeechDataReader
 
     dr = SpeechDataReader()
@@ -249,3 +255,7 @@ if __name__ == "__main__":  # pragma: no cover
 
         spectrogram = SpeechEmotionClassifier.compute_spectrogram(speech)
         print(spectrogram.shape)
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

@@ -32,6 +32,9 @@ class ClasswiseSpeechDataReader(DataReader):
     def __init__(self, name: str = "classwise_speech", folder: str = None):
         """
         Initialization for the class
+
+        :param name: name of the data reader.
+        :param folder: folder that contains the data.
         """
         super().__init__(name, folder or "data/train/speech")
         self.folder_map = {
@@ -180,6 +183,9 @@ class ClasswiseSpeechDataReader(DataReader):
         """
         Conversion function that is applied when three emotion labels are
         required.
+
+        :param data: The emotions data.
+        :param labels: The labels that are to be converted to three emotions.
         """
         new_labels = DataReader.convert_to_three_emotions_onehot(
             labels
@@ -265,7 +271,7 @@ class ClasswiseSpeechDataReader(DataReader):
         return audio, y
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     dr = ClasswiseSpeechDataReader()
     ds = dr.get_seven_emotion_data(Set.VAL, batch_size=-1)
 
@@ -276,3 +282,7 @@ if __name__ == "__main__":  # pragma: no cover
 
     for data, class_name in ds:
         print(f"{class_name}: {data.shape}")
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

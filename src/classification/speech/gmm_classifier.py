@@ -1,7 +1,6 @@
-""" This file contains the MFCC-LSTM speech emotion classifier """
+""" This file contains a Gaussian Mixture speech emotion classifier """
 import os
 import pickle
-import sys
 from typing import Dict
 
 import numpy as np
@@ -13,8 +12,7 @@ from src.classification.speech.speech_emotion_classifier import (
 )
 from src.data.classwise_speech_data_reader import ClasswiseSpeechDataReader
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 CLASS_NAMES = [
     "angry",
@@ -37,7 +35,6 @@ class GMMClassifier(SpeechEmotionClassifier):
         """
         Initialize the GMMemotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("gmm", parameters)
@@ -51,7 +48,7 @@ class GMMClassifier(SpeechEmotionClassifier):
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
-        Training method for HMM model
+        Training method for GMM model
 
         :param parameters: Parameter dictionary used for training
         :param kwargs: Additional kwargs parameters
@@ -164,16 +161,12 @@ class GMMClassifier(SpeechEmotionClassifier):
         return np.argmax(predictions, axis=1)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = GMMClassifier()
     parameters = {"n_components": 16, "mfcc_num": 40}
-    if not os.path.exists("models/speech/gmm") or "train" in sys.argv:
-        classifier.train(parameters)
-        classifier.save()
+    save_path = "models/speech/gmm"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

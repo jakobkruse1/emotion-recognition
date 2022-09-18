@@ -21,6 +21,7 @@ class CrossValidationExperimentRunner(ExperimentRunner):
     def __init__(self, experiment_name: str, cv_splits: int = 5, **kwargs):
         """
         Constructor for the ExperimentRunner class
+
         :param experiment_name: Name of the experiment for log files and result
         :param cv_splits: How many splits to do in cross validation
         :param kwargs: Additional keyword arguments
@@ -39,6 +40,7 @@ class CrossValidationExperimentRunner(ExperimentRunner):
         :param index: The index of the experiment for saving the results
         :param kwargs: Additional kwargs
             data_reader: Overwrite data reader for testing purposes
+        :return: accuracy of the finished experiment
         """
         print(f"Running experiment {index}")
         print(experiment.get_parameter_dict())

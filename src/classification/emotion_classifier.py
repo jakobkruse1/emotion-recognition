@@ -46,7 +46,7 @@ class EmotionClassifier(ABC):
         raise NotImplementedError("Abstract class")  # pragma: no cover
 
     @abstractmethod
-    def load(self, parameters: dict, **kwargs) -> None:
+    def load(self, parameters: Dict = None, **kwargs) -> None:
         """
         Loading method that loads a previously trained model from disk.
 
@@ -56,7 +56,7 @@ class EmotionClassifier(ABC):
         raise NotImplementedError("Abstract class")  # pragma: no cover
 
     @abstractmethod
-    def save(self, parameters: dict, **kwargs) -> None:
+    def save(self, parameters: Dict = None, **kwargs) -> None:
         """
         Saving method that saves a previously trained model on disk.
 

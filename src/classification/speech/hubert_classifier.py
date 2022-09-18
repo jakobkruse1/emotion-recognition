@@ -1,6 +1,6 @@
 """ This file contains the HuBERT speech emotion classifier """
+
 import os
-import sys
 from typing import Dict
 
 import numpy as np
@@ -14,8 +14,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
 class FinetuningHuBERTModel(nn.Module):
@@ -105,6 +104,8 @@ class HuBERTClassifier(SpeechEmotionClassifier):
     def initialize_model(self, parameters: Dict) -> None:
         """
         Initializes a new and pretrained version of the HuBERT model
+
+        :param parameters: Parameters for the model initialization.
         """
         self.model = FinetuningHuBERTModel(self.device, parameters)
 
@@ -292,9 +293,9 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         return np.argmax(results, axis=1)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = HuBERTClassifier()
-    train_parameters = {
+    parameters = {
         "epochs": 50,
         "patience": 10,
         "learning_rate": 5e-05,
@@ -304,13 +305,9 @@ if __name__ == "__main__":  # pragma: no cover
         "extra_layer": 0,
         "batch_size": 64,
     }
-    if not os.path.exists("models/speech/hubert") or "train" in sys.argv:
-        classifier.train(train_parameters)
-        classifier.save()
+    save_path = "models/speech/hubert"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(train_parameters)
-    memotions = classifier.classify({"dataset": "all"})
-    mlabels = classifier.data_reader.get_labels(Set.TEST, {"dataset": "all"})
-    print(f"Labels Shape: {mlabels.shape}")
-    print(f"Emotions Shape: {memotions.shape}")
-    print(f"Accuracy: {accuracy(mlabels, memotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

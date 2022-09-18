@@ -1,14 +1,11 @@
 """Implements a text emotion classifier based on Distilbert"""
-import os
-import sys
+
 from typing import Dict
 
 import tensorflow as tf
 
 from src.classification.text.bert_classifier import BertClassifier
-from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
 class DistilBertClassifier(BertClassifier):
@@ -38,7 +35,7 @@ class DistilBertClassifier(BertClassifier):
 
     def load(self, parameters: Dict = None, **kwargs) -> None:
         """
-        Loading method for the BERT classifier that loads a stored model from
+        Loading method for the classifier that loads a stored model from
         disk.
 
         :param parameters: Loading parameters
@@ -52,7 +49,7 @@ class DistilBertClassifier(BertClassifier):
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
         """
-        Saving method for the BERT classifier that saves a trained model from
+        Saving method for the classifier that saves a trained model from
         disk.
 
         :param parameters: Saving parameters
@@ -70,16 +67,12 @@ class DistilBertClassifier(BertClassifier):
         self.logger.log_start({"train_parameters": parameters})
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = DistilBertClassifier()
     parameters = {"init_lr": 1e-05, "dropout_rate": 0.2, "dense_layer": 1024}
-    if not os.path.exists("models/text/distilbert") or "train" in sys.argv:
-        classifier.train(parameters)
-        classifier.save()
+    save_path = "models/text/distilbert"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()
