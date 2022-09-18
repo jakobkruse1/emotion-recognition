@@ -25,7 +25,6 @@ class PlantEmotionClassifier(EmotionClassifier):
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__(name, "plant", parameters)
-        parameters = parameters or {}
         self.callbacks = None
         self.optimizer = None
         self.loss = None
@@ -180,7 +179,7 @@ class PlantEmotionClassifier(EmotionClassifier):
         return mfccs
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     from src.data.plant_exp_reader import PlantExperimentDataReader
 
     dr = PlantExperimentDataReader()
@@ -190,3 +189,7 @@ if __name__ == "__main__":  # pragma: no cover
     ).take(1):
         mfcc = PlantEmotionClassifier.compute_mfccs(speech)
         print(mfcc.shape)
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

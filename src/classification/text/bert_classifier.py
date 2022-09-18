@@ -1,6 +1,5 @@
 """Implementation of an emotion classifier using BERT"""
-import os
-import sys
+
 from typing import Dict
 
 import numpy as np
@@ -13,8 +12,7 @@ from src.classification.text.text_emotion_classifier import (
     TextEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
 class BertClassifier(TextEmotionClassifier):
@@ -62,11 +60,13 @@ class BertClassifier(TextEmotionClassifier):
         """
         dropout_rate = parameters.get("dropout_rate", 0.1)
         dense_layer = parameters.get("dense_layer", 0)
-        input = tf.keras.layers.Input(shape=(), dtype=tf.string, name="text")
+        input_tensor = tf.keras.layers.Input(
+            shape=(), dtype=tf.string, name="text"
+        )
         preprocessor = hub.KerasLayer(
             self.preprocess_path, name="preprocessing"
         )
-        encoder_inputs = preprocessor(input)
+        encoder_inputs = preprocessor(input_tensor)
         encoder = hub.KerasLayer(
             self.model_path, trainable=True, name="BERT_encoder"
         )
@@ -78,7 +78,7 @@ class BertClassifier(TextEmotionClassifier):
         net = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(net)
-        return tf.keras.Model(input, net)
+        return tf.keras.Model(input_tensor, net)
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -192,16 +192,12 @@ class BertClassifier(TextEmotionClassifier):
         return np.argmax(results, axis=1)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = BertClassifier()
     parameters = {"init_lr": 1e-05, "dropout_rate": 0.1, "dense_layer": 0}
-    if not os.path.exists("models/text/bert") or "train" in sys.argv:
-        classifier.train(parameters)
-        classifier.save()
+    save_path = "models/text/bert"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

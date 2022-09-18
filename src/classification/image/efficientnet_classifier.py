@@ -1,6 +1,5 @@
 """ This file contains the EfficientNet facial emotion classifier """
-import os
-import sys
+
 from typing import Dict
 
 import numpy as np
@@ -10,8 +9,7 @@ from src.classification.image.image_emotion_classifier import (
     ImageEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
 class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
@@ -23,7 +21,6 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         """
         Initialize the EfficientNet emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("efficientnet", parameters)
@@ -37,20 +34,22 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         Initializes a new and pretrained version of the EfficientNetB2 model
         """
         extra_layer = parameters.get("extra_layer", None)
-        input = tf.keras.layers.Input(
+        input_tensor = tf.keras.layers.Input(
             shape=(48, 48, 3), dtype=tf.float32, name="image"
         )
-        input = tf.keras.applications.efficientnet.preprocess_input(input)
+        input_tensor = tf.keras.applications.efficientnet.preprocess_input(
+            input_tensor
+        )
 
         model = tf.keras.applications.EfficientNetB2(
             include_top=False,
             weights="imagenet",
-            input_tensor=input,
+            input_tensor=input_tensor,
             input_shape=(48, 48, 3),
         )
         for layer in model.layers[: parameters.get("frozen_layers", -10)]:
             layer.trainable = False
-        output = model(input)
+        output = model(input_tensor)
         flat = tf.keras.layers.Flatten()(output)
         if extra_layer:
             flat = tf.keras.layers.Dense(
@@ -63,7 +62,7 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         top = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(flat)
-        self.model = tf.keras.Model(input, top)
+        self.model = tf.keras.Model(input_tensor, top)
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -144,9 +143,9 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         return np.argmax(results, axis=1)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = MultiTaskEfficientNetB2Classifier()
-    main_parameters = {
+    parameters = {
         "epochs": 50,
         "batch_size": 256,
         "patience": 15,
@@ -156,13 +155,9 @@ if __name__ == "__main__":  # pragma: no cover
         "augment": True,
         "weighted": True,
     }
-    if not os.path.exists("models/image/efficientnet") or "train" in sys.argv:
-        classifier.train(main_parameters)
-        classifier.save()
+    save_path = "models/image/efficientnet"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(main_parameters)
-    emotions = classifier.classify()
-    main_labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {main_labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(main_labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

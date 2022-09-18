@@ -9,27 +9,23 @@ from sklearn.metrics import (
 )
 
 
-def accuracy(labels: np.ndarray, prediction: np.ndarray, **kwargs) -> float:
+def accuracy(labels: np.ndarray, prediction: np.ndarray) -> float:
     """
     Compute the accuracy of predictions.
 
     :param labels: Labels array.
     :param prediction: Predicitions array from classifier.
-    :param kwargs: Additional kwargs.
     :return: Accuracy
     """
     return accuracy_score(labels, prediction)
 
 
-def per_class_accuracy(
-    labels: np.ndarray, prediction: np.ndarray, **kwargs
-) -> float:
+def per_class_accuracy(labels: np.ndarray, prediction: np.ndarray) -> float:
     """
     Compute the average per class accuracy of predictions.
 
     :param labels: Labels array.
     :param prediction: Predicitions array from classifier.
-    :param kwargs: Additional kwargs.
     :return: Per class accuracy average
     """
     matrix = confusion_matrix(labels, prediction)
@@ -37,13 +33,12 @@ def per_class_accuracy(
     return np.nanmean(per_class_accs)
 
 
-def precision(labels: np.ndarray, prediction: np.ndarray, **kwargs) -> float:
+def precision(labels: np.ndarray, prediction: np.ndarray) -> float:
     """
     Compute the precision of predictions.
 
     :param labels: Labels array.
     :param prediction: Predicitions array from classifier.
-    :param kwargs: Additional kwargs.
     :return: Precision
     """
     return precision_score(
@@ -51,13 +46,12 @@ def precision(labels: np.ndarray, prediction: np.ndarray, **kwargs) -> float:
     )
 
 
-def recall(labels: np.ndarray, prediction: np.ndarray, **kwargs) -> float:
+def recall(labels: np.ndarray, prediction: np.ndarray) -> float:
     """
     Compute the recall of predictions.
 
     :param labels: Labels array.
     :param prediction: Predicitions array from classifier.
-    :param kwargs: Additional kwargs.
     :return: Recall
     """
     return recall_score(labels, prediction, average="macro")

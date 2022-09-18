@@ -8,6 +8,7 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 
 from src.data.data_reader import DataReader, Set
+from src.utils import reader_main
 
 
 class ImageDataReader(DataReader):
@@ -182,3 +183,12 @@ class ImageDataReader(DataReader):
         degrees = degrees * 0.017453292519943295
         image = tfa.image.rotate(image, degrees)
         return image, label
+
+
+def _main():  # pragma: no cover
+    reader = ImageDataReader()
+    reader_main(reader, {})
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

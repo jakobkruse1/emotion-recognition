@@ -7,6 +7,7 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 
 from src.data.data_reader import DataReader, Set
+from src.utils import reader_main
 
 CLASS_NAMES = [
     "angry",
@@ -288,9 +289,10 @@ class SpeechDataReader(DataReader):
         return x, y
 
 
-if __name__ == "__main__":  # pragma: no cover
-    dr = SpeechDataReader()
-    ds = dr.get_seven_emotion_data(Set.TRAIN, batch_size=64)
+def _main():  # pragma: no cover
+    reader = SpeechDataReader()
+    reader_main(reader, {})
 
-    for data, labels in ds:
-        print(f"{data.shape} | {labels.shape}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

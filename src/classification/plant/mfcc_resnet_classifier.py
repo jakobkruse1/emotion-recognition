@@ -1,16 +1,12 @@
 """ This file implements a Resnet classifier for the MFCC features derived
 from the plant data. """
-import copy
-import os
-import sys
+
 from typing import Dict
 
-import numpy as np
 import tensorflow as tf
 
 from src.classification.plant.nn_classifier import PlantNNBaseClassifier
-from src.data.data_reader import Set
-from src.utils.metrics import accuracy, per_class_accuracy
+from src.utils import cv_training_loop
 
 
 class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
@@ -38,10 +34,10 @@ class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
         l1 = parameters.get("l1", 1e-4)
         l2 = parameters.get("l2", 1e-3)
         input_size = self.data_reader.get_input_shape(parameters)[0]
-        input = tf.keras.layers.Input(
+        input_tensor = tf.keras.layers.Input(
             shape=(input_size,), dtype=tf.float32, name="raw"
         )
-        mfcc = self.compute_mfccs(input, {"num_mfcc": num_mfcc})
+        mfcc = self.compute_mfccs(input_tensor, {"num_mfcc": num_mfcc})
         mfcc = tf.expand_dims(mfcc, 3)
         mfcc = tf.stack([mfcc, mfcc, mfcc], axis=3)
         resnet = tf.keras.applications.resnet.ResNet50(
@@ -62,7 +58,7 @@ class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
         )
         hidden = tf.keras.layers.Dropout(dropout)(hidden)
         out = tf.keras.layers.Dense(7, activation="softmax")(hidden)
-        self.model = tf.keras.Model(input, out)
+        self.model = tf.keras.Model(input_tensor, out)
 
     @staticmethod
     def init_parameters(parameters: Dict = None, **kwargs) -> Dict:
@@ -79,7 +75,7 @@ class PlantMFCCResnetClassifier(PlantNNBaseClassifier):
         return parameters
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = PlantMFCCResnetClassifier()
     parameters = {
         "epochs": 1000,
@@ -95,43 +91,9 @@ if __name__ == "__main__":  # pragma: no cover
         "hop": 10,
         "balanced": True,
     }
-    if (
-        not os.path.exists("models/plant/plant_mfcc_resnet")
-        or "train" in sys.argv
-    ):
-        accuracies = []
-        per_class_accuracies = []
-        for i in range(1, 5):
-            this_acc = 0.0
-            this_pc_acc = 0.0
-            while this_acc < 0.3 or this_pc_acc < 0.3:
-                cv_params = copy.deepcopy(parameters)
-                classifier = PlantMFCCResnetClassifier()
-                cv_params["cv_index"] = i
-                classifier.train(cv_params)
-                classifier.load({"save_path": "models/plant/checkpoint"})
-                classifier.save(
-                    {"save_path": f"models/plant/plant_mfcc_resnet_{i}"}
-                )
-                classifier.load({"save_path": "models/plant/checkpoint"})
-                pred = classifier.classify(cv_params)
-                labels = classifier.data_reader.get_labels(Set.TEST, cv_params)
-                this_acc = accuracy(labels, pred)
-                this_pc_acc = per_class_accuracy(labels, pred)
-                classifier.data_reader.cleanup()
-            accuracies.append(this_acc)
-            per_class_accuracies.append(this_pc_acc)
-        print(f"Training Acc: {np.mean(accuracies)} | {accuracies}")
-        print(
-            f"Training Class Acc: {np.mean(per_class_accuracies)} | "
-            f"{per_class_accuracies}"
-        )
+    save_path = "models/plant/plant_mfcc_resnet"
+    cv_training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify(parameters)
-    print(np.unique(emotions, return_counts=True))
-    labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
-    print(f"Per Class Accuracy: {per_class_accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

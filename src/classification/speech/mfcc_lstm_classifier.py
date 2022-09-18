@@ -1,6 +1,5 @@
 """ This file contains the MFCC-LSTM speech emotion classifier """
-import os
-import sys
+
 from typing import Dict
 
 import numpy as np
@@ -10,8 +9,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
 class MFCCLSTMClassifier(SpeechEmotionClassifier):
@@ -40,16 +38,16 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
         """
         lstm_units = parameters.get("lstm_units", 256)
         dropout = parameters.get("dropout", 0.2)
-        input = tf.keras.layers.Input(
+        input_tensor = tf.keras.layers.Input(
             shape=(48000), dtype=tf.float32, name="raw"
         )
-        mfcc = self.compute_mfccs(input)
+        mfcc = self.compute_mfccs(input_tensor)
         out = tf.keras.layers.LSTM(lstm_units)(mfcc)
         out = tf.keras.layers.Dropout(dropout)(out)
         out = tf.keras.layers.Dense(1024, activation="relu")(out)
         out = tf.keras.layers.Dense(512, activation="relu")(out)
         out = tf.keras.layers.Dense(7, activation="softmax")(out)
-        self.model = tf.keras.Model(input, out)
+        self.model = tf.keras.Model(input_tensor, out)
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -130,7 +128,7 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
         return np.argmax(results, axis=1)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = MFCCLSTMClassifier()
     parameters = {
         "epochs": 50,
@@ -140,13 +138,9 @@ if __name__ == "__main__":  # pragma: no cover
         "dropout": 0.2,
         "weighted": True,
     }
-    if not os.path.exists("models/speech/mfcc_lstm") or "train" in sys.argv:
-        classifier.train(parameters)
-        classifier.save()
+    save_path = "models/speech/mfcc_lstm"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

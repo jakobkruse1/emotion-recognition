@@ -8,6 +8,7 @@ import pandas as pd
 import tensorflow as tf
 
 from src.data.data_reader import DataReader, Set
+from src.utils import reader_main
 
 
 class TextDataReader(DataReader):
@@ -100,3 +101,12 @@ class TextDataReader(DataReader):
             csv_file_path, delimiter="\t", usecols=[1], header=None
         )
         return np.reshape(labels.to_numpy(), (-1,))
+
+
+def _main():  # pragma: no cover
+    reader = TextDataReader()
+    reader_main(reader, {})
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

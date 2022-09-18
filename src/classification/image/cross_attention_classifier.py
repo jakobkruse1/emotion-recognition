@@ -1,4 +1,4 @@
-""" This file contains the CrossAttention facial emotion classifier """
+""" This file contains the CrossAttention facial emotion classifier. """
 import os
 import sys
 from typing import Dict, Tuple
@@ -6,10 +6,7 @@ from typing import Dict, Tuple
 import numpy as np
 import tensorflow as tf
 import torch
-import torch.nn.init as init
 from alive_progress import alive_bar
-from torch import nn
-from torch.nn import functional as F
 from torchvision import models
 from tqdm import tqdm
 
@@ -17,11 +14,10 @@ from src.classification.image.image_emotion_classifier import (
     ImageEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
-class DAN(nn.Module):
+class DAN(torch.nn.Module):
     """
     This class implements the "Distract Your Attention" (DAN) network,
     which was introduced in https://github.com/yaoing/DAN
@@ -43,13 +39,13 @@ class DAN(nn.Module):
             weights=models.ResNet18_Weights.DEFAULT if pretrained else None
         )
 
-        self.features = nn.Sequential(*list(resnet.children())[:-2])
+        self.features = torch.nn.Sequential(*list(resnet.children())[:-2])
         self.num_head = num_head
         for i in range(num_head):
             setattr(self, "cat_head%d" % i, CrossAttentionHead())
-        self.sig = nn.Sigmoid()
-        self.fc = nn.Linear(512, num_class)
-        self.bn = nn.BatchNorm1d(num_class)
+        self.sig = torch.nn.Sigmoid()
+        self.fc = torch.nn.Linear(512, num_class)
+        self.bn = torch.nn.BatchNorm1d(num_class)
 
     def forward(
         self, x: torch.Tensor
@@ -70,7 +66,7 @@ class DAN(nn.Module):
 
         heads = torch.stack(heads).permute([1, 0, 2])
         if heads.size(1) > 1:
-            heads = F.log_softmax(heads, dim=1)
+            heads = torch.nn.functional.log_softmax(heads, dim=1)
 
         out = self.fc(heads.sum(dim=1))
         out = self.bn(out)
@@ -78,7 +74,7 @@ class DAN(nn.Module):
         return out, x, heads
 
 
-class CrossAttentionHead(nn.Module):
+class CrossAttentionHead(torch.nn.Module):
     """
     Implementation of a CrossAttention Head in pytorch.
     Taken from the original paper without changes.
@@ -99,17 +95,17 @@ class CrossAttentionHead(nn.Module):
         Function that initializes the weights of all layers.
         """
         for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                init.kaiming_normal_(m.weight, mode="fan_out")
+            if isinstance(m, torch.nn.Conv2d):
+                torch.nn.init.kaiming_normal_(m.weight, mode="fan_out")
                 if m.bias is not None:
-                    init.constant_(m.bias, 0)
-            elif isinstance(m, nn.BatchNorm2d):
-                init.constant_(m.weight, 1)
-                init.constant_(m.bias, 0)
-            elif isinstance(m, nn.Linear):
-                init.normal_(m.weight, std=0.001)
+                    torch.nn.init.constant_(m.bias, 0)
+            elif isinstance(m, torch.nn.BatchNorm2d):
+                torch.nn.init.constant_(m.weight, 1)
+                torch.nn.init.constant_(m.bias, 0)
+            elif isinstance(m, torch.nn.Linear):
+                torch.nn.init.normal_(m.weight, std=0.001)
                 if m.bias is not None:
-                    init.constant_(m.bias, 0)
+                    torch.nn.init.constant_(m.bias, 0)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -124,7 +120,7 @@ class CrossAttentionHead(nn.Module):
         return ca
 
 
-class SpatialAttention(nn.Module):
+class SpatialAttention(torch.nn.Module):
     """
     SpatialAttention layer that is a part of the CrossAttentionHead.
     """
@@ -134,23 +130,23 @@ class SpatialAttention(nn.Module):
         Initializer function that creates the SpatialAttention layer
         """
         super().__init__()
-        self.conv1x1 = nn.Sequential(
-            nn.Conv2d(512, 256, kernel_size=1),
-            nn.BatchNorm2d(256),
+        self.conv1x1 = torch.nn.Sequential(
+            torch.nn.Conv2d(512, 256, kernel_size=1),
+            torch.nn.BatchNorm2d(256),
         )
-        self.conv_3x3 = nn.Sequential(
-            nn.Conv2d(256, 512, kernel_size=3, padding=1),
-            nn.BatchNorm2d(512),
+        self.conv_3x3 = torch.nn.Sequential(
+            torch.nn.Conv2d(256, 512, kernel_size=3, padding=1),
+            torch.nn.BatchNorm2d(512),
         )
-        self.conv_1x3 = nn.Sequential(
-            nn.Conv2d(256, 512, kernel_size=(1, 3), padding=(0, 1)),
-            nn.BatchNorm2d(512),
+        self.conv_1x3 = torch.nn.Sequential(
+            torch.nn.Conv2d(256, 512, kernel_size=(1, 3), padding=(0, 1)),
+            torch.nn.BatchNorm2d(512),
         )
-        self.conv_3x1 = nn.Sequential(
-            nn.Conv2d(256, 512, kernel_size=(3, 1), padding=(1, 0)),
-            nn.BatchNorm2d(512),
+        self.conv_3x1 = torch.nn.Sequential(
+            torch.nn.Conv2d(256, 512, kernel_size=(3, 1), padding=(1, 0)),
+            torch.nn.BatchNorm2d(512),
         )
-        self.relu = nn.ReLU()
+        self.relu = torch.nn.ReLU()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -167,7 +163,7 @@ class SpatialAttention(nn.Module):
         return out
 
 
-class ChannelAttention(nn.Module):
+class ChannelAttention(torch.nn.Module):
     """
     The ChannelAttention layer, which is the second part of the
     CrossAttentionHead.
@@ -178,13 +174,13 @@ class ChannelAttention(nn.Module):
         Initialization function
         """
         super().__init__()
-        self.gap = nn.AdaptiveAvgPool2d(1)
-        self.attention = nn.Sequential(
-            nn.Linear(512, 32),
-            nn.BatchNorm1d(32),
-            nn.ReLU(inplace=True),
-            nn.Linear(32, 512),
-            nn.Sigmoid(),
+        self.gap = torch.nn.AdaptiveAvgPool2d(1)
+        self.attention = torch.nn.Sequential(
+            torch.nn.Linear(512, 32),
+            torch.nn.BatchNorm1d(32),
+            torch.nn.ReLU(inplace=True),
+            torch.nn.Linear(32, 512),
+            torch.nn.Sigmoid(),
         )
 
     def forward(self, sa: torch.Tensor) -> torch.Tensor:
@@ -203,7 +199,7 @@ class ChannelAttention(nn.Module):
         return out
 
 
-class AffinityLoss(nn.Module):
+class AffinityLoss(torch.nn.Module):
     """
     Affinity Loss function that is supposed to increase
     the inter-class distances while decreasing the intra-class distances.
@@ -223,10 +219,10 @@ class AffinityLoss(nn.Module):
         super(AffinityLoss, self).__init__()
         self.num_class = num_class
         self.feat_dim = feat_dim
-        self.gap = nn.AdaptiveAvgPool2d(1)
+        self.gap = torch.nn.AdaptiveAvgPool2d(1)
         self.device = device
 
-        self.centers = nn.Parameter(
+        self.centers = torch.nn.Parameter(
             torch.randn(self.num_class, self.feat_dim).to(device)
         )
 
@@ -263,7 +259,7 @@ class AffinityLoss(nn.Module):
         return loss
 
 
-class PartitionLoss(nn.Module):
+class PartitionLoss(torch.nn.Module):
     """
     Partition loss function that maximizes the variance among attention maps.
     Refer to chapter 3.3.1 for more details.
@@ -305,7 +301,6 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         """
         Initialize the CrossAttention emotion classifier
 
-        :param name: The name for the classifier
         :param parameters: Some configuration parameters for the classifier
         """
         super().__init__("cross_attention", parameters)
@@ -561,7 +556,7 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         return data, labels
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = CrossAttentionNetworkClassifier()
     parameters = {
         "learning_rate": 0.0003,
@@ -569,16 +564,9 @@ if __name__ == "__main__":  # pragma: no cover
         "weighted": False,
         "balanced": False,
     }
-    if (
-        not os.path.exists("models/image/cross_attention")
-        or "train" in sys.argv
-    ):
-        classifier.train(parameters)
-        classifier.save()
+    save_path = "models/image/cross_attention"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

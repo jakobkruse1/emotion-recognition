@@ -1,6 +1,7 @@
 """ This file defines an interface for classifiers for the plant data. """
 
 import copy
+import os.path
 from abc import abstractmethod
 from typing import Dict
 
@@ -54,8 +55,7 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
         self.logger.log_start({"train_parameters": parameters})
         epochs = parameters.get("epochs", 20)
 
-        if not self.model:
-            self.initialize_model(parameters)
+        self.initialize_model(parameters)
         self.prepare_training(parameters)
         self.model.compile(
             optimizer=self.optimizer, loss=self.loss, metrics=self.metrics
@@ -96,6 +96,8 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
             )
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", f"models/plant/{self.name}")
+        if os.path.exists("models/plant/checkpoint"):
+            self.load({"save_path": "models/plant/checkpoint"})
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 

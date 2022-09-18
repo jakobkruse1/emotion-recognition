@@ -11,6 +11,7 @@ from scipy.io import wavfile
 
 from src.data.data_reader import Set
 from src.data.experiment_data_reader import ExperimentDataReader
+from src.utils import reader_main
 from src.utils.ground_truth import experiment_ground_truth
 
 
@@ -412,28 +413,19 @@ class PlantExperimentDataReader(ExperimentDataReader):
         return test_sample.shape
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     reader = PlantExperimentDataReader()
-    reader.prepare_faceapi_labels()
-    main_params = {
+    parameters = {
         "label_mode": "both",
         "cv_portions": 5,
-        "window": 10,
-        "hop": 10,
+        "window": 20,
+        "hop": 20,
     }
-    for cv_index in range(5):
-        main_params["cv_index"] = cv_index
-        main_data = reader.get_seven_emotion_data(Set.TRAIN, 64, main_params)
-        main_all_labels = np.empty((0,))
-        for _, mlabels in main_data:
-            main_all_labels = np.concatenate(
-                [main_all_labels, np.argmax(mlabels, axis=1)], axis=0
-            )
-        print(
-            f"CV Split {cv_index}: Data Distribution "
-            f"{np.unique(main_all_labels, return_counts=True)}"
-        )
-    print(f"Train size: {reader.get_labels(Set.TRAIN, main_params).shape[0]}")
-    print(f"Val size: {reader.get_labels(Set.VAL, main_params).shape[0]}")
-    print(f"Test size: {reader.get_labels(Set.TEST, main_params).shape[0]}")
-    print(f"All size: {reader.get_labels(Set.ALL, main_params).shape[0]}")
+    for split in range(5):
+        print(f"Split {split}/5")
+        parameters["cv_split"] = split
+        reader_main(reader, parameters)
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

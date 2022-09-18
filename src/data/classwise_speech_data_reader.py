@@ -271,7 +271,7 @@ class ClasswiseSpeechDataReader(DataReader):
         return audio, y
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     dr = ClasswiseSpeechDataReader()
     ds = dr.get_seven_emotion_data(Set.VAL, batch_size=-1)
 
@@ -282,3 +282,7 @@ if __name__ == "__main__":  # pragma: no cover
 
     for data, class_name in ds:
         print(f"{class_name}: {data.shape}")
+
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

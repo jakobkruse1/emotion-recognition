@@ -1,4 +1,7 @@
-"""Package for image based emotion classifiers"""
+"""
+This package contains a few image emotion classifiers based on different
+classifier architectures.
+"""
 
 from .cross_attention_classifier import (  # noqa: F401
     CrossAttentionNetworkClassifier,

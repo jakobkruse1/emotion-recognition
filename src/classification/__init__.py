@@ -1,3 +1,5 @@
 """Package responsible for emotion classification"""
 
-from .emotion_classifier import EmotionClassifier  # noqa: F401
+from src.classification.emotion_classifier import (  # noqa: F401
+    EmotionClassifier,
+)

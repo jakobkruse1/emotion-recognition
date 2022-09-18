@@ -1,6 +1,5 @@
 """ This file contains the BYOL-S speech emotion classifier """
 import os
-import sys
 from typing import Dict
 
 import numpy as np
@@ -14,8 +13,7 @@ from src.classification.speech.speech_emotion_classifier import (
     SpeechEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
 class BYOLSModel(nn.Module):
@@ -318,7 +316,7 @@ class BYOLSClassifier(SpeechEmotionClassifier):
         return np.argmax(results, axis=1)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = BYOLSClassifier()
     parameters = {
         "epochs": 50,
@@ -328,13 +326,9 @@ if __name__ == "__main__":  # pragma: no cover
         "hidden": 1024,
         "freeze": True,
     }
-    if not os.path.exists("models/speech/byols") or "train" in sys.argv:
-        classifier.train(parameters)
-        classifier.save()
+    save_path = "models/speech/byols"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

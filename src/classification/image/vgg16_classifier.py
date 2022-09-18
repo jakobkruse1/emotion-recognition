@@ -1,6 +1,5 @@
 """ This file contains the VGG16 facial emotion classifier """
-import os
-import sys
+
 from typing import Dict
 
 import numpy as np
@@ -10,8 +9,7 @@ from src.classification.image.image_emotion_classifier import (
     ImageEmotionClassifier,
 )
 from src.data.data_reader import Set
-from src.utils import logging
-from src.utils.metrics import accuracy
+from src.utils import logging, training_loop
 
 
 class VGG16Classifier(ImageEmotionClassifier):
@@ -40,20 +38,22 @@ class VGG16Classifier(ImageEmotionClassifier):
         l1 = parameters.get("l1", 0.0)
         l2 = parameters.get("l2", 0.0)
         dropout = parameters.get("dropout", 0.0)
-        input = tf.keras.layers.Input(
+        input_tensor = tf.keras.layers.Input(
             shape=(48, 48, 3), dtype=tf.float32, name="image"
         )
-        input = tf.keras.applications.vgg16.preprocess_input(input)
+        input_tensor = tf.keras.applications.vgg16.preprocess_input(
+            input_tensor
+        )
 
         model = tf.keras.applications.VGG16(
             include_top=False,
             weights="imagenet",
-            input_tensor=input,
+            input_tensor=input_tensor,
             input_shape=(48, 48, 3),
         )
         for layer in model.layers[: parameters.get("frozen_layers", -4)]:
             layer.trainable = False
-        out = model(input)
+        out = model(input_tensor)
 
         out = tf.keras.layers.Flatten()(out)
         if parameters.get("deep", True):
@@ -81,7 +81,7 @@ class VGG16Classifier(ImageEmotionClassifier):
         top = tf.keras.layers.Dense(
             7, activation="softmax", name="classifier"
         )(out)
-        self.model = tf.keras.Model(input, top)
+        self.model = tf.keras.Model(input_tensor, top)
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
@@ -163,7 +163,7 @@ class VGG16Classifier(ImageEmotionClassifier):
         return np.argmax(results, axis=1)
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():  # pragma: no cover
     classifier = VGG16Classifier()
     parameters = {
         "epochs": 30,
@@ -179,13 +179,9 @@ if __name__ == "__main__":  # pragma: no cover
         "weighted": False,
         "balanced": False,
     }
-    if not os.path.exists("models/image/vgg16") or "train" in sys.argv:
-        classifier.train(parameters)
-        classifier.save()
+    save_path = "models/image/vgg16"
+    training_loop(classifier, parameters, save_path)
 
-    classifier.load(parameters)
-    emotions = classifier.classify()
-    labels = classifier.data_reader.get_labels(Set.TEST)
-    print(f"Labels Shape: {labels.shape}")
-    print(f"Emotions Shape: {emotions.shape}")
-    print(f"Accuracy: {accuracy(labels, emotions)}")
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()
