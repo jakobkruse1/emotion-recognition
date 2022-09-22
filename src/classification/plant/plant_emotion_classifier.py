@@ -91,7 +91,7 @@ class PlantEmotionClassifier(EmotionClassifier):
                 restore_best_weights=True,
             ),
             tf.keras.callbacks.ModelCheckpoint(
-                "models/plant/checkpoint",
+                f"models/plant/checkpoint_{parameters.get('cv_index', '')}",
                 save_best_only=True,
                 monitor="val_categorical_accuracy",
                 mode="max",

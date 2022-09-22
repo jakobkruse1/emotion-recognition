@@ -40,7 +40,7 @@ def main(cv_split: int):
     while max_acc < acc_goal or max_pc_acc < pc_acc_goal:
         classifier = PlantMFCCResnetClassifier()
         classifier.train(parameters)
-        classifier.load({"save_path": "models/plant/checkpoint"})
+        classifier.load({"save_path": f"models/plant/checkpoint_{cv_split}"})
         pred = classifier.classify(parameters)
         labels = classifier.data_reader.get_labels(Set.TEST, parameters)
         this_acc = accuracy(labels, pred)
