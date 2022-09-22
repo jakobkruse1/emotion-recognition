@@ -12,9 +12,11 @@ experiments/results
 # Models
 models/text/bert
 models/text/distilbert
+models/text/old
 models/image/efficientnet
 models/image/cross_attention
 models/image/vgg16
+models/image/old
 models/speech/mfcc_lstm
 models/speech/hubert
 models/speech/wav2vec2
@@ -23,6 +25,7 @@ models/speech/gmm
 models/speech/svm
 models/speech/serab-byols
 models/speech/byols
+models/speech/old
 models/cache
 models/plant/plant_dense
 models/plant/plant_lstm

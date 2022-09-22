@@ -6,8 +6,10 @@ import sys
 from typing import Any, Dict, Optional
 
 import numpy as np
+import tensorflow as tf
 
 from src.data.data_reader import Set
+from src.utils.logging import TorchLogger
 from src.utils.metrics import accuracy, per_class_accuracy
 
 
@@ -25,6 +27,9 @@ def training_loop(
     :param parameters: The parameters used for training the classifier.
     :param save_path: The save path to save the classifier at.
     """
+    if isinstance(classifier.logger, TorchLogger):
+        tf.config.set_visible_devices([], "GPU")
+    parameters["save_path"] = save_path
     if not os.path.exists(save_path) or "train" in sys.argv:
         classifier.train(parameters)
         classifier.save()
@@ -35,7 +40,7 @@ def training_loop(
     print(f"Labels Shape: {labels.shape}")
     print(f"Emotions Shape: {emotions.shape}")
     print(f"Accuracy: {accuracy(labels, emotions)}")
-    print(f"Accuracy: {per_class_accuracy(labels, emotions)}")
+    print(f"Per Class Accuracy: {per_class_accuracy(labels, emotions)}")
 
 
 def cv_training_loop(
@@ -59,6 +64,8 @@ def cv_training_loop(
     :param parameters: The parameters used for training the classifier.
     :param save_path: The save path to save the classifier at.
     """
+    if isinstance(classifier.logger, TorchLogger):
+        tf.config.set_visible_devices([], "GPU")
     # Training here
     accuracies = []
     per_class_accuracies = []

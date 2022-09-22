@@ -247,13 +247,11 @@ class BYOLSClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get(
-            "save_path", "models/speech/byols/byols.pth"
+        save_path = parameters.get("save_path", "models/speech/byols")
+        saved_data = torch.load(
+            os.path.join(save_path, "byols.pth"), map_location=self.device
         )
-        saved_data = torch.load(save_path, map_location=self.device)
-        with open(
-            os.path.join(os.path.dirname(save_path), "model.txt"), "r"
-        ) as file:
+        with open(os.path.join(save_path, "model.txt"), "r") as file:
             model_name = file.read()
         self.model = BYOLSModel(model_name, self.device, parameters)
         self.model.load_state_dict(saved_data["model_state_dict"])
@@ -271,16 +269,15 @@ class BYOLSClassifier(SpeechEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get(
-            "save_path", "models/speech/byols/byols.pth"
+        save_path = parameters.get("save_path", "models/speech/byols")
+        os.makedirs(save_path, exist_ok=True)
+        torch.save(
+            {"model_state_dict": self.model.state_dict()},
+            os.path.join(save_path, "byols.pth"),
         )
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        torch.save({"model_state_dict": self.model.state_dict()}, save_path)
-        with open(
-            os.path.join(os.path.dirname(save_path), "model.txt"), "w"
-        ) as file:
+        with open(os.path.join(save_path, "model.txt"), "w") as file:
             file.write(self.model.model_name)
-        self.logger.save_logs(os.path.dirname(save_path))
+        self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
