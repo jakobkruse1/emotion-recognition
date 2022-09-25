@@ -473,10 +473,11 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get(
-            "save_path", "models/image/cross_attention/cross_attention.pth"
+        save_path = parameters.get("save_path", "models/image/cross_attention")
+        saved_data = torch.load(
+            os.path.join(save_path, "cross_attention.pth"),
+            map_location=self.device,
         )
-        saved_data = torch.load(save_path, map_location=self.device)
 
         self.model = DAN(num_class=7, num_head=4, pretrained=False)
         self.model.load_state_dict(saved_data["model_state_dict"])
@@ -494,12 +495,13 @@ class CrossAttentionNetworkClassifier(ImageEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get(
-            "save_path", "models/image/cross_attention/cross_attention.pth"
+        save_path = parameters.get("save_path", "models/image/cross_attention")
+        os.makedirs(save_path, exist_ok=True)
+        torch.save(
+            {"model_state_dict": self.model.state_dict()},
+            os.path.join(save_path, "cross_attention.pth"),
         )
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        torch.save({"model_state_dict": self.model.state_dict()}, save_path)
-        self.logger.save_logs(os.path.dirname(save_path))
+        self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """

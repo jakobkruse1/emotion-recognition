@@ -232,10 +232,10 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get(
-            "save_path", "models/speech/hubert/hubert.pth"
+        save_path = parameters.get("save_path", "models/speech/hubert")
+        saved_data = torch.load(
+            os.path.join(save_path, "hubert.pth"), map_location=self.device
         )
-        saved_data = torch.load(save_path, map_location=self.device)
         self.model = FinetuningHuBERTModel(self.device, parameters)
         self.model.load_state_dict(saved_data["model_state_dict"])
         self.model.eval()
@@ -252,12 +252,13 @@ class HuBERTClassifier(SpeechEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get(
-            "save_path", "models/speech/hubert/hubert.pth"
+        save_path = parameters.get("save_path", "models/speech/hubert")
+        os.makedirs(save_path, exist_ok=True)
+        torch.save(
+            {"model_state_dict": self.model.state_dict()},
+            os.path.join(save_path, "hubert.pth"),
         )
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        torch.save({"model_state_dict": self.model.state_dict()}, save_path)
-        self.logger.save_logs(os.path.dirname(save_path))
+        self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
@@ -303,7 +304,7 @@ def _main():  # pragma: no cover
         "num_hidden_layers": 10,
         "freeze": False,
         "extra_layer": 0,
-        "batch_size": 64,
+        "batch_size": 32,
     }
     save_path = "models/speech/hubert"
     training_loop(classifier, parameters, save_path)

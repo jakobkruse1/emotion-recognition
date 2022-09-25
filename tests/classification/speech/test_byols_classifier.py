@@ -34,7 +34,7 @@ def test_byols_workflow():
     classifier.train(train_parameters)
 
     shutil.rmtree("tests/temp/byols", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/byols/byols.pth"}
+    save_parameters = {"save_path": "tests/temp/byols"}
     classifier.save(save_parameters)
     assert os.path.exists("tests/temp/byols/byols.pth")
     assert os.path.exists("tests/temp/byols/model.txt")

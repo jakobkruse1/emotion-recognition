@@ -97,7 +97,9 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", f"models/plant/{self.name}")
         if os.path.exists("models/plant/checkpoint"):
-            self.load({"save_path": "models/plant/checkpoint"})
+            self.load(
+                {"save_path": "models/plant/checkpoint"}
+            )  # pragma: no cover
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 
