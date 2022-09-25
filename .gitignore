@@ -31,7 +31,7 @@ models/plant/plant_dense
 models/plant/plant_lstm
 models/plant/plant_mfcc_cnn
 models/plant/plant_mfcc_resnet*
-models/plant/checkpoint
+models/plant/checkpoint*
 
 # Documentation
 !docs

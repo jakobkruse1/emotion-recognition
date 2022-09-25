@@ -45,7 +45,10 @@ def main(cv_split: int):
         labels = classifier.data_reader.get_labels(Set.TEST, parameters)
         this_acc = accuracy(labels, pred)
         this_pc_acc = per_class_accuracy(labels, pred)
-        if this_pc_acc > max_pc_acc:
+        if (
+            this_pc_acc > max_pc_acc
+            and this_acc + this_pc_acc > max_acc + max_pc_acc
+        ):
             classifier.save(
                 {"save_path": f"models/plant/plant_mfcc_resnet_{cv_split}"}
             )
