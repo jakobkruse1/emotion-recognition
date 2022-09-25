@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="src.classification.image package" href="src.classification.image.html" />
@@ -42,22 +43,137 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="src.classification.image.html">src.classification.image package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.cross_attention_classifier">src.classification.image.cross_attention_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.efficientnet_classifier">src.classification.image.efficientnet_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.image_emotion_classifier">src.classification.image.image_emotion_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image.vgg16_classifier">src.classification.image.vgg16_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-src.classification.image">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#src-classification-image-cross-attention-classifier-module">src.classification.image.cross_attention_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.AffinityLoss"><code class="docutils literal notranslate"><span class="pre">AffinityLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.AffinityLoss.forward"><code class="docutils literal notranslate"><span class="pre">AffinityLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.ChannelAttention"><code class="docutils literal notranslate"><span class="pre">ChannelAttention</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.ChannelAttention.forward"><code class="docutils literal notranslate"><span class="pre">ChannelAttention.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionHead"><code class="docutils literal notranslate"><span class="pre">CrossAttentionHead</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionHead.forward"><code class="docutils literal notranslate"><span class="pre">CrossAttentionHead.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionHead.init_weights"><code class="docutils literal notranslate"><span class="pre">CrossAttentionHead.init_weights()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionNetworkClassifier"><code class="docutils literal notranslate"><span class="pre">CrossAttentionNetworkClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionNetworkClassifier.classify"><code class="docutils literal notranslate"><span class="pre">CrossAttentionNetworkClassifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionNetworkClassifier.initialize_model"><code class="docutils literal notranslate"><span class="pre">CrossAttentionNetworkClassifier.initialize_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionNetworkClassifier.load"><code class="docutils literal notranslate"><span class="pre">CrossAttentionNetworkClassifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionNetworkClassifier.save"><code class="docutils literal notranslate"><span class="pre">CrossAttentionNetworkClassifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionNetworkClassifier.train"><code class="docutils literal notranslate"><span class="pre">CrossAttentionNetworkClassifier.train()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.CrossAttentionNetworkClassifier.transform_data"><code class="docutils literal notranslate"><span class="pre">CrossAttentionNetworkClassifier.transform_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.DAN"><code class="docutils literal notranslate"><span class="pre">DAN</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.DAN.forward"><code class="docutils literal notranslate"><span class="pre">DAN.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.PartitionLoss"><code class="docutils literal notranslate"><span class="pre">PartitionLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.PartitionLoss.forward"><code class="docutils literal notranslate"><span class="pre">PartitionLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.SpatialAttention"><code class="docutils literal notranslate"><span class="pre">SpatialAttention</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.cross_attention_classifier.SpatialAttention.forward"><code class="docutils literal notranslate"><span class="pre">SpatialAttention.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#src-classification-image-efficientnet-classifier-module">src.classification.image.efficientnet_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.efficientnet_classifier.MultiTaskEfficientNetB2Classifier"><code class="docutils literal notranslate"><span class="pre">MultiTaskEfficientNetB2Classifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.efficientnet_classifier.MultiTaskEfficientNetB2Classifier.classify"><code class="docutils literal notranslate"><span class="pre">MultiTaskEfficientNetB2Classifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.efficientnet_classifier.MultiTaskEfficientNetB2Classifier.initialize_model"><code class="docutils literal notranslate"><span class="pre">MultiTaskEfficientNetB2Classifier.initialize_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.efficientnet_classifier.MultiTaskEfficientNetB2Classifier.load"><code class="docutils literal notranslate"><span class="pre">MultiTaskEfficientNetB2Classifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.efficientnet_classifier.MultiTaskEfficientNetB2Classifier.save"><code class="docutils literal notranslate"><span class="pre">MultiTaskEfficientNetB2Classifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.efficientnet_classifier.MultiTaskEfficientNetB2Classifier.train"><code class="docutils literal notranslate"><span class="pre">MultiTaskEfficientNetB2Classifier.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#src-classification-image-image-emotion-classifier-module">src.classification.image.image_emotion_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier"><code class="docutils literal notranslate"><span class="pre">ImageEmotionClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.classify"><code class="docutils literal notranslate"><span class="pre">ImageEmotionClassifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.load"><code class="docutils literal notranslate"><span class="pre">ImageEmotionClassifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.prepare_data"><code class="docutils literal notranslate"><span class="pre">ImageEmotionClassifier.prepare_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.prepare_training"><code class="docutils literal notranslate"><span class="pre">ImageEmotionClassifier.prepare_training()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.save"><code class="docutils literal notranslate"><span class="pre">ImageEmotionClassifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.train"><code class="docutils literal notranslate"><span class="pre">ImageEmotionClassifier.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#src-classification-image-vgg16-classifier-module">src.classification.image.vgg16_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.image.html#src.classification.image.vgg16_classifier.VGG16Classifier"><code class="docutils literal notranslate"><span class="pre">VGG16Classifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.vgg16_classifier.VGG16Classifier.classify"><code class="docutils literal notranslate"><span class="pre">VGG16Classifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.vgg16_classifier.VGG16Classifier.initialize_model"><code class="docutils literal notranslate"><span class="pre">VGG16Classifier.initialize_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.vgg16_classifier.VGG16Classifier.load"><code class="docutils literal notranslate"><span class="pre">VGG16Classifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.vgg16_classifier.VGG16Classifier.save"><code class="docutils literal notranslate"><span class="pre">VGG16Classifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.image.html#src.classification.image.vgg16_classifier.VGG16Classifier.train"><code class="docutils literal notranslate"><span class="pre">VGG16Classifier.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.image.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="src.classification.plant.html">src.classification.plant package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#module-src.classification.plant.dense_classifier">src.classification.plant.dense_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#module-src.classification.plant.lstm_classifier">src.classification.plant.lstm_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#module-src.classification.plant.mfcc_cnn_classifier">src.classification.plant.mfcc_cnn_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#module-src.classification.plant.mfcc_resnet_classifier">src.classification.plant.mfcc_resnet_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#module-src.classification.plant.nn_classifier">src.classification.plant.nn_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#module-src.classification.plant.plant_emotion_classifier">src.classification.plant.plant_emotion_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#module-src.classification.plant">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#src-classification-plant-dense-classifier-module">src.classification.plant.dense_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.dense_classifier.PlantDenseClassifier"><code class="docutils literal notranslate"><span class="pre">PlantDenseClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.dense_classifier.PlantDenseClassifier.initialize_model"><code class="docutils literal notranslate"><span class="pre">PlantDenseClassifier.initialize_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#src-classification-plant-lstm-classifier-module">src.classification.plant.lstm_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.lstm_classifier.PlantLSTMClassifier"><code class="docutils literal notranslate"><span class="pre">PlantLSTMClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.lstm_classifier.PlantLSTMClassifier.initialize_model"><code class="docutils literal notranslate"><span class="pre">PlantLSTMClassifier.initialize_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#src-classification-plant-mfcc-cnn-classifier-module">src.classification.plant.mfcc_cnn_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier"><code class="docutils literal notranslate"><span class="pre">PlantMFCCCNNClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier.init_parameters"><code class="docutils literal notranslate"><span class="pre">PlantMFCCCNNClassifier.init_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.mfcc_cnn_classifier.PlantMFCCCNNClassifier.initialize_model"><code class="docutils literal notranslate"><span class="pre">PlantMFCCCNNClassifier.initialize_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#src-classification-plant-mfcc-resnet-classifier-module">src.classification.plant.mfcc_resnet_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier"><code class="docutils literal notranslate"><span class="pre">PlantMFCCResnetClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier.init_parameters"><code class="docutils literal notranslate"><span class="pre">PlantMFCCResnetClassifier.init_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.mfcc_resnet_classifier.PlantMFCCResnetClassifier.initialize_model"><code class="docutils literal notranslate"><span class="pre">PlantMFCCResnetClassifier.initialize_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#src-classification-plant-nn-classifier-module">src.classification.plant.nn_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.nn_classifier.PlantNNBaseClassifier"><code class="docutils literal notranslate"><span class="pre">PlantNNBaseClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.nn_classifier.PlantNNBaseClassifier.classify"><code class="docutils literal notranslate"><span class="pre">PlantNNBaseClassifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.nn_classifier.PlantNNBaseClassifier.initialize_model"><code class="docutils literal notranslate"><span class="pre">PlantNNBaseClassifier.initialize_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.nn_classifier.PlantNNBaseClassifier.load"><code class="docutils literal notranslate"><span class="pre">PlantNNBaseClassifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.nn_classifier.PlantNNBaseClassifier.save"><code class="docutils literal notranslate"><span class="pre">PlantNNBaseClassifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.nn_classifier.PlantNNBaseClassifier.train"><code class="docutils literal notranslate"><span class="pre">PlantNNBaseClassifier.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#src-classification-plant-plant-emotion-classifier-module">src.classification.plant.plant_emotion_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier"><code class="docutils literal notranslate"><span class="pre">PlantEmotionClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.classify"><code class="docutils literal notranslate"><span class="pre">PlantEmotionClassifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.compute_mfccs"><code class="docutils literal notranslate"><span class="pre">PlantEmotionClassifier.compute_mfccs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.load"><code class="docutils literal notranslate"><span class="pre">PlantEmotionClassifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.prepare_data"><code class="docutils literal notranslate"><span class="pre">PlantEmotionClassifier.prepare_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.prepare_training"><code class="docutils literal notranslate"><span class="pre">PlantEmotionClassifier.prepare_training()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.save"><code class="docutils literal notranslate"><span class="pre">PlantEmotionClassifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.train"><code class="docutils literal notranslate"><span class="pre">PlantEmotionClassifier.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.plant.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="src.classification.speech.html">src.classification.speech package</a><ul>
@@ -75,11 +191,46 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="src.classification.text.html">src.classification.text package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.bert_classifier">src.classification.text.bert_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.distilbert_classifier">src.classification.text.distilbert_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.nrclex_classifier">src.classification.text.nrclex_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#module-src.classification.text.text_emotion_classifier">src.classification.text.text_emotion_classifier module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#module-src.classification.text">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#src-classification-text-bert-classifier-module">src.classification.text.bert_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.text.html#src.classification.text.bert_classifier.BertClassifier"><code class="docutils literal notranslate"><span class="pre">BertClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.bert_classifier.BertClassifier.classify"><code class="docutils literal notranslate"><span class="pre">BertClassifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.bert_classifier.BertClassifier.load"><code class="docutils literal notranslate"><span class="pre">BertClassifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.bert_classifier.BertClassifier.save"><code class="docutils literal notranslate"><span class="pre">BertClassifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.bert_classifier.BertClassifier.train"><code class="docutils literal notranslate"><span class="pre">BertClassifier.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#src-classification-text-distilbert-classifier-module">src.classification.text.distilbert_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.text.html#src.classification.text.distilbert_classifier.DistilBertClassifier"><code class="docutils literal notranslate"><span class="pre">DistilBertClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.distilbert_classifier.DistilBertClassifier.load"><code class="docutils literal notranslate"><span class="pre">DistilBertClassifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.distilbert_classifier.DistilBertClassifier.save"><code class="docutils literal notranslate"><span class="pre">DistilBertClassifier.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#src-classification-text-nrclex-classifier-module">src.classification.text.nrclex_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier"><code class="docutils literal notranslate"><span class="pre">NRCLexTextClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.classify"><code class="docutils literal notranslate"><span class="pre">NRCLexTextClassifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.get_best_emotion"><code class="docutils literal notranslate"><span class="pre">NRCLexTextClassifier.get_best_emotion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.load"><code class="docutils literal notranslate"><span class="pre">NRCLexTextClassifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.save"><code class="docutils literal notranslate"><span class="pre">NRCLexTextClassifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.train"><code class="docutils literal notranslate"><span class="pre">NRCLexTextClassifier.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#src-classification-text-text-emotion-classifier-module">src.classification.text.text_emotion_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier"><code class="docutils literal notranslate"><span class="pre">TextEmotionClassifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier.classify"><code class="docutils literal notranslate"><span class="pre">TextEmotionClassifier.classify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier.load"><code class="docutils literal notranslate"><span class="pre">TextEmotionClassifier.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier.save"><code class="docutils literal notranslate"><span class="pre">TextEmotionClassifier.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier.train"><code class="docutils literal notranslate"><span class="pre">TextEmotionClassifier.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.classification.text.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -91,10 +242,10 @@
 <section id="src-classification-classifier-factory-module">
 <h2>src.classification.classifier_factory module<a class="headerlink" href="#src-classification-classifier-factory-module" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="module-src.classification.emotion_classifier">
-<span id="src-classification-emotion-classifier-module"></span><h2>src.classification.emotion_classifier module<a class="headerlink" href="#module-src.classification.emotion_classifier" title="Permalink to this heading">¶</a></h2>
+<section id="src-classification-emotion-classifier-module">
+<h2>src.classification.emotion_classifier module<a class="headerlink" href="#src-classification-emotion-classifier-module" title="Permalink to this heading">¶</a></h2>
 <p>Implement an emotion classifier base class</p>
-<dl class="py class">
+<span class="target" id="module-src.classification.emotion_classifier"></span><dl class="py class">
 <dt class="sig sig-object py" id="src.classification.emotion_classifier.EmotionClassifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.emotion_classifier.</span></span><span class="sig-name descname"><span class="pre">EmotionClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'base'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.emotion_classifier.EmotionClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
@@ -196,10 +347,10 @@ The dictionary’s keys are the labels and the values are the counts.</p>
 </dd></dl>
 
 </section>
-<section id="module-src.classification">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.classification" title="Permalink to this heading">¶</a></h2>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <p>Package responsible for emotion classification</p>
-</section>
+<span class="target" id="module-src.classification"></span></section>
 </section>
 
 
@@ -266,7 +417,7 @@ The dictionary’s keys are the labels and the values are the counts.</p>
       &copy;2022, Jakob Kruse.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.2.0.post0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="src.classification.plant package" href="src.classification.plant.html" />
@@ -39,10 +40,10 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="module-src.classification.image.cross_attention_classifier">
-<span id="src-classification-image-cross-attention-classifier-module"></span><h2>src.classification.image.cross_attention_classifier module<a class="headerlink" href="#module-src.classification.image.cross_attention_classifier" title="Permalink to this heading">¶</a></h2>
+<section id="src-classification-image-cross-attention-classifier-module">
+<h2>src.classification.image.cross_attention_classifier module<a class="headerlink" href="#src-classification-image-cross-attention-classifier-module" title="Permalink to this heading">¶</a></h2>
 <p>This file contains the CrossAttention facial emotion classifier.</p>
-<dl class="py class">
+<span class="target" id="module-src.classification.image.cross_attention_classifier"></span><dl class="py class">
 <dt class="sig sig-object py" id="src.classification.image.cross_attention_classifier.AffinityLoss">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.image.cross_attention_classifier.</span></span><span class="sig-name descname"><span class="pre">AffinityLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feat_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.image.cross_attention_classifier.AffinityLoss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
@@ -282,10 +283,10 @@ values of the tensors after the DAN heads.</p>
 </dd></dl>
 
 </section>
-<section id="module-src.classification.image.efficientnet_classifier">
-<span id="src-classification-image-efficientnet-classifier-module"></span><h2>src.classification.image.efficientnet_classifier module<a class="headerlink" href="#module-src.classification.image.efficientnet_classifier" title="Permalink to this heading">¶</a></h2>
+<section id="src-classification-image-efficientnet-classifier-module">
+<h2>src.classification.image.efficientnet_classifier module<a class="headerlink" href="#src-classification-image-efficientnet-classifier-module" title="Permalink to this heading">¶</a></h2>
 <p>This file contains the EfficientNet facial emotion classifier</p>
-<dl class="py class">
+<span class="target" id="module-src.classification.image.efficientnet_classifier"></span><dl class="py class">
 <dt class="sig sig-object py" id="src.classification.image.efficientnet_classifier.MultiTaskEfficientNetB2Classifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.image.efficientnet_classifier.</span></span><span class="sig-name descname"><span class="pre">MultiTaskEfficientNetB2Classifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.image.efficientnet_classifier.MultiTaskEfficientNetB2Classifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.classification.image.image_emotion_classifier.ImageEmotionClassifier" title="src.classification.image.image_emotion_classifier.ImageEmotionClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageEmotionClassifier</span></code></a></p>
@@ -358,10 +359,10 @@ values of the tensors after the DAN heads.</p>
 </dd></dl>
 
 </section>
-<section id="module-src.classification.image.image_emotion_classifier">
-<span id="src-classification-image-image-emotion-classifier-module"></span><h2>src.classification.image.image_emotion_classifier module<a class="headerlink" href="#module-src.classification.image.image_emotion_classifier" title="Permalink to this heading">¶</a></h2>
+<section id="src-classification-image-image-emotion-classifier-module">
+<h2>src.classification.image.image_emotion_classifier module<a class="headerlink" href="#src-classification-image-image-emotion-classifier-module" title="Permalink to this heading">¶</a></h2>
 <p>Base class for all image emotion classifiers</p>
-<dl class="py class">
+<span class="target" id="module-src.classification.image.image_emotion_classifier"></span><dl class="py class">
 <dt class="sig sig-object py" id="src.classification.image.image_emotion_classifier.ImageEmotionClassifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.image.image_emotion_classifier.</span></span><span class="sig-name descname"><span class="pre">ImageEmotionClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'image'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.image.image_emotion_classifier.ImageEmotionClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="src.classification.html#src.classification.emotion_classifier.EmotionClassifier" title="src.classification.emotion_classifier.EmotionClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmotionClassifier</span></code></a></p>
@@ -454,10 +455,10 @@ loss, metrics and callbacks for training.</p>
 </dd></dl>
 
 </section>
-<section id="module-src.classification.image.vgg16_classifier">
-<span id="src-classification-image-vgg16-classifier-module"></span><h2>src.classification.image.vgg16_classifier module<a class="headerlink" href="#module-src.classification.image.vgg16_classifier" title="Permalink to this heading">¶</a></h2>
+<section id="src-classification-image-vgg16-classifier-module">
+<h2>src.classification.image.vgg16_classifier module<a class="headerlink" href="#src-classification-image-vgg16-classifier-module" title="Permalink to this heading">¶</a></h2>
 <p>This file contains the VGG16 facial emotion classifier</p>
-<dl class="py class">
+<span class="target" id="module-src.classification.image.vgg16_classifier"></span><dl class="py class">
 <dt class="sig sig-object py" id="src.classification.image.vgg16_classifier.VGG16Classifier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.classification.image.vgg16_classifier.</span></span><span class="sig-name descname"><span class="pre">VGG16Classifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.classification.image.vgg16_classifier.VGG16Classifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.classification.image.image_emotion_classifier.ImageEmotionClassifier" title="src.classification.image.image_emotion_classifier.ImageEmotionClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageEmotionClassifier</span></code></a></p>
@@ -535,11 +536,11 @@ loss, metrics and callbacks for training.</p>
 </dd></dl>
 
 </section>
-<section id="module-src.classification.image">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.classification.image" title="Permalink to this heading">¶</a></h2>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <p>This package contains a few image emotion classifiers based on different
 classifier architectures.</p>
-</section>
+<span class="target" id="module-src.classification.image"></span></section>
 </section>
 
 
@@ -608,7 +609,7 @@ classifier architectures.</p>
       &copy;2022, Jakob Kruse.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.2.0.post0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
