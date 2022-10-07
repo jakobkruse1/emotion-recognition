@@ -4,6 +4,7 @@ data/train/image
 data/train/speech
 
 data/plant
+data/watch
 data/video
 data/ground_truth
 
