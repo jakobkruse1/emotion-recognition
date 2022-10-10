@@ -30,7 +30,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("plant_exp", folder or "data/plant")
+        super().__init__("plant", folder or "data/plant")
         self.default_label_mode = default_label_mode
         assert default_label_mode in ["expected", "faceapi", "both"]
         self.files = glob.glob(os.path.join(self.folder, "*.wav"))

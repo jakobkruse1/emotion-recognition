@@ -31,7 +31,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("watch_exp", folder or "data/watch")
+        super().__init__("watch", folder or "data/watch")
         self.default_label_mode = default_label_mode
         assert default_label_mode in ["expected", "faceapi", "both"]
         if (
@@ -395,7 +395,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
 def _main():  # pragma: no cover
     reader = WatchExperimentDataReader()
     parameters = {
-        "label_mode": "expected",
+        "label_mode": "both",
         "cv_portions": 5,
         "window": 20,
         "hop": 3,

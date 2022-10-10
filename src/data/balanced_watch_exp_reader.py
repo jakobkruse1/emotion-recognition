@@ -1,46 +1,37 @@
-""" This data reader reads the PlantSpikerBox data from the experiments. """
+""" This data reader reads the watch data from the experiments. """
 
 import copy
-from typing import Dict, Tuple
+from typing import Any, Dict
 
 import numpy as np
 import tensorflow as tf
 
 from src.data.data_reader import Set
 from src.data.experiment_data_reader import ExperimentDataReader
-from src.data.plant_exp_reader import PlantExperimentDataReader
+from src.data.watch_exp_reader import WatchExperimentDataReader
 from src.utils import reader_main
 
 
-class BalancedPlantExperimentDataReader(ExperimentDataReader):
+class BalancedWatchExperimentDataReader(ExperimentDataReader):
     """
-    This data reader reads the plant spiker box files from the experiments
+    This data reader reads the watch data files from the experiments
     and balances the classes exactly.
     """
 
     def __init__(
-        self, folder: str = "data/plant", default_label_mode: str = "expected"
+        self, folder: str = "data/watch", default_label_mode: str = "expected"
     ) -> None:
         """
-        Initialize the plant data reader for the experiment data.
+        Initialize the watch data reader for the experiment data.
 
-        :param folder: The folder that contains the plant files
+        :param folder: The folder that contains the watch files
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("balanced_plant", folder or "data/plant")
-        self.unbalanced_reader = PlantExperimentDataReader(
+        super().__init__("balanced_watch", folder or "data/watch")
+        self.unbalanced_reader = WatchExperimentDataReader(
             folder, default_label_mode
         )
-        self.sample_rate = 10_000
-
-    def cleanup(self, parameters: Dict = None) -> None:
-        """
-        Function that cleans up the big data arrays for memory optimization.
-
-        :param parameters: Parameter Dictionary
-        """
-        self.unbalanced_reader.cleanup(parameters)
 
     def get_seven_emotion_data(
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
@@ -68,8 +59,8 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
-        Main data reading function which reads the plant data into a dataset.
-        This function balances the different classes in the dataset.
+        Main data reading function which reads the watch data into a dataset.
+        This function also balances the different classes in the dataset.
 
         :param which_set: Which dataset to use - train, val or test
         :param batch_size: The batch size for the resulting dataset
@@ -81,8 +72,7 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
             "shuffle", True if which_set == Set.TRAIN else False
         )
         class_data = [
-            np.empty((0, self.get_input_shape(parameters)[0]))
-            for _ in range(7)
+            np.empty((0, *self.get_input_shape(parameters))) for _ in range(7)
         ]
         class_datasets = []
         class_names = [
@@ -135,7 +125,7 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
-        Main data reading function which reads the plant data into a dataset
+        Main data reading function which reads the watch data into a dataset
         and also converts the emotion labels to the three emotion space.
 
         :param which_set: Which dataset to use - train, val or test
@@ -157,7 +147,7 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
-        Get the unbalanced dataset from the PlantExperimentReader
+        Get the unbalanced dataset from the WatchExperimentReader
 
         :param which_set: Which split of the data to use
         :param batch_size: Batch size for dataset
@@ -207,7 +197,7 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
             )
         return labels
 
-    def get_input_shape(self, parameters: Dict) -> Tuple[int]:
+    def get_input_shape(self, parameters: Dict) -> tuple[int | Any, int]:
         """
         Returns the shape of a preprocessed sample.
 
@@ -218,13 +208,13 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
 
 
 def _main():  # pragma: no cover
-    reader = BalancedPlantExperimentDataReader()
+    reader = BalancedWatchExperimentDataReader()
     parameters = {
         "label_mode": "both",
         "cv_portions": 5,
         "balanced": True,
         "window": 20,
-        "hop": 20,
+        "hop": 3,
     }
     for split in range(5):
         print(f"Split {split}/5")

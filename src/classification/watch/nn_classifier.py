@@ -1,4 +1,4 @@
-""" This file defines an interface for classifiers for the plant data. """
+""" This file defines an interface for classifiers for the watch data. """
 
 import copy
 import os.path
@@ -8,21 +8,21 @@ from typing import Dict
 import numpy as np
 import tensorflow as tf
 
-from src.classification.plant.plant_emotion_classifier import (
-    PlantEmotionClassifier,
+from src.classification.watch.watch_emotion_classifier import (
+    WatchEmotionClassifier,
 )
 from src.data.data_reader import Set
 from src.utils import logging
 
 
-class PlantNNBaseClassifier(PlantEmotionClassifier):
+class WatchNNBaseClassifier(WatchEmotionClassifier):
     """
-    Base class for all NN classifiers in tensorflow for plant data.
+    Base class for all NN classifiers in tensorflow for watch data.
     """
 
     def __init__(self, name: str, parameters: Dict = None):
         """
-        Initialize the Plant classifier. All tensorflow plant classifiers
+        Initialize the watch classifier. All tensorflow watch classifiers
         require the same training, classification, save and load functions.
         This class implements these methods for all classifiers at once.
 
@@ -46,7 +46,7 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
 
     def train(self, parameters: Dict = None, **kwargs) -> None:
         """
-        Training method for plant models
+        Training method for tensorflow watch models
 
         :param parameters: Parameter dictionary used for training
         :param kwargs: Additional kwargs parameters
@@ -80,7 +80,7 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", f"models/plant/{self.name}")
+        save_path = parameters.get("save_path", f"models/watch/{self.name}")
         self.model = tf.keras.models.load_model(save_path)
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
@@ -95,17 +95,17 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", f"models/plant/{self.name}")
-        if os.path.exists("models/plant/checkpoint"):
+        save_path = parameters.get("save_path", f"models/watch/{self.name}")
+        if os.path.exists("models/watch/checkpoint"):
             self.load(
-                {"save_path": "models/plant/checkpoint"}
+                {"save_path": "models/watch/checkpoint"}
             )  # pragma: no cover
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 
     def classify(self, parameters: Dict = None, **kwargs) -> np.array:
         """
-        Classification method used to classify emotions from plant data
+        Classification method used to classify emotions from watch data
 
         :param parameters: Parameter dictionary used for classification
         :param kwargs: Additional kwargs parameters

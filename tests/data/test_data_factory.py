@@ -5,9 +5,13 @@ import tensorflow as tf
 
 from src.data.data_factory import (
     BalancedImageDataReader,
+    BalancedPlantExperimentDataReader,
     DataFactory,
     ImageDataReader,
+    PlantExperimentDataReader,
+    SpeechDataReader,
     TextDataReader,
+    WatchExperimentDataReader,
 )
 from src.data.data_reader import Set
 
@@ -24,6 +28,22 @@ def test_data_reader_factory():
     image_reader = DataFactory.get_data_reader("balanced_image")
     assert isinstance(image_reader, BalancedImageDataReader)
     assert image_reader.name == "balanced_image"
+
+    speech_reader = DataFactory.get_data_reader("speech")
+    assert isinstance(speech_reader, SpeechDataReader)
+    assert speech_reader.name == "speech"
+
+    plant_reader = DataFactory.get_data_reader("plant")
+    assert isinstance(plant_reader, PlantExperimentDataReader)
+    assert plant_reader.name == "plant"
+
+    plant_reader = DataFactory.get_data_reader("balanced_plant")
+    assert isinstance(plant_reader, BalancedPlantExperimentDataReader)
+    assert plant_reader.name == "balanced_plant"
+
+    watch_reader = DataFactory.get_data_reader("watch")
+    assert isinstance(watch_reader, WatchExperimentDataReader)
+    assert watch_reader.name == "watch"
 
     with pytest.raises(ValueError):
         _ = DataFactory.get_data_reader("wrong")

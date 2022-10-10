@@ -8,11 +8,15 @@ from src.data.balanced_image_data_reader import BalancedImageDataReader
 from src.data.balanced_plant_exp_reader import (
     BalancedPlantExperimentDataReader,
 )
+from src.data.balanced_watch_exp_reader import (
+    BalancedWatchExperimentDataReader,
+)
 from src.data.data_reader import DataReader, Set
 from src.data.image_data_reader import ImageDataReader
 from src.data.plant_exp_reader import PlantExperimentDataReader
 from src.data.speech_data_reader import SpeechDataReader
 from src.data.text_data_reader import TextDataReader
+from src.data.watch_exp_reader import WatchExperimentDataReader
 
 
 class DataFactory:
@@ -42,6 +46,10 @@ class DataFactory:
             return PlantExperimentDataReader(folder=data_folder)
         elif data_type == "balanced_plant":
             return BalancedPlantExperimentDataReader(folder=data_folder)
+        elif data_type == "watch":
+            return WatchExperimentDataReader(folder=data_folder)
+        elif data_type == "balanced_watch":
+            return BalancedWatchExperimentDataReader(folder=data_folder)
         else:
             raise ValueError(
                 f'The Data Reader for type "{data_type}" ' f"does not exist!"

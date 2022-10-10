@@ -11,7 +11,7 @@ def test_init():
     reader = WatchExperimentDataReader(
         folder="tests/test_data/watch", default_label_mode="expected"
     )
-    assert reader.name == "watch_exp"
+    assert reader.name == "watch"
     assert reader.default_label_mode == "expected"
     assert reader.raw_data is None
     assert reader.raw_labels is None
