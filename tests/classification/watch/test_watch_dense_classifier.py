@@ -18,6 +18,7 @@ CLASS_NAMES = [
 ]
 
 
+@pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_dense_initialization():
     classifier = WatchDenseClassifier()
     assert classifier.name == "watch_dense"

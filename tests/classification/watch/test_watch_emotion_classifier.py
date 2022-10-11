@@ -2,6 +2,7 @@
 from typing import Dict
 
 import numpy as np
+import pytest
 
 from src.classification.watch import WatchEmotionClassifier
 from src.data.balanced_watch_exp_reader import (
@@ -53,6 +54,7 @@ def test_prepare_training():
     assert classifier.callbacks[0].patience == 169
 
 
+@pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_prepare_data():
     classifier = TestClassifier()
     classifier.data_reader = WatchExperimentDataReader(
@@ -65,6 +67,7 @@ def test_prepare_data():
     assert classifier.class_weights is None
 
 
+@pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_weights():
     # Only testing to switch weights on/off. Correctness is checked elsewhere.
     classifier = TestClassifier()
@@ -79,6 +82,7 @@ def test_weights():
         assert classifier.__getattribute__(member) is not None
 
 
+@pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_balancing():
     classifier = TestClassifier()
     classifier.data_reader = WatchExperimentDataReader(
