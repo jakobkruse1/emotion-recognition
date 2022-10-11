@@ -1,1 +1,0 @@
-{"init_parameters": null, "train_parameters": {"batch_size": 64, "label_mode": "expected", "window": 20, "hop": 3, "balanced": true, "cv_index": 3, "cv_splits": 5}, "history": null}
