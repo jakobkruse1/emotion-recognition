@@ -261,7 +261,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
             "sad",
             "neutral",
         ]
-        if self.folder == "tests/test_data/plant":  # Testing
+        if self.folder.startswith("tests"):  # Testing
             gt_folder = "tests/test_data/ground_truth"
             data_indices = [5]
         for file_index, experiment_index in enumerate(data_indices):
