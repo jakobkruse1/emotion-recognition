@@ -61,7 +61,7 @@ class SpeechDataReader(DataReader):
                 as_supervised=True,
                 download=download,
             )
-        except tfds.core.download.downloader.DownloadError:
+        except tfds.core.download.downloader.DownloadError:  # pragma: no cover
             from tensorflow_datasets.core.utils import gcs_utils
 
             gcs_utils._is_gcs_disabled = True
