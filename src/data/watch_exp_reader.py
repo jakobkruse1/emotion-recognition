@@ -249,7 +249,9 @@ class WatchExperimentDataReader(ExperimentDataReader):
 
         :return: Labels that are collected from the user's face expression.
         """
-        labels = np.zeros((len(self._get_complete_data_indices()), 690))
+        data_indices = self._get_complete_data_indices()
+        gt_folder = "data/ground_truth"
+        labels = np.zeros((len(data_indices), 690))
         emotions_sorted = [
             "angry",
             "surprised",
@@ -259,14 +261,10 @@ class WatchExperimentDataReader(ExperimentDataReader):
             "sad",
             "neutral",
         ]
-        gt_folder = (
-            "tests/test_data/ground_truth"
-            if self.folder == "tests/test_data/plant"
-            else "data/ground_truth"
-        )
-        for file_index, experiment_index in enumerate(
-            self._get_complete_data_indices()
-        ):
+        if self.folder == "tests/test_data/plant":  # Testing
+            gt_folder = "tests/test_data/ground_truth"
+            data_indices = [5]
+        for file_index, experiment_index in enumerate(data_indices):
             ground_truth_file = glob.glob(
                 f"{gt_folder}/{experiment_index:03d}*.json"
             )[0]
@@ -389,6 +387,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
             + list(range(63, 66))
             + list(range(68, 70))
         )
+
         return complete_data
 
 

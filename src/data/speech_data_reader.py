@@ -52,14 +52,29 @@ class SpeechDataReader(DataReader):
         :param download: Whether to download the data
         :return: Tuple containing Dataset instance and size of dataset
         """
-        crema_d, cd_info = tfds.load(
-            "crema_d",
-            split="validation" if folder == "val" else folder,
-            shuffle_files=False,
-            with_info=True,
-            as_supervised=True,
-            download=download,
-        )
+        try:
+            crema_d, cd_info = tfds.load(
+                "crema_d",
+                split="validation" if folder == "val" else folder,
+                shuffle_files=False,
+                with_info=True,
+                as_supervised=True,
+                download=download,
+            )
+        except tfds.core.download.downloader.DownloadError:
+            from tensorflow_datasets.core.utils import gcs_utils
+
+            gcs_utils._is_gcs_disabled = True
+            crema_d, cd_info = tfds.load(
+                "crema_d",
+                split="validation" if folder == "val" else folder,
+                shuffle_files=False,
+                with_info=True,
+                as_supervised=True,
+                download=download,
+                try_gcs=False,
+            )
+
         crema_d = crema_d.map(
             lambda x, y: tf.numpy_function(
                 func=self.process_crema,
