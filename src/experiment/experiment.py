@@ -71,7 +71,7 @@ class Experiment:
         This function either throws an Assertion Error or Value Error in case
         of wrong parameters.
         """
-        assert self.modality in ["text", "image", "speech", "plant"]
+        assert self.modality in ["text", "image", "speech", "plant", "watch"]
         _ = ClassifierFactory.get(self.modality, self.model, {})
         assert (
             isinstance(self.train_parameters, dict)

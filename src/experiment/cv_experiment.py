@@ -64,27 +64,27 @@ class CrossValidationExperimentRunner(ExperimentRunner):
                 return np.sum(data["predictions"] == labels) / labels.shape[0]
 
         predictions = np.empty((0,))
-
-        for cv_split in range(self.cv_splits):
-            classifier = ClassifierFactory.get(
-                experiment.modality,
-                experiment.model,
-                experiment.init_parameters,
-            )
-            classifier.data_reader = kwargs.get(
-                "data_reader", classifier.data_reader
-            )
-            train_parameters = copy.deepcopy(experiment.train_parameters)
-            train_parameters["cv_portions"] = self.cv_splits
-            train_parameters["cv_index"] = cv_split
-            classifier.train(train_parameters)
-            eval_parameters = copy.deepcopy(train_parameters)
-            eval_parameters["which_set"] = Set.TEST
-            test_predictions = classifier.classify(eval_parameters)
-            predictions = np.concatenate(
-                [test_predictions, predictions], axis=0
-            )
-            classifier.data_reader.cleanup()
+        if not kwargs.get("trial_run", False):
+            for cv_split in range(self.cv_splits):
+                classifier = ClassifierFactory.get(
+                    experiment.modality,
+                    experiment.model,
+                    experiment.init_parameters,
+                )
+                classifier.data_reader = kwargs.get(
+                    "data_reader", classifier.data_reader
+                )
+                train_parameters = copy.deepcopy(experiment.train_parameters)
+                train_parameters["cv_portions"] = self.cv_splits
+                train_parameters["cv_index"] = cv_split
+                classifier.train(train_parameters)
+                eval_parameters = copy.deepcopy(train_parameters)
+                eval_parameters["which_set"] = Set.TEST
+                test_predictions = classifier.classify(eval_parameters)
+                predictions = np.concatenate(
+                    [test_predictions, predictions], axis=0
+                )
+                classifier.data_reader.cleanup()
         parameters = experiment.get_parameter_dict()
         parameters["predictions"] = predictions.tolist()
         with open(os.path.join(self.folder, file_path), "w") as json_file:

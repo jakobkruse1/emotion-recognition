@@ -27,6 +27,13 @@ from src.classification.text import (
     DistilBertClassifier,
     NRCLexTextClassifier,
 )
+from src.classification.watch import (
+    WatchDenseClassifier,
+    WatchLSTMClassifier,
+    WatchRandomForestClassifier,
+    WatchTransformerClassifier,
+    WatchXGBoostClassifier,
+)
 
 
 class ClassifierFactory:
@@ -54,6 +61,8 @@ class ClassifierFactory:
             return SpeechClassifierFactory.get(model, parameters)
         elif modality == "plant":
             return PlantClassifierFactory.get(model, parameters)
+        elif modality == "watch":
+            return WatchClassifierFactory.get(model, parameters)
         else:
             raise ValueError(f"Modality {modality} not supported!")
 
@@ -162,3 +171,31 @@ class PlantClassifierFactory:
             return PlantMFCCResnetClassifier(parameters)
         else:
             raise ValueError(f"Plant model {model} not implemented!")
+
+
+class WatchClassifierFactory:
+    """
+    Factory class that generates watch emotion classifiers
+    """
+
+    @staticmethod
+    def get(model: str, parameters: Dict = None) -> EmotionClassifier:
+        """
+        Method that returns an instance of a watch emotion classifier
+
+        :param model: The name of the watch model
+        :param parameters: The parameters for the watch model
+        :return: The constructed watch classifier
+        """
+        if model == "watch_lstm":
+            return WatchLSTMClassifier(parameters)
+        elif model == "watch_dense":
+            return WatchDenseClassifier(parameters)
+        elif model == "watch_random_forest":
+            return WatchRandomForestClassifier(parameters)
+        elif model == "watch_xgboost":
+            return WatchXGBoostClassifier(parameters)
+        elif model == "watch_transformer":
+            return WatchTransformerClassifier(parameters)
+        else:
+            raise ValueError(f"Watch model {model} not implemented!")
