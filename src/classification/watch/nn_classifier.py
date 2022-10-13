@@ -96,9 +96,14 @@ class WatchNNBaseClassifier(WatchEmotionClassifier):
             )
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", f"models/watch/{self.name}")
-        if os.path.exists("models/watch/checkpoint"):
+        if os.path.exists(
+            f"models/watch/checkpoint_{parameters.get('cv_index', 0)}"
+        ):
             self.load(
-                {"save_path": "models/watch/checkpoint"}
+                {
+                    "save_path": "models/watch/checkpoint_"
+                    f"{parameters.get('cv_index', 0)}"
+                }
             )  # pragma: no cover
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)

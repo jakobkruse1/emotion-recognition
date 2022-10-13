@@ -89,14 +89,17 @@ class PlantEmotionClassifier(EmotionClassifier):
                 monitor="val_loss",
                 patience=patience,
                 restore_best_weights=True,
-            ),
-            tf.keras.callbacks.ModelCheckpoint(
-                f"models/plant/checkpoint_{parameters.get('cv_index', '')}",
-                save_best_only=True,
-                monitor="val_categorical_accuracy",
-                mode="max",
-            ),
+            )
         ]
+        if parameters.get("checkpoint", False):
+            self.callbacks.append(
+                tf.keras.callbacks.ModelCheckpoint(
+                    f"models/plant/checkpoint_{parameters.get('cv_index', '')}",
+                    save_best_only=True,
+                    monitor="val_categorical_accuracy",
+                    mode="max",
+                )
+            )
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
         self.metrics = [tf.metrics.CategoricalAccuracy()]
         self.loss = tf.keras.losses.CategoricalCrossentropy()

@@ -52,6 +52,12 @@ def test_prepare_training():
         assert classifier.__getattribute__(member) is not None
     assert classifier.optimizer.lr == 4
     assert classifier.callbacks[0].patience == 169
+    assert len(classifier.callbacks) == 1
+
+    classifier.prepare_training(
+        {"learning_rate": 4, "patience": 169, "checkpoint": True}
+    )
+    assert len(classifier.callbacks) == 2
 
 
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
