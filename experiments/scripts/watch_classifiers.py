@@ -136,4 +136,4 @@ if __name__ == "__main__":
         f"{len(runner.experiments)} experiments."
     )
 
-    runner.run_all(indices=my_experiments[::-1])
+    runner.run_all(indices=my_experiments)
