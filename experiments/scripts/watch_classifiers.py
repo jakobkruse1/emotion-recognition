@@ -125,9 +125,15 @@ if __name__ == "__main__":
         my_task_id::num_tasks
     ]
 
+    print(len(dense_configs))
+    print(len(lstm_configs))
+    print(len(random_forest_configs))
+    print(len(transformer_configs))
+    print(len(xgboost_configs))
+
     print(
         f"Running {len(my_experiments)} out of "
         f"{len(runner.experiments)} experiments."
     )
 
-    runner.run_all(indices=my_experiments)
+    runner.run_all(indices=my_experiments[::-1])
