@@ -355,8 +355,8 @@ class PlantExperimentDataReader(ExperimentDataReader):
             sample_rate, data = wavfile.read(plant_file)
             assert sample_rate == 10000, "WAV file has incorrect sample rate!"
             mean = np.mean(data)
-            var = np.var(data)
-            data = (data - mean) / var
+            std = np.std(data)
+            data = (data - mean) / std
             labels = all_labels[index, :]
             for second in range(window, all_labels.shape[1], hop):
                 if labels[second] == -1:
