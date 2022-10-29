@@ -32,7 +32,7 @@ def training_loop(
     parameters["save_path"] = save_path
     if not os.path.exists(save_path) or "train" in sys.argv:
         classifier.train(parameters)
-        classifier.save()
+        classifier.save(parameters)
 
     classifier.load(parameters)
     emotions = classifier.classify(parameters)

@@ -6,6 +6,7 @@ data/train/speech
 data/plant
 data/watch
 data/video
+data/text
 data/ground_truth
 
 experiments/results
@@ -14,7 +15,7 @@ experiments/results
 models/text/bert
 models/text/distilbert
 models/text/old
-models/image/efficientnet
+models/image/efficientnet*
 models/image/cross_attention
 models/image/vgg16
 models/image/old
