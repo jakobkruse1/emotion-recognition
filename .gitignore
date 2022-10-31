@@ -48,6 +48,9 @@ src/utils/faceapi/node_modules/
 src/utils/faceapi/package-lock.json
 src/utils/faceapi/weights/
 
+plots/
+!experiments/plots
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
