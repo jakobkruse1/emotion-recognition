@@ -1,3 +1,4 @@
+""" Plot the raw data from the smartwatch. """
 import glob
 import os
 
