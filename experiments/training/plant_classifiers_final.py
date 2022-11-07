@@ -1,4 +1,5 @@
 import os.path
+import sys
 
 from src.classification.plant import (
     PlantDenseClassifier,
@@ -9,9 +10,16 @@ from src.classification.plant import (
 from src.data.data_reader import Set
 from src.utils.metrics import accuracy, per_class_accuracy
 
+try:
+    my_task_id = int(sys.argv[1])
+    num_tasks = int(sys.argv[2])
+except IndexError:
+    my_task_id = 0
+    num_tasks = 1
 
-def main_resnet():
-    for cv_split in range(5):
+
+def main_resnet(cv_splits):
+    for cv_split in cv_splits:
         parameters = {
             "epochs": 1000,
             "patience": 100,
@@ -57,9 +65,10 @@ def main_resnet():
             this_acc = accuracy(labels, pred)
             this_pc_acc = per_class_accuracy(labels, pred)
             if (
-                this_pc_acc > max_pc_acc
-                and this_acc + this_pc_acc > max_acc + max_pc_acc
+                this_pc_acc >= max_pc_acc
+                and this_acc + this_pc_acc >= max_acc + max_pc_acc
             ):
+                print("Saving classifier!")
                 classifier.save(
                     {"save_path": f"models/plant/plant_mfcc_resnet_{cv_split}"}
                 )
@@ -78,8 +87,8 @@ def main_resnet():
         print(f"Final Class Acc: {max_pc_acc}")
 
 
-def main_lstm():
-    for cv_split in range(5):
+def main_lstm(cv_splits):
+    for cv_split in cv_splits:
         parameters = {
             "epochs": 1000,
             "patience": 100,
@@ -124,9 +133,10 @@ def main_lstm():
             this_acc = accuracy(labels, pred)
             this_pc_acc = per_class_accuracy(labels, pred)
             if (
-                this_pc_acc > max_pc_acc
-                and this_acc + this_pc_acc > max_acc + max_pc_acc
+                this_pc_acc >= max_pc_acc
+                and this_acc + this_pc_acc >= max_acc + max_pc_acc
             ):
+                print("Saving classifier!")
                 classifier.save(
                     {"save_path": f"models/plant/plant_lstm_{cv_split}"}
                 )
@@ -145,8 +155,8 @@ def main_lstm():
         print(f"Final Class Acc: {max_pc_acc}")
 
 
-def main_cnn():
-    for cv_split in range(5):
+def main_cnn(cv_splits):
+    for cv_split in cv_splits:
         parameters = {
             "epochs": 1000,
             "patience": 100,
@@ -193,9 +203,10 @@ def main_cnn():
             this_acc = accuracy(labels, pred)
             this_pc_acc = per_class_accuracy(labels, pred)
             if (
-                this_pc_acc > max_pc_acc
-                and this_acc + this_pc_acc > max_acc + max_pc_acc
+                this_pc_acc >= max_pc_acc
+                and this_acc + this_pc_acc >= max_acc + max_pc_acc
             ):
+                print("Saving classifier!")
                 classifier.save(
                     {"save_path": f"models/plant/plant_mfcc_cnn_{cv_split}"}
                 )
@@ -214,8 +225,8 @@ def main_cnn():
         print(f"Final Class Acc: {max_pc_acc}")
 
 
-def main_dense():
-    for cv_split in range(5):
+def main_dense(cv_splits):
+    for cv_split in cv_splits:
         parameters = {
             "epochs": 1000,
             "patience": 100,
@@ -261,9 +272,10 @@ def main_dense():
             this_acc = accuracy(labels, pred)
             this_pc_acc = per_class_accuracy(labels, pred)
             if (
-                this_pc_acc > max_pc_acc
-                and this_acc + this_pc_acc > max_acc + max_pc_acc
+                this_pc_acc >= max_pc_acc
+                and this_acc + this_pc_acc >= max_acc + max_pc_acc
             ):
+                print("Saving classifier!")
                 classifier.save(
                     {"save_path": f"models/plant/plant_dense_{cv_split}"}
                 )
@@ -283,7 +295,7 @@ def main_dense():
 
 
 if __name__ == "__main__":
-    main_dense()
-    main_resnet()
-    main_lstm()
-    main_cnn()
+    main_dense([my_task_id])
+    main_resnet([my_task_id])
+    main_lstm([my_task_id])
+    main_cnn([my_task_id])
