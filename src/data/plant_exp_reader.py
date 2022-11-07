@@ -122,7 +122,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
             - cv_index: Which split to use.
         :return: List of indexes in a cv form.
         """
-        cv_portions = parameters.get("cv_portions", 5)
+        cv_portions = parameters.get("cv_splits", 5)
         if which_set == Set.ALL:
             indices = []
             cv_params = copy.deepcopy(parameters)
@@ -423,7 +423,7 @@ def _main():  # pragma: no cover
     }
     for split in range(5):
         print(f"Split {split}/5")
-        parameters["cv_split"] = split
+        parameters["cv_index"] = split
         reader_main(reader, parameters)
 
 

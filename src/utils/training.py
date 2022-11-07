@@ -96,7 +96,6 @@ def cv_training_loop(
         cv_params["cv_index"] = i
         cv_params["cv_splits"] = cv_splits
         cv_params["save_path"] = split_path
-        parameters.update(cv_params)
         classifier.load(cv_params)
         emotions = classifier.classify(cv_params)
         labels = classifier.data_reader.get_labels(Set.TEST, cv_params)

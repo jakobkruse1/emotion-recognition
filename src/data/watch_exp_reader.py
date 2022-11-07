@@ -108,7 +108,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
             - cv_index: Which split to use.
         :return: List of indexes in a cv form.
         """
-        cv_portions = parameters.get("cv_portions", 5)
+        cv_portions = parameters.get("cv_splits", 5)
         if which_set == Set.ALL:
             indices = []
             cv_params = copy.deepcopy(parameters)

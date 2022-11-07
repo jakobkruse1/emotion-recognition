@@ -40,6 +40,9 @@ def main_resnet():
             labels = classifier.data_reader.get_labels(Set.TEST, parameters)
             max_acc = accuracy(labels, pred)
             max_pc_acc = per_class_accuracy(labels, pred)
+            print(
+                f"Read classifier with acc {max_acc} and pc acc {max_pc_acc}"
+            )
         acc_goal = 0.5
         pc_acc_goal = 0.5
         iteration = 0
@@ -104,6 +107,9 @@ def main_lstm():
             labels = classifier.data_reader.get_labels(Set.TEST, parameters)
             max_acc = accuracy(labels, pred)
             max_pc_acc = per_class_accuracy(labels, pred)
+            print(
+                f"Read classifier with acc {max_acc} and pc acc {max_pc_acc}"
+            )
         acc_goal = 0.5
         pc_acc_goal = 0.5
         iteration = 0
@@ -170,6 +176,9 @@ def main_cnn():
             labels = classifier.data_reader.get_labels(Set.TEST, parameters)
             max_acc = accuracy(labels, pred)
             max_pc_acc = per_class_accuracy(labels, pred)
+            print(
+                f"Read classifier with acc {max_acc} and pc acc {max_pc_acc}"
+            )
         acc_goal = 0.5
         pc_acc_goal = 0.5
         iteration = 0
@@ -235,6 +244,9 @@ def main_dense():
             labels = classifier.data_reader.get_labels(Set.TEST, parameters)
             max_acc = accuracy(labels, pred)
             max_pc_acc = per_class_accuracy(labels, pred)
+            print(
+                f"Read classifier with acc {max_acc} and pc acc {max_pc_acc}"
+            )
         acc_goal = 0.5
         pc_acc_goal = 0.5
         iteration = 0

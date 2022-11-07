@@ -53,8 +53,8 @@ class PlantDenseClassifier(PlantNNBaseClassifier):
 def _main():  # pragma: no cover
     classifier = PlantDenseClassifier()
     parameters = {
-        "epochs": 50,
-        "patience": 10,
+        "epochs": 1000,
+        "patience": 100,
         "batch_size": 64,
         "learning_rate": 0.001,
         "dense_units": 4096,

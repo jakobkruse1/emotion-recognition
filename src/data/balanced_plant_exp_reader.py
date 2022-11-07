@@ -228,7 +228,7 @@ def _main():  # pragma: no cover
     }
     for split in range(5):
         print(f"Split {split}/5")
-        parameters["cv_split"] = split
+        parameters["cv_index"] = split
         reader_main(reader, parameters)
 
 

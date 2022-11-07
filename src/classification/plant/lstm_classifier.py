@@ -68,17 +68,18 @@ class PlantLSTMClassifier(PlantNNBaseClassifier):
 def _main():  # pragma: no cover
     classifier = PlantLSTMClassifier()
     parameters = {
-        "epochs": 50,
-        "patience": 10,
+        "epochs": 1000,
+        "patience": 100,
         "batch_size": 64,
         "learning_rate": 0.0003,
         "lstm_units": 1024,
         "lstm_layers": 2,
         "dropout": 0,
-        "label_mode": "faceapi",
-        "window": 30,
-        "hop": 30,
+        "label_mode": "both",
+        "window": 20,
+        "hop": 10,
         "balanced": True,
+        "checkpoint": True,
     }
     save_path = "models/plant/plant_lstm"
     cv_training_loop(classifier, parameters, save_path)
