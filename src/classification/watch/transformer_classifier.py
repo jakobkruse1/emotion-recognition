@@ -77,17 +77,17 @@ class WatchTransformerClassifier(WatchNNBaseClassifier):
 def _main():  # pragma: no cover
     classifier = WatchTransformerClassifier()
     parameters = {
-        "epochs": 50,
-        "patience": 10,
+        "epochs": 1000,
+        "patience": 100,
         "batch_size": 64,
-        "learning_rate": 0.0003,
-        "dense_units": 1024,
-        "dense_layers": 2,
-        "dropout": 0.2,
-        "label_mode": "expected",
         "window": 20,
-        "hop": 3,
+        "hop": 2,
         "balanced": True,
+        "label_mode": "both",
+        "ff_dim": 512,
+        "dropout": 0.2,
+        "dense_layers": 3,
+        "dense_units": 1024,
     }
     save_path = "models/watch/watch_transformer"
     cv_training_loop(classifier, parameters, save_path)

@@ -7,6 +7,7 @@ import json
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 import numpy as np
+from alive_progress import alive_bar
 
 from src.data.data_factory import DataFactory
 from src.data.data_reader import Set
@@ -165,55 +166,59 @@ class Evaluator:
             else "predictions"
         )
         data_folder = kwargs.get("data_folder", None)
-        for experiment in self.result_data:
-            if score == "accuracy":
-                scores.append(
-                    accuracy(
-                        self.get_labels(
-                            experiment["modality"],
-                            predictions_key,
-                            experiment["train_parameters"],
-                            data_folder,
-                        ),
-                        np.asarray(experiment[predictions_key]),
+        with alive_bar(
+            len(self.result_data), title="Computing scores", force_tty=True
+        ) as bar:
+            for experiment in self.result_data:
+                if score == "accuracy":
+                    scores.append(
+                        accuracy(
+                            self.get_labels(
+                                experiment["modality"],
+                                predictions_key,
+                                experiment["train_parameters"],
+                                data_folder,
+                            ),
+                            np.asarray(experiment[predictions_key]),
+                        )
                     )
-                )
-            elif score == "avg_recall":
-                scores.append(
-                    recall(
-                        self.get_labels(
-                            experiment["modality"],
-                            predictions_key,
-                            experiment["train_parameters"],
-                            data_folder,
-                        ),
-                        np.asarray(experiment[predictions_key]),
+                elif score == "avg_recall":
+                    scores.append(
+                        recall(
+                            self.get_labels(
+                                experiment["modality"],
+                                predictions_key,
+                                experiment["train_parameters"],
+                                data_folder,
+                            ),
+                            np.asarray(experiment[predictions_key]),
+                        )
                     )
-                )
-            elif score == "avg_precision":
-                scores.append(
-                    precision(
-                        self.get_labels(
-                            experiment["modality"],
-                            predictions_key,
-                            experiment["train_parameters"],
-                            data_folder,
-                        ),
-                        np.asarray(experiment[predictions_key]),
+                elif score == "avg_precision":
+                    scores.append(
+                        precision(
+                            self.get_labels(
+                                experiment["modality"],
+                                predictions_key,
+                                experiment["train_parameters"],
+                                data_folder,
+                            ),
+                            np.asarray(experiment[predictions_key]),
+                        )
                     )
-                )
-            elif score == "per_class_accuracy":
-                scores.append(
-                    per_class_accuracy(
-                        self.get_labels(
-                            experiment["modality"],
-                            predictions_key,
-                            experiment["train_parameters"],
-                            data_folder,
-                        ),
-                        np.asarray(experiment[predictions_key]),
+                elif score == "per_class_accuracy":
+                    scores.append(
+                        per_class_accuracy(
+                            self.get_labels(
+                                experiment["modality"],
+                                predictions_key,
+                                experiment["train_parameters"],
+                                data_folder,
+                            ),
+                            np.asarray(experiment[predictions_key]),
+                        )
                     )
-                )
-            else:
-                raise ValueError(f"Score {score} does not exist!")
+                else:
+                    raise ValueError(f"Score {score} does not exist!")
+                bar()
         return scores

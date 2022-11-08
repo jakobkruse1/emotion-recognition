@@ -11,7 +11,7 @@ from src.evaluation.evaluator import Evaluator
 
 
 def plot_confusion_matrix(model_data, title="Confusion Matrix"):
-    labels = DataFactory.get_data_reader("plant").get_labels(
+    labels = DataFactory.get_data_reader("watch").get_labels(
         Set.ALL, parameters=model_data["train_parameters"]
     )
     predictions = np.asarray(model_data["predictions"])
@@ -69,13 +69,13 @@ def print_best_models(accs, pcaccs, params, data, indices, name) -> None:
     expected_pcacc = pcaccs[indices]
     expected_acc = accs[indices]
     expected_params = [params[ind] for ind in indices]
-    plot_confusion_matrix(data[indices[0]], f"Best {name} model")
     for i in range(5):
         print(
             f"Model {i + 1}, Per Class Accuracy {expected_pcacc[i]}, "
             f"Accuracy {expected_acc[i]}"
         )
         print(f"\tParameters: {expected_params[i]}\n")
+    plot_confusion_matrix(data[indices[0]], f"Best {name} model")
 
 
 if __name__ == "__main__":  # pragma: no cover

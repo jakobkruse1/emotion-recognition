@@ -127,10 +127,13 @@ def _main():  # pragma: no cover
     classifier = WatchXGBoostClassifier()
     parameters = {
         "batch_size": 64,
-        "label_mode": "expected",
+        "label_mode": "both",
         "window": 20,
-        "hop": 3,
+        "hop": 2,
         "balanced": True,
+        "max_depth": 10,
+        "n_estimators": 80,
+        "learning_rate": 0.01,
     }
     save_path = "models/watch/xgboost"
     cv_training_loop(classifier, parameters, save_path)

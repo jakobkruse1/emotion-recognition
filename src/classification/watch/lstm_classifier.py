@@ -61,17 +61,16 @@ class WatchLSTMClassifier(WatchNNBaseClassifier):
 def _main():  # pragma: no cover
     classifier = WatchLSTMClassifier()
     parameters = {
-        "epochs": 50,
-        "patience": 10,
+        "epochs": 1000,
+        "patience": 100,
         "batch_size": 64,
-        "learning_rate": 0.0003,
-        "lstm_units": 1024,
-        "lstm_layers": 2,
-        "dropout": 0,
-        "label_mode": "expected",
         "window": 20,
-        "hop": 3,
+        "hop": 2,
         "balanced": True,
+        "learning_rate": 0.001,
+        "lstm_units": 4096,
+        "dropout": 0.2,
+        "lstm_layers": 1,
     }
     save_path = "models/watch/watch_lstm"
     cv_training_loop(classifier, parameters, save_path)

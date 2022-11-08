@@ -132,11 +132,14 @@ class WatchRandomForestClassifier(WatchEmotionClassifier):
 def _main():  # pragma: no cover
     classifier = WatchRandomForestClassifier()
     parameters = {
+        "label_mode": "both",
         "batch_size": 64,
-        "label_mode": "expected",
         "window": 20,
-        "hop": 3,
+        "hop": 2,
         "balanced": True,
+        "max_depth": 30,
+        "n_estimators": 10,
+        "min_samples_split": 4,
     }
     save_path = "models/watch/random_forest"
     cv_training_loop(classifier, parameters, save_path)
