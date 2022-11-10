@@ -1,5 +1,5 @@
 """ Plot statistics and confusion matrix from the best image model. """
-
+import json
 import os
 
 import matplotlib
@@ -29,7 +29,7 @@ def plot_confusion_matrix(predictions, labels):
     confusion_matrix.index = emotions
     confusion_matrix.columns = emotions
 
-    plt.figure(figsize=(5, 4))
+    plt.figure(figsize=(4, 3))
     sns.heatmap(confusion_matrix, annot=True, fmt=".2f", cmap="Blues")
     plt.xlabel("Predicted emotion")
     plt.ylabel("True emotion")
@@ -38,9 +38,40 @@ def plot_confusion_matrix(predictions, labels):
     plt.show()
 
 
+def plot_training_progress():
+    with open("models/image/vgg16/statistics.json", "r") as json_file:
+        train_data = json.load(json_file)
+    patience = train_data["train_parameters"].get("patience", None)
+    fig, ax = plt.subplots(figsize=(4, 3))
+    ax.plot(train_data["train_loss"], label="Loss", c="blue")
+    ax.plot(train_data["val_loss"], label="Val. Loss", c="blue", ls="dotted")
+    ax.set_xlabel("Epochs")
+    ax.set_ylabel("Loss")
+    ax2 = ax.twinx()
+    ax2.plot(train_data["train_acc"], label="Accuracy", c="orange")
+    ax2.plot(train_data["val_acc"], label="Val. Acc.", c="orange", ls="dotted")
+    ax2.set_xlabel("Epochs")
+    ax2.set_ylabel("Accuracy")
+
+    # Patience line
+    if patience:
+        location = len(train_data["train_acc"]) - patience - 1
+        ax.axvline(location, c="black", ls="dashed")
+
+    # Legend and plot
+    leg = ax.legend(loc="lower left")
+    leg.remove()
+    ax2.legend(loc="upper left")
+    ax2.add_artist(leg)
+    ax.xaxis.get_major_locator().set_params(integer=True)
+    plt.tight_layout()
+    plt.savefig("plots/image_training.pdf")
+    plt.show()
+
+
 def main():
     os.makedirs("plots", exist_ok=True)
-    matplotlib.rcParams.update({"font.size": 12})
+    matplotlib.rcParams.update({"font.size": 11})
     plt.rc("text", usetex=True)
     plt.rc("font", family="serif")
 
@@ -65,6 +96,8 @@ def main():
     labels = classifier.data_reader.get_labels(Set.TEST, parameters)
 
     plot_confusion_matrix(prediction, labels)
+
+    plot_training_progress()
 
 
 if __name__ == "__main__":

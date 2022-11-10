@@ -103,8 +103,8 @@ def main_train(cv_split: int, model: str) -> None:
         print(f"Read classifier with acc {max_acc} and pc acc {max_pc_acc}")
 
     # Override max to save only good runs - comment this if not wanted
-    max_acc = 0.27
-    max_pc_acc = 0.27
+    max_acc = 0.26
+    max_pc_acc = 0.26
 
     acc_goal = 0.5
     pc_acc_goal = 0.5
@@ -130,7 +130,7 @@ def main_train(cv_split: int, model: str) -> None:
             classifier.save({"save_path": save_path})
             max_acc = this_acc
             max_pc_acc = this_pc_acc
-        total_iterations = 20 + round((0.5 - min(max_acc, max_pc_acc)) / 0.002)
+        total_iterations = 20 + round((0.5 - min(max_acc, max_pc_acc)) / 0.001)
         print(
             f"Iteration {iteration}/{total_iterations}: "
             f"Acc {this_acc} (max {max_acc}), "
@@ -139,14 +139,14 @@ def main_train(cv_split: int, model: str) -> None:
         classifier.data_reader.cleanup()
         iteration += 1
         if iteration > 20:
-            acc_goal -= 0.002
-            pc_acc_goal -= 0.002
+            acc_goal -= 0.001
+            pc_acc_goal -= 0.001
     print(f"Final Acc: {max_acc}")
     print(f"Final Class Acc: {max_pc_acc}")
 
 
 if __name__ == "__main__":
-    cv_splits = [0, 4]
+    cv_splits = [0] if my_task_id == 0 else [4]
     models = ["resnet"]  # "cnn", "lstm", "dense", "resnet"
     for cv_split in cv_splits:
         for model in models:
