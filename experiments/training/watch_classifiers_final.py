@@ -113,7 +113,7 @@ def main_train(cv_split, model):
             "watch", f"watch_{model}", parameters
         )
         classifier.train(parameters)
-        if model in ["dense", "lstm", "transformer"]:
+        if parameters.get("checkpoint", False):
             classifier.load(
                 {"save_path": f"models/watch/checkpoint_{cv_split}"}
             )
