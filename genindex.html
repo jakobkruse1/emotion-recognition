@@ -53,6 +53,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -82,6 +83,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src.data.html#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader">BalancedWatchExperimentDataReader (class in src.data.balanced_watch_exp_reader)</a>
+</li>
       <li><a href="src.utils.logging.html#src.utils.logging.base_logger.BaseLogger">BaseLogger (class in src.utils.logging.base_logger)</a>
 </li>
       <li><a href="src.classification.text.html#src.classification.text.bert_classifier.BertClassifier">BertClassifier (class in src.classification.text.bert_classifier)</a>
@@ -114,6 +117,14 @@
         <li><a href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.classify">(src.classification.text.nrclex_classifier.NRCLexTextClassifier method)</a>
 </li>
         <li><a href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier.classify">(src.classification.text.text_emotion_classifier.TextEmotionClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.nn_classifier.WatchNNBaseClassifier.classify">(src.classification.watch.nn_classifier.WatchNNBaseClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.random_forest_classifier.WatchRandomForestClassifier.classify">(src.classification.watch.random_forest_classifier.WatchRandomForestClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier.classify">(src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.xgboost_classifier.WatchXGBoostClassifier.classify">(src.classification.watch.xgboost_classifier.WatchXGBoostClassifier method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -219,9 +230,17 @@
       <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_crema_samples">get_crema_samples() (src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
 </li>
       <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.get_cross_validation_indices">get_cross_validation_indices() (src.data.plant_exp_reader.PlantExperimentDataReader method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_cross_validation_indices">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
 </li>
+      </ul></li>
       <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.get_data_generator">get_data_generator() (src.data.plant_exp_reader.PlantExperimentDataReader method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_data_generator">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
 </li>
+      </ul></li>
       <li><a href="src.data.html#src.data.data_factory.DataFactory.get_data_reader">get_data_reader() (src.data.data_factory.DataFactory static method)</a>
 </li>
       <li><a href="src.data.html#src.data.data_factory.DataFactory.get_dataset">get_dataset() (src.data.data_factory.DataFactory static method)</a>
@@ -237,13 +256,19 @@
       <li><a href="src.data.html#src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader.get_input_shape">get_input_shape() (src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader method)</a>
 
       <ul>
+        <li><a href="src.data.html#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_input_shape">(src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader method)</a>
+</li>
         <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.get_input_shape">(src.data.plant_exp_reader.PlantExperimentDataReader method)</a>
+</li>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_input_shape">(src.data.watch_exp_reader.WatchExperimentDataReader static method)</a>
 </li>
       </ul></li>
       <li><a href="src.data.html#src.data.balanced_image_data_reader.BalancedImageDataReader.get_labels">get_labels() (src.data.balanced_image_data_reader.BalancedImageDataReader method)</a>
 
       <ul>
         <li><a href="src.data.html#src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader.get_labels">(src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader method)</a>
+</li>
+        <li><a href="src.data.html#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_labels">(src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_labels">(src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
 </li>
@@ -259,27 +284,47 @@
 </li>
         <li><a href="src.data.html#src.data.text_data_reader.TextDataReader.get_labels">(src.data.text_data_reader.TextDataReader method)</a>
 </li>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_labels">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
+</li>
         <li><a href="src.evaluation.html#src.evaluation.evaluator.Evaluator.get_labels">(src.evaluation.evaluator.Evaluator method)</a>
 </li>
       </ul></li>
       <li><a href="src.evaluation.html#src.evaluation.evaluator.Evaluator.get_parameters">get_parameters() (src.evaluation.evaluator.Evaluator method)</a>
 </li>
+      <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.get_raw_data">get_raw_data() (src.data.plant_exp_reader.PlantExperimentDataReader method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_data">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.get_raw_data">get_raw_data() (src.data.plant_exp_reader.PlantExperimentDataReader method)</a>
-</li>
       <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.get_raw_expected_labels">get_raw_expected_labels() (src.data.plant_exp_reader.PlantExperimentDataReader method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_expected_labels">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
 </li>
+      </ul></li>
       <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.get_raw_faceapi_labels">get_raw_faceapi_labels() (src.data.plant_exp_reader.PlantExperimentDataReader method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_faceapi_labels">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
 </li>
+      </ul></li>
       <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.get_raw_labels">get_raw_labels() (src.data.plant_exp_reader.PlantExperimentDataReader method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_labels">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
 </li>
+      </ul></li>
       <li><a href="src.evaluation.html#src.evaluation.evaluator.Evaluator.get_scores">get_scores() (src.evaluation.evaluator.Evaluator method)</a>
 </li>
       <li><a href="src.data.html#src.data.balanced_image_data_reader.BalancedImageDataReader.get_seven_emotion_data">get_seven_emotion_data() (src.data.balanced_image_data_reader.BalancedImageDataReader method)</a>
 
       <ul>
         <li><a href="src.data.html#src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader.get_seven_emotion_data">(src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader method)</a>
+</li>
+        <li><a href="src.data.html#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_seven_emotion_data">(src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_seven_emotion_data">(src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
 </li>
@@ -295,11 +340,15 @@
 </li>
         <li><a href="src.data.html#src.data.text_data_reader.TextDataReader.get_seven_emotion_data">(src.data.text_data_reader.TextDataReader method)</a>
 </li>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_seven_emotion_data">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
+</li>
       </ul></li>
       <li><a href="src.data.html#src.data.balanced_image_data_reader.BalancedImageDataReader.get_three_emotion_data">get_three_emotion_data() (src.data.balanced_image_data_reader.BalancedImageDataReader method)</a>
 
       <ul>
         <li><a href="src.data.html#src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader.get_three_emotion_data">(src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader method)</a>
+</li>
+        <li><a href="src.data.html#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_three_emotion_data">(src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_three_emotion_data">(src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader method)</a>
 </li>
@@ -314,6 +363,8 @@
         <li><a href="src.data.html#src.data.speech_data_reader.SpeechDataReader.get_three_emotion_data">(src.data.speech_data_reader.SpeechDataReader method)</a>
 </li>
         <li><a href="src.data.html#src.data.text_data_reader.TextDataReader.get_three_emotion_data">(src.data.text_data_reader.TextDataReader method)</a>
+</li>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.get_three_emotion_data">(src.data.watch_exp_reader.WatchExperimentDataReader method)</a>
 </li>
       </ul></li>
       <li><a href="src.data.html#src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader.get_waveform_and_label">get_waveform_and_label() (src.data.classwise_speech_data_reader.ClasswiseSpeechDataReader static method)</a>
@@ -359,6 +410,14 @@
 </li>
         <li><a href="src.classification.plant.html#src.classification.plant.nn_classifier.PlantNNBaseClassifier.initialize_model">(src.classification.plant.nn_classifier.PlantNNBaseClassifier method)</a>
 </li>
+        <li><a href="src.classification.watch.html#src.classification.watch.dense_classifier.WatchDenseClassifier.initialize_model">(src.classification.watch.dense_classifier.WatchDenseClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.lstm_classifier.WatchLSTMClassifier.initialize_model">(src.classification.watch.lstm_classifier.WatchLSTMClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.nn_classifier.WatchNNBaseClassifier.initialize_model">(src.classification.watch.nn_classifier.WatchNNBaseClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.transformer_classifier.WatchTransformerClassifier.initialize_model">(src.classification.watch.transformer_classifier.WatchTransformerClassifier method)</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -396,6 +455,14 @@
         <li><a href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.load">(src.classification.text.nrclex_classifier.NRCLexTextClassifier method)</a>
 </li>
         <li><a href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier.load">(src.classification.text.text_emotion_classifier.TextEmotionClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.nn_classifier.WatchNNBaseClassifier.load">(src.classification.watch.nn_classifier.WatchNNBaseClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.random_forest_classifier.WatchRandomForestClassifier.load">(src.classification.watch.random_forest_classifier.WatchRandomForestClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier.load">(src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.xgboost_classifier.WatchXGBoostClassifier.load">(src.classification.watch.xgboost_classifier.WatchXGBoostClassifier method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -490,11 +557,29 @@
 </li>
         <li><a href="src.classification.text.html#module-src.classification.text.text_emotion_classifier">src.classification.text.text_emotion_classifier</a>
 </li>
+        <li><a href="src.classification.watch.html#module-src.classification.watch">src.classification.watch</a>
+</li>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.dense_classifier">src.classification.watch.dense_classifier</a>
+</li>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.lstm_classifier">src.classification.watch.lstm_classifier</a>
+</li>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.nn_classifier">src.classification.watch.nn_classifier</a>
+</li>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.random_forest_classifier">src.classification.watch.random_forest_classifier</a>
+</li>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.transformer_classifier">src.classification.watch.transformer_classifier</a>
+</li>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.watch_emotion_classifier">src.classification.watch.watch_emotion_classifier</a>
+</li>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.xgboost_classifier">src.classification.watch.xgboost_classifier</a>
+</li>
         <li><a href="src.data.html#module-src.data">src.data</a>
 </li>
         <li><a href="src.data.html#module-src.data.balanced_image_data_reader">src.data.balanced_image_data_reader</a>
 </li>
         <li><a href="src.data.html#module-src.data.balanced_plant_exp_reader">src.data.balanced_plant_exp_reader</a>
+</li>
+        <li><a href="src.data.html#module-src.data.balanced_watch_exp_reader">src.data.balanced_watch_exp_reader</a>
 </li>
         <li><a href="src.data.html#module-src.data.classwise_speech_data_reader">src.data.classwise_speech_data_reader</a>
 </li>
@@ -511,6 +596,8 @@
         <li><a href="src.data.html#module-src.data.speech_data_reader">src.data.speech_data_reader</a>
 </li>
         <li><a href="src.data.html#module-src.data.text_data_reader">src.data.text_data_reader</a>
+</li>
+        <li><a href="src.data.html#module-src.data.watch_exp_reader">src.data.watch_exp_reader</a>
 </li>
         <li><a href="src.html#module-src.emotion_set">src.emotion_set</a>
 </li>
@@ -575,22 +662,30 @@
 </li>
       <li><a href="src.classification.plant.html#src.classification.plant.nn_classifier.PlantNNBaseClassifier">PlantNNBaseClassifier (class in src.classification.plant.nn_classifier)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.utils.html#src.utils.metrics.precision">precision() (in module src.utils.metrics)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.prepare_data">prepare_data() (src.classification.image.image_emotion_classifier.ImageEmotionClassifier method)</a>
 
       <ul>
         <li><a href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.prepare_data">(src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier method)</a>
 </li>
+        <li><a href="src.classification.watch.html#src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier.prepare_data">(src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier method)</a>
+</li>
       </ul></li>
       <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.prepare_faceapi_labels">prepare_faceapi_labels() (src.data.plant_exp_reader.PlantExperimentDataReader static method)</a>
+
+      <ul>
+        <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader.prepare_faceapi_labels">(src.data.watch_exp_reader.WatchExperimentDataReader static method)</a>
 </li>
+      </ul></li>
       <li><a href="src.classification.image.html#src.classification.image.image_emotion_classifier.ImageEmotionClassifier.prepare_training">prepare_training() (src.classification.image.image_emotion_classifier.ImageEmotionClassifier method)</a>
 
       <ul>
         <li><a href="src.classification.plant.html#src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier.prepare_training">(src.classification.plant.plant_emotion_classifier.PlantEmotionClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier.prepare_training">(src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier method)</a>
 </li>
       </ul></li>
       <li><a href="src.data.html#src.data.plant_exp_reader.PlantExperimentDataReader.preprocess_sample">preprocess_sample() (src.data.plant_exp_reader.PlantExperimentDataReader static method)</a>
@@ -645,6 +740,14 @@
         <li><a href="src.classification.text.html#src.classification.text.nrclex_classifier.NRCLexTextClassifier.save">(src.classification.text.nrclex_classifier.NRCLexTextClassifier method)</a>
 </li>
         <li><a href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier.save">(src.classification.text.text_emotion_classifier.TextEmotionClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.nn_classifier.WatchNNBaseClassifier.save">(src.classification.watch.nn_classifier.WatchNNBaseClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.random_forest_classifier.WatchRandomForestClassifier.save">(src.classification.watch.random_forest_classifier.WatchRandomForestClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier.save">(src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.xgboost_classifier.WatchXGBoostClassifier.save">(src.classification.watch.xgboost_classifier.WatchXGBoostClassifier method)</a>
 </li>
       </ul></li>
       <li><a href="src.utils.logging.html#src.utils.logging.base_logger.BaseLogger.save_logs">save_logs() (src.utils.logging.base_logger.BaseLogger method)</a>
@@ -785,8 +888,6 @@
         <li><a href="src.classification.text.html#module-src.classification.text.distilbert_classifier">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     src.classification.text.nrclex_classifier
 
@@ -799,6 +900,64 @@
 
       <ul>
         <li><a href="src.classification.text.html#module-src.classification.text.text_emotion_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.classification.watch
+
+      <ul>
+        <li><a href="src.classification.watch.html#module-src.classification.watch">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.classification.watch.dense_classifier
+
+      <ul>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.dense_classifier">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    src.classification.watch.lstm_classifier
+
+      <ul>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.lstm_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.classification.watch.nn_classifier
+
+      <ul>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.nn_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.classification.watch.random_forest_classifier
+
+      <ul>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.random_forest_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.classification.watch.transformer_classifier
+
+      <ul>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.transformer_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.classification.watch.watch_emotion_classifier
+
+      <ul>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.watch_emotion_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.classification.watch.xgboost_classifier
+
+      <ul>
+        <li><a href="src.classification.watch.html#module-src.classification.watch.xgboost_classifier">module</a>
 </li>
       </ul></li>
       <li>
@@ -820,6 +979,13 @@
 
       <ul>
         <li><a href="src.data.html#module-src.data.balanced_plant_exp_reader">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.data.balanced_watch_exp_reader
+
+      <ul>
+        <li><a href="src.data.html#module-src.data.balanced_watch_exp_reader">module</a>
 </li>
       </ul></li>
       <li>
@@ -876,6 +1042,13 @@
 
       <ul>
         <li><a href="src.data.html#module-src.data.text_data_reader">module</a>
+</li>
+      </ul></li>
+      <li>
+    src.data.watch_exp_reader
+
+      <ul>
+        <li><a href="src.data.html#module-src.data.watch_exp_reader">module</a>
 </li>
       </ul></li>
       <li>
@@ -1012,6 +1185,14 @@
 </li>
         <li><a href="src.classification.text.html#src.classification.text.text_emotion_classifier.TextEmotionClassifier.train">(src.classification.text.text_emotion_classifier.TextEmotionClassifier method)</a>
 </li>
+        <li><a href="src.classification.watch.html#src.classification.watch.nn_classifier.WatchNNBaseClassifier.train">(src.classification.watch.nn_classifier.WatchNNBaseClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.random_forest_classifier.WatchRandomForestClassifier.train">(src.classification.watch.random_forest_classifier.WatchRandomForestClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier.train">(src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier method)</a>
+</li>
+        <li><a href="src.classification.watch.html#src.classification.watch.xgboost_classifier.WatchXGBoostClassifier.train">(src.classification.watch.xgboost_classifier.WatchXGBoostClassifier method)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1030,6 +1211,30 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.classification.image.html#src.classification.image.vgg16_classifier.VGG16Classifier">VGG16Classifier (class in src.classification.image.vgg16_classifier)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src.classification.watch.html#src.classification.watch.dense_classifier.WatchDenseClassifier">WatchDenseClassifier (class in src.classification.watch.dense_classifier)</a>
+</li>
+      <li><a href="src.classification.watch.html#src.classification.watch.watch_emotion_classifier.WatchEmotionClassifier">WatchEmotionClassifier (class in src.classification.watch.watch_emotion_classifier)</a>
+</li>
+      <li><a href="src.data.html#src.data.watch_exp_reader.WatchExperimentDataReader">WatchExperimentDataReader (class in src.data.watch_exp_reader)</a>
+</li>
+      <li><a href="src.classification.watch.html#src.classification.watch.lstm_classifier.WatchLSTMClassifier">WatchLSTMClassifier (class in src.classification.watch.lstm_classifier)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src.classification.watch.html#src.classification.watch.nn_classifier.WatchNNBaseClassifier">WatchNNBaseClassifier (class in src.classification.watch.nn_classifier)</a>
+</li>
+      <li><a href="src.classification.watch.html#src.classification.watch.random_forest_classifier.WatchRandomForestClassifier">WatchRandomForestClassifier (class in src.classification.watch.random_forest_classifier)</a>
+</li>
+      <li><a href="src.classification.watch.html#src.classification.watch.transformer_classifier.WatchTransformerClassifier">WatchTransformerClassifier (class in src.classification.watch.transformer_classifier)</a>
+</li>
+      <li><a href="src.classification.watch.html#src.classification.watch.xgboost_classifier.WatchXGBoostClassifier">WatchXGBoostClassifier (class in src.classification.watch.xgboost_classifier)</a>
 </li>
   </ul></td>
 </tr></table>

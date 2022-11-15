@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="src.evaluation package" href="src.evaluation.html" />
-    <link rel="prev" title="src.classification.text package" href="src.classification.text.html" />
+    <link rel="prev" title="src.classification.watch package" href="src.classification.watch.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -185,6 +185,87 @@ and also converts the emotion labels to the three emotion space.</p>
 <dt class="sig sig-object py" id="src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader.get_three_emotion_data">
 <span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.balanced_plant_exp_reader.BalancedPlantExperimentDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main data reading function which reads the plant data into a dataset
+and also converts the emotion labels to the three emotion space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
+<li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
+<li><p><strong>parameters</strong> – Additional arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tensorflow Dataset instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.data.balanced_watch_exp_reader">
+<span id="src-data-balanced-watch-exp-reader-module"></span><h2>src.data.balanced_watch_exp_reader module<a class="headerlink" href="#module-src.data.balanced_watch_exp_reader" title="Permalink to this heading">¶</a></h2>
+<p>This data reader reads the watch data from the experiments.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.balanced_watch_exp_reader.</span></span><span class="sig-name descname"><span class="pre">BalancedWatchExperimentDataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'data/watch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_label_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'expected'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.data.experiment_data_reader.ExperimentDataReader" title="src.data.experiment_data_reader.ExperimentDataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExperimentDataReader</span></code></a></p>
+<p>This data reader reads the watch data files from the experiments
+and balances the classes exactly.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_input_shape">
+<span class="sig-name descname"><span class="pre">get_input_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_input_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the shape of a preprocessed sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameter dictionary</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple that is the shape of the sample.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns labels for the dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which set to get the labels for.</p></li>
+<li><p><strong>parameters</strong> – Additional parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Label numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_seven_emotion_data">
+<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main data reading function which reads the CSV file into a dataset
+and also converts the emotion labels to the three emotion space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which dataset to use - train, val or test</p></li>
+<li><p><strong>batch_size</strong> – The batch size for the resulting dataset</p></li>
+<li><p><strong>parameters</strong> – Additional arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tensorflow Dataset instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_three_emotion_data">
+<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.balanced_watch_exp_reader.BalancedWatchExperimentDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main data reading function which reads the watch data into a dataset
 and also converts the emotion labels to the three emotion space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1154,6 +1235,179 @@ and also converts the emotion labels to the three emotion space.</p>
 </dd></dl>
 
 </section>
+<section id="module-src.data.watch_exp_reader">
+<span id="src-data-watch-exp-reader-module"></span><h2>src.data.watch_exp_reader module<a class="headerlink" href="#module-src.data.watch_exp_reader" title="Permalink to this heading">¶</a></h2>
+<p>This data reader reads the Happimeter data from the experiments.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data.watch_exp_reader.</span></span><span class="sig-name descname"><span class="pre">WatchExperimentDataReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'data/watch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_label_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'expected'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.data.experiment_data_reader.ExperimentDataReader" title="src.data.experiment_data_reader.ExperimentDataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExperimentDataReader</span></code></a></p>
+<p>This data reader reads the watch csv files from the experiments</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_cross_validation_indices">
+<span class="sig-name descname"><span class="pre">get_cross_validation_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_cross_validation_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a list of indices according to CrossValidation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which set to use.</p></li>
+<li><p><strong>parameters</strong> – Additional parameters including:
+- cv_portions: Number of cv splits to do.
+- cv_index: Which split to use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of indexes in a cv form.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_data_generator">
+<span class="sig-name descname"><span class="pre">get_data_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_data_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator that generates the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Train, val or test set</p></li>
+<li><p><strong>parameters</strong> – Additional parameters including:
+- window: The length of the window to use in seconds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Generator that yields data and label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_input_shape">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_input_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the shape of a preprocessed sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Parameter dictionary</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple that is the shape of the sample.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Set.TRAIN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns labels for the dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which set to get the labels for.</p></li>
+<li><p><strong>parameters</strong> – Additional parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Label numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_data">
+<span class="sig-name descname"><span class="pre">get_raw_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the raw watch data from the csv files and split it into
+windows according to the parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameters</strong> – Additional parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_expected_labels">
+<span class="sig-name descname"><span class="pre">get_raw_expected_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_expected_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the raw emotions from the expected emotions during the video.
+The expected emotion means that while the participant is watching a
+happy video, we expect them to be happy, thus the label is happy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Labels that are expected from the user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_faceapi_labels">
+<span class="sig-name descname"><span class="pre">get_raw_faceapi_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_faceapi_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the raw labels from the faceapi output files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Labels that are collected from the user’s face expression.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_labels">
+<span class="sig-name descname"><span class="pre">get_raw_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_raw_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the raw labels per experiment and time.
+Populates the raw_labels member of this class.
+The two axis are [experiment_index, time_in_seconds]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>label_mode</strong> – Whether to use expected or faceapi labels</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of all labels in shape (file, second)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_seven_emotion_data">
+<span class="sig-name descname"><span class="pre">get_seven_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_seven_emotion_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that returns a dataset of watch data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which set to use.</p></li>
+<li><p><strong>batch_size</strong> – Batch size for the dataset.</p></li>
+<li><p><strong>parameters</strong> – Additional parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.get_three_emotion_data">
+<span class="sig-name descname"><span class="pre">get_three_emotion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.data.data_reader.Set" title="src.data.data_reader.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DatasetV2</span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.get_three_emotion_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dataset that uses only three emotions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_set</strong> – Which set: Train, val or test</p></li>
+<li><p><strong>batch_size</strong> – Batch size</p></li>
+<li><p><strong>parameters</strong> – Additional parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset with three emotion labels.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data.watch_exp_reader.WatchExperimentDataReader.prepare_faceapi_labels">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prepare_faceapi_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.data.watch_exp_reader.WatchExperimentDataReader.prepare_faceapi_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prepares the faceapi labels if they are not computed yet.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-src.data">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.data" title="Permalink to this heading">¶</a></h2>
 <p>Package responsible for data reading and processing</p>
@@ -1191,7 +1445,7 @@ and also converts the emotion labels to the three emotion space.</p>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="modules.html">emotion-recognition</a><ul>
   <li><a href="src.html">src package</a><ul>
-      <li>Previous: <a href="src.classification.text.html" title="previous chapter">src.classification.text package</a></li>
+      <li>Previous: <a href="src.classification.watch.html" title="previous chapter">src.classification.watch package</a></li>
       <li>Next: <a href="src.evaluation.html" title="next chapter">src.evaluation package</a></li>
   </ul></li>
   </ul></li>

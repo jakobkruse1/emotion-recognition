@@ -11,6 +11,7 @@ Subpackages
    src.classification.plant
    src.classification.speech
    src.classification.text
+   src.classification.watch
 
 Submodules
 ----------

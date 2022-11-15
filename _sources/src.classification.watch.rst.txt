@@ -1,0 +1,69 @@
+src.classification.watch package
+================================
+
+Submodules
+----------
+
+src.classification.watch.dense\_classifier module
+-------------------------------------------------
+
+.. automodule:: src.classification.watch.dense_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.watch.lstm\_classifier module
+------------------------------------------------
+
+.. automodule:: src.classification.watch.lstm_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.watch.nn\_classifier module
+----------------------------------------------
+
+.. automodule:: src.classification.watch.nn_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.watch.random\_forest\_classifier module
+----------------------------------------------------------
+
+.. automodule:: src.classification.watch.random_forest_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.watch.transformer\_classifier module
+-------------------------------------------------------
+
+.. automodule:: src.classification.watch.transformer_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.watch.watch\_emotion\_classifier module
+----------------------------------------------------------
+
+.. automodule:: src.classification.watch.watch_emotion_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.classification.watch.xgboost\_classifier module
+---------------------------------------------------
+
+.. automodule:: src.classification.watch.xgboost_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.classification.watch
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -20,6 +20,14 @@ src.data.balanced\_plant\_exp\_reader module
    :undoc-members:
    :show-inheritance:
 
+src.data.balanced\_watch\_exp\_reader module
+--------------------------------------------
+
+.. automodule:: src.data.balanced_watch_exp_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.data.classwise\_speech\_data\_reader module
 -----------------------------------------------
 
@@ -80,6 +88,14 @@ src.data.text\_data\_reader module
 ----------------------------------
 
 .. automodule:: src.data.text_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.data.watch\_exp\_reader module
+----------------------------------
+
+.. automodule:: src.data.watch_exp_reader
    :members:
    :undoc-members:
    :show-inheritance:
