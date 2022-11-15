@@ -102,10 +102,6 @@ def main_train(cv_split: int, model: str) -> None:
         max_pc_acc = per_class_accuracy(labels, pred)
         print(f"Read classifier with acc {max_acc} and pc acc {max_pc_acc}")
 
-    # Override max to save only good runs - comment this if not wanted
-    max_acc = 0.26
-    max_pc_acc = 0.26
-
     acc_goal = 0.5
     pc_acc_goal = 0.5
     iteration = 0
@@ -123,8 +119,8 @@ def main_train(cv_split: int, model: str) -> None:
         this_acc = accuracy(labels, pred)
         this_pc_acc = per_class_accuracy(labels, pred)
         if (
-            this_pc_acc >= max_pc_acc
-            and this_acc + this_pc_acc >= max_acc + max_pc_acc
+            this_pc_acc >= 0.25
+            and this_acc >= 0.25 and this_pc_acc + this_acc > max_acc + max_pc_acc
         ):
             print("Saving classifier!")
             classifier.save({"save_path": save_path})
@@ -139,8 +135,8 @@ def main_train(cv_split: int, model: str) -> None:
         classifier.data_reader.cleanup()
         iteration += 1
         if iteration > 20:
-            acc_goal -= 0.001
-            pc_acc_goal -= 0.001
+            acc_goal -= 0.0001
+            pc_acc_goal -= 0.0001
     print(f"Final Acc: {max_acc}")
     print(f"Final Class Acc: {max_pc_acc}")
 
