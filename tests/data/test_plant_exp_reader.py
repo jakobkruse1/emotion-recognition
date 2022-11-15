@@ -10,7 +10,7 @@ def test_init():
     reader = PlantExperimentDataReader(
         folder="tests/test_data/plant", default_label_mode="expected"
     )
-    assert reader.name == "plant_exp"
+    assert reader.name == "plant"
     assert reader.default_label_mode == "expected"
     assert len(reader.files) == 1
     assert reader.raw_data is None

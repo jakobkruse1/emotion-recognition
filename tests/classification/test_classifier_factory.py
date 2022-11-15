@@ -27,6 +27,13 @@ from src.classification.text import (
     DistilBertClassifier,
     NRCLexTextClassifier,
 )
+from src.classification.watch import (
+    WatchDenseClassifier,
+    WatchLSTMClassifier,
+    WatchRandomForestClassifier,
+    WatchTransformerClassifier,
+    WatchXGBoostClassifier,
+)
 
 
 def test_text_factory():
@@ -123,3 +130,32 @@ def test_plant_factory():
 
     with pytest.raises(ValueError):
         _ = ClassifierFactory.get("plant", "wrong", {})
+
+
+def test_watch_factory():
+    classifier = ClassifierFactory.get("watch", "watch_dense", {})
+    assert isinstance(classifier, WatchDenseClassifier)
+
+    classifier = ClassifierFactory.get(
+        "watch", "watch_dense", {"model_name": "123"}
+    )
+    assert isinstance(classifier, WatchDenseClassifier)
+    assert classifier.parameters["model_name"] == "123"
+
+    classifier = ClassifierFactory.get("watch", "watch_lstm", {})
+    assert isinstance(classifier, WatchLSTMClassifier)
+
+    classifier = ClassifierFactory.get("watch", "watch_random_forest", {})
+    assert isinstance(classifier, WatchRandomForestClassifier)
+
+    classifier = ClassifierFactory.get("watch", "watch_transformer", {})
+    assert isinstance(classifier, WatchTransformerClassifier)
+
+    classifier = ClassifierFactory.get("watch", "watch_xgboost", {})
+    assert isinstance(classifier, WatchXGBoostClassifier)
+
+    with pytest.raises(ValueError):
+        _ = ClassifierFactory.get("wrong", "watch_xgboost", {})
+
+    with pytest.raises(ValueError):
+        _ = ClassifierFactory.get("watch", "wrong", {})

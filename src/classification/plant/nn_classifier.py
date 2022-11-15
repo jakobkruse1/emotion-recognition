@@ -1,7 +1,6 @@
 """ This file defines an interface for classifiers for the plant data. """
 
 import copy
-import os.path
 from abc import abstractmethod
 from typing import Dict
 
@@ -96,10 +95,6 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
             )
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", f"models/plant/{self.name}")
-        if os.path.exists("models/plant/checkpoint"):
-            self.load(
-                {"save_path": "models/plant/checkpoint"}
-            )  # pragma: no cover
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 
@@ -126,7 +121,3 @@ class PlantNNBaseClassifier(PlantEmotionClassifier):
             )
         results = self.model.predict(dataset)
         return np.argmax(results, axis=1)
-
-
-if __name__ == "__main__":  # pragma: no cover
-    classifier = PlantNNBaseClassifier("base")  # Does not work.

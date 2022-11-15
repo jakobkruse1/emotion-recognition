@@ -28,7 +28,7 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("balanced_plant_exp", folder or "data/plant")
+        super().__init__("balanced_plant", folder or "data/plant")
         self.unbalanced_reader = PlantExperimentDataReader(
             folder, default_label_mode
         )
@@ -228,7 +228,7 @@ def _main():  # pragma: no cover
     }
     for split in range(5):
         print(f"Split {split}/5")
-        parameters["cv_split"] = split
+        parameters["cv_index"] = split
         reader_main(reader, parameters)
 
 

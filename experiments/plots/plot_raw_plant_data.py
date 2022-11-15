@@ -1,3 +1,4 @@
+""" Plot the raw data from the plant. """
 import os
 
 import matplotlib

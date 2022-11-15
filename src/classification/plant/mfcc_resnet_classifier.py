@@ -90,6 +90,7 @@ def _main():  # pragma: no cover
         "window": 20,
         "hop": 10,
         "balanced": True,
+        "checkpoint": True,
     }
     save_path = "models/plant/plant_mfcc_resnet"
     cv_training_loop(classifier, parameters, save_path)

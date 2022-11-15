@@ -35,7 +35,6 @@ class KerasLogger(BaseLogger):
         """
         history = data["history"]
         training_logs = history.history
-        print(training_logs)
         self.logs.update(
             {
                 "train_loss": training_logs["loss"],

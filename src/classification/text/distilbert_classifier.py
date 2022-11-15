@@ -64,7 +64,7 @@ class DistilBertClassifier(BertClassifier):
         parameters = self.init_parameters(parameters, **kwargs)
         save_path = parameters.get("save_path", "models/text/distilbert")
         self.classifier.save(save_path, include_optimizer=False)
-        self.logger.log_start({"train_parameters": parameters})
+        self.logger.save_logs(save_path)
 
 
 def _main():  # pragma: no cover

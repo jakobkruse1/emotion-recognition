@@ -30,7 +30,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("plant_exp", folder or "data/plant")
+        super().__init__("plant", folder or "data/plant")
         self.default_label_mode = default_label_mode
         assert default_label_mode in ["expected", "faceapi", "both"]
         self.files = glob.glob(os.path.join(self.folder, "*.wav"))
@@ -122,7 +122,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
             - cv_index: Which split to use.
         :return: List of indexes in a cv form.
         """
-        cv_portions = parameters.get("cv_portions", 5)
+        cv_portions = parameters.get("cv_splits", 5)
         if which_set == Set.ALL:
             indices = []
             cv_params = copy.deepcopy(parameters)
@@ -355,8 +355,8 @@ class PlantExperimentDataReader(ExperimentDataReader):
             sample_rate, data = wavfile.read(plant_file)
             assert sample_rate == 10000, "WAV file has incorrect sample rate!"
             mean = np.mean(data)
-            var = np.var(data)
-            data = (data - mean) / var
+            std = np.std(data)
+            data = (data - mean) / std
             labels = all_labels[index, :]
             for second in range(window, all_labels.shape[1], hop):
                 if labels[second] == -1:
@@ -423,7 +423,7 @@ def _main():  # pragma: no cover
     }
     for split in range(5):
         print(f"Split {split}/5")
-        parameters["cv_split"] = split
+        parameters["cv_index"] = split
         reader_main(reader, parameters)
 
 

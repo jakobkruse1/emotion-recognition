@@ -32,7 +32,7 @@ def training_loop(
     parameters["save_path"] = save_path
     if not os.path.exists(save_path) or "train" in sys.argv:
         classifier.train(parameters)
-        classifier.save()
+        classifier.save(parameters)
 
     classifier.load(parameters)
     emotions = classifier.classify(parameters)
@@ -96,7 +96,6 @@ def cv_training_loop(
         cv_params["cv_index"] = i
         cv_params["cv_splits"] = cv_splits
         cv_params["save_path"] = split_path
-        parameters.update(cv_params)
         classifier.load(cv_params)
         emotions = classifier.classify(cv_params)
         labels = classifier.data_reader.get_labels(Set.TEST, cv_params)

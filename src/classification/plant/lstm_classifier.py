@@ -29,6 +29,9 @@ class PlantLSTMClassifier(PlantNNBaseClassifier):
         """
         lstm_units = parameters.get("lstm_units", 512)
         dropout = parameters.get("dropout", 0.2)
+        l1 = parameters.get("l1", 1e-4)
+        l2 = parameters.get("l2", 1e-3)
+        regularizer = tf.keras.regularizers.L1L2(l1=l1, l2=l2)
         input_size = self.data_reader.get_input_shape(parameters)[0]
         lstm_layers = parameters.get("lstm_layers", 1)
         input_tensor = tf.keras.layers.Input(
@@ -50,9 +53,13 @@ class PlantLSTMClassifier(PlantNNBaseClassifier):
                 tf.keras.layers.LSTM(lstm_units)
             )(input_tensor)
         out = tf.keras.layers.Dropout(dropout)(out)
-        out = tf.keras.layers.Dense(1024, activation="relu")(out)
+        out = tf.keras.layers.Dense(
+            1024, activation="relu", kernel_regularizer=regularizer
+        )(out)
         out = tf.keras.layers.Dropout(dropout)(out)
-        out = tf.keras.layers.Dense(512, activation="relu")(out)
+        out = tf.keras.layers.Dense(
+            512, activation="relu", kernel_regularizer=regularizer
+        )(out)
         out = tf.keras.layers.Dropout(dropout)(out)
         out = tf.keras.layers.Dense(7, activation="softmax")(out)
         self.model = tf.keras.Model(input_tensor, out)
@@ -61,17 +68,18 @@ class PlantLSTMClassifier(PlantNNBaseClassifier):
 def _main():  # pragma: no cover
     classifier = PlantLSTMClassifier()
     parameters = {
-        "epochs": 50,
-        "patience": 10,
+        "epochs": 1000,
+        "patience": 100,
         "batch_size": 64,
         "learning_rate": 0.0003,
         "lstm_units": 1024,
         "lstm_layers": 2,
         "dropout": 0,
-        "label_mode": "faceapi",
-        "window": 30,
-        "hop": 30,
+        "label_mode": "both",
+        "window": 20,
+        "hop": 10,
         "balanced": True,
+        "checkpoint": True,
     }
     save_path = "models/plant/plant_lstm"
     cv_training_loop(classifier, parameters, save_path)

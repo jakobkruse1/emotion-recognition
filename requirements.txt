@@ -34,3 +34,4 @@ moviepy
 tqdm
 scipy
 pandas
+xgboost
