@@ -1,6 +1,7 @@
 """This file implements the data reading functionality for the speech data
 from the comparison dataset."""
 import os
+import warnings
 from typing import Dict, Tuple
 
 import numpy as np
@@ -139,6 +140,8 @@ class ComparisonSpeechDataReader(DataReader):
         audio, _ = tf.audio.decode_wav(
             contents=audio_binary, desired_channels=1
         )
+        if audio.shape[0] > 48000:
+            warnings.warn(f"Truncating audio file of size {audio.shape}")
         audio = tf.keras.preprocessing.sequence.pad_sequences(
             [audio],
             maxlen=48000,

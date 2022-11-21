@@ -17,13 +17,15 @@ class ComparisonTextDataReader(DataReader):
     Class that reads the CSV datasets from the data/train/text folder
     """
 
-    def __init__(self, folder: str = "data/comparison_dataset/text"):
+    def __init__(self, folder: str = None):
         """
         Initialization for the class
 
         :param folder: The folder that contains the data.
         """
-        super().__init__("comparison_text", folder or "data/train/text")
+        super().__init__(
+            "comparison_text", folder or "data/comparison_dataset/text"
+        )
         self.emotion_labels = {
             "angry": 0,
             "surprise": 1,

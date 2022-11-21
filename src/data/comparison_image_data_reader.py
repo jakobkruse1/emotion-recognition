@@ -42,7 +42,7 @@ class ComparisonImageDataReader(DataReader):
             self.folder,
             shuffle=False,
             batch_size=batch_size,
-            image_size=(48, 48),
+            image_size=(224, 224),
             label_mode="categorical",
             color_mode="grayscale",
             class_names=[
@@ -56,6 +56,13 @@ class ComparisonImageDataReader(DataReader):
             ],
         )
         self.num_batch[which_set] = int(dataset.cardinality().numpy())
+        fraction = parameters.get("fraction", 0.652)
+        dataset = dataset.map(
+            lambda x, y: (
+                tf.image.resize(tf.image.central_crop(x, fraction), (48, 48)),
+                y,
+            )
+        )
         return dataset
 
     def get_three_emotion_data(
@@ -77,7 +84,7 @@ class ComparisonImageDataReader(DataReader):
             self.folder,
             shuffle=False,
             batch_size=batch_size,
-            image_size=(48, 48),
+            image_size=(224, 224),
             label_mode="categorical",
             color_mode="grayscale",
             class_names=[
@@ -89,6 +96,14 @@ class ComparisonImageDataReader(DataReader):
                 "sad",
                 "neutral",
             ],
+        )
+        self.num_batch[which_set] = int(dataset.cardinality().numpy())
+        fraction = parameters.get("fraction", 0.652)
+        dataset = dataset.map(
+            lambda x, y: (
+                tf.image.resize(tf.image.central_crop(x, fraction), (48, 48)),
+                y,
+            )
         )
         dataset = dataset.map(
             lambda x, y: tf.numpy_function(
