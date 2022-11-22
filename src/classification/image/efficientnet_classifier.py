@@ -90,7 +90,9 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
             callbacks=[self.callback],
             class_weight=self.class_weights,
         )
+        print("\nTraining done\n")
         self.logger.log_end({"history": history})
+        print("\nLogger done\n")
         self.is_trained = True
 
     def load(self, parameters: Dict = None, **kwargs) -> None:
