@@ -39,7 +39,7 @@ jobs:
       - name: Install all models for tests
         run: bash models/install_all.sh
       - name: Run tests
-        run: python -m pytest --cov=src/ --cov-report xml tests/
+        run: python -m pytest -sv --cov=src/ --cov-report xml tests/
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
