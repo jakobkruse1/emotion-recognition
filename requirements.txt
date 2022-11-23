@@ -21,7 +21,6 @@ scikit-image==0.19.3
 scikit-learn==1.1.2
 scipy==1.9.1
 seaborn==0.11.2
--e git+https://github.com/GasserElbanna/serab-byols.git@d7f42ff8ca0004c842bb34d85e987d68102207b9#egg=serab_byols
 sphinx==5.1.1
 tensorflow==2.9.1
 tensorflow-datasets==4.6.0
