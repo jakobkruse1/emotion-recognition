@@ -29,7 +29,6 @@ def test_efficientnet_workflow():
     classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
     classifier.train(train_parameters)
     assert len(classifier.model.layers) == 4
-
     shutil.rmtree("tests/temp/efficient", ignore_errors=True)
     save_parameters = {"save_path": "tests/temp/efficient"}
     classifier.save(save_parameters)
@@ -38,7 +37,6 @@ def test_efficientnet_workflow():
     results = classifier.classify()
     assert isinstance(results, np.ndarray)
     assert results.shape == (7,)
-
     new_classifier = MultiTaskEfficientNetB2Classifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = ImageDataReader(
@@ -49,7 +47,6 @@ def test_efficientnet_workflow():
 
     with pytest.raises(RuntimeError):
         new_classifier.save({"save_path": "tests/temp/efficient"})
-
     shutil.rmtree("tests/temp", ignore_errors=True)
 
 

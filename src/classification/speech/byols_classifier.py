@@ -34,7 +34,7 @@ class BYOLSModel(nn.Module):
         super().__init__()
         parameters = parameters or {}
         self.model_name = model_name
-        self.cfg_path = "models/speech/serab-byols/serab_byols/config.yaml"
+        self.cfg_path = "models/speech/byols_config.yaml"
         freeze = parameters.get("freeze", True)
         hidden = parameters.get("hidden", 1024)
         self.device = device
