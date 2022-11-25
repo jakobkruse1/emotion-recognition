@@ -46,7 +46,9 @@ class ComparisonSpeechDataReader(DataReader):
         :param parameters: Additional parameters
         :return: The tensorflow Dataset instance
         """
-        parameters = parameters or {}
+        assert (
+            which_set == Set.TEST
+        ), "The comparison dataset can only be used for testing."
 
         filenames = tf.io.gfile.glob(self.folder + "/*/*.wav")
         filenames.sort()

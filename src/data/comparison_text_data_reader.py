@@ -87,7 +87,7 @@ class ComparisonTextDataReader(DataReader):
             lambda x, y: tf.numpy_function(
                 func=self.map_emotions,
                 inp=[x, y],
-                Tout=(tf.float32, tf.float32),
+                Tout=(tf.string, tf.float32),
             )
         )
 

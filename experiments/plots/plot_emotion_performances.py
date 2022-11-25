@@ -5,6 +5,8 @@ import os
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import seaborn as sns
 import tensorflow as tf
 from sklearn.metrics import confusion_matrix
 
@@ -31,25 +33,69 @@ def score_per_class(
 
 
 def plot_emotion_comparison(all_data: dict[str, dict[str, float]]) -> None:
-    plt.figure(figsize=(6.4, 4))
+    dataframe = pd.DataFrame(columns=["Emotion", "Modality", "Recall"])
+    for modality, emotion_values in all_data.items():
+        for emotion, recall in emotion_values.items():
+            new_data = pd.DataFrame.from_dict(
+                {
+                    "Emotion": [emotion],
+                    "Modality": [modality],
+                    "Recall": [recall],
+                }
+            )
+            dataframe = pd.concat([dataframe, new_data])
 
-    for label, data in all_data.items():
-        plt.plot(data.values(), list(range(1, 8)), label=label)
-
-    plt.legend()
-    plt.xlabel("Recall")
-    plt.xlim([-0.01, 1.0])
-    plt.yticks(list(range(1, 8)), labels=list(all_data.values())[0].keys())
-    plt.ylabel("Emotion")
-    plt.grid()
-    plt.tight_layout()
+    # Draw a nested barplot by species and sex
+    g = sns.catplot(
+        data=dataframe,
+        kind="bar",
+        x="Emotion",
+        y="Recall",
+        hue="Modality",
+        palette="tab10",
+        alpha=0.8,
+        height=4,
+        aspect=6.4 / 4,
+    )
+    g.set_axis_labels("Emotion", "Recall")
+    g.legend.set_title("Data")
+    plt.grid(axis="y")
     plt.savefig("plots/emotion_comparison.pdf")
+    plt.show()
+
+
+def plot_confusion_matrix(predictions, labels, title=None):
+    data = {
+        "true": pd.Categorical(labels, categories=list(range(7))),
+        "pred": pd.Categorical(predictions, categories=list(range(7))),
+    }
+    df = pd.DataFrame(data, columns=["true", "pred"])
+    confusion_matrix = pd.crosstab(
+        df["true"],
+        df["pred"],
+        rownames=["True"],
+        colnames=["Predicted"],
+        dropna=False,
+        normalize="index",
+    )
+    emotions = ["AN", "SU", "DI", "JO", "FE", "SA", "NE"]
+    confusion_matrix.index = emotions
+    confusion_matrix.columns = emotions
+
+    plt.figure(figsize=(4, 3))
+    sns.heatmap(confusion_matrix, annot=True, fmt=".2f", cmap="Blues")
+    plt.xlabel("Predicted emotion")
+    plt.ylabel("True emotion")
+    # if title:
+    #    plt.title(title)
+    plt.tight_layout()
+    plt.savefig(f"plots/{'_'.join(title.split(' '))}_confusion.pdf")
     plt.show()
 
 
 def main():
     os.makedirs("plots", exist_ok=True)
-    matplotlib.rcParams.update({"font.size": 11})
+    matplotlib.rcParams.update({"font.size": 12})
     plt.rc("text", usetex=True)
     plt.rc("font", family="serif")
 
@@ -68,7 +114,9 @@ def main():
     classifier.data_reader = DataFactory.get_data_reader("comparison_text")
     prediction = classifier.classify(parameters)
     labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    all_data["Text Comparison Dataset"] = score_per_class(labels, prediction)
+    all_data["Text Comparison"] = score_per_class(labels, prediction)
+
+    plot_confusion_matrix(prediction, labels, "Text Comparison")
 
     # Image Data
     classifier = ClassifierFactory.get("image", "vgg16")
@@ -83,7 +131,9 @@ def main():
     classifier.data_reader = DataFactory.get_data_reader("comparison_image")
     prediction = classifier.classify(parameters)
     labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    all_data["Image Comparison Dataset"] = score_per_class(labels, prediction)
+    all_data["Image Comparison"] = score_per_class(labels, prediction)
+
+    plot_confusion_matrix(prediction, labels, "Image Comparison")
 
     # Speech Data
     classifier = ClassifierFactory.get("speech", "hubert")
@@ -98,7 +148,9 @@ def main():
     classifier.data_reader = DataFactory.get_data_reader("comparison_speech")
     prediction = classifier.classify(parameters)
     labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    all_data["Speech Comparison Dataset"] = score_per_class(labels, prediction)
+    all_data["Speech Comparison"] = score_per_class(labels, prediction)
+
+    plot_confusion_matrix(prediction, labels, "Speech Comparison")
 
     # Watch Data
     classifier = ClassifierFactory.get("watch", "watch_random_forest")

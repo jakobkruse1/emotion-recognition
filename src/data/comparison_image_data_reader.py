@@ -38,6 +38,7 @@ class ComparisonImageDataReader(DataReader):
         assert (
             which_set == Set.TEST
         ), "The comparison dataset can only be used for testing."
+        parameters = parameters or {}
         dataset = tf.keras.utils.image_dataset_from_directory(
             self.folder,
             shuffle=False,
@@ -80,6 +81,7 @@ class ComparisonImageDataReader(DataReader):
         assert (
             which_set == Set.TEST
         ), "The comparison dataset can only be used for testing."
+        parameters = parameters or {}
         dataset = tf.keras.utils.image_dataset_from_directory(
             self.folder,
             shuffle=False,
