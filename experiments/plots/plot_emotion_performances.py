@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import tensorflow as tf
+from matplotlib.colors import LinearSegmentedColormap
 from sklearn.metrics import confusion_matrix
 
 from src.classification.classifier_factory import ClassifierFactory
@@ -30,6 +31,28 @@ def score_per_class(
         "neutral",
     ]
     return {em: rec for em, rec in zip(emotions, avg_recalls)}
+
+
+def get_confusion_matrix(
+    predictions: np.ndarray, labels: np.ndarray
+) -> pd.DataFrame:
+    data = {
+        "true": pd.Categorical(labels, categories=list(range(7))),
+        "pred": pd.Categorical(predictions, categories=list(range(7))),
+    }
+    df = pd.DataFrame(data, columns=["true", "pred"])
+    confusion_matrix = pd.crosstab(
+        df["true"],
+        df["pred"],
+        rownames=["True"],
+        colnames=["Predicted"],
+        dropna=False,
+        normalize="index",
+    )
+    emotions = ["AN", "SU", "DI", "JO", "FE", "SA", "NE"]
+    confusion_matrix.index = emotions
+    confusion_matrix.columns = emotions
+    return confusion_matrix
 
 
 def plot_emotion_comparison(all_data: dict[str, dict[str, float]]) -> None:
@@ -64,32 +87,38 @@ def plot_emotion_comparison(all_data: dict[str, dict[str, float]]) -> None:
     plt.show()
 
 
-def plot_confusion_matrix(predictions, labels, title=None):
-    data = {
-        "true": pd.Categorical(labels, categories=list(range(7))),
-        "pred": pd.Categorical(predictions, categories=list(range(7))),
-    }
-    df = pd.DataFrame(data, columns=["true", "pred"])
-    confusion_matrix = pd.crosstab(
-        df["true"],
-        df["pred"],
-        rownames=["True"],
-        colnames=["Predicted"],
-        dropna=False,
-        normalize="index",
-    )
-    emotions = ["AN", "SU", "DI", "JO", "FE", "SA", "NE"]
-    confusion_matrix.index = emotions
-    confusion_matrix.columns = emotions
-
+def plot_confusion_matrix(predictions, labels, name):
+    confusion_matrix = get_confusion_matrix(predictions, labels)
     plt.figure(figsize=(4, 3))
     sns.heatmap(confusion_matrix, annot=True, fmt=".2f", cmap="Blues")
     plt.xlabel("Predicted emotion")
     plt.ylabel("True emotion")
-    # if title:
-    #    plt.title(title)
     plt.tight_layout()
-    plt.savefig(f"plots/{'_'.join(title.split(' '))}_confusion.pdf")
+    plt.savefig(f"plots/{name}_confusion.pdf")
+    plt.show()
+
+
+def plot_confusion_matrix_difference(
+    comp_predictions, comp_labels, train_predictions, train_labels, name
+):
+    comp_confusion = get_confusion_matrix(comp_predictions, comp_labels)
+    train_confusion = get_confusion_matrix(train_predictions, train_labels)
+
+    plt.figure(figsize=(4, 3))
+    cmap = LinearSegmentedColormap.from_list("rg", ["r", "w", "g"], N=256)
+    sns.heatmap(
+        comp_confusion - train_confusion,
+        annot=True,
+        fmt=".2f",
+        cmap=cmap,
+        vmin=-1,
+        vmax=1,
+        center=0,
+    )
+    plt.xlabel("Predicted emotion")
+    plt.ylabel("True emotion")
+    plt.tight_layout()
+    plt.savefig(f"plots/{name}_confusion_difference.pdf")
     plt.show()
 
 
@@ -112,11 +141,14 @@ def main():
     all_data["Text Training"] = score_per_class(labels, prediction)
 
     classifier.data_reader = DataFactory.get_data_reader("comparison_text")
-    prediction = classifier.classify(parameters)
-    labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    all_data["Text Comparison"] = score_per_class(labels, prediction)
+    cd_prediction = classifier.classify(parameters)
+    cd_labels = classifier.data_reader.get_labels(Set.TEST, parameters)
+    all_data["Text Comparison"] = score_per_class(cd_labels, cd_prediction)
 
-    plot_confusion_matrix(prediction, labels, "Text Comparison")
+    plot_confusion_matrix(cd_prediction, cd_labels, "text_comparison")
+    plot_confusion_matrix_difference(
+        cd_prediction, cd_labels, prediction, labels, "text_comparison"
+    )
 
     # Image Data
     classifier = ClassifierFactory.get("image", "vgg16")
@@ -129,11 +161,14 @@ def main():
     all_data["Image Training"] = score_per_class(labels, prediction)
 
     classifier.data_reader = DataFactory.get_data_reader("comparison_image")
-    prediction = classifier.classify(parameters)
-    labels = classifier.data_reader.get_labels(Set.TEST, parameters)
+    cd_prediction = classifier.classify(parameters)
+    cd_labels = classifier.data_reader.get_labels(Set.TEST, parameters)
     all_data["Image Comparison"] = score_per_class(labels, prediction)
 
-    plot_confusion_matrix(prediction, labels, "Image Comparison")
+    plot_confusion_matrix(cd_prediction, cd_labels, "image_comparison")
+    plot_confusion_matrix_difference(
+        cd_prediction, cd_labels, prediction, labels, "image_comparison"
+    )
 
     # Speech Data
     classifier = ClassifierFactory.get("speech", "hubert")
@@ -146,11 +181,14 @@ def main():
     all_data["Speech Training"] = score_per_class(labels, prediction)
 
     classifier.data_reader = DataFactory.get_data_reader("comparison_speech")
-    prediction = classifier.classify(parameters)
-    labels = classifier.data_reader.get_labels(Set.TEST, parameters)
+    cd_prediction = classifier.classify(parameters)
+    cd_labels = classifier.data_reader.get_labels(Set.TEST, parameters)
     all_data["Speech Comparison"] = score_per_class(labels, prediction)
 
-    plot_confusion_matrix(prediction, labels, "Speech Comparison")
+    plot_confusion_matrix(cd_prediction, cd_labels, "speech_comparison")
+    plot_confusion_matrix_difference(
+        cd_prediction, cd_labels, prediction, labels, "speech_comparison"
+    )
 
     # Watch Data
     classifier = ClassifierFactory.get("watch", "watch_random_forest")
