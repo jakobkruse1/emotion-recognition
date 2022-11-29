@@ -8,12 +8,12 @@
 [![Linkedin](https://img.shields.io/badge/-LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/jakob-kruse-b7293a197/)
 
 This repository serves as a framework for emotion classification. It implements several classifiers
-for different data types/modalities like face images, text/sentences, voice/speech, physiological signals (heartrate, acceleration from a smartwatch) and more sensors.  
+for different data types/modalities like face images, text/sentences, voice/speech, physiological signals (heartrate, acceleration from a smartwatch) and more sensors.
 The classifiers can be trained and then used for inference. For training, recommended datasets and how to set them up
-is described in [data/DESCRIPTION.md](data/DESCRIPTION.md).  
+is described in [data/DESCRIPTION.md](data/DESCRIPTION.md).
 
 **Emotions**: All classifiers used in this work use 7 emotion classes. The classes are the six basic emotions defined by Paul Ekman:
-*happiness, sadness, anger, fear, surprise, disgust*; and an additional *neutral* class. Existing emotion classification models have been retrained on these seven classes 
+*happiness, sadness, anger, fear, surprise, disgust*; and an additional *neutral* class. Existing emotion classification models have been retrained on these seven classes
 in order to make the models comparable and have a single interface for all models.
 
 **Classifiers**: All classifiers use the same interface for emotion classification.
@@ -24,8 +24,8 @@ I recommend setting up a new virtual environment in the venv folder.
 <details>
 <summary>How to set up a virtual environment in Python 3</summary>
 
-``` 
-sudo apt install python3-pip python3-venv 
+```
+sudo apt install python3-pip python3-venv
 python -m venv venv
 source venv/bin/activate
 ```
@@ -35,7 +35,7 @@ Then, install the required packages:
 ```bash
 pip install -r requirements.txt
 ```
-To download the datasets, please refer to [data/DESCRIPTION.md](data/DESCRIPTION.md).  
+To download the datasets, please refer to [data/DESCRIPTION.md](data/DESCRIPTION.md).
 Some of the datasets are publicly available, to download them you can use:
 ```bash
 bash data/prepare_all.sh
@@ -43,6 +43,17 @@ bash data/prepare_all.sh
 Prepare all the classification models:
 ```bash
 bash models/install_all.sh
+```
+
+## ⬇️ Download models
+To download the pretrained models described in my thesis, use the script:
+```bash
+bash models/download_model.sh --data <modality> --model <model_name>
+```
+Currently, only the best model for each modality is available. For details on
+the available options for `--data` and `--model`, please refer to the help:
+```bash
+bash models/download_model.sh -h
 ```
 
 ## 🧪 Testing
