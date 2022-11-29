@@ -46,7 +46,7 @@ def main():
         s=50,
     )
     plt.xlabel("Accuracy")
-    plt.ylabel("Per Class Accuracy")
+    plt.ylabel("Avg. Recall")
     plt.xlim([0.4, 0.65])
     plt.ylim([0.4, 0.65])
     plt.grid()

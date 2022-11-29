@@ -23,6 +23,7 @@ def accuracy(labels: np.ndarray, prediction: np.ndarray) -> float:
 def per_class_accuracy(labels: np.ndarray, prediction: np.ndarray) -> float:
     """
     Compute the average per class accuracy of predictions.
+    This is equivalent to the average recall per class.
 
     :param labels: Labels array.
     :param prediction: Predicitions array from classifier.

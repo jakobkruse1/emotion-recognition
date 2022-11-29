@@ -6,6 +6,9 @@ import tensorflow as tf
 from src.data.data_factory import (
     BalancedImageDataReader,
     BalancedPlantExperimentDataReader,
+    ComparisonImageDataReader,
+    ComparisonSpeechDataReader,
+    ComparisonTextDataReader,
     DataFactory,
     ImageDataReader,
     PlantExperimentDataReader,
@@ -44,6 +47,18 @@ def test_data_reader_factory():
     watch_reader = DataFactory.get_data_reader("watch")
     assert isinstance(watch_reader, WatchExperimentDataReader)
     assert watch_reader.name == "watch"
+
+    watch_reader = DataFactory.get_data_reader("comparison_text")
+    assert isinstance(watch_reader, ComparisonTextDataReader)
+    assert watch_reader.name == "comparison_text"
+
+    watch_reader = DataFactory.get_data_reader("comparison_image")
+    assert isinstance(watch_reader, ComparisonImageDataReader)
+    assert watch_reader.name == "comparison_image"
+
+    watch_reader = DataFactory.get_data_reader("comparison_speech")
+    assert isinstance(watch_reader, ComparisonSpeechDataReader)
+    assert watch_reader.name == "comparison_speech"
 
     with pytest.raises(ValueError):
         _ = DataFactory.get_data_reader("wrong")

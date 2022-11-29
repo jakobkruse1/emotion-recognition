@@ -13,7 +13,7 @@ from src.utils import reader_main
 
 class ImageDataReader(DataReader):
     """
-    Class that reads the CSV datasets from the data/train/text folder
+    Class that reads the image dataset from the data/train/image folder
     """
 
     def __init__(self, name: str = "image", folder: str = None):
@@ -73,7 +73,7 @@ class ImageDataReader(DataReader):
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
     ) -> tf.data.Dataset:
         """
-        Main data reading function which reads the CSV file into a dataset
+        Main data reading function which reads the image folders into a dataset
         and also converts the emotion labels to the three emotion space.
 
         :param which_set: Which dataset to use - train, val or test
@@ -119,7 +119,7 @@ class ImageDataReader(DataReader):
         self, which_set: Set = Set.TRAIN, parameters: Dict = None
     ) -> np.ndarray:
         """
-        Get the labels for the text dataset that is specified in an array
+        Get the labels for the image dataset that is specified in an array
 
         :param which_set: Train, val or test set
         :param parameters: Parameter dictionary
