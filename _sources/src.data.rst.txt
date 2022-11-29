@@ -36,6 +36,30 @@ src.data.classwise\_speech\_data\_reader module
    :undoc-members:
    :show-inheritance:
 
+src.data.comparison\_image\_data\_reader module
+-----------------------------------------------
+
+.. automodule:: src.data.comparison_image_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.data.comparison\_speech\_data\_reader module
+------------------------------------------------
+
+.. automodule:: src.data.comparison_speech_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.data.comparison\_text\_data\_reader module
+----------------------------------------------
+
+.. automodule:: src.data.comparison_text_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.data.data\_factory module
 -----------------------------
 
