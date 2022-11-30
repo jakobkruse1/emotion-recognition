@@ -213,7 +213,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
         :param label_mode: Whether to use expected or faceapi labels
         :return: Array of all labels in shape (file, second)
         """
-        raw_labels = np.zeros((len(self._get_complete_data_indices()), 690))
+        raw_labels = np.zeros((len(self.get_complete_data_indices()), 690))
         if label_mode == "expected":
             raw_labels = self.get_raw_expected_labels()
         elif label_mode == "faceapi":
@@ -233,7 +233,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
 
         :return: Labels that are expected from the user.
         """
-        labels = np.zeros((len(self._get_complete_data_indices()), 690))
+        labels = np.zeros((len(self.get_complete_data_indices()), 690))
         for emotion, times in self.emotion_times.items():
             start_time = (
                 0 if int(times["start"]) == 0 else int(times["start"]) + 1
@@ -249,7 +249,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
 
         :return: Labels that are collected from the user's face expression.
         """
-        data_indices = self._get_complete_data_indices()
+        data_indices = self.get_complete_data_indices()
         gt_folder = "data/ground_truth"
         labels = np.zeros((len(data_indices), 690))
         emotions_sorted = [
@@ -325,7 +325,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
             columns = [f"{col}Norm" for col in columns.copy()]
         raw_data = np.empty((0, window, 5))
         raw_labels = np.empty((0,))
-        for part_id in self._get_complete_data_indices():
+        for part_id in self.get_complete_data_indices():
             part_data = np.empty((0, window, 5))
             part_labels = np.empty((0,))
             for emotion in self.emotions:
@@ -343,7 +343,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
                     file[0], delimiter=",", usecols=["Second"]
                 )
                 for second in range(window, len(data), hop):
-                    index = self._get_complete_data_indices().index(part_id)
+                    index = self.get_complete_data_indices().index(part_id)
                     label = all_labels[index, seconds.values[second][0]]
                     sample = np.expand_dims(
                         data.values[(second - window) : second, :], axis=0
@@ -374,21 +374,6 @@ class WatchExperimentDataReader(ExperimentDataReader):
         parameters = parameters or {}
         window = parameters.get("window", 20)
         return window, 5
-
-    @staticmethod
-    def _get_complete_data_indices() -> List[int]:
-        complete_data = (
-            list(range(5, 9))
-            + list(range(11, 15))
-            + [16]
-            + list(range(18, 21))
-            + list(range(24, 58))
-            + list(range(59, 62))
-            + list(range(63, 66))
-            + list(range(68, 70))
-        )
-
-        return complete_data
 
 
 def _main():  # pragma: no cover

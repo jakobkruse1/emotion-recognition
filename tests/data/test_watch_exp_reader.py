@@ -15,7 +15,7 @@ def test_init():
     assert reader.default_label_mode == "expected"
     assert reader.raw_data is None
     assert reader.raw_labels is None
-    assert len(reader._get_complete_data_indices()) == 54
+    assert len(reader.get_complete_data_indices()) == 54
 
 
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
