@@ -10,6 +10,7 @@ import tensorflow as tf
 from alive_progress import alive_bar
 from scipy.io import wavfile
 
+from src.classification.image import VGG16Classifier
 from src.classification.plant import PlantMFCCResnetClassifier
 from src.classification.watch import WatchRandomForestClassifier
 from src.data.plant_exp_reader import PlantExperimentDataReader
@@ -262,6 +263,36 @@ def determine_correct_models(hop: int = 10) -> np.ndarray:
     return right_models
 
 
+def get_image_emotions(experiment_index: int) -> np.ndarray:
+    """
+    Function that creates all image emotion probabilities using our VGG16 model.
+
+    :param experiment_index: The index of the experiment
+    :return: Numpy array of shape (7, 613)
+    """
+    folder = f"data/continuous/face_images/{experiment_index:03d}"
+    dataset = tf.keras.utils.image_dataset_from_directory(
+        folder,
+        shuffle=False,
+        labels=None,
+        batch_size=64,
+        image_size=(224, 224),
+        color_mode="grayscale",
+    )
+    fraction = 0.652
+    dataset = dataset.map(
+        lambda x: (
+            tf.image.resize(tf.image.central_crop(x, fraction), (48, 48))
+        )
+    )
+    dataset = dataset.map(lambda x: tf.image.grayscale_to_rgb(x))
+
+    classifier = VGG16Classifier()
+    classifier.load()
+    results = classifier.model.predict(dataset)
+    return results.transpose()
+
+
 def obtain_emotion_probabilities(experiment_index: int) -> pd.DataFrame:
     """
     Function that obtains the emotion probabilities from all models and stores
@@ -285,7 +316,8 @@ def obtain_emotion_probabilities(experiment_index: int) -> pd.DataFrame:
     dataframe = add_to_dataframe(dataframe, watch_labels, "watch")
 
     # Image data
-
+    image_labels = get_image_emotions(experiment_index)
+    dataframe = add_to_dataframe(dataframe, image_labels, "image")
     return dataframe
 
 
