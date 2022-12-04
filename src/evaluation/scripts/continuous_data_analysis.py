@@ -24,11 +24,33 @@ EMOTIONS = [
 MODALITIES = ["faceapi", "plant", "watch", "image"]
 
 
+def downsample_array(sample: np.ndarray) -> np.ndarray:
+    """
+    Gets a sample with shape (window_size * 10000,) and then preprocesses it
+    before using it in the classifier.
+
+    :param sample: The data sample to preprocess.
+    :return: The preprocessed sample.
+    """
+    downsampling_factor = 10
+    pad_size = downsampling_factor - sample.shape[0] % downsampling_factor
+    pad_size = 0 if pad_size == downsampling_factor else pad_size
+    dimension1 = 1 if len(sample.shape) == 1 else sample.shape[1]
+    padded_sample = np.append(
+        sample, np.zeros((pad_size, dimension1)) * np.NaN
+    )
+    downsampled_sample = np.nanmean(
+        padded_sample.reshape((-1, downsampling_factor, dimension1)), axis=1
+    )
+    return np.squeeze(downsampled_sample)
+
+
 def correlation(
     data1: np.ndarray,
     data2: np.ndarray,
     corr_type: str,
     differentiate: bool = True,
+    downsample: bool = True,
 ) -> tuple[float, float]:
     """
     Compute correlation values between array1 and array2
@@ -37,8 +59,12 @@ def correlation(
     :param data2: Second array
     :param corr_type: Correlation function, pearson or spearman
     :param differentiate: Differentiate both arrays, boolean flag
+    :param downsample: Whether to downsample or not
     :return: Tuple with (coefficient, p value)
     """
+    if downsample:
+        data1 = downsample_array(data1)
+        data2 = downsample_array(data2)
     if differentiate:
         data1 = data1[1:] - data1[:-1]
         data2 = data2[1:] - data2[:-1]
@@ -52,7 +78,7 @@ def correlation(
 
 
 def cramers_v_correlation(
-    df: pd.DataFrame, modality1: str, modality2: str
+    df: pd.DataFrame, modality1: str, modality2: str, downsample: bool = False
 ) -> float:
     """
     Cramer's V correlation metric between the classification results of the
@@ -61,6 +87,7 @@ def cramers_v_correlation(
     :param df: The dataframe with all emotion probabilities
     :param modality1: The first modality
     :param modality2: The second modality
+    :param downsample: Whether to downsample or not
     :return: Cramer's V value of the classification results
     """
     data1 = np.zeros((613, 7))
@@ -68,6 +95,9 @@ def cramers_v_correlation(
     for index, emotion in enumerate(EMOTIONS):
         data1[:, index] = df[f"{modality1}_{emotion}"].values
         data2[:, index] = df[f"{modality2}_{emotion}"].values
+    if downsample:
+        data1 = downsample_array(data1)
+        data2 = downsample_array(data2)
     labels1 = np.argmax(data1, axis=1)
     labels2 = np.argmax(data2, axis=1)
     data = pd.crosstab(labels1, labels2)
@@ -79,7 +109,7 @@ def cramers_v_correlation(
 
 
 def theils_u_correlation(
-    df: pd.DataFrame, modality1: str, modality2: str
+    df: pd.DataFrame, modality1: str, modality2: str, downsample: bool = False
 ) -> float:
     """
     Computes the Theil's U, a score for directional conditional cross-entropy
@@ -88,6 +118,7 @@ def theils_u_correlation(
     :param df: The dataframe with all emotion probabilities
     :param modality1: The first modality
     :param modality2: The second modality
+    :param downsample: Whether to downsample or not
     :return: Theil's U conditional cross entropy score
     """
     data1 = np.zeros((613, 7))
@@ -95,6 +126,9 @@ def theils_u_correlation(
     for index, emotion in enumerate(EMOTIONS):
         data1[:, index] = df[f"{modality1}_{emotion}"].values
         data2[:, index] = df[f"{modality2}_{emotion}"].values
+    if downsample:
+        data1 = downsample_array(data1)
+        data2 = downsample_array(data2)
     labels1 = np.argmax(data1, axis=1)
     labels2 = np.argmax(data2, axis=1)
 
@@ -140,6 +174,7 @@ def analyze_single_experiment(
     # Plot probabilities for all emotions
     if plots:
         fig, axes = plt.subplots(4, 2, figsize=(10, 10))
+        plt.suptitle(f"Experiment Index: {experiment_index}")
         for em_id, emotion in enumerate(EMOTIONS):
             row = em_id // 2
             col = em_id % 2
@@ -148,12 +183,12 @@ def analyze_single_experiment(
                 ax.plot(df[f"{modality}_{emotion}"], label=modality)
             ax.set_xlabel(emotion)
             ax.legend()
-        plt.title(f"Experiment Index: {experiment_index}")
         plt.tight_layout()
         plt.show()
 
-    # Correlations: Pearson, Spearman, Cramers V Correlation
+    # Correlations: Pearson, Spearman, Cramer's V and Theil's U
     #   Also use increment array to make the series independent
+    downsampling = False
     for items in itertools.combinations(MODALITIES, r=2):
         for emotion in EMOTIONS:
             for corr in ["pearson", "spearman"]:
@@ -164,15 +199,16 @@ def analyze_single_experiment(
                     df[f"{items[1]}_{emotion}"].values,
                     corr_type=corr,
                     differentiate=True,
+                    downsample=downsampling,
                 )
         scores[f"cramerv_{items[0]}_{items[1]}"] = cramers_v_correlation(
-            df, items[0], items[1]
+            df, items[0], items[1], downsample=downsampling
         )
         scores[f"theilsu_{items[0]}_{items[1]}"] = theils_u_correlation(
-            df, items[0], items[1]
+            df, items[0], items[1], downsample=downsampling
         )
         scores[f"theilsu_{items[1]}_{items[0]}"] = theils_u_correlation(
-            df, items[1], items[0]
+            df, items[1], items[0], downsample=downsampling
         )
 
     return scores
@@ -184,16 +220,17 @@ def main():
     """
     warnings.filterwarnings("ignore")
 
+    used_indices = ExperimentDataReader.get_complete_data_indices()[:]
     all_scores = {}
-    for experiment_index in ExperimentDataReader.get_complete_data_indices():
+    for experiment_index in used_indices:
         exp_scores = analyze_single_experiment(experiment_index, plots=False)
         all_scores[experiment_index] = exp_scores
 
     scores_df = pd.DataFrame.from_dict(all_scores.values())
-    scores_df.index = ExperimentDataReader.get_complete_data_indices()
+    scores_df.index = used_indices
     assert len(scores_df.columns) == 4 * 7 * 2 + sum(range(4)) * (7 * 2 + 3)
-    # There are some NaN values in the pearson and spearman tuples
 
+    print("--------\nMean Correlations\n--------")
     for column in scores_df.columns:
         data = scores_df[column].values
         if isinstance(data[0], tuple):

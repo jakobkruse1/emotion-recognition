@@ -60,7 +60,9 @@ class ComparisonTextDataReader(DataReader):
             all_labels = np.concatenate(
                 [all_labels, label * np.ones((len(data),))]
             )
-            all_text = np.concatenate([all_text, data.pop("text")], axis=0)
+            text = data.pop("text")
+            text[text.isna()] = ""
+            all_text = np.concatenate([all_text, text], axis=0)
         all_labels = tf.keras.utils.to_categorical(all_labels)
         dataset = tf.data.Dataset.from_tensor_slices((all_text, all_labels))
         dataset = dataset.cache().batch(batch_size).prefetch(tf.data.AUTOTUNE)
