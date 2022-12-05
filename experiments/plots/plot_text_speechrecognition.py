@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from matplotlib.colors import LinearSegmentedColormap
 from sklearn.metrics import confusion_matrix
 
 from src.classification.classifier_factory import ClassifierFactory
@@ -76,48 +75,13 @@ def plot_emotion_comparison(all_data: dict[str, dict[str, float]]) -> None:
         hue="Modality",
         palette="tab10",
         alpha=0.8,
-        height=4,
-        aspect=6.4 / 4,
+        height=3,
+        aspect=4.8 / 3,
     )
     g.set_axis_labels("Emotion", "Recall")
-    g.legend.set_title("Data")
+    g.legend.set_title("Text Data")
     plt.grid(axis="y")
-    # plt.savefig("plots/emotion_comparison.pdf")
-    plt.show()
-
-
-def plot_confusion_matrix(predictions, labels, name):
-    confusion_matrix = get_confusion_matrix(predictions, labels)
-    plt.figure(figsize=(4, 3))
-    sns.heatmap(confusion_matrix, annot=True, fmt=".2f", cmap="Blues")
-    plt.xlabel("Predicted emotion")
-    plt.ylabel("True emotion")
-    plt.tight_layout()
-    # plt.savefig(f"plots/{name}_confusion.pdf")
-    plt.show()
-
-
-def plot_confusion_matrix_difference(
-    comp_predictions, comp_labels, train_predictions, train_labels, name
-):
-    comp_confusion = get_confusion_matrix(comp_predictions, comp_labels)
-    train_confusion = get_confusion_matrix(train_predictions, train_labels)
-
-    plt.figure(figsize=(4, 3))
-    cmap = LinearSegmentedColormap.from_list("rg", ["r", "w", "g"], N=256)
-    sns.heatmap(
-        comp_confusion - train_confusion,
-        annot=True,
-        fmt=".2f",
-        cmap=cmap,
-        vmin=-1,
-        vmax=1,
-        center=0,
-    )
-    plt.xlabel("Predicted emotion")
-    plt.ylabel("True emotion")
-    plt.tight_layout()
-    # plt.savefig(f"plots/{name}_confusion_difference.pdf")
+    plt.savefig("plots/deepspeech_comparison.pdf")
     plt.show()
 
 
@@ -144,42 +108,12 @@ def main():
     cd_labels = classifier.data_reader.get_labels(Set.TEST, parameters)
     all_data["Comparison"] = score_per_class(cd_labels, cd_prediction)
 
-    plot_confusion_matrix(cd_prediction, cd_labels, "text_comparison")
-    plot_confusion_matrix_difference(
-        cd_prediction, cd_labels, prediction, labels, "text_comparison"
-    )
-
-    classifier.data_reader = DataFactory.get_data_reader(
-        "comparison_text", "data/comparison_dataset/text_sr"
-    )
-    sr_prediction = classifier.classify(parameters)
-    sr_labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    all_data["SR Comparison"] = score_per_class(sr_labels, sr_prediction)
-
-    plot_confusion_matrix(sr_prediction, sr_labels, "text_sr_comparison")
-    plot_confusion_matrix_difference(
-        sr_prediction,
-        sr_labels,
-        cd_prediction,
-        cd_labels,
-        "text_sr_comparison",
-    )
-
     classifier.data_reader = DataFactory.get_data_reader(
         "comparison_text", "data/comparison_dataset/text_deepspeech"
     )
     ds_prediction = classifier.classify(parameters)
     ds_labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    all_data["DS Comparison"] = score_per_class(ds_labels, ds_prediction)
-
-    plot_confusion_matrix(ds_prediction, ds_labels, "text_ds_comparison")
-    plot_confusion_matrix_difference(
-        ds_prediction,
-        ds_labels,
-        cd_prediction,
-        cd_labels,
-        "text_ds_comparison",
-    )
+    all_data["Deepspeech"] = score_per_class(ds_labels, ds_prediction)
 
     plot_emotion_comparison(all_data)
 
