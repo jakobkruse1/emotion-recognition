@@ -3,12 +3,14 @@ import itertools
 import math
 import warnings
 from collections import Counter
-from typing import Any
+from typing import Any, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy
+from hierreg import HierarchicalRegression
+from sklearn.linear_model import LinearRegression
 
 from src.data.experiment_data_reader import ExperimentDataReader
 
@@ -21,7 +23,7 @@ EMOTIONS = [
     "sadness",
     "neutral",
 ]
-MODALITIES = ["faceapi", "plant", "watch", "image"]
+MODALITIES = ["plant", "watch", "image"]  # "faceapi"
 
 
 def downsample_array(sample: np.ndarray) -> np.ndarray:
@@ -106,6 +108,28 @@ def cramers_v_correlation(
     r, c = data.shape
     cramers_v = np.sqrt(chi2 / (n * min(r - 1, c - 1)))
     return cramers_v
+
+
+def get_label_agreeance(
+    df: pd.DataFrame, modality1: str, modality2: str
+) -> int:
+    """
+    Get details on how often the classification labels agree for two modalities.
+
+    :param df: The dataframe with all emotion probabilities
+    :param modality1: The first modality
+    :param modality2: The second modality
+    :return: Integer that gives how often labels1 == labels2
+    """
+    data1 = np.zeros((613, 7))
+    data2 = np.zeros((613, 7))
+    for index, emotion in enumerate(EMOTIONS):
+        data1[:, index] = df[f"{modality1}_{emotion}"].values
+        data2[:, index] = df[f"{modality2}_{emotion}"].values
+    labels1 = np.argmax(data1, axis=1)
+    labels2 = np.argmax(data2, axis=1)
+    count = np.sum(labels1 == labels2)
+    return int(count)
 
 
 def theils_u_correlation(
@@ -210,8 +234,108 @@ def analyze_single_experiment(
         scores[f"theilsu_{items[1]}_{items[0]}"] = theils_u_correlation(
             df, items[1], items[0], downsample=downsampling
         )
+        scores[f"agree_{items[0]}_{items[1]}"] = get_label_agreeance(
+            df, items[0], items[1]
+        )
 
     return scores
+
+
+def split_dataframe(
+    df: pd.DataFrame, modality: str, drop_cols: list[str] = None
+) -> Union[
+    tuple[np.ndarray, np.ndarray, list[str]], tuple[np.ndarray, np.ndarray]
+]:
+    """
+    Splits the input dataframe according to the modality.
+    The first output contains data for the given modality,
+    all other values in df are returned in the second array
+
+    :param df: The dataframe with all columns
+    :param modality: The modality to filter for
+    :param drop_cols: The columns that should be dropped from the dataset
+    :return: tuple of two numpy arrays
+    """
+    y_cols = [f"{modality}_{emotion}" for emotion in EMOTIONS]
+    y = df[y_cols].values
+    x_cols = [col for col in df.columns if col not in y_cols]
+    if drop_cols:
+        for drop_col in drop_cols + [f"faceapi_{em}" for em in EMOTIONS]:
+            x_cols.remove(drop_col)
+    X = df[x_cols].values
+    return y, X
+
+
+def run_regression_tests() -> None:
+    """
+    This function runs the regressions tests described in my thesis.
+    First, we run a linear regression model on the emotion probabilities.
+    Secondly, we run linear regression with the participant ID as add. input.
+    Third, we run multi-level regression with the ID as second level.
+    """
+    # Collect all the data
+    all_data = pd.DataFrame()
+    for index, experiment_index in enumerate(
+        ExperimentDataReader.get_complete_data_indices()
+    ):
+        data_path = f"data/continuous/{experiment_index:03d}_emotions.csv"
+        one_data = pd.read_csv(data_path, index_col=0)
+        one_data["Experiment"] = index
+        one_data["Second"] = one_data.index
+        all_data = pd.concat([all_data, one_data], axis=0, ignore_index=True)
+
+    # Run simple linear regression
+    scores = []
+    for modality in MODALITIES:
+        model = LinearRegression()
+        y, X = split_dataframe(
+            all_data, modality, drop_cols=["Experiment", "Second"]
+        )
+        model.fit(X, y)
+        pred = model.predict(X)
+        dist = np.abs((y - pred)).mean().mean()
+        scores.append(dist)
+    print(f"Simple linear regression distance: {np.mean(scores)}  - {scores}")
+
+    # Run simple linear regression with added participant ID
+    all_data_onehot = all_data.copy()
+    onehot = pd.get_dummies(all_data_onehot["Experiment"])
+    all_data_onehot = all_data_onehot.join(onehot)
+    scores = []
+    for modality in MODALITIES:
+        model = LinearRegression()
+        y, X = split_dataframe(
+            all_data_onehot, modality, drop_cols=["Experiment", "Second"]
+        )
+        model.fit(X, y)
+        pred = model.predict(X)
+        dist = np.abs((y - pred)).mean().mean()
+        scores.append(dist)
+    print(f"ID linear regression distance: {np.mean(scores)}  - {scores}")
+
+    # Run multi-level regression with participant ID as second level
+    scores = []
+    for modality in MODALITIES:
+        y, X = split_dataframe(
+            all_data, modality, drop_cols=["Experiment", "Second"]
+        )
+        pred = np.zeros(y.shape)
+        for index, emotion in enumerate(EMOTIONS):
+            y_em = y[:, index]
+            groups = pd.get_dummies(all_data["Experiment"]).values
+            hlr = HierarchicalRegression(
+                cvxpy_opts={
+                    "solver": "SCS",
+                    "max_iters": 100,
+                    "verbose": False,
+                }
+            )
+            hlr.fit(X, y_em, groups)
+            pred[:, index] = hlr.predict(X, groups)
+        dist = np.abs((y - pred)).mean().mean()
+        scores.append(dist)
+
+    print(f"Multi-level regression distance: {np.mean(scores)}  - {scores}")
 
 
 def main():
@@ -228,7 +352,6 @@ def main():
 
     scores_df = pd.DataFrame.from_dict(all_scores.values())
     scores_df.index = used_indices
-    assert len(scores_df.columns) == 4 * 7 * 2 + sum(range(4)) * (7 * 2 + 3)
 
     print("--------\nMean Correlations\n--------")
     for column in scores_df.columns:
@@ -240,6 +363,59 @@ def main():
         else:
             if np.nanmean(data) > 0.3:
                 print(f"{column} - mean {np.nanmean(data)}")
+
+    print("--------\nOther metrics\n--------")
+    pearsons = []
+    spearmans = []
+    cramers = []
+    theils = []
+    for experiment in scores_df.iterrows():
+        experiment_id, experiment_series = experiment
+        pearson = 0
+        spearman = 0
+        cramer = []
+        theil = []
+        for key in experiment_series.index.values:
+            if key.startswith("pearson"):
+                if experiment_series[key][1] < 0.05:
+                    pearson += 1
+            elif key.startswith("spearman"):
+                if experiment_series[key][1] < 0.05:
+                    spearman += 1
+            elif key.startswith("cramer"):
+                cramer.append(experiment_series[key])
+            elif key.startswith("theil"):
+                theil.append(experiment_series[key])
+        pearsons.append(pearson)
+        spearmans.append(spearman)
+        cramers.append(np.mean(cramer))
+        theils.append(np.mean(theil))
+
+    print(f"Average number of significant pearson: {np.mean(pearsons)}")
+    print(f"Average number of significant spearman: {np.mean(spearmans)}")
+    print(f"Mean Cramer's V: {np.mean(cramers)}")
+    print(f"Mean Theil's U: {np.mean(theils)}")
+
+    print("--------\nSignificant Correlations\n--------")
+    counts = []
+    corr_cols = []
+    for column in scores_df.columns:
+        data = scores_df[column].values
+        if isinstance(data[0], tuple):
+            c, p = (np.array(el) for el in list(zip(*list(data))))
+            significant_count = c[p < 0.05].shape[0]
+            counts.append(significant_count)
+            corr_cols.append(column)
+    counts = np.array(counts)
+    corr_cols = np.array(corr_cols)
+    indices = np.argsort(counts)[::-1]
+    counts = counts[indices]
+    corr_cols = corr_cols[indices]
+    for cou, col in zip(counts[:10], corr_cols[:10]):
+        print(f"  {cou}  ->  {col}")
+
+    print("--------\nRegression Tests\n--------")
+    run_regression_tests()
 
 
 if __name__ == "__main__":

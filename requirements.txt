@@ -36,3 +36,4 @@ transformers==4.21.2
 tqdm==4.64.0
 umap-learn==0.5.3
 xgboost==1.6.2
+git+https://github.com/jakobkruse1/hierreg.git
