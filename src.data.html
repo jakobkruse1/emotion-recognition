@@ -930,6 +930,18 @@ related data and implements common functionality.</p>
 <dd><p>Bases: <a class="reference internal" href="#src.data.data_reader.DataReader" title="src.data.data_reader.DataReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataReader</span></code></a></p>
 <p>This is the base class for all experiment related data readers.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="src.data.experiment_data_reader.ExperimentDataReader.get_complete_data_indices">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_complete_data_indices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.experiment_data_reader.ExperimentDataReader.get_complete_data_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static method that returns all experiment indices that have complete
+data and are supposed to be used in the evaluation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of experiment indices.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="src.data.experiment_data_reader.ExperimentDataReader.get_emotion_times">
 <span class="sig-name descname"><span class="pre">get_emotion_times</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.data.experiment_data_reader.ExperimentDataReader.get_emotion_times" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns start and end times for every emotion in the
