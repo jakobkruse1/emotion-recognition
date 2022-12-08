@@ -22,6 +22,7 @@ scikit-learn==1.1.2
 scipy==1.9.1
 seaborn==0.11.2
 sphinx==5.1.1
+statsmodels==0.13.5
 tensorflow==2.9.1
 tensorflow-datasets==4.6.0
 tensorflow-text==2.9.0
@@ -35,3 +36,4 @@ transformers==4.21.2
 tqdm==4.64.0
 umap-learn==0.5.3
 xgboost==1.6.2
+git+https://github.com/jakobkruse1/hierreg.git

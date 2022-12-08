@@ -103,3 +103,24 @@ class ExperimentDataReader(DataReader):
         :return: Numpy array of labels.
         """
         raise NotImplementedError()  # pragma: no cover
+
+    @staticmethod
+    def get_complete_data_indices() -> list[int]:
+        """
+        Static method that returns all experiment indices that have complete
+        data and are supposed to be used in the evaluation.
+
+        :return: List of experiment indices.
+        """
+        complete_data = (
+            list(range(5, 9))
+            + list(range(11, 15))
+            + [16]
+            + list(range(18, 21))
+            + list(range(24, 58))
+            + list(range(59, 62))
+            + list(range(63, 66))
+            + list(range(68, 70))
+        )
+
+        return complete_data

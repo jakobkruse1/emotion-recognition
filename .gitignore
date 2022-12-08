@@ -9,6 +9,7 @@ data/video
 data/text
 data/comparison_dataset
 data/ground_truth
+data/continuous
 
 experiments/results
 
