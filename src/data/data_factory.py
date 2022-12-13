@@ -15,6 +15,7 @@ from src.data.comparison_image_data_reader import ComparisonImageDataReader
 from src.data.comparison_speech_data_reader import ComparisonSpeechDataReader
 from src.data.comparison_text_data_reader import ComparisonTextDataReader
 from src.data.data_reader import DataReader, Set
+from src.data.fusion_data_reader import FusionProbDataReader
 from src.data.image_data_reader import ImageDataReader
 from src.data.plant_exp_reader import PlantExperimentDataReader
 from src.data.speech_data_reader import SpeechDataReader
@@ -59,6 +60,8 @@ class DataFactory:
             return ComparisonImageDataReader(folder=data_folder)
         elif data_type == "comparison_speech":
             return ComparisonSpeechDataReader(folder=data_folder)
+        elif data_type == "fusion":
+            return FusionProbDataReader(folder=data_folder)
         else:
             raise ValueError(
                 f'The Data Reader for type "{data_type}" ' f"does not exist!"
