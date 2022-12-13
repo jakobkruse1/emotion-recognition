@@ -41,11 +41,11 @@ def main():
         this_params["save_path"] = save_path
         classifier = FusionClassifier()
         if not os.path.exists(save_path) or "train" in sys.argv:
-            classifier.train(parameters)
-            classifier.save(parameters)
-        classifier.load(parameters)
-        emotions = classifier.classify(parameters)
-        labels = classifier.data_reader.get_labels(Set.TEST, parameters)
+            classifier.train(this_params)
+            classifier.save(this_params)
+        classifier.load(this_params)
+        emotions = classifier.classify(this_params)
+        labels = classifier.data_reader.get_labels(Set.TEST, this_params)
         print(
             f"-----\nFusion with {'Image, ' if use_im else ''}"
             f"{'Watch, ' if use_wa else ''}{'Plant' if use_pl else ''}"

@@ -1,5 +1,6 @@
 """ This data reader reads the fusion data from the experiments. """
-
+import os.path
+import warnings
 from typing import Dict, Generator, Tuple
 
 import numpy as np
@@ -48,7 +49,10 @@ class FusionProbDataReader(ExperimentDataReader):
                 int(times["start"]) : int(times["end"])
             ] = self.emotion_labels[emotion]
         for experiment_index in used_indices:
-            data_path = f"data/continuous/{experiment_index:03d}_emotions.csv"
+            data_path = f"{self.folder}/{experiment_index:03d}_emotions.csv"
+            if not os.path.exists(data_path):
+                warnings.warn(f"Data is missing. File {data_path} not found!")
+                continue
             df = pd.read_csv(data_path, index_col=0)
             col = 0
             exp_data = np.empty((613, len(modalities) * 7))
@@ -103,7 +107,7 @@ class FusionProbDataReader(ExperimentDataReader):
         all_data, all_labels = self.get_raw_data(parameters)
         set_data, set_labels = self.split_set(all_data, all_labels, which_set)
 
-        def generator():
+        def generator():  # pragma: no cover
             for one_data, one_label in zip(set_data, set_labels):
                 yield (
                     one_data,
