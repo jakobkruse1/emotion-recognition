@@ -163,7 +163,7 @@ def main():
     classifier.data_reader = DataFactory.get_data_reader("comparison_image")
     cd_prediction = classifier.classify(parameters)
     cd_labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    all_data["Image Comparison"] = score_per_class(labels, prediction)
+    all_data["Image Comparison"] = score_per_class(cd_labels, cd_prediction)
 
     plot_confusion_matrix(cd_prediction, cd_labels, "image_comparison")
     plot_confusion_matrix_difference(
@@ -183,7 +183,7 @@ def main():
     classifier.data_reader = DataFactory.get_data_reader("comparison_speech")
     cd_prediction = classifier.classify(parameters)
     cd_labels = classifier.data_reader.get_labels(Set.TEST, parameters)
-    all_data["Speech Comparison"] = score_per_class(labels, prediction)
+    all_data["Speech Comparison"] = score_per_class(cd_labels, cd_prediction)
 
     plot_confusion_matrix(cd_prediction, cd_labels, "speech_comparison")
     plot_confusion_matrix_difference(
@@ -246,6 +246,10 @@ def main():
     all_data["Plant"] = score_per_class(labels, predictions)
 
     plot_emotion_comparison(all_data)
+
+    print("------\nFinal average recall values:")
+    for key, value in all_data.items():
+        print(f"{key} Rec: {np.mean(list(value.values()))}")
 
 
 if __name__ == "__main__":

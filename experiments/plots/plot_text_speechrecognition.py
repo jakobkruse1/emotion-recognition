@@ -117,6 +117,9 @@ def main():
 
     plot_emotion_comparison(all_data)
 
+    print(f"Comparison Rec: {np.mean(list(all_data['Comparison'].values()))}")
+    print(f"Deepspeech Rec: {np.mean(list(all_data['Deepspeech'].values()))}")
+
 
 if __name__ == "__main__":
     main()
