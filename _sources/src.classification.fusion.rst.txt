@@ -1,0 +1,21 @@
+src.classification.fusion package
+=================================
+
+Submodules
+----------
+
+src.classification.fusion.fusion\_classifier module
+---------------------------------------------------
+
+.. automodule:: src.classification.fusion.fusion_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: src.classification.fusion
+   :members:
+   :undoc-members:
+   :show-inheritance:

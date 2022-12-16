@@ -84,6 +84,14 @@ src.data.experiment\_data\_reader module
    :undoc-members:
    :show-inheritance:
 
+src.data.fusion\_data\_reader module
+------------------------------------
+
+.. automodule:: src.data.fusion_data_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.data.image\_data\_reader module
 -----------------------------------
 
