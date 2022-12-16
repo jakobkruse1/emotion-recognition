@@ -33,6 +33,7 @@ models/speech/old
 models/cache
 models/plant/*
 models/watch/*
+models/fusion/*
 
 # Documentation
 !docs
