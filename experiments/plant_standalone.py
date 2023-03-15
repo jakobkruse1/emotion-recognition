@@ -70,8 +70,10 @@ def run_inference(
     """
     results = classifier.model.predict(dataset)
     emotion_ids = np.argmax(results, axis=1)
-    print(emotion_ids.shape)
+    print(results.shape)
     print(np.unique(emotion_ids, return_counts=True))
+
+    # Order: "anger", "surprise", "disgust", "joy", "fear", "sadness", "neutral"
 
 
 def main() -> None:
