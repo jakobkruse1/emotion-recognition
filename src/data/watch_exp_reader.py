@@ -364,7 +364,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
         self.raw_labels = raw_labels
 
     @staticmethod
-    def get_input_shape(parameters: Dict) -> tuple[int | Any, int]:
+    def get_input_shape(parameters: Dict) -> tuple:
         """
         Returns the shape of a preprocessed sample.
 

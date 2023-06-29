@@ -197,7 +197,7 @@ class BalancedWatchExperimentDataReader(ExperimentDataReader):
             )
         return labels
 
-    def get_input_shape(self, parameters: Dict) -> tuple[int | Any, int]:
+    def get_input_shape(self, parameters: Dict) -> tuple:
         """
         Returns the shape of a preprocessed sample.
 

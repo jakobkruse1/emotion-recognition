@@ -1,5 +1,7 @@
 """Test the speech data reader"""
 
+import os
+
 import numpy as np
 import pytest
 import tensorflow as tf
@@ -161,7 +163,14 @@ def test_dataset_selection():
 def test_get_waveform():
     dr = SpeechDataReader(folder="tests/test_data/speech")
     audio, label = dr.get_waveform_and_label(
-        b"tests/test_data/speech/train/angry/03-01-05-01-01-01-02.wav"
+        os.path.join(
+            "tests",
+            "test_data",
+            "speech",
+            "train",
+            "angry",
+            "03-01-05-01-01-01-02.wav",
+        ).encode()
     )
     audio = audio.numpy()
     label = label.numpy()
