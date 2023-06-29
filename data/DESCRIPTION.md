@@ -8,6 +8,10 @@ The other folders contain the custom data that is used for evaluation across dif
    ⚠️&nbsp When using any of these datasets, please remember to cite the corresponding papers! Check the websites for more information.
 </div>
 
+<div class="disclaimer" style="background-color: #f5ea92">
+   ⚠️&nbsp On Windows, the bash scripts used for downloading data generally do not work. You need to go through them manually and download the data in the same way using Windows commands.
+</div>
+
 ## Training data
 To download the training datasets required for training certain emotion classification models,
 use the bash scripts provided in the train folder.  

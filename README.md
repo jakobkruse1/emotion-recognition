@@ -45,6 +45,18 @@ Prepare all the classification models:
 bash models/install_all.sh
 ```
 
+<details>
+<summary>Windows Installation Instructions</summary>
+All installation scripts are made for Linux and don't work out of the box for Windows.  
+These steps are required (from root folder):  
+
+ - cd .\models\speech; git clone https://github.com/GasserElbanna/serab-byols.git; python -m pip install -e ./serab-byols
+ - python -m textblob.download_corpora
+ - In the file `emotion-recognition\models\speech\serab-byols\byol_a\common.py` in line 20, change the sound backend from "sox_io" to "soundfile"
+ - To download the datasets, manual steps are required, as the download scripts are not made for Windows.
+
+</details>
+
 ## ⬇️ Download models
 To download the pretrained models described in my thesis, use the script:
 ```bash

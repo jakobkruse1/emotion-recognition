@@ -33,7 +33,6 @@ def setup_gpu():
 
 
 if __name__ == "__main__":
-
     which_gpu = setup_gpu()
     # Start grid search with balanced data here
     runner = CrossValidationExperimentRunner("watch_parameters")

@@ -1,5 +1,7 @@
 """Test the speech data reader"""
 
+import os
+
 import numpy as np
 
 from src.data.classwise_speech_data_reader import (
@@ -108,7 +110,14 @@ def test_conversion_function():
 def test_get_waveform():
     dr = ClasswiseSpeechDataReader(folder="tests/test_data/speech")
     audio, label = dr.get_waveform_and_label(
-        b"tests/test_data/speech/train/angry/03-01-05-01-01-01-02.wav"
+        os.path.join(
+            "tests",
+            "test_data",
+            "speech",
+            "train",
+            "angry",
+            "03-01-05-01-01-01-02.wav",
+        ).encode()
     )
     audio = audio.numpy()
     label = label.numpy()

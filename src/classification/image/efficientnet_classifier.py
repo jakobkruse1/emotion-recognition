@@ -1,5 +1,6 @@
 """ This file contains the EfficientNet facial emotion classifier """
 
+import os
 from typing import Dict
 
 import numpy as np
@@ -101,7 +102,9 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/image/efficientnet")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "image", "efficientnet")
+        )
         self.model = tf.keras.models.load_model(save_path)
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
@@ -116,7 +119,9 @@ class MultiTaskEfficientNetB2Classifier(ImageEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/image/efficientnet")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "image", "efficientnet")
+        )
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 

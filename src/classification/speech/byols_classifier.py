@@ -34,20 +34,33 @@ class BYOLSModel(nn.Module):
         super().__init__()
         parameters = parameters or {}
         self.model_name = model_name
-        self.cfg_path = "models/speech/byols_config.yaml"
+        self.cfg_path = os.path.join("models", "speech", "byols_config.yaml")
         freeze = parameters.get("freeze", True)
         hidden = parameters.get("hidden", 1024)
         self.device = device
         self.checkpoints = {
-            "cvt": "models/speech/serab-byols/checkpoints/"
-            "cvt_s1-d1-e64_s2-d1-e256_s3-d1-e512_BYOLAs64x96-"
-            "osandbyolaloss6373-e100-bs256-lr0003-rs42.pth",
-            "default": "models/speech/serab-byols/checkpoints/"
-            "default2048_BYOLAs64x96-2105311814-"
-            "e100-bs256-lr0003-rs42.pth",
-            "resnetish34": "models/speech/serab-byols/checkpoints/"
-            "resnetish34_BYOLAs64x96-2105271915-e100-bs256"
-            "-lr0003-rs42.pth",
+            "cvt": os.path.join(
+                "models",
+                "speech",
+                "serab-byols",
+                "checkpoints",
+                "cvt_s1-d1-e64_s2-d1-e256_s3-d1-e512_BYOLAs64x96-"
+                "osandbyolaloss6373-e100-bs256-lr0003-rs42.pth",
+            ),
+            "default": os.path.join(
+                "models",
+                "speech",
+                "serab-byols",
+                "checkpoints",
+                "default2048_BYOLAs64x96-2105311814-e100-bs256-lr0003-rs42.pth",
+            ),
+            "resnetish34": os.path.join(
+                "models",
+                "speech",
+                "serab-byols",
+                "checkpoints",
+                "resnetish34_BYOLAs64x96-2105271915-e100-bs256-lr0003-rs42.pth",
+            ),
         }
 
         self.model = serab_byols.load_model(
