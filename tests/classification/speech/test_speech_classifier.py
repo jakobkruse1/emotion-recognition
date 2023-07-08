@@ -24,7 +24,9 @@ class DummySpeechClassifier(SpeechEmotionClassifier):
 
 def test_training_preparation():
     classifier = DummySpeechClassifier()
-    classifier.data_reader.folder = "tests/test_data/speech"
+    classifier.data_reader.folder = os.path.join(
+        "tests", "test_data", "speech"
+    )
     assert classifier.callback is None
     assert classifier.optimizer is None
     assert classifier.loss is None
@@ -47,7 +49,9 @@ def test_data_preparation():
     assert classifier.train_data is None
     assert classifier.val_data is None
     assert classifier.class_weights is None
-    classifier.data_reader.folder = "tests/test_data/speech"
+    classifier.data_reader.folder = os.path.join(
+        "tests", "test_data", "speech"
+    )
     parameters = {"batch_size": 5, "weighted": False, "dataset": "meld"}
     classifier.train(parameters)
 
@@ -64,20 +68,54 @@ def test_data_preparation():
         import shutil
 
         shutil.copyfile(
-            "tests/test_data/speech/train/angry/03-01-05-01-01-01-02.wav",
-            "tests/test_data/speech/train/angry/03-01-05-01-01-01-02_copy.wav",
+            os.path.join(
+                "tests",
+                "test_data",
+                "speech",
+                "train",
+                "angry",
+                "03-01-05-01-01-01-02.wav",
+            ),
+            os.path.join(
+                "tests",
+                "test_data",
+                "speech",
+                "train",
+                "angry",
+                "03-01-05-01-01-01-02_copy.wav",
+            ),
         )
         classifier.train(parameters)
         os.remove(
-            "tests/test_data/speech/train/angry/03-01-05-01-01-01-02_copy.wav"
+            os.path.join(
+                "tests",
+                "test_data",
+                "speech",
+                "train",
+                "angry",
+                "03-01-05-01-01-01-02_copy.wav",
+            )
         )
     except BaseException as e:
         if os.path.exists(
-            "tests/test_data/speech/train/angry/03-01-05-01-01-01-02.wav"
+            os.path.join(
+                "tests",
+                "test_data",
+                "speech",
+                "train",
+                "angry",
+                "03-01-05-01-01-01-02_copy.wav",
+            )
         ):
             os.remove(
-                "tests/test_data/speech/train/angry/"
-                "03-01-05-01-01-01-02_copy.wav"
+                os.path.join(
+                    "tests",
+                    "test_data",
+                    "speech",
+                    "train",
+                    "angry",
+                    "03-01-05-01-01-01-02_copy.wav",
+                )
             )
         raise e
 

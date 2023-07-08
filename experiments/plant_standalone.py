@@ -1,5 +1,6 @@
 """ Run plant inference on a data file"""
 
+import os
 from typing import Generator
 
 import numpy as np
@@ -86,11 +87,13 @@ def main() -> None:
         "num_mfcc": 60,  # Do not change
         "window": 20,  # Do not change
         "hop": 3,
-        "save_path": "models/plant/plant_mfcc_resnet",
+        "save_path": os.path.join("models", "plant", "plant_mfcc_resnet"),
     }
     classifier.load(parameters)
 
-    dataset = create_dataset("data/plant/007_raw_spikerbox.wav", parameters)
+    dataset = create_dataset(
+        os.path.join("data", "plant", "007_raw_spikerbox.wav"), parameters
+    )
     run_inference(classifier, dataset)
 
 

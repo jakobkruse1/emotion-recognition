@@ -25,7 +25,7 @@ def test_xgboost_initialization():
     assert not classifier.is_trained
 
     classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     with pytest.raises(RuntimeError):
         # Error because not trained
@@ -36,7 +36,7 @@ def test_xgboost_initialization():
 def test_xgboost_workflow():
     classifier = WatchXGBoostClassifier()
     classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     assert not classifier.model
     train_parameters = {
@@ -48,10 +48,12 @@ def test_xgboost_workflow():
         "hop": 5,
     }
     classifier.train(train_parameters)
-    shutil.rmtree("tests/temp/xgboost", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/xgboost"}
+    shutil.rmtree(os.path.join("tests", "temp", "xgboost"), ignore_errors=True)
+    save_parameters = {"save_path": os.path.join("tests", "temp", "xgboost")}
     classifier.save(save_parameters)
-    assert os.path.exists("tests/temp/xgboost/model.bin")
+    assert os.path.exists(
+        os.path.join("tests", "temp", "xgboost", "model.bin")
+    )
     train_parameters["which_set"] = Set.TEST
     results = classifier.classify(train_parameters)
     assert isinstance(results, np.ndarray)
@@ -60,12 +62,14 @@ def test_xgboost_workflow():
     new_classifier = WatchXGBoostClassifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     new_results = new_classifier.classify(train_parameters)
     assert np.array_equal(new_results, results)
 
     with pytest.raises(RuntimeError):
-        new_classifier.save({"save_path": "tests/temp/xgboost"})
+        new_classifier.save(
+            {"save_path": os.path.join("tests", "temp", "xgboost")}
+        )
 
-    shutil.rmtree("tests/temp", ignore_errors=True)
+    shutil.rmtree(os.path.join("tests", "temp"), ignore_errors=True)

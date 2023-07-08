@@ -1,5 +1,7 @@
 """Test the NRCLex Classifier"""
 
+import os
+
 from src.classification.text import NRCLexTextClassifier
 from src.data.text_data_reader import Set, TextDataReader
 from src.emotion_set import EkmanNeutralEmotions, EmotionMapper
@@ -23,7 +25,9 @@ def test_initialization():
 
 def test_classification():
     classifier = NRCLexTextClassifier()
-    classifier.data_reader = TextDataReader(folder="tests/test_data/text")
+    classifier.data_reader = TextDataReader(
+        folder=os.path.join("tests", "test_data", "text")
+    )
 
     results = classifier.classify({"batch_size": 5, "which_set": Set.TRAIN})
     assert results.shape == (30,)

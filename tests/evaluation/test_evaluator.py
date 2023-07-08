@@ -1,4 +1,6 @@
 """ This file tests the evaluator class. """
+import os
+
 import pytest
 
 from src.evaluation.evaluator import Evaluator
@@ -6,9 +8,11 @@ from src.evaluation.evaluator import Evaluator
 
 def test_evaluator_read():
     evaluator = Evaluator()
-    evaluator.read_results("tests/test_data/evaluation/results.json")
-    assert (
-        evaluator.result_paths[0] == "tests/test_data/evaluation/results.json"
+    evaluator.read_results(
+        os.path.join("tests", "test_data", "evaluation", "results.json")
+    )
+    assert evaluator.result_paths[0] == os.path.join(
+        "tests", "test_data", "evaluation", "results.json"
     )
     assert len(evaluator.result_paths) == 1
     assert len(evaluator.result_data) == 1
@@ -19,7 +23,7 @@ def test_evaluator_read():
     assert result["init_parameters"] is None
     assert isinstance(result["train_parameters"], dict)
 
-    testdata_folder = "tests/test_data/text"
+    testdata_folder = os.path.join("tests", "test_data", "text")
     acc = evaluator.get_scores("accuracy", data_folder=testdata_folder)
     pca = evaluator.get_scores(
         "per_class_accuracy", data_folder=testdata_folder
@@ -34,20 +38,25 @@ def test_evaluator_read():
             assert 0 < single_score <= 1
 
     evaluator2 = Evaluator()
-    evaluator2.read_results("tests/test_data/evaluation/res*.json")
+    evaluator2.read_results(
+        os.path.join("tests", "test_data", "evaluation", "res*.json")
+    )
     assert evaluator.get_parameters() == evaluator2.get_parameters()
 
     evaluator3 = Evaluator()
-    evaluator3.read_results(["tests/test_data/evaluation/results.json"])
+    evaluator3.read_results(
+        [os.path.join("tests", "test_data", "evaluation", "results.json")]
+    )
     assert evaluator.get_parameters() == evaluator3.get_parameters()
 
 
 def test_evaluator_read_cv_results():
     evaluator = Evaluator()
-    evaluator.read_results("tests/test_data/evaluation/cv_results.json")
-    assert (
-        evaluator.result_paths[0]
-        == "tests/test_data/evaluation/cv_results.json"
+    evaluator.read_results(
+        os.path.join("tests", "test_data", "evaluation", "cv_results.json")
+    )
+    assert evaluator.result_paths[0] == os.path.join(
+        "tests", "test_data", "evaluation", "cv_results.json"
     )
     assert len(evaluator.result_paths) == 1
     assert len(evaluator.result_data) == 1
@@ -57,7 +66,7 @@ def test_evaluator_read_cv_results():
     assert result["init_parameters"] is None
     assert isinstance(result["train_parameters"], dict)
 
-    testdata_folder = "tests/test_data/plant"
+    testdata_folder = os.path.join("tests", "test_data", "plant")
     acc = evaluator.get_scores("accuracy", data_folder=testdata_folder)
     pca = evaluator.get_scores(
         "per_class_accuracy", data_folder=testdata_folder
