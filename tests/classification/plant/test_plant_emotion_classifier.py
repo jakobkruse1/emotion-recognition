@@ -1,4 +1,4 @@
-""" Test base functionality in the plant emotion classifier. """
+""" Test base functionality in the plant emotion classifier """
 import os
 from typing import Dict
 
