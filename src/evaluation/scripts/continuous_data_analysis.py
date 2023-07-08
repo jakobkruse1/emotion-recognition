@@ -3,7 +3,7 @@ import itertools
 import math
 import warnings
 from collections import Counter
-from typing import Any, Union
+from typing import Any, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
