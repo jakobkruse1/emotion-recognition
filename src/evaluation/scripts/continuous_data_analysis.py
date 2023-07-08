@@ -53,7 +53,7 @@ def correlation(
     corr_type: str,
     differentiate: bool = True,
     downsample: bool = True,
-) -> tuple[float, float]:
+) -> Tuple[float, float]:
     """
     Compute correlation values between array1 and array2
 
