@@ -1,4 +1,7 @@
 """ Testing the plant experiment data reader class. """
+
+import os
+
 import numpy as np
 import pytest
 import tensorflow as tf
@@ -8,7 +11,8 @@ from src.data.plant_exp_reader import PlantExperimentDataReader, Set
 
 def test_init():
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="expected",
     )
     assert reader.name == "plant"
     assert reader.default_label_mode == "expected"
@@ -20,7 +24,8 @@ def test_init():
 
 def test_get_raw_data():
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="expected",
     )
     reader.get_raw_data({})
     assert reader.raw_data.shape == (121, 100000)
@@ -28,7 +33,8 @@ def test_get_raw_data():
     expected_labels = reader.raw_labels
 
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="faceapi"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="faceapi",
     )
     reader.get_raw_data({})
     assert reader.raw_data.shape == (121, 100000)
@@ -38,7 +44,8 @@ def test_get_raw_data():
     both_labels = expected_labels[expected_labels == faceapi_labels]
 
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="both"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="both",
     )
     reader.get_raw_data({})
     assert reader.raw_data.shape == (both_labels.shape[0], 100000)
@@ -48,7 +55,8 @@ def test_get_raw_data():
 
 def test_preprocess():
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="expected",
     )
     data = np.array([0, 0, 0, 0, 0, 1, 1, 1, 1, 6, 2, 2, 2, 3, 6, -1])
     processed = reader.preprocess_sample(data, {"downsampling_factor": 5})
@@ -60,7 +68,8 @@ def test_preprocess():
 def test_input_shape(preprocess, window):
     true_value = window * 10000 if not preprocess else window * 10000 / 5
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="expected",
     )
     assert (
         reader.get_input_shape(
@@ -76,7 +85,8 @@ def test_input_shape(preprocess, window):
 
 def test_cv_indices():
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="expected",
     )
     parameters = {"window": 10, "hop": 5}
     reader.get_raw_data(parameters)
@@ -84,7 +94,8 @@ def test_cv_indices():
 
 def test_get_data():
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="expected",
     )
     data = reader.get_seven_emotion_data(Set.TRAIN, 8, {"shuffle": True})
     assert isinstance(data, tf.data.Dataset)
@@ -102,7 +113,8 @@ def test_get_data():
 
 def test_get_cv_indices():
     reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "plant"),
+        default_label_mode="expected",
     )
     reader.get_raw_data({})
     counts = [16, 12, 10, 11, 39, 24, 9]  # Counts for the class labels
@@ -163,8 +175,10 @@ def test_get_cv_indices():
 
 
 def test_reading_three():
-    dr = PlantExperimentDataReader(folder="tests/test_data/plant")
-    assert dr.folder == "tests/test_data/plant"
+    dr = PlantExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "plant")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "plant")
     dataset = dr.get_emotion_data(
         "three",
         Set.VAL,
@@ -197,7 +211,9 @@ def test_reading_three():
 
 
 def test_raw_generator():
-    dr = PlantExperimentDataReader(folder="tests/test_data/plant")
+    dr = PlantExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "plant")
+    )
     dr.get_raw_data({})
     generator = dr.get_data_generator(Set.TEST, {})
     for data, labels in generator():

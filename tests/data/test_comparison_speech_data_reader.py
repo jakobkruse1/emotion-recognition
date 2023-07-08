@@ -15,13 +15,15 @@ from src.data.comparison_speech_data_reader import (
 def test_initialization():
     dr = ComparisonSpeechDataReader()
     assert dr.name == "comparison_speech"
-    assert dr.folder == "data/comparison_dataset/audio"
+    assert dr.folder == os.path.join("data", "comparison_dataset", "audio")
 
 
 @pytest.mark.filterwarnings("ignore:Truncating audio:UserWarning")
 def test_reading():
-    dr = ComparisonSpeechDataReader(folder="tests/test_data/speech/train")
-    assert dr.folder == "tests/test_data/speech/train"
+    dr = ComparisonSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech", "train")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "speech", "train")
     dataset = dr.get_emotion_data(
         "neutral_ekman",
         Set.TEST,
@@ -51,8 +53,10 @@ def test_reading():
 
 @pytest.mark.filterwarnings("ignore:Truncating audio:UserWarning")
 def test_reading_three():
-    dr = ComparisonSpeechDataReader(folder="tests/test_data/speech/train")
-    assert dr.folder == "tests/test_data/speech/train"
+    dr = ComparisonSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech", "train")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "speech", "train")
     dataset = dr.get_emotion_data(
         "three",
         Set.TEST,
@@ -84,7 +88,9 @@ def test_reading_three():
 
 @pytest.mark.filterwarnings("ignore:Truncating audio:UserWarning")
 def test_labels():
-    dr = ComparisonSpeechDataReader(folder="tests/test_data/speech/train")
+    dr = ComparisonSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech", "train")
+    )
     dataset = dr.get_emotion_data(
         "neutral_ekman", Set.TEST, batch_size=5, parameters={"shuffle": False}
     )
@@ -123,7 +129,9 @@ def test_conversion_function():
 
 
 def test_get_waveform():
-    dr = ComparisonSpeechDataReader(folder="tests/test_data/speech/train")
+    dr = ComparisonSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech", "train")
+    )
     with pytest.warns(UserWarning):
         audio, label = dr.get_waveform_and_label(
             os.path.join(

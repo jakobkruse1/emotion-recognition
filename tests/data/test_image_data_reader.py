@@ -1,5 +1,7 @@
 """Test the image data reader"""
 
+import os
+
 import numpy as np
 import pytest
 import tensorflow as tf
@@ -10,14 +12,14 @@ from src.data.image_data_reader import ImageDataReader, Set
 def test_initialization():
     dr = ImageDataReader()
     assert dr.name == "image"
-    assert dr.folder == "data/train/image"
+    assert dr.folder == os.path.join("data", "train", "image")
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
         assert dr.folder_map[set_type] == set_type.name.lower()
 
 
 def test_reading():
-    dr = ImageDataReader(folder="tests/test_data/image")
-    assert dr.folder == "tests/test_data/image"
+    dr = ImageDataReader(folder=os.path.join("tests", "test_data", "image"))
+    assert dr.folder == os.path.join("tests", "test_data", "image")
     dataset = dr.get_emotion_data(
         "neutral_ekman",
         Set.TRAIN,
@@ -40,8 +42,8 @@ def test_reading():
 
 
 def test_reading_three():
-    dr = ImageDataReader(folder="tests/test_data/image")
-    assert dr.folder == "tests/test_data/image"
+    dr = ImageDataReader(folder=os.path.join("tests", "test_data", "image"))
+    assert dr.folder == os.path.join("tests", "test_data", "image")
     dataset = dr.get_emotion_data(
         "three", Set.TRAIN, batch_size=2, parameters={"shuffle": False}
     )
@@ -79,7 +81,7 @@ def test_reading_three():
 
 
 def test_labels():
-    dr = ImageDataReader(folder="tests/test_data/image")
+    dr = ImageDataReader(folder=os.path.join("tests", "test_data", "image"))
     dataset = dr.get_emotion_data(
         "neutral_ekman", Set.TRAIN, batch_size=5, parameters={"shuffle": False}
     )
@@ -139,7 +141,7 @@ def test_conversion_function():
 def test_augmentation():
     tf.random.set_seed(42)
 
-    dr = ImageDataReader(folder="tests/test_data/image")
+    dr = ImageDataReader(folder=os.path.join("tests", "test_data", "image"))
     dataset = dr.get_emotion_data(
         "neutral_ekman",
         Set.TRAIN,

@@ -1,4 +1,6 @@
 """ Test the balanced plant reader for correctness. """
+import os
+
 import numpy as np
 import pytest
 
@@ -9,15 +11,19 @@ from src.data.plant_exp_reader import PlantExperimentDataReader, Set
 
 
 def test_init():
-    reader = BalancedPlantExperimentDataReader(folder="tests/test_data/plant")
-    assert reader.folder == "tests/test_data/plant"
+    reader = BalancedPlantExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "plant")
+    )
+    assert reader.folder == os.path.join("tests", "test_data", "plant")
     assert isinstance(reader.unbalanced_reader, PlantExperimentDataReader)
 
 
 def test_unbalanced_data():
-    reader = BalancedPlantExperimentDataReader(folder="tests/test_data/plant")
+    reader = BalancedPlantExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "plant")
+    )
     unbalanced_reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant"
+        folder=os.path.join("tests", "test_data", "plant")
     )
     parameters = {"balanced": False, "shuffle": False}
 
@@ -47,7 +53,9 @@ def test_unbalanced_data():
 
 
 def test_balanced_three():
-    reader = BalancedPlantExperimentDataReader(folder="tests/test_data/plant")
+    reader = BalancedPlantExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "plant")
+    )
     parameters = {"balanced": True, "shuffle": False}
     with pytest.raises(NotImplementedError):
         reader.get_three_emotion_data(Set.VAL, 16, parameters)
@@ -55,7 +63,9 @@ def test_balanced_three():
 
 def test_balanced_data():
     counts = {index: 0 for index in range(7)}
-    reader = BalancedPlantExperimentDataReader(folder="tests/test_data/plant")
+    reader = BalancedPlantExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "plant")
+    )
     parameters = {"balanced": True, "shuffle": True}
     dataset = reader.get_seven_emotion_data(Set.TRAIN, 16, parameters)
     total_count = 70

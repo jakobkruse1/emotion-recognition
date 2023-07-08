@@ -13,7 +13,7 @@ from src.data.classwise_speech_data_reader import (
 def test_initialization():
     dr = ClasswiseSpeechDataReader()
     assert dr.name == "classwise_speech"
-    assert dr.folder == "data/train/speech"
+    assert dr.folder == os.path.join("data", "train", "speech")
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
         assert dr.folder_map[set_type] == set_type.name.lower()
 
@@ -28,8 +28,10 @@ def test_reading():
         "sad": 127,
         "neutral": 109,
     }
-    dr = ClasswiseSpeechDataReader(folder="tests/test_data/speech")
-    assert dr.folder == "tests/test_data/speech"
+    dr = ClasswiseSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "speech")
     dataset = dr.get_emotion_data(
         "neutral_ekman",
         Set.VAL,
@@ -45,8 +47,10 @@ def test_reading():
 
 def test_reading_three():
     counts = {"positive": 128, "neutral": 109, "negative": 508}
-    dr = ClasswiseSpeechDataReader(folder="tests/test_data/speech")
-    assert dr.folder == "tests/test_data/speech"
+    dr = ClasswiseSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "speech")
     dataset = dr.get_emotion_data(
         "three",
         Set.VAL,
@@ -61,7 +65,9 @@ def test_reading_three():
 
 def test_labels():
     counts = [127, 1, 127, 127, 127, 127, 109]
-    dr = ClasswiseSpeechDataReader(folder="tests/test_data/speech")
+    dr = ClasswiseSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
     labels = dr.get_labels(Set.VAL)
     true_labels = np.empty((0,))
     for index, count in enumerate(counts):
@@ -73,7 +79,9 @@ def test_labels():
 
 def test_meld_only():
     counts = [1, 1, 1, 1, 1, 1, 1]
-    dr = ClasswiseSpeechDataReader(folder="tests/test_data/speech")
+    dr = ClasswiseSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
     labels = dr.get_labels(Set.VAL, parameters={"dataset": "meld"})
     true_labels = np.empty((0,))
     for index, count in enumerate(counts):
@@ -85,7 +93,9 @@ def test_meld_only():
 
 def test_crema_only():
     counts = [126, 0, 126, 126, 126, 126, 108]
-    dr = ClasswiseSpeechDataReader(folder="tests/test_data/speech")
+    dr = ClasswiseSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
     labels = dr.get_labels(Set.VAL, parameters={"dataset": "crema"})
     true_labels = np.empty((0,))
     for index, count in enumerate(counts):
@@ -108,7 +118,9 @@ def test_conversion_function():
 
 
 def test_get_waveform():
-    dr = ClasswiseSpeechDataReader(folder="tests/test_data/speech")
+    dr = ClasswiseSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
     audio, label = dr.get_waveform_and_label(
         os.path.join(
             "tests",
@@ -131,7 +143,9 @@ def test_get_waveform():
 
 
 def test_process_crema():
-    dr = ClasswiseSpeechDataReader(folder="tests/test_data/speech")
+    dr = ClasswiseSpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
     audio_raw = (np.random.rand(42000) - 0.5) * 2 * 32768
     audio, label = dr.process_crema(audio_raw, 1)
     assert audio.shape == (48000,)

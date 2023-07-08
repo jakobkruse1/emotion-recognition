@@ -1,5 +1,7 @@
 """Test the text data reader"""
 
+import os
+
 import numpy as np
 import pytest
 import tensorflow as tf
@@ -10,15 +12,15 @@ from src.data.text_data_reader import Set, TextDataReader
 def test_initialization():
     dr = TextDataReader()
     assert dr.name == "text"
-    assert dr.folder == "data/train/text"
+    assert dr.folder == os.path.join("data", "train", "text")
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
         assert dr.file_map[set_type]
     dr.cleanup()
 
 
 def test_reading():
-    dr = TextDataReader(folder="tests/test_data/text")
-    assert dr.folder == "tests/test_data/text"
+    dr = TextDataReader(folder=os.path.join("tests", "test_data", "text"))
+    assert dr.folder == os.path.join("tests", "test_data", "text")
     dataset = dr.get_emotion_data("neutral_ekman", Set.TRAIN, batch_size=5)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -39,8 +41,8 @@ def test_reading():
 
 
 def test_reading_three():
-    dr = TextDataReader(folder="tests/test_data/text")
-    assert dr.folder == "tests/test_data/text"
+    dr = TextDataReader(folder=os.path.join("tests", "test_data", "text"))
+    assert dr.folder == os.path.join("tests", "test_data", "text")
     dataset = dr.get_emotion_data("three", Set.TRAIN, batch_size=4)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -68,7 +70,7 @@ def test_reading_three():
 
 
 def test_labels():
-    dr = TextDataReader(folder="tests/test_data/text")
+    dr = TextDataReader(folder=os.path.join("tests", "test_data", "text"))
     dataset = dr.get_emotion_data(
         "neutral_ekman", Set.TRAIN, batch_size=5, parameters={"shuffle": False}
     )
