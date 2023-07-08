@@ -1,5 +1,7 @@
 """Test the comparison text data reader"""
 
+import os
+
 import numpy as np
 import pytest
 import tensorflow as tf
@@ -10,13 +12,17 @@ from src.data.comparison_text_data_reader import ComparisonTextDataReader, Set
 def test_initialization():
     dr = ComparisonTextDataReader()
     assert dr.name == "comparison_text"
-    assert dr.folder == "data/comparison_dataset/text"
+    assert dr.folder == os.path.join("data", "comparison_dataset", "text")
     dr.cleanup()
 
 
 def test_reading():
-    dr = ComparisonTextDataReader(folder="tests/test_data/text/comparison")
-    assert dr.folder == "tests/test_data/text/comparison"
+    dr = ComparisonTextDataReader(
+        folder=os.path.join("tests", "test_data", "text", "comparison")
+    )
+    assert dr.folder == os.path.join(
+        "tests", "test_data", "text", "comparison"
+    )
     dataset = dr.get_emotion_data("neutral_ekman", Set.TEST, batch_size=8)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -43,8 +49,12 @@ def test_reading():
 
 
 def test_reading_three():
-    dr = ComparisonTextDataReader(folder="tests/test_data/text/comparison")
-    assert dr.folder == "tests/test_data/text/comparison"
+    dr = ComparisonTextDataReader(
+        folder=os.path.join("tests", "test_data", "text", "comparison")
+    )
+    assert dr.folder == os.path.join(
+        "tests", "test_data", "text", "comparison"
+    )
     dataset = dr.get_emotion_data("three", Set.TEST, batch_size=4)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -72,8 +82,12 @@ def test_reading_three():
 
 
 def test_labels():
-    dr = ComparisonTextDataReader(folder="tests/test_data/text/comparison")
-    assert dr.folder == "tests/test_data/text/comparison"
+    dr = ComparisonTextDataReader(
+        folder=os.path.join("tests", "test_data", "text", "comparison")
+    )
+    assert dr.folder == os.path.join(
+        "tests", "test_data", "text", "comparison"
+    )
     dataset = dr.get_emotion_data(
         "neutral_ekman", Set.TEST, batch_size=8, parameters={"shuffle": False}
     )

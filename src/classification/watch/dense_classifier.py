@@ -1,5 +1,6 @@
 """ This file implements a Fully Connected classifier for the watch data. """
 
+import os
 from typing import Dict
 
 import tensorflow as tf
@@ -59,7 +60,7 @@ def _main():  # pragma: no cover
         "dropout": 0.2,
         "hidden_layers": 2,
     }
-    save_path = "models/watch/watch_dense"
+    save_path = os.path.join("models", "watch", "watch_dense")
     cv_training_loop(classifier, parameters, save_path)
 
 

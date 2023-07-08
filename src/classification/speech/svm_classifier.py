@@ -106,7 +106,9 @@ class SVMClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/svm")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "svm")
+        )
         model_path = os.path.join(save_path, "model.pkl")
         with open(model_path, "rb") as file:
             self.model = pickle.load(file)
@@ -126,7 +128,9 @@ class SVMClassifier(SpeechEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/svm")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "svm")
+        )
         if not os.path.exists(save_path):
             os.makedirs(save_path)
         model_path = os.path.join(save_path, "model.pkl")
@@ -187,7 +191,7 @@ def _main():  # pragma: no cover
         "kernel": "poly",
         "shuffle": False,
     }
-    save_path = "models/speech/svm"
+    save_path = os.path.join("models", "speech", "svm")
     training_loop(classifier, parameters, save_path)
 
 

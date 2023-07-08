@@ -1,5 +1,6 @@
 """ Base class for all plant emotion classifiers """
 
+import os
 from abc import abstractmethod
 from typing import Dict
 
@@ -94,7 +95,11 @@ class PlantEmotionClassifier(EmotionClassifier):
         if parameters.get("checkpoint", False):
             self.callbacks.append(
                 tf.keras.callbacks.ModelCheckpoint(
-                    f"models/plant/checkpoint_{parameters.get('cv_index', '')}",
+                    os.path.join(
+                        "models",
+                        "plant",
+                        f"checkpoint_{parameters.get('cv_index', '')}",
+                    ),
                     save_best_only=True,
                     monitor="val_categorical_accuracy",
                     mode="max",

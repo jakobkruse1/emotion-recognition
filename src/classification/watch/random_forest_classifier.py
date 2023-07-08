@@ -73,7 +73,9 @@ class WatchRandomForestClassifier(WatchEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/watch/random_forest")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "watch", "random_forest")
+        )
         model_path = os.path.join(save_path, "model.pkl")
         with open(model_path, "rb") as file:
             self.model = pickle.load(file)
@@ -90,7 +92,9 @@ class WatchRandomForestClassifier(WatchEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/watch/random_forest")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "watch", "random_forest")
+        )
         if not os.path.exists(save_path):
             os.makedirs(save_path)
         model_path = os.path.join(save_path, "model.pkl")
@@ -141,7 +145,7 @@ def _main():  # pragma: no cover
         "n_estimators": 10,
         "min_samples_split": 4,
     }
-    save_path = "models/watch/random_forest"
+    save_path = os.path.join("models", "watch", "random_forest")
     cv_training_loop(classifier, parameters, save_path)
 
 

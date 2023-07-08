@@ -12,14 +12,16 @@ from src.data.balanced_image_data_reader import BalancedImageDataReader, Set
 def test_initialization():
     dr = BalancedImageDataReader()
     assert dr.name == "balanced_image"
-    assert dr.folder == "data/train/image"
+    assert dr.folder == os.path.join("data", "train", "image")
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
         assert dr.folder_map[set_type] == set_type.name.lower()
 
 
 def test_reading():
-    dr = BalancedImageDataReader(folder="tests/test_data/image")
-    assert dr.folder == "tests/test_data/image"
+    dr = BalancedImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "image")
     dataset = dr.get_emotion_data(
         "neutral_ekman",
         Set.TRAIN,
@@ -42,8 +44,10 @@ def test_reading():
 
 
 def test_reading_three():
-    dr = BalancedImageDataReader(folder="tests/test_data/image")
-    assert dr.folder == "tests/test_data/image"
+    dr = BalancedImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "image")
     dataset = dr.get_emotion_data(
         "three", Set.TRAIN, batch_size=2, parameters={"shuffle": False}
     )
@@ -81,7 +85,9 @@ def test_reading_three():
 
 
 def test_labels():
-    dr = BalancedImageDataReader(folder="tests/test_data/image")
+    dr = BalancedImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
     dataset = dr.get_emotion_data(
         "neutral_ekman", Set.TRAIN, batch_size=5, parameters={"shuffle": False}
     )
@@ -131,7 +137,9 @@ def test_labels():
 def test_augmentation():
     tf.random.set_seed(42)
 
-    dr = BalancedImageDataReader(folder="tests/test_data/image")
+    dr = BalancedImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
     dataset = dr.get_emotion_data(
         "neutral_ekman",
         Set.TRAIN,
@@ -163,8 +171,10 @@ def test_augmentation():
 
 
 def test_balanced_three():
-    dr = BalancedImageDataReader(folder="tests/test_data/image")
-    assert dr.folder == "tests/test_data/image"
+    dr = BalancedImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "image")
     with pytest.raises(NotImplementedError):
         _ = dr.get_emotion_data(
             "three", Set.TRAIN, batch_size=2, parameters={"balanced": True}
@@ -172,15 +182,31 @@ def test_balanced_three():
 
 
 def test_balanced_seven():
-    dr = BalancedImageDataReader(folder="tests/test_data/image")
+    dr = BalancedImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
     class_counts = [0] * 7
     try:
         import shutil
 
         for i in range(7):
             shutil.copyfile(
-                "tests/test_data/image/train/angry/fer_35854.jpeg",
-                f"tests/test_data/image/train/angry/fer_35854_copy{i}.jpeg",
+                os.path.join(
+                    "tests",
+                    "test_data",
+                    "image",
+                    "train",
+                    "angry",
+                    "fer_35854.jpeg",
+                ),
+                os.path.join(
+                    "tests",
+                    "test_data",
+                    "image",
+                    "train",
+                    "angry",
+                    f"fer_35854_copy{i}.jpeg",
+                ),
             )
         # Protected with additional files
 
@@ -198,15 +224,36 @@ def test_balanced_seven():
         # End protected with additional files
         for i in range(7):
             os.remove(
-                f"tests/test_data/image/train/angry/fer_35854_copy{i}.jpeg"
+                os.path.join(
+                    "tests",
+                    "test_data",
+                    "image",
+                    "train",
+                    "angry",
+                    f"fer_35854_copy{i}.jpeg",
+                )
             )
     except BaseException as e:
         for i in range(7):
             if os.path.exists(
-                f"tests/test_data/image/train/angry/fer_35854_copy{i}.jpeg"
+                os.path.join(
+                    "tests",
+                    "test_data",
+                    "image",
+                    "train",
+                    "angry",
+                    f"fer_35854_copy{i}.jpeg",
+                )
             ):
                 os.remove(
-                    f"tests/test_data/image/train/angry/fer_35854_copy{i}.jpeg"
+                    os.path.join(
+                        "tests",
+                        "test_data",
+                        "image",
+                        "train",
+                        "angry",
+                        f"fer_35854_copy{i}.jpeg",
+                    )
                 )
         raise e
 

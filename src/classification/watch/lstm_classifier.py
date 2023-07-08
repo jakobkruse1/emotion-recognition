@@ -1,5 +1,6 @@
 """ This file implements an LSTM based classifier for the watch data. """
 
+import os
 from typing import Dict
 
 import tensorflow as tf
@@ -72,7 +73,7 @@ def _main():  # pragma: no cover
         "dropout": 0.2,
         "lstm_layers": 1,
     }
-    save_path = "models/watch/watch_lstm"
+    save_path = os.path.join("models", "watch", "watch_lstm")
     cv_training_loop(classifier, parameters, save_path)
 
 

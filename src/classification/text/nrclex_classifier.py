@@ -1,4 +1,5 @@
 """Implementation of a text classifier using the NRCLex python library"""
+import os
 from typing import Dict
 
 import numpy as np
@@ -126,7 +127,7 @@ class NRCLexTextClassifier(TextEmotionClassifier):
 def _main():  # pragma: no cover
     classifier = NRCLexTextClassifier()
     parameters = {}
-    save_path = "models/text/nrclex"
+    save_path = os.path.join("models", "text", "nrclex")
     training_loop(classifier, parameters, save_path)
 
 

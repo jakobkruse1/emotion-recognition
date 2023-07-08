@@ -1,6 +1,7 @@
 """ This file implements the data reading functionality for the image data
 from the comparison dataset. """
 
+import os
 from typing import Dict
 
 import numpy as np
@@ -22,7 +23,9 @@ class ComparisonImageDataReader(DataReader):
         :param name: The name for the image reader.
         :param folder: The folder that contains the data.
         """
-        super().__init__(name, folder or "data/comparison_dataset/image")
+        super().__init__(
+            name, folder or os.path.join("data", "comparison_dataset", "image")
+        )
 
     def get_seven_emotion_data(
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None

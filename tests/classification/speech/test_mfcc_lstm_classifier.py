@@ -13,7 +13,9 @@ def test_mfcc_lstm_initialization():
     assert not classifier.model
     assert not classifier.is_trained
 
-    classifier.data_reader = SpeechDataReader(folder="tests/test_data/speech")
+    classifier.data_reader = SpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
     with pytest.raises(RuntimeError):
         # Error because not trained
         classifier.classify()
@@ -29,14 +31,22 @@ def test_mfcc_lstm_workflow():
         "max_elements": 7,
         "shuffle": False,
     }
-    classifier.data_reader = SpeechDataReader(folder="tests/test_data/speech")
+    classifier.data_reader = SpeechDataReader(
+        folder=os.path.join("tests", "test_data", "speech")
+    )
     classifier.train(train_parameters)
 
-    shutil.rmtree("tests/temp/mfcc_lstm", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/mfcc_lstm"}
+    shutil.rmtree(
+        os.path.join("tests", "temp", "mfcc_lstm"), ignore_errors=True
+    )
+    save_parameters = {"save_path": os.path.join("tests", "temp", "mfcc_lstm")}
     classifier.save(save_parameters)
-    assert os.path.exists("tests/temp/mfcc_lstm/saved_model.pb")
-    assert os.path.exists("tests/temp/mfcc_lstm/keras_metadata.pb")
+    assert os.path.exists(
+        os.path.join("tests", "temp", "mfcc_lstm", "saved_model.pb")
+    )
+    assert os.path.exists(
+        os.path.join("tests", "temp", "mfcc_lstm", "keras_metadata.pb")
+    )
     results = classifier.classify({"max_elements": 7, "shuffle": False})
     assert isinstance(results, np.ndarray)
     assert results.shape == (7,)
@@ -44,7 +54,7 @@ def test_mfcc_lstm_workflow():
     new_classifier = MFCCLSTMClassifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = SpeechDataReader(
-        folder="tests/test_data/speech"
+        folder=os.path.join("tests", "test_data", "speech")
     )
     new_results = new_classifier.classify(
         {"max_elements": 7, "shuffle": False}
@@ -52,6 +62,8 @@ def test_mfcc_lstm_workflow():
     assert np.array_equal(new_results, results)
 
     with pytest.raises(RuntimeError):
-        new_classifier.save({"save_path": "tests/temp/mfcc_lstm"})
+        new_classifier.save(
+            {"save_path": os.path.join("tests", "temp", "mfcc_lstm")}
+        )
 
-    shutil.rmtree("tests/temp", ignore_errors=True)
+    shutil.rmtree(os.path.join("tests", "temp"), ignore_errors=True)

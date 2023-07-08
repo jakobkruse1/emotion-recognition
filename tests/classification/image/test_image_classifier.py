@@ -28,7 +28,7 @@ class DummyImageClassifier(ImageEmotionClassifier):
 
 def test_training_preparation():
     classifier = DummyImageClassifier()
-    classifier.data_reader.folder = "tests/test_data/image"
+    classifier.data_reader.folder = os.path.join("tests", "test_data", "image")
     assert classifier.callback is None
     assert classifier.optimizer is None
     assert classifier.loss is None
@@ -51,7 +51,9 @@ def test_data_preparation():
     assert classifier.train_data is None
     assert classifier.val_data is None
     assert classifier.class_weights is None
-    classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
+    classifier.data_reader = ImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
     parameters = {"which_set": Set.TRAIN, "batch_size": 5, "weighted": False}
     classifier.train(parameters)
 
@@ -68,16 +70,55 @@ def test_data_preparation():
         import shutil
 
         shutil.copyfile(
-            "tests/test_data/image/train/angry/fer_35854.jpeg",
-            "tests/test_data/image/train/angry/fer_35854_copy.jpeg",
+            os.path.join(
+                "tests",
+                "test_data",
+                "image",
+                "train",
+                "angry",
+                "fer_35854.jpeg",
+            ),
+            os.path.join(
+                "tests",
+                "test_data",
+                "image",
+                "train",
+                "angry",
+                "fer_35854_copy.jpeg",
+            ),
         )
         classifier.train(parameters)
-        os.remove("tests/test_data/image/train/angry/fer_35854_copy.jpeg")
+        os.remove(
+            os.path.join(
+                "tests",
+                "test_data",
+                "image",
+                "train",
+                "angry",
+                "fer_35854_copy.jpeg",
+            )
+        )
     except BaseException as e:
         if os.path.exists(
-            "tests/test_data/image/train/angry/fer_35854_copy.jpeg"
+            os.path.join(
+                "tests",
+                "test_data",
+                "image",
+                "train",
+                "angry",
+                "fer_35854_copy.jpeg",
+            )
         ):
-            os.remove("tests/test_data/image/train/angry/fer_35854_copy.jpeg")
+            os.remove(
+                os.path.join(
+                    "tests",
+                    "test_data",
+                    "image",
+                    "train",
+                    "angry",
+                    "fer_35854_copy.jpeg",
+                )
+            )
         raise e
 
     assert classifier.class_weights[0] == 8.0 / 14.0
@@ -91,7 +132,9 @@ def test_balanced_switch():
     assert classifier.train_data is None
     assert classifier.val_data is None
     assert classifier.class_weights is None
-    classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
+    classifier.data_reader = ImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
     parameters = {"which_set": Set.TRAIN, "batch_size": 5, "balanced": False}
     classifier.train(parameters)
     assert isinstance(classifier.data_reader, ImageDataReader)

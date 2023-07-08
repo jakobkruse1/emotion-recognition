@@ -1,4 +1,6 @@
 """ Test the balanced watch reader for correctness. """
+import os
+
 import numpy as np
 import pytest
 
@@ -9,16 +11,20 @@ from src.data.watch_exp_reader import Set, WatchExperimentDataReader
 
 
 def test_init():
-    reader = BalancedWatchExperimentDataReader(folder="tests/test_data/watch")
-    assert reader.folder == "tests/test_data/watch"
+    reader = BalancedWatchExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "watch")
+    )
+    assert reader.folder == os.path.join("tests", "test_data", "watch")
     assert isinstance(reader.unbalanced_reader, WatchExperimentDataReader)
 
 
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_unbalanced_data():
-    reader = BalancedWatchExperimentDataReader(folder="tests/test_data/watch")
+    reader = BalancedWatchExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "watch")
+    )
     unbalanced_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     parameters = {"balanced": False, "shuffle": False}
 
@@ -48,7 +54,9 @@ def test_unbalanced_data():
 
 
 def test_balanced_three():
-    reader = BalancedWatchExperimentDataReader(folder="tests/test_data/watch")
+    reader = BalancedWatchExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "watch")
+    )
     parameters = {"balanced": True, "shuffle": False}
     with pytest.raises(NotImplementedError):
         reader.get_three_emotion_data(Set.VAL, 16, parameters)
@@ -57,7 +65,9 @@ def test_balanced_three():
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_balanced_data():
     counts = {index: 0 for index in range(7)}
-    reader = BalancedWatchExperimentDataReader(folder="tests/test_data/watch")
+    reader = BalancedWatchExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "watch")
+    )
     parameters = {"balanced": True, "shuffle": True}
     dataset = reader.get_seven_emotion_data(Set.TRAIN, 16, parameters)
     total_count = 55

@@ -104,7 +104,7 @@ class ExperimentRunner:
             os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         )
         self.folder = os.path.join(
-            base_folder, f"experiments/results/{experiment_name}"
+            base_folder, "experiments", "results", experiment_name
         )
         if os.path.exists(self.folder):
             warnings.warn("The experiment folder already exists!")

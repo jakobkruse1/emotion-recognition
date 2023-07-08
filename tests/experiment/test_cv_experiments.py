@@ -20,10 +20,12 @@ def test_init():
     assert cv_runner.accuracy is None
     assert cv_runner.best_index is None
     assert len(cv_runner.experiments) == 0
-    assert os.path.exists("experiments/results/test_name")
+    assert os.path.exists(os.path.join("experiments", "results", "test_name"))
     with pytest.warns(UserWarning):
         _ = CrossValidationExperimentRunner("test_name", 7)
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
 
 @pytest.mark.parametrize("cv_splits", [2, 3, 4])
@@ -35,17 +37,21 @@ def test_run_cv(cv_splits):
     )
     cv_runner.experiments.append(experiment)
 
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
 
 def test_experiment_runner_run_all(monkeypatch):
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
     runner = CrossValidationExperimentRunner("test_name")
 
     assert len(runner.experiments) == 0
     assert runner.base_experiment_name == "test_name"
-    assert "experiments/results/test_name" in runner.folder
+    assert os.path.join("experiments", "results", "test_name") in runner.folder
 
     runner.add_grid_experiments(
         modality="plant",
@@ -73,7 +79,9 @@ def test_experiment_runner_run_all(monkeypatch):
     )
     assert len(runner.experiments) == 2
 
-    data_reader = PlantExperimentDataReader(folder="tests/test_data/plant")
+    data_reader = PlantExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "plant")
+    )
 
     def train_overwrite(self, parameters, **kwargs):
         self.initialize_model(parameters)
@@ -119,4 +127,6 @@ def test_experiment_runner_run_all(monkeypatch):
     new_runner.run_all(data_reader=data_reader)
     for new_acc, acc in zip(new_runner.accuracy, runner.accuracy):
         assert new_acc == acc
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )

@@ -25,7 +25,7 @@ def test_random_forest_initialization():
     assert not classifier.is_trained
 
     classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     with pytest.raises(RuntimeError):
         # Error because not trained
@@ -36,7 +36,7 @@ def test_random_forest_initialization():
 def test_random_forest_workflow():
     classifier = WatchRandomForestClassifier()
     classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     assert not classifier.model
     train_parameters = {
@@ -48,10 +48,16 @@ def test_random_forest_workflow():
         "hop": 5,
     }
     classifier.train(train_parameters)
-    shutil.rmtree("tests/temp/random_forest", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/random_forest"}
+    shutil.rmtree(
+        os.path.join("tests", "temp", "random_forest"), ignore_errors=True
+    )
+    save_parameters = {
+        "save_path": os.path.join("tests", "temp", "random_forest")
+    }
     classifier.save(save_parameters)
-    assert os.path.exists("tests/temp/random_forest/model.pkl")
+    assert os.path.exists(
+        os.path.join("tests", "temp", "random_forest", "model.pkl")
+    )
     train_parameters["which_set"] = Set.TEST
     results = classifier.classify(train_parameters)
     assert isinstance(results, np.ndarray)
@@ -60,12 +66,14 @@ def test_random_forest_workflow():
     new_classifier = WatchRandomForestClassifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     new_results = new_classifier.classify(train_parameters)
     assert np.array_equal(new_results, results)
 
     with pytest.raises(RuntimeError):
-        new_classifier.save({"save_path": "tests/temp/random_forest"})
+        new_classifier.save(
+            {"save_path": os.path.join("tests", "temp", "random_forest")}
+        )
 
-    shutil.rmtree("tests/temp", ignore_errors=True)
+    shutil.rmtree(os.path.join("tests", "temp"), ignore_errors=True)

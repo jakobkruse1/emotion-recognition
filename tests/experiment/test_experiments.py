@@ -41,13 +41,15 @@ def test_experiment():
 
 
 def test_experiment_runner_configs(monkeypatch):
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
     runner = ExperimentRunner("test_name")
 
     assert len(runner.experiments) == 0
     assert runner.base_experiment_name == "test_name"
-    assert "experiments/results/test_name" in runner.folder
+    assert os.path.join("experiments", "results", "test_name") in runner.folder
 
     runner.add_grid_experiments(
         modality="text",
@@ -77,24 +79,30 @@ def test_experiment_runner_configs(monkeypatch):
     assert parameters["init_parameters"] is None
     assert parameters["model_name"] is None
 
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
 
 def test_experiment_runner_run_all():
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
     runner = ExperimentRunner("test_name")
 
     assert len(runner.experiments) == 0
     assert runner.base_experiment_name == "test_name"
-    assert "experiments/results/test_name" in runner.folder
+    assert os.path.join("experiments", "results", "test_name") in runner.folder
 
     runner.add_grid_experiments(
         modality="text", model="nrclex", train_parameters=[{"a": 0}, {"a": 1}]
     )
     assert len(runner.experiments) == 2
 
-    data_reader = TextDataReader(folder="tests/test_data/text")
+    data_reader = TextDataReader(
+        folder=os.path.join("tests", "test_data", "text")
+    )
 
     runner.run_all(data_reader=data_reader)
     assert runner.best_index is not None
@@ -117,17 +125,21 @@ def test_experiment_runner_run_all():
                 data_reader.get_labels(Set.TEST)
             )
 
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
 
 def test_experiment_runner_run_all_with_indices():
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
     runner = ExperimentRunner("test_name")
 
     assert len(runner.experiments) == 0
     assert runner.base_experiment_name == "test_name"
-    assert "experiments/results/test_name" in runner.folder
+    assert os.path.join("experiments", "results", "test_name") in runner.folder
 
     runner.add_grid_experiments(
         modality="text",
@@ -136,7 +148,9 @@ def test_experiment_runner_run_all_with_indices():
     )
     assert len(runner.experiments) == 4
 
-    data_reader = TextDataReader(folder="tests/test_data/text")
+    data_reader = TextDataReader(
+        folder=os.path.join("tests", "test_data", "text")
+    )
 
     runner.run_all(data_reader=data_reader, indices=[0, 3])
     assert runner.best_index is not None
@@ -150,7 +164,9 @@ def test_experiment_runner_run_all_with_indices():
             data = json.load(file)
             assert data["train_parameters"]["a"] == [0, 3][index]
 
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
 
 def test_make_dictionaries():
@@ -168,14 +184,18 @@ def test_make_dictionaries():
 
 
 def test_skipping_if_exists(monkeypatch):
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )
 
     runner = ExperimentRunner("test_name")
     runner.add_grid_experiments(
         modality="text", model="nrclex", train_parameters=[{"a": 1}]
     )
     assert len(runner.experiments) == 1
-    data_reader = TextDataReader(folder="tests/test_data/text")
+    data_reader = TextDataReader(
+        folder=os.path.join("tests", "test_data", "text")
+    )
 
     runner.run_all(data_reader=data_reader)
     assert runner.best_index == 0
@@ -207,4 +227,6 @@ def test_skipping_if_exists(monkeypatch):
 
     assert runner.accuracy[0] == old_accuracy
 
-    shutil.rmtree("experiments/results/test_name", ignore_errors=True)
+    shutil.rmtree(
+        os.path.join("experiments", "results", "test_name"), ignore_errors=True
+    )

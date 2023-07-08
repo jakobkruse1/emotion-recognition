@@ -160,7 +160,7 @@ def _main():  # pragma: no cover
         "augment": True,
         "weighted": True,
     }
-    save_path = "models/image/efficientnet"
+    save_path = os.path.join("models", "image", "efficientnet")
     training_loop(classifier, parameters, save_path)
 
 

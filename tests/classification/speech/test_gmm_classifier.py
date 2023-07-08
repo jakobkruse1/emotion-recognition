@@ -26,7 +26,7 @@ def test_gmm_initialization():
     assert not classifier.is_trained
 
     classifier.data_reader = ClasswiseSpeechDataReader(
-        folder="tests/test_data/speech"
+        folder=os.path.join("tests", "test_data", "speech")
     )
     with pytest.raises(RuntimeError):
         # Error because not trained
@@ -35,10 +35,12 @@ def test_gmm_initialization():
 
 @pytest.mark.filterwarnings("ignore::sklearn.exceptions.ConvergenceWarning")
 def test_gmm_workflow():
-    files = glob.glob("tests/test_data/speech/train/**/*.wav")
+    files = glob.glob(
+        os.path.join("tests", "test_data", "speech", "train", "**", "*.wav")
+    )
     classifier = GMMClassifier()
     classifier.data_reader = ClasswiseSpeechDataReader(
-        folder="tests/test_data/speech"
+        folder=os.path.join("tests", "test_data", "speech")
     )
     train_parameters = {"dataset": "meld"}
     try:
@@ -58,17 +60,25 @@ def test_gmm_workflow():
             os.remove(new_file2)
             os.remove(new_file3)
     except BaseException as e:
-        files = glob.glob("tests/test_data/speech/train/**/*copy.wav")
+        files = glob.glob(
+            os.path.join(
+                "tests", "test_data", "speech", "train", "**", "*copy.wav"
+            )
+        )
         for file in files:
             os.remove(file)
         raise e
 
-    shutil.rmtree("tests/temp/gmm", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/gmm"}
+    shutil.rmtree(os.path.join("tests", "temp", "gmm"), ignore_errors=True)
+    save_parameters = {"save_path": os.path.join("tests", "temp", "gmm")}
     classifier.save(save_parameters)
     for emotion in CLASS_NAMES:
-        assert os.path.exists(f"tests/temp/gmm/{emotion}.pkl")
-        assert os.path.exists(f"tests/temp/gmm/{emotion}_scaler.pkl")
+        assert os.path.exists(
+            os.path.join("tests", "temp", "gmm", f"{emotion}.pkl")
+        )
+        assert os.path.exists(
+            os.path.join("tests", "temp", "gmm", f"{emotion}_scaler.pkl")
+        )
     results = classifier.classify({"shuffle": False, "dataset": "meld"})
     assert isinstance(results, np.ndarray)
     assert results.shape == (7,)
@@ -76,7 +86,7 @@ def test_gmm_workflow():
     new_classifier = GMMClassifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = ClasswiseSpeechDataReader(
-        folder="tests/test_data/speech"
+        folder=os.path.join("tests", "test_data", "speech")
     )
     new_results = new_classifier.classify(
         {"shuffle": False, "dataset": "meld"}
@@ -84,6 +94,8 @@ def test_gmm_workflow():
     assert np.array_equal(new_results, results)
 
     with pytest.raises(RuntimeError):
-        new_classifier.save({"save_path": "tests/temp/gmm"})
+        new_classifier.save(
+            {"save_path": os.path.join("tests", "temp", "gmm")}
+        )
 
-    shutil.rmtree("tests/temp", ignore_errors=True)
+    shutil.rmtree(os.path.join("tests", "temp"), ignore_errors=True)

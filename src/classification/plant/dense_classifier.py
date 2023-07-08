@@ -1,5 +1,6 @@
 """ This file implements a Fully Connected classifier for the plant data. """
 
+import os
 from typing import Dict
 
 import tensorflow as tf
@@ -66,7 +67,7 @@ def _main():  # pragma: no cover
         "hop": 10,
         "balanced": True,
     }
-    save_path = "models/plant/plant_dense"
+    save_path = os.path.join("models", "plant", "plant_dense")
     cv_training_loop(classifier, parameters, save_path)
 
 

@@ -1,4 +1,7 @@
 """ Test the fusion data reader. """
+
+import os
+
 import numpy as np
 import pytest
 import tensorflow as tf
@@ -9,7 +12,7 @@ from src.data.fusion_data_reader import FusionProbDataReader, Set
 def test_fusion_initialization():
     dr = FusionProbDataReader()
     assert dr.name == "fusion"
-    assert dr.folder == "data/continuous"
+    assert dr.folder == os.path.join("data", "continuous")
     assert dr.default_label_mode == "expected"
     for mod in ["image", "plant", "watch"]:
         assert dr.feature_sizes[mod] == 7
@@ -18,8 +21,10 @@ def test_fusion_initialization():
 
 @pytest.mark.filterwarnings("ignore:Data is missing:UserWarning")
 def test_splitting():
-    dr = FusionProbDataReader(folder="tests/test_data/fusion")
-    assert dr.folder == "tests/test_data/fusion"
+    dr = FusionProbDataReader(
+        folder=os.path.join("tests", "test_data", "fusion")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "fusion")
     for which_set in [Set.TRAIN, Set.VAL, Set.TEST, Set.ALL]:
         dataset = dr.get_emotion_data("neutral_ekman", which_set, batch_size=8)
         assert isinstance(dataset, tf.data.Dataset)
@@ -43,7 +48,9 @@ def test_splitting():
 
 @pytest.mark.filterwarnings("ignore:Data is missing:UserWarning")
 def test_data_reading():
-    dr = FusionProbDataReader(folder="tests/test_data/fusion")
+    dr = FusionProbDataReader(
+        folder=os.path.join("tests", "test_data", "fusion")
+    )
     dataset = dr.get_emotion_data("neutral_ekman", Set.TEST, batch_size=8)
     batch = 0
     for data, labels in dataset.take(15):
@@ -58,8 +65,10 @@ def test_data_reading():
 
 @pytest.mark.filterwarnings("ignore:Data is missing:UserWarning")
 def test_reading_three():
-    dr = FusionProbDataReader(folder="tests/test_data/fusion")
-    assert dr.folder == "tests/test_data/fusion"
+    dr = FusionProbDataReader(
+        folder=os.path.join("tests", "test_data", "fusion")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "fusion")
     dataset = dr.get_emotion_data("three", Set.TEST, batch_size=4)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -75,8 +84,10 @@ def test_reading_three():
 
 @pytest.mark.filterwarnings("ignore:Data is missing:UserWarning")
 def test_labels():
-    dr = FusionProbDataReader(folder="tests/test_data/fusion")
-    assert dr.folder == "tests/test_data/fusion"
+    dr = FusionProbDataReader(
+        folder=os.path.join("tests", "test_data", "fusion")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "fusion")
     dataset = dr.get_emotion_data(
         "neutral_ekman", Set.ALL, batch_size=8, parameters={"shuffle": False}
     )
@@ -102,8 +113,10 @@ def test_labels():
 
 @pytest.mark.filterwarnings("ignore:Data is missing:UserWarning")
 def test_modalities():
-    dr = FusionProbDataReader(folder="tests/test_data/fusion")
-    assert dr.folder == "tests/test_data/fusion"
+    dr = FusionProbDataReader(
+        folder=os.path.join("tests", "test_data", "fusion")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "fusion")
     dataset = dr.get_emotion_data(
         "three", Set.TEST, batch_size=4, parameters={"modalities": ["image"]}
     )

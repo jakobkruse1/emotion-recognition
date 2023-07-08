@@ -336,7 +336,7 @@ def _main():  # pragma: no cover
         "hidden": 1024,
         "freeze": True,
     }
-    save_path = "models/speech/byols"
+    save_path = os.path.join("models", "speech", "byols")
     training_loop(classifier, parameters, save_path)
 
 

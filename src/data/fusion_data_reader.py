@@ -27,7 +27,9 @@ class FusionProbDataReader(ExperimentDataReader):
 
         :param folder: The folder containing the data
         """
-        super().__init__("fusion", folder or "data/continuous")
+        super().__init__(
+            "fusion", folder or os.path.join("data", "continuous")
+        )
         self.default_label_mode = "expected"
         self.feature_sizes = {"image": 7, "plant": 7, "watch": 7}
 
@@ -49,7 +51,9 @@ class FusionProbDataReader(ExperimentDataReader):
                 int(times["start"]) : int(times["end"])
             ] = self.emotion_labels[emotion]
         for experiment_index in used_indices:
-            data_path = f"{self.folder}/{experiment_index:03d}_emotions.csv"
+            data_path = os.path.join(
+                f"{self.folder}", f"{experiment_index:03d}_emotions.csv"
+            )
             if not os.path.exists(data_path):
                 warnings.warn(f"Data is missing. File {data_path} not found!")
                 continue

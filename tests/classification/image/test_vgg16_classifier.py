@@ -13,7 +13,9 @@ def test_vgg16_initialization():
     assert not classifier.model
     assert not classifier.is_trained
 
-    classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
+    classifier.data_reader = ImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
     with pytest.raises(RuntimeError):
         # Error because not trained
         classifier.classify()
@@ -23,15 +25,19 @@ def test_efficientnet_workflow():
     classifier = VGG16Classifier()
     assert not classifier.model
     train_parameters = {"epochs": 1, "which_set": Set.TRAIN, "deep": False}
-    classifier.data_reader = ImageDataReader(folder="tests/test_data/image")
+    classifier.data_reader = ImageDataReader(
+        folder=os.path.join("tests", "test_data", "image")
+    )
     classifier.train(train_parameters)
     assert len(classifier.model.layers) == 5
 
-    shutil.rmtree("tests/temp/vgg", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/vgg"}
+    shutil.rmtree(os.path.join("tests", "temp", "vgg"), ignore_errors=True)
+    save_parameters = {"save_path": os.path.join("tests", "temp", "vgg")}
     classifier.save(save_parameters)
-    assert os.path.exists("tests/temp/vgg")
-    assert os.path.exists("tests/temp/vgg/saved_model.pb")
+    assert os.path.exists(os.path.join("tests", "temp", "vgg"))
+    assert os.path.exists(
+        os.path.join("tests", "temp", "vgg", "saved_model.pb")
+    )
     results = classifier.classify()
     assert isinstance(results, np.ndarray)
     assert results.shape == (7,)
@@ -39,15 +45,17 @@ def test_efficientnet_workflow():
     new_classifier = VGG16Classifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = ImageDataReader(
-        folder="tests/test_data/image"
+        folder=os.path.join("tests", "test_data", "image")
     )
     new_results = new_classifier.classify()
     assert np.array_equal(new_results, results)
 
     with pytest.raises(RuntimeError):
-        new_classifier.save({"save_path": "tests/temp/vgg"})
+        new_classifier.save(
+            {"save_path": os.path.join("tests", "temp", "vgg")}
+        )
 
-    shutil.rmtree("tests/temp", ignore_errors=True)
+    shutil.rmtree(os.path.join("tests", "temp"), ignore_errors=True)
 
 
 def test_parameters():

@@ -26,7 +26,7 @@ def test_lstm_initialization():
     assert not classifier.is_trained
 
     classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     with pytest.raises(RuntimeError):
         # Error because not trained
@@ -37,7 +37,7 @@ def test_lstm_initialization():
 def test_lstm_workflow():
     classifier = WatchLSTMClassifier()
     classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     assert not classifier.model
     train_parameters = {
@@ -50,10 +50,16 @@ def test_lstm_workflow():
         "lstm_layers": 3,
     }
     classifier.train(train_parameters)
-    shutil.rmtree("tests/temp/watch_lstm", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/watch_lstm"}
+    shutil.rmtree(
+        os.path.join("tests", "temp", "watch_lstm"), ignore_errors=True
+    )
+    save_parameters = {
+        "save_path": os.path.join("tests", "temp", "watch_lstm")
+    }
     classifier.save(save_parameters)
-    assert os.path.exists("tests/temp/watch_lstm/saved_model.pb")
+    assert os.path.exists(
+        os.path.join("tests", "temp", "watch_lstm", "saved_model.pb")
+    )
     train_parameters["which_set"] = Set.TEST
     results = classifier.classify(train_parameters)
     assert isinstance(results, np.ndarray)
@@ -62,7 +68,7 @@ def test_lstm_workflow():
     new_classifier = WatchLSTMClassifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch"
+        folder=os.path.join("tests", "test_data", "watch")
     )
     new_results = new_classifier.classify(train_parameters)
     assert np.array_equal(new_results, results)
@@ -73,9 +79,11 @@ def test_lstm_workflow():
     assert lstm_count == 3
 
     with pytest.raises(RuntimeError):
-        new_classifier.save({"save_path": "tests/temp/watch_lstm"})
+        new_classifier.save(
+            {"save_path": os.path.join("tests", "temp", "watch_lstm")}
+        )
 
-    shutil.rmtree("tests/temp", ignore_errors=True)
+    shutil.rmtree(os.path.join("tests", "temp"), ignore_errors=True)
 
 
 def test_one_lstm_layer():

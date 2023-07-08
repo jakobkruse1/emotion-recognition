@@ -33,7 +33,9 @@ class ComparisonSpeechDataReader(DataReader):
         :param name: The name of the data reader, speech
         :param folder: Folder that contains the data.
         """
-        super().__init__(name, folder or "data/comparison_dataset/audio")
+        super().__init__(
+            name, folder or os.path.join("data", "comparison_dataset", "audio")
+        )
 
     def get_seven_emotion_data(
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None
@@ -50,7 +52,7 @@ class ComparisonSpeechDataReader(DataReader):
             which_set == Set.TEST
         ), "The comparison dataset can only be used for testing."
 
-        filenames = tf.io.gfile.glob(self.folder + "/*/*.wav")
+        filenames = tf.io.gfile.glob(self.folder + f"{os.sep}*{os.sep}*.wav")
         filenames.sort()
         num_files = len(filenames)
         files_ds = tf.data.Dataset.from_tensor_slices(filenames)

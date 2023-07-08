@@ -15,7 +15,7 @@ def test_fusion_classifier_initialization():
     assert not classifier.is_trained
 
     classifier.data_reader = FusionProbDataReader(
-        folder="tests/test_data/fusion"
+        folder=os.path.join("tests", "test_data", "fusion")
     )
     with pytest.raises(RuntimeError):
         # Error because not trained
@@ -32,16 +32,18 @@ def test_fusion_classifier_workflow():
         "input_elements": 21,
     }
     classifier.data_reader = FusionProbDataReader(
-        folder="tests/test_data/fusion"
+        folder=os.path.join("tests", "test_data", "fusion")
     )
     classifier.train(train_parameters)
     assert len(classifier.model.layers) == 4
 
-    shutil.rmtree("tests/temp/fusion", ignore_errors=True)
-    save_parameters = {"save_path": "tests/temp/fusion"}
+    shutil.rmtree(os.path.join("tests", "temp", "fusion"), ignore_errors=True)
+    save_parameters = {"save_path": os.path.join("tests", "temp", "fusion")}
     classifier.save(save_parameters)
-    assert os.path.exists("tests/temp/fusion")
-    assert os.path.exists("tests/temp/fusion/saved_model.pb")
+    assert os.path.exists(os.path.join("tests", "temp", "fusion"))
+    assert os.path.exists(
+        os.path.join("tests", "temp", "fusion", "saved_model.pb")
+    )
     results = classifier.classify()
     assert isinstance(results, np.ndarray)
     assert results.shape == (123,)
@@ -49,15 +51,17 @@ def test_fusion_classifier_workflow():
     new_classifier = FusionClassifier()
     new_classifier.load(save_parameters)
     new_classifier.data_reader = FusionProbDataReader(
-        folder="tests/test_data/fusion"
+        folder=os.path.join("tests", "test_data", "fusion")
     )
     new_results = new_classifier.classify()
     assert np.array_equal(new_results, results)
 
     with pytest.raises(RuntimeError):
-        new_classifier.save({"save_path": "tests/temp/fusion"})
+        new_classifier.save(
+            {"save_path": os.path.join("tests", "temp", "fusion")}
+        )
 
-    shutil.rmtree("tests/temp", ignore_errors=True)
+    shutil.rmtree(os.path.join("tests", "temp"), ignore_errors=True)
 
 
 def test_parameters():

@@ -1,6 +1,7 @@
 """ This file contains a fusion emotion classifier fusing image, plant and
 watch probabilities """
 
+import os
 from typing import Dict
 
 import numpy as np
@@ -112,7 +113,9 @@ class FusionClassifier(EmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/fusion/fusion")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "fusion", "fusion")
+        )
         self.model = tf.keras.models.load_model(save_path)
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
@@ -127,7 +130,9 @@ class FusionClassifier(EmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/fusion/fusion")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "fusion", "fusion")
+        )
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 
@@ -181,7 +186,7 @@ def _main():  # pragma: no cover
         "hidden_size": 64,
         "input_elements": 21,
     }
-    save_path = "models/fusion/fusion"
+    save_path = os.path.join("models", "fusion", "fusion")
     training_loop(classifier, parameters, save_path)
 
 

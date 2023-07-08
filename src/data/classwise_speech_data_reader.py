@@ -36,7 +36,9 @@ class ClasswiseSpeechDataReader(DataReader):
         :param name: name of the data reader.
         :param folder: folder that contains the data.
         """
-        super().__init__(name, folder or "data/train/speech")
+        super().__init__(
+            name, folder or os.path.join("data", "train", "speech")
+        )
         self.folder_map = {
             Set.TRAIN: "train",
             Set.VAL: "val",
@@ -126,7 +128,9 @@ class ClasswiseSpeechDataReader(DataReader):
         :param data_dir: The directory on disk that contains the data
         :return: Numpy array with the data
         """
-        filenames = tf.io.gfile.glob(f"{str(data_dir)}/{emotion_class}/*.wav")
+        filenames = tf.io.gfile.glob(
+            f"{str(data_dir)}{os.sep}{emotion_class}{os.sep}*.wav"
+        )
         files_ds = tf.data.Dataset.from_tensor_slices(filenames)
         wave_ds = files_ds.map(
             lambda p: tf.numpy_function(

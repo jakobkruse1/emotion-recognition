@@ -1,4 +1,6 @@
 """ Testing the watch experiment data reader class. """
+import os
+
 import numpy as np
 import pytest
 import tensorflow as tf
@@ -9,7 +11,8 @@ from src.data.watch_exp_reader import Set, WatchExperimentDataReader
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_init():
     reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "watch"),
+        default_label_mode="expected",
     )
     assert reader.name == "watch"
     assert reader.default_label_mode == "expected"
@@ -21,7 +24,8 @@ def test_init():
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_get_raw_data():
     reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "watch"),
+        default_label_mode="expected",
     )
     reader.get_raw_data({})
     assert reader.raw_data.shape == (97, 20, 5)
@@ -29,7 +33,8 @@ def test_get_raw_data():
     expected_labels = reader.raw_labels
 
     reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch", default_label_mode="faceapi"
+        folder=os.path.join("tests", "test_data", "watch"),
+        default_label_mode="faceapi",
     )
     reader.get_raw_data({})
     assert reader.raw_data.shape == (97, 20, 5)
@@ -39,7 +44,8 @@ def test_get_raw_data():
     both_labels = expected_labels[expected_labels == faceapi_labels]
 
     reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch", default_label_mode="both"
+        folder=os.path.join("tests", "test_data", "watch"),
+        default_label_mode="both",
     )
     reader.get_raw_data({})
     assert reader.raw_data.shape == (both_labels.shape[0], 20, 5)
@@ -50,7 +56,8 @@ def test_get_raw_data():
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_normalization():
     reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "watch"),
+        default_label_mode="expected",
     )
     reader.get_raw_data({})
 
@@ -72,7 +79,8 @@ def test_normalization():
 def test_input_shape(window):
     true_value = (window, 5)
     reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "watch"),
+        default_label_mode="expected",
     )
     assert (
         reader.get_input_shape(
@@ -87,7 +95,8 @@ def test_input_shape(window):
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_get_data():
     reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "watch"),
+        default_label_mode="expected",
     )
     data = reader.get_seven_emotion_data(Set.TRAIN, 8, {"shuffle": True})
     assert isinstance(data, tf.data.Dataset)
@@ -102,7 +111,8 @@ def test_get_data():
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_get_cv_indices():
     reader = WatchExperimentDataReader(
-        folder="tests/test_data/watch", default_label_mode="expected"
+        folder=os.path.join("tests", "test_data", "watch"),
+        default_label_mode="expected",
     )
     reader.get_raw_data({})
     counts = [13, 8, 6, 8, 35, 20, 7]
@@ -147,8 +157,10 @@ def test_get_cv_indices():
 
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_reading_three():
-    dr = WatchExperimentDataReader(folder="tests/test_data/watch")
-    assert dr.folder == "tests/test_data/watch"
+    dr = WatchExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "watch")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "watch")
     dataset = dr.get_emotion_data(
         "three",
         Set.VAL,
@@ -182,7 +194,9 @@ def test_reading_three():
 
 @pytest.mark.filterwarnings("ignore:Happimeter data:UserWarning")
 def test_raw_generator():
-    dr = WatchExperimentDataReader(folder="tests/test_data/watch")
+    dr = WatchExperimentDataReader(
+        folder=os.path.join("tests", "test_data", "watch")
+    )
     dr.get_raw_data({})
     generator = dr.get_data_generator(Set.TEST, {})
     for data, labels in generator():

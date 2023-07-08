@@ -1,5 +1,7 @@
 """Test the data factory class"""
 
+import os
+
 import pytest
 import tensorflow as tf
 
@@ -67,7 +69,9 @@ def test_data_reader_factory():
 def test_dataset_factory():
     for set_type in [Set.TRAIN, Set.VAL, Set.TEST]:
         text_data = DataFactory.get_dataset(
-            "text", set_type, data_folder="tests/test_data/text"
+            "text",
+            set_type,
+            data_folder=os.path.join("tests", "test_data", "text"),
         )
         assert isinstance(text_data, tf.data.Dataset)
 
@@ -76,7 +80,7 @@ def test_dataset_factory():
             "text",
             set_type,
             emotions="three",
-            data_folder="tests/test_data/text",
+            data_folder=os.path.join("tests", "test_data", "text"),
         )
         assert isinstance(text_data, tf.data.Dataset)
 
@@ -88,5 +92,5 @@ def test_dataset_factory():
             "text",
             Set.TEST,
             emotions="wrong",
-            data_folder="tests/test_data/text",
+            data_folder=os.path.join("tests", "test_data", "text"),
         )

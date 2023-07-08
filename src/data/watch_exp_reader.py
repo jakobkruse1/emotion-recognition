@@ -4,7 +4,7 @@ import glob
 import json
 import os
 import warnings
-from typing import Any, Dict, Generator, List, Tuple
+from typing import Dict, Generator, List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -22,7 +22,9 @@ class WatchExperimentDataReader(ExperimentDataReader):
     """
 
     def __init__(
-        self, folder: str = "data/watch", default_label_mode: str = "expected"
+        self,
+        folder: str = os.path.join("data", "watch"),
+        default_label_mode: str = "expected",
     ) -> None:
         """
         Initialize the watch data reader for the experiment data.
@@ -31,12 +33,13 @@ class WatchExperimentDataReader(ExperimentDataReader):
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("watch", folder or "data/watch")
+        super().__init__("watch", folder or os.path.join("data", "watch"))
         self.default_label_mode = default_label_mode
         assert default_label_mode in ["expected", "faceapi", "both"]
         if (
             default_label_mode == "faceapi"
-            and len(glob.glob("data/ground_truth/*.json")) != 54
+            and len(glob.glob(os.path.join("data", "ground_truth", "*.json")))
+            != 54
         ):
             self.prepare_faceapi_labels()  # pragma: no cover
         self.raw_data = None
@@ -250,7 +253,7 @@ class WatchExperimentDataReader(ExperimentDataReader):
         :return: Labels that are collected from the user's face expression.
         """
         data_indices = self.get_complete_data_indices()
-        gt_folder = "data/ground_truth"
+        gt_folder = os.path.join("data", "ground_truth")
         labels = np.zeros((len(data_indices), 690))
         emotions_sorted = [
             "angry",
@@ -262,11 +265,11 @@ class WatchExperimentDataReader(ExperimentDataReader):
             "neutral",
         ]
         if self.folder.startswith("tests"):  # Testing
-            gt_folder = "tests/test_data/ground_truth"
+            gt_folder = os.path.join("tests", "test_data", "ground_truth")
             data_indices = [5]
         for file_index, experiment_index in enumerate(data_indices):
             ground_truth_file = glob.glob(
-                f"{gt_folder}/{experiment_index:03d}*.json"
+                f"{gt_folder}{os.sep}{experiment_index:03d}*.json"
             )[0]
             with open(ground_truth_file, "r") as emotions_file:
                 raw_emotions = json.load(emotions_file)

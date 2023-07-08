@@ -1,6 +1,7 @@
 """ This file implements a CNN classifier for the MFCC features derived
 from the plant data. """
 
+import os
 from typing import Dict
 
 import tensorflow as tf
@@ -95,7 +96,7 @@ def _main():  # pragma: no cover
         "balanced": True,
         "checkpoint": True,
     }
-    save_path = "models/plant/plant_mfcc_cnn"
+    save_path = os.path.join("models", "plant", "plant_mfcc_cnn")
     cv_training_loop(classifier, parameters, save_path)
 
 

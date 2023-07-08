@@ -3,7 +3,7 @@ import itertools
 import math
 import warnings
 from collections import Counter
-from typing import Any, Union
+from typing import Any, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -53,7 +53,7 @@ def correlation(
     corr_type: str,
     differentiate: bool = True,
     downsample: bool = True,
-) -> tuple[float, float]:
+) -> Tuple[float, float]:
     """
     Compute correlation values between array1 and array2
 

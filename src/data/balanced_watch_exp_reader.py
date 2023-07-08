@@ -1,7 +1,8 @@
 """ This data reader reads the watch data from the experiments. """
 
 import copy
-from typing import Any, Dict
+import os
+from typing import Dict
 
 import numpy as np
 import tensorflow as tf
@@ -19,7 +20,9 @@ class BalancedWatchExperimentDataReader(ExperimentDataReader):
     """
 
     def __init__(
-        self, folder: str = "data/watch", default_label_mode: str = "expected"
+        self,
+        folder: str = os.path.join("data", "watch"),
+        default_label_mode: str = "expected",
     ) -> None:
         """
         Initialize the watch data reader for the experiment data.
@@ -28,7 +31,9 @@ class BalancedWatchExperimentDataReader(ExperimentDataReader):
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("balanced_watch", folder or "data/watch")
+        super().__init__(
+            "balanced_watch", folder or os.path.join("data", "watch")
+        )
         self.unbalanced_reader = WatchExperimentDataReader(
             folder, default_label_mode
         )

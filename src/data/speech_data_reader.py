@@ -34,7 +34,9 @@ class SpeechDataReader(DataReader):
         :param name: The name of the data reader, speech
         :param folder: Folder that contains the data.
         """
-        super().__init__(name, folder or "data/train/speech")
+        super().__init__(
+            name, folder or os.path.join("data", "train", "speech")
+        )
         self.folder_map = {
             Set.TRAIN: "train",
             Set.VAL: "val",
@@ -100,7 +102,7 @@ class SpeechDataReader(DataReader):
         :return: Tuple containing Dataset instance and size of dataset
         """
         data_dir = os.path.join(self.folder, folder)
-        filenames = tf.io.gfile.glob(str(data_dir) + "/*/*.wav")
+        filenames = tf.io.gfile.glob(str(data_dir) + f"{os.sep}*{os.sep}*.wav")
         filenames.sort()
         num_files = len(filenames)
         if shuffle:

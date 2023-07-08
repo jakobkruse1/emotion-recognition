@@ -29,7 +29,7 @@ class FinetuningWav2Vec2Model(nn.Module):
         :param parameters: Additional config parameters.
         """
         super().__init__()
-        cache_dir = "models/cache"
+        cache_dir = os.path.join("models", "cache")
         parameters = parameters or {}
         dropout = parameters.get("dropout", 0.1)
         freeze = parameters.get("freeze", False)
@@ -92,7 +92,7 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
 
         :param parameters: Some configuration parameters for the classifier
         """
-        super().__init__("hubert", parameters)
+        super().__init__("wav2vec2", parameters)
         tf.get_logger().setLevel("ERROR")
         self.model = None
         self.device = torch.device(
@@ -231,7 +231,9 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/wav2vec2")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "wav2vec2")
+        )
         saved_data = torch.load(
             os.path.join(save_path, "wav2vec2.pth"), map_location=self.device
         )
@@ -251,7 +253,9 @@ class Wav2Vec2Classifier(SpeechEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/wav2vec2")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "wav2vec2")
+        )
         os.makedirs(save_path, exist_ok=True)
         torch.save(
             {"model_state_dict": self.model.state_dict()},
@@ -305,7 +309,7 @@ def _main():  # pragma: no cover
         "freeze": True,
         "extra_layer": 0,
     }
-    save_path = "models/speech/wav2vec2"
+    save_path = os.path.join("models", "speech", "wav2vec2")
     training_loop(classifier, parameters, save_path)
 
 

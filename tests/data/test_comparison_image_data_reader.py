@@ -1,5 +1,7 @@
 """Test the comparison image data reader"""
 
+import os
+
 import numpy as np
 import pytest
 import tensorflow as tf
@@ -13,12 +15,14 @@ from src.data.comparison_image_data_reader import (
 def test_initialization():
     dr = ComparisonImageDataReader()
     assert dr.name == "comparison_image"
-    assert dr.folder == "data/comparison_dataset/image"
+    assert dr.folder == os.path.join("data", "comparison_dataset", "image")
 
 
 def test_reading():
-    dr = ComparisonImageDataReader(folder="tests/test_data/image/test")
-    assert dr.folder == "tests/test_data/image/test"
+    dr = ComparisonImageDataReader(
+        folder=os.path.join("tests", "test_data", "image", "test")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "image", "test")
     dataset = dr.get_emotion_data("neutral_ekman", Set.TEST, batch_size=10)
     assert isinstance(dataset, tf.data.Dataset)
     batch = 0
@@ -42,8 +46,10 @@ def test_reading():
 
 
 def test_reading_three():
-    dr = ComparisonImageDataReader(folder="tests/test_data/image/test")
-    assert dr.folder == "tests/test_data/image/test"
+    dr = ComparisonImageDataReader(
+        folder=os.path.join("tests", "test_data", "image", "test")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "image", "test")
     dataset = dr.get_emotion_data(
         "three", Set.TEST, batch_size=2, parameters={"shuffle": False}
     )
@@ -81,8 +87,10 @@ def test_reading_three():
 
 
 def test_labels():
-    dr = ComparisonImageDataReader(folder="tests/test_data/image/test")
-    assert dr.folder == "tests/test_data/image/test"
+    dr = ComparisonImageDataReader(
+        folder=os.path.join("tests", "test_data", "image", "test")
+    )
+    assert dr.folder == os.path.join("tests", "test_data", "image", "test")
     dataset = dr.get_emotion_data(
         "neutral_ekman", Set.TEST, batch_size=5, parameters={"shuffle": False}
     )

@@ -71,7 +71,9 @@ class WatchXGBoostClassifier(WatchEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/watch/xgboost")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "watch", "xgboost")
+        )
         self.model = xgb.XGBClassifier()
         self.model.load_model(os.path.join(save_path, "model.bin"))
 
@@ -87,7 +89,9 @@ class WatchXGBoostClassifier(WatchEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/watch/xgboost")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "watch", "xgboost")
+        )
         os.makedirs(save_path, exist_ok=True)
         self.model.save_model(os.path.join(save_path, "model.bin"))
         self.logger.save_logs(save_path)
@@ -135,7 +139,7 @@ def _main():  # pragma: no cover
         "n_estimators": 80,
         "learning_rate": 0.01,
     }
-    save_path = "models/watch/xgboost"
+    save_path = os.path.join("models", "watch", "xgboost")
     cv_training_loop(classifier, parameters, save_path)
 
 

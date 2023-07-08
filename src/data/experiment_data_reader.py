@@ -2,7 +2,7 @@
 related data and implements common functionality. """
 
 from abc import abstractmethod
-from typing import Dict
+from typing import Dict, List
 
 import numpy as np
 import tensorflow as tf
@@ -105,7 +105,7 @@ class ExperimentDataReader(DataReader):
         raise NotImplementedError()  # pragma: no cover
 
     @staticmethod
-    def get_complete_data_indices() -> list[int]:
+    def get_complete_data_indices() -> List[int]:
         """
         Static method that returns all experiment indices that have complete
         data and are supposed to be used in the evaluation.

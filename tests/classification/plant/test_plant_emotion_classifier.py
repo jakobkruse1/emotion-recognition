@@ -1,4 +1,5 @@
-""" Test base functionality in the plant emotion classifier. """
+""" Test base functionality in the plant emotion classifier """
+import os
 from typing import Dict
 
 import numpy as np
@@ -63,7 +64,7 @@ def test_prepare_training():
 def test_prepare_data():
     classifier = TestClassifier()
     classifier.data_reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant"
+        folder=os.path.join("tests", "test_data", "plant")
     )
     classifier.prepare_data({"which_set": Set.VAL, "batch_size": 8})
     members = ["train_data", "val_data"]
@@ -76,7 +77,7 @@ def test_weights():
     # Only testing to switch weights on/off. Correctness is checked elsewhere.
     classifier = TestClassifier()
     classifier.data_reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant"
+        folder=os.path.join("tests", "test_data", "plant")
     )
     classifier.prepare_data(
         {"which_set": Set.VAL, "batch_size": 8, "weighted": True}
@@ -89,7 +90,7 @@ def test_weights():
 def test_balancing():
     classifier = TestClassifier()
     classifier.data_reader = PlantExperimentDataReader(
-        folder="tests/test_data/plant"
+        folder=os.path.join("tests", "test_data", "plant")
     )
     classifier.prepare_data(
         {"which_set": Set.VAL, "batch_size": 8, "balanced": True}
@@ -101,7 +102,9 @@ def test_balancing():
     assert isinstance(
         classifier.data_reader, BalancedPlantExperimentDataReader
     )
-    assert classifier.data_reader.folder == "tests/test_data/plant"
+    assert classifier.data_reader.folder == os.path.join(
+        "tests", "test_data", "plant"
+    )
 
 
 def test_mfcc():
