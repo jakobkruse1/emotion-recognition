@@ -23,7 +23,9 @@ class ImageDataReader(DataReader):
         :param name: The name for the image reader.
         :param folder: The folder that contains the data.
         """
-        super().__init__(name, folder or "data/train/image")
+        super().__init__(
+            name, folder or os.path.join("data", "train", "image")
+        )
         self.folder_map = {
             Set.TRAIN: "train",
             Set.VAL: "val",

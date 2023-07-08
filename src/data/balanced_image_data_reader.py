@@ -26,7 +26,9 @@ class BalancedImageDataReader(ImageDataReader):
 
         :param folder: folder that contains the data.
         """
-        super().__init__("balanced_image", folder or "data/train/image")
+        super().__init__(
+            "balanced_image", folder or os.path.join("data", "train", "image")
+        )
 
     def get_three_emotion_data(
         self, which_set: Set, batch_size: int = 64, parameters: Dict = None

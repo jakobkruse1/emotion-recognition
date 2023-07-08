@@ -39,7 +39,7 @@ class FinetuningHuBERTModel(nn.Module):
             attention_dropout=dropout,
             num_hidden_layers=parameters.get("num_hidden_layers", 12),
         )
-        cache_dir = "models/cache"
+        cache_dir = os.path.join("models", "cache")
         self.device = device
         self.processor = Wav2Vec2Processor.from_pretrained(
             "facebook/hubert-large-ls960-ft", cache_dir=cache_dir
@@ -232,7 +232,9 @@ class HuBERTClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/hubert")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "hubert")
+        )
         saved_data = torch.load(
             os.path.join(save_path, "hubert.pth"), map_location=self.device
         )
@@ -252,7 +254,9 @@ class HuBERTClassifier(SpeechEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/hubert")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "hubert")
+        )
         os.makedirs(save_path, exist_ok=True)
         torch.save(
             {"model_state_dict": self.model.state_dict()},
@@ -306,7 +310,7 @@ def _main():  # pragma: no cover
         "extra_layer": 0,
         "batch_size": 32,
     }
-    save_path = "models/speech/hubert"
+    save_path = os.path.join("models", "speech", "hubert")
     training_loop(classifier, parameters, save_path)
 
 

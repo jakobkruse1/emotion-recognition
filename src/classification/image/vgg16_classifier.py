@@ -1,5 +1,6 @@
 """ This file contains the VGG16 facial emotion classifier """
 
+import os
 from typing import Dict
 
 import numpy as np
@@ -179,7 +180,7 @@ def _main():  # pragma: no cover
         "weighted": False,
         "balanced": False,
     }
-    save_path = "models/image/vgg16"
+    save_path = os.path.join("models", "image", "vgg16")
     training_loop(classifier, parameters, save_path)
 
 

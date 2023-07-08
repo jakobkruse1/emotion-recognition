@@ -566,7 +566,7 @@ def _main():  # pragma: no cover
         "weighted": False,
         "balanced": False,
     }
-    save_path = "models/image/cross_attention"
+    save_path = os.path.join("models", "image", "cross_attention")
     training_loop(classifier, parameters, save_path)
 
 

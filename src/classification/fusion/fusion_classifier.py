@@ -1,6 +1,7 @@
 """ This file contains a fusion emotion classifier fusing image, plant and
 watch probabilities """
 
+import os
 from typing import Dict
 
 import numpy as np
@@ -181,7 +182,7 @@ def _main():  # pragma: no cover
         "hidden_size": 64,
         "input_elements": 21,
     }
-    save_path = "models/fusion/fusion"
+    save_path = os.path.join("models", "fusion", "fusion")
     training_loop(classifier, parameters, save_path)
 
 

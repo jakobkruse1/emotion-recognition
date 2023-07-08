@@ -1,5 +1,6 @@
 """ This file contains the MFCC-LSTM speech emotion classifier """
 
+import os
 from typing import Dict
 
 import numpy as np
@@ -86,7 +87,9 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/mfcc_lstm")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "mfcc_lstm")
+        )
         self.model = tf.keras.models.load_model(save_path)
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
@@ -101,7 +104,9 @@ class MFCCLSTMClassifier(SpeechEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/mfcc_lstm")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "mfcc_lstm")
+        )
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 
@@ -138,7 +143,7 @@ def _main():  # pragma: no cover
         "dropout": 0.2,
         "weighted": True,
     }
-    save_path = "models/speech/mfcc_lstm"
+    save_path = os.path.join("models", "speech", "mfcc_lstm")
     training_loop(classifier, parameters, save_path)
 
 

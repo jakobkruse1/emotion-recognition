@@ -1,6 +1,7 @@
 """ This data reader reads the PlantSpikerBox data from the experiments. """
 
 import copy
+import os
 from typing import Dict, Tuple
 
 import numpy as np
@@ -19,7 +20,9 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
     """
 
     def __init__(
-        self, folder: str = "data/plant", default_label_mode: str = "expected"
+        self,
+        folder: str = os.path.join("data", "plant"),
+        default_label_mode: str = "expected",
     ) -> None:
         """
         Initialize the plant data reader for the experiment data.
@@ -28,7 +31,9 @@ class BalancedPlantExperimentDataReader(ExperimentDataReader):
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("balanced_plant", folder or "data/plant")
+        super().__init__(
+            "balanced_plant", folder or os.path.join("data", "plant")
+        )
         self.unbalanced_reader = PlantExperimentDataReader(
             folder, default_label_mode
         )

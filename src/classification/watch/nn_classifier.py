@@ -1,6 +1,7 @@
 """ This file defines an interface for classifiers for the watch data. """
 
 import copy
+import os
 from abc import abstractmethod
 from typing import Dict
 
@@ -79,7 +80,9 @@ class WatchNNBaseClassifier(WatchEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", f"models/watch/{self.name}")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "watch", self.name)
+        )
         self.model = tf.keras.models.load_model(save_path)
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
@@ -94,7 +97,9 @@ class WatchNNBaseClassifier(WatchEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", f"models/watch/{self.name}")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "watch", self.name)
+        )
         self.model.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 

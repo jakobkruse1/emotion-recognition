@@ -21,7 +21,9 @@ class PlantExperimentDataReader(ExperimentDataReader):
     """
 
     def __init__(
-        self, folder: str = "data/plant", default_label_mode: str = "expected"
+        self,
+        folder: str = os.path.join("data", "plant"),
+        default_label_mode: str = "expected",
     ) -> None:
         """
         Initialize the plant data reader for the experiment data.
@@ -30,13 +32,13 @@ class PlantExperimentDataReader(ExperimentDataReader):
         :param default_label_mode: Whether to use expected emotion
             or face as ground truth.
         """
-        super().__init__("plant", folder or "data/plant")
+        super().__init__("plant", folder or os.path.join("data", "plant"))
         self.default_label_mode = default_label_mode
         assert default_label_mode in ["expected", "faceapi", "both"]
         self.files = glob.glob(os.path.join(self.folder, "*.wav"))
         self.files.sort()
         if default_label_mode == "faceapi" and len(
-            glob.glob("data/ground_truth/*.json")
+            glob.glob(os.path.join("data", "ground_truth", "*.json"))
         ) != len(self.files):
             self.prepare_faceapi_labels()
         self.raw_data = None
@@ -271,14 +273,14 @@ class PlantExperimentDataReader(ExperimentDataReader):
             "neutral",
         ]
         gt_folder = (
-            "tests/test_data/ground_truth"
-            if self.folder == "tests/test_data/plant"
-            else "data/ground_truth"
+            os.path.join("tests", "test_data", "ground_truth")
+            if self.folder == os.path.join("tests", "test_data", "plant")
+            else os.path.join("data", "ground_truth")
         )
         for file_index, file in enumerate(self.files):
             experiment_index = os.path.basename(file)[:3]
             ground_truth_file = glob.glob(
-                f"{gt_folder}/{experiment_index}*.json"
+                f"{gt_folder}{os.sep}{experiment_index}*.json"
             )[0]
             with open(ground_truth_file, "r") as emotions_file:
                 raw_emotions = json.load(emotions_file)
@@ -302,7 +304,7 @@ class PlantExperimentDataReader(ExperimentDataReader):
         """
         This function prepares the faceapi labels if they are not computed yet.
         """
-        video_files = glob.glob("data/video/*.mp4")
+        video_files = glob.glob(os.path.join("data", "video", "*.mp4"))
         video_files.sort()
         for file in video_files:
             emotions_file = os.path.join(

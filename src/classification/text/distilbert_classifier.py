@@ -1,5 +1,6 @@
 """Implements a text emotion classifier based on Distilbert"""
 
+import os
 from typing import Dict
 
 import tensorflow as tf
@@ -44,7 +45,9 @@ class DistilBertClassifier(BertClassifier):
             Not used currently
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/text/distilbert")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "text", "distilbert")
+        )
         self.classifier = tf.keras.models.load_model(save_path)
 
     def save(self, parameters: Dict = None, **kwargs) -> None:
@@ -62,7 +65,9 @@ class DistilBertClassifier(BertClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/text/distilbert")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "text", "distilbert")
+        )
         self.classifier.save(save_path, include_optimizer=False)
         self.logger.save_logs(save_path)
 
@@ -70,7 +75,7 @@ class DistilBertClassifier(BertClassifier):
 def _main():  # pragma: no cover
     classifier = DistilBertClassifier()
     parameters = {"init_lr": 1e-05, "dropout_rate": 0.2, "dense_layer": 1024}
-    save_path = "models/text/distilbert"
+    save_path = os.path.join("models", "text", "distilbert")
     training_loop(classifier, parameters, save_path)
 
 

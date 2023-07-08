@@ -39,7 +39,7 @@ class FaceAPIThread(threading.Thread):  # pragma: no cover
         env["PORT"] = f"{self.port}"
         self.api = subprocess.Popen(
             ["npm", "run", "dev"],
-            cwd="src/utils/faceapi",
+            cwd=os.path.join("src", "utils", "faceapi"),
             stdout=subprocess.DEVNULL if not self.logging else None,
             env=env,
         )

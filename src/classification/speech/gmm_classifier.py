@@ -89,7 +89,9 @@ class GMMClassifier(SpeechEmotionClassifier):
         :param kwargs: Additional kwargs parameters
         """
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/gmm")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "gmm")
+        )
         for class_name in CLASS_NAMES:
             model_path = os.path.join(save_path, f"{class_name}.pkl")
             with open(model_path, "rb") as file:
@@ -112,7 +114,9 @@ class GMMClassifier(SpeechEmotionClassifier):
                 "Model needs to be trained in order to save it!"
             )
         parameters = self.init_parameters(parameters, **kwargs)
-        save_path = parameters.get("save_path", "models/speech/gmm")
+        save_path = parameters.get(
+            "save_path", os.path.join("models", "speech", "gmm")
+        )
         if not os.path.exists(save_path):
             os.makedirs(save_path)
         for name, model in self.models.items():
@@ -164,7 +168,7 @@ class GMMClassifier(SpeechEmotionClassifier):
 def _main():  # pragma: no cover
     classifier = GMMClassifier()
     parameters = {"n_components": 16, "mfcc_num": 40}
-    save_path = "models/speech/gmm"
+    save_path = os.path.join("models", "speech", "gmm")
     training_loop(classifier, parameters, save_path)
 
 
